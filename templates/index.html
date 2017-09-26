@@ -1,0 +1,187 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+    <!-- START: FORM -->
+    <div id="fh5co-project">
+      <div class="container">
+	<form name="search" action="/search_disease" method="post" class="form-group">
+	  <table>
+	    <tr>
+	      <td>
+		<h2>Input phenotype(s)</h2>
+	      </td>
+	      <td>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" id="ex_phenotypes"><font color="#0431B4"><u>ex) Telangiectasia, Intellectual disability, Seizures, Chorea, Headache</u></font></a>
+	      </td>
+	    </tr>
+	  </table>
+	  <textarea class="form-control" rows="2" id="tokeninput_hpo" name="str_phenotypes"></textarea>
+	  <input type="hidden" name="str_genes" value="">
+	  <input type="hidden" name="changesize_selector" value="20">
+	  <br>
+	  <button type="submit" class="btn btn-primary">Search</button>
+	  <button id="tokeninput_hpo_clear" class="btn btn-default">Clear</button>
+	</form>
+      </div>
+    </div>
+    <!-- END: FORM -->
+
+
+    <!-- START: Description -->
+    <div id="fh5co-services" class="fh5co-bg-section border-bottom">
+      <div class="container">
+	<div class="row">
+	  <div class="col-md-3 col-sm-6 ">
+	    <div align="center"><h1><b><font color="#337ab7">About</font></b></h1></div>
+	    <p>PubCaseFinder is a diagnosis assistant system for rare diseases based on phenotypic similarity.</p>
+	  </div>
+	  <div class="col-md-3 col-sm-6 ">
+	    <div align="center"><h1><b><font color="#337ab7">Feature</font></b></h1></div>
+	    <p>PubCaseFinder utilizes disease-phenotype associations extracted from over one million case reports.</p>
+	  </div>
+	  <div class="col-md-3 col-sm-6 ">
+	    <div align="center"><h1><b><font color="#337ab7">Merit</font></b></h1></div>
+	    <p>PubCaseFinder helps you find case reports which are similar to your input phenotypes.</p>
+	  </div>
+	  <div class="col-md-3 col-sm-6 ">
+	    <div align="center"><h1><b><font color="#337ab7">Database</font></b></h1></div>
+	    <p>Phenotype-associations for 4,066 rare diseases are <a href="http://togodb.org/db/disease_phenotype_associations_20170720">HERE</a>.</p>
+	  </div>
+	</div>
+      </div>
+    </div>
+    <!-- END: Description -->
+
+
+    <!-- START: Statistics -->
+    <div id="fh5co-counter">
+      <div class="container">
+	<div class="row animate-box" data-animate-effect="fadeInUp">
+	  <div class="col-md-8 col-md-offset-2 text-left fh5co-heading">
+	    <h2>Statistics</h2>
+	  </div>
+	</div>
+	<div class="row">
+	  <div class="col-md-3 col-sm-6 animate-box" data-animate-effect="fadeInLeft">
+	    <span class="icon">
+	      <i class="ti-download"></i>
+	    </span>
+	    <span class="counter"><span class="js-counter" data-from="0" data-to="1" data-speed="1500" data-refresh-interval="50">1</span>M+</span>
+	    <span class="counter-label">Case Reports</span><br>
+	    <a href="https://www.ncbi.nlm.nih.gov/pubmed/?term=%22case+reports%22%5BPublication+Type%5D+OR+%22case+reports%22%5Bti%5D+OR+%22case+report%22%5Bti%5D">&gt;&gt; PubMed</a>
+	  </div>
+	  <div class="col-md-3 col-sm-6 animate-box" data-animate-effect="fadeInLeft">
+	    <span class="icon">
+	      <i class="ti-face-smile"></i>
+	    </span>
+	    <span class="counter"><span class="js-counter" data-from="0" data-to="4066" data-speed="1500" data-refresh-interval="50">1</span></span>
+	    <span class="counter-label">Rare Diseases</span><br>
+	    <a href="http://togodb.org/db/rare_diseases_20170720">&gt;&gt; List</a>
+	  </div>
+	  <div class="col-md-3 col-sm-6 animate-box" data-animate-effect="fadeInLeft">
+	    <span class="icon">
+	      <i class="ti-briefcase"></i>
+	    </span>
+	    <span class="counter"><span class=" js-counter" data-from="0" data-to="121576" data-speed="1500" data-refresh-interval="50">1</span></span>
+	    <span class="counter-label">Disease-Phenotype Associations</span><br>
+	    <a href="http://togodb.org/db/disease_phenotype_associations_20170720">&gt;&gt; List</a>
+	  </div>
+	  <div class="col-md-3 col-sm-6 animate-box" data-animate-effect="fadeInLeft">
+	    <span class="icon">
+	      <i class="ti-time"></i>
+	    </span>
+	    <span class="counter"><span class="js-counter" data-from="0" data-to="4002" data-speed="1500" data-refresh-interval="50">1</span></span>
+	    <span class="counter-label">Disease-Gene Associations</span><br>
+	    <a href="http://togodb.org/db/disease_gene_associations_20170720">&gt;&gt; List</a>
+	  </div>
+	</div>
+      </div>
+    </div>
+    <!-- END: Statistics -->
+
+
+    <!-- START: Original Data Sources -->
+    <div id="fh5co-started">
+      <div class="container">
+	<div class="row animate-box">
+	  <div class="col-md-8 col-md-offset-2 text-center fh5co-heading">
+	    <h2>Original Data Sources</h2>
+	    <ol>
+	      <li><p align="left">Orphadata: Free access data from Orphanet. © INSERM 1997. Available on http://www.orphadata.org. Data version (XML data version).</p></li>
+	      <li><p align="left">Sebastian Köhler, Sandra C Doelken, Christopher J. Mungall, Sebastian Bauer, Helen V. Firth, et al. The Human Phenotype Ontology project: linking molecular biology and disease through phenotype data Nucl. Acids Res. (1 January 2014) 42 (D1): D966-D974 doi:10.1093/nar/gkt1026</p></li>
+	      <li><p align="left">Wei CH et. al., PubTator: a Web-based text mining tool for assisting Biocuration, Nucleic acids research, 2013, 41 (W1): W518-W522. doi: 10.1093/nar/gkt44 </p></li>
+	    </ol>
+	  </div>
+	</div>
+      </div>
+    </div>
+    <!-- END: Original Data Sources -->
+
+
+    <!-- START: Lincense and Contact -->
+    <footer id="fh5co-footer" role="contentinfo">
+      <div class="container">
+	<div class="row copyright">
+	  <div class="col-md-12 text-center">
+	    <p>
+	      <small class="block"><a href="https://pubcasefinder.dbcls.jp/termsofservice_en">Terms of Service</a></small>
+	      <small class="block">PubCaseFinder is provided by <a href="http://dbcls.rois.ac.jp">Database Center for Life Science</a> and is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/2.1/jp/deed.en">Creative Commons Attribution 2.1 Japan License</a>.</small> 
+	      <small class="block">Comments & suggestions are welcome. Please contact to : support AT dbcls DOT rois DOT ac DOT jp</small>
+	      <br>
+	      <a href="http://dbcls.rois.ac.jp"><img src="/static/images/DBCLS_logo_en_2014.png" width="20%" class="pull-center" /></a>
+	    </p>
+	  </div>
+	</div>
+      </div>
+    </footer>
+    <!-- END: Lincense and Contact -->
+
+
+    <!-- START: Import JavaScript -->	
+    <!-- jQuery -->
+    <script src="/static/js/jquery.min.js"></script>
+    <!-- jQuery Easing -->
+    <script src="/static/js/jquery.easing.1.3.js"></script>
+    <!-- Bootstrap -->
+    <script src="/static/js/bootstrap.min.js"></script>
+    <!-- Waypoints -->
+    <script src="/static/js/jquery.waypoints.min.js"></script>
+    <!-- countTo -->
+    <script src="/static/js/jquery.countTo.js"></script>
+    <!-- Magnific Popup -->
+    <script src="/static/js/jquery.magnific-popup.min.js"></script>
+    <script src="/static/js/magnific-popup-options.js"></script>
+    <!-- Stellar -->
+    <script src="/static/js/jquery.stellar.min.js"></script>
+    <!-- Main -->
+    <script src="/static/js/main.js"></script>
+    <!-- END: Import JavaScript -->	
+
+
+    <!-- START: jquery-tokeninput -->
+    <script type="text/javascript" src="/static/js/jquery.tokeninput.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function() {
+        $("#ex_phenotypes").click(function (){
+          $("#tokeninput_hpo").tokenInput("add", {id: "HP:0001009", name: "HP:0001009 Telangiectasia"});
+          $("#tokeninput_hpo").tokenInput("add", {id: "HP:0001249", name: "HP:0001249 Intellectual disability"});
+          $("#tokeninput_hpo").tokenInput("add", {id: "HP:0001250", name: "HP:0001250 Seizures"});
+          $("#tokeninput_hpo").tokenInput("add", {id: "HP:0002072", name: "HP:0002072 Headache"});
+          $("#tokeninput_hpo").tokenInput("add", {id: "HP:0002315", name: "HP:0002315 Chorea"});
+          return false;
+        });
+        $("#tokeninput_hpo").tokenInput("https://pubcasefinder.dbcls.jp/tokeninput_hpo", {
+          theme: "facebook"
+        });
+        $("#tokeninput_hpo_clear").click(function (){
+          $("#tokeninput_hpo").tokenInput("clear");
+          return false;
+        });
+      });
+    </script>
+    <!-- END: jquery-tokeninput -->
+
+
+{% endblock %}
+

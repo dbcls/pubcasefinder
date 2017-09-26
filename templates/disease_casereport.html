@@ -1,0 +1,320 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <!-- START: main contents -->
+    <div id="fh5co-project">
+      <div class="container">
+
+
+      <h2><b><a target="_blank" href="http://www.orpha.net/consor/cgi-bin/OC_Exp.php?Expert={{ dict_onto_id_term_ordo['onto_id_nonprefix_ordo'] }}">{{ dict_onto_id_term_ordo['onto_term_ordo'] }}</a></b></h2>
+      <div style="border-style: solid ; border-width: 1px;padding: 20px 20px 20px 20px;">
+        <h4>Disease definition</h4>
+        {{ str_disease_definition }}
+      </div>
+      <br><br>
+
+
+
+
+      <!-- START: Nav-tabs -->
+      <div class="panel with-nav-tabs panel-default">
+        <div class="panel-heading">
+          <ul class="nav nav-tabs">
+            <li class="active"><a href="#tab1default" data-toggle="tab">Case Reports ( {{ total_hit }} )</a></li>
+            <li><a href="#tab2default" data-toggle="tab">Phenotypes</a></li>
+            <li><a href="#tab3default" data-toggle="tab">Causative Genes</a></li>
+          </ul>
+        </div>
+        <div class="panel-body">
+          <div class="tab-content">
+            <div class="tab-pane fade in active" id="tab1default">
+
+
+	      <!-- START: FORM -->
+	      <form name="disease_casereport" action="/disease_casereport" method="post" class="form-group">
+
+
+		<br>
+		<h2>Query phenotype(s)</h2>
+		<textarea class="form-control" rows="1" id="tokeninput_hpo" name="str_phenotypes"></textarea>
+		<br>
+		<h2>Narrow down the case reports</h2>
+		<textarea class="form-control" rows="1" id="tokeninput_filter_casereport" name="str_genes"></textarea>
+		<br>
+		<input type="hidden" name="str_disease" value="{{ str_disease }}">
+		<button type="submit" class="btn btn-primary">Re-search</button>		    
+		<button id="tokeninput_hpo_filter_clear" class="btn btn-default">Clear</button>
+
+		<table width="100%" height="120">
+		  <tr>
+		    <!-- START: Show total number -->
+		    <td align="center" valign="top">
+		      <p><br></p>
+		      <p><font size="4" color="black">Total: <b>{{ total_hit }}</b></font></p>
+		    </td>
+		    <!-- END: Show total number -->
+		    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+		    <!-- START: Pagination upper_part -->
+		    <td align="middle" valign="middle">
+		      <ul class="pagination">
+		        {% if pagination.has_prev %}
+			<li align="center"><a href="{{ url_for_disease_casereport_page(str_disease, str_phenotypes, str_genes, pagination.page - 1, cs) }}">&laquo;</a></li>
+		        {% endif %}
+		        {%- for page in pagination.iter_pages() %}
+		          {% if page %}
+		            {% if page != pagination.page %}
+		            <li align="center"><a href="{{ url_for_disease_casereport_page(str_disease, str_phenotypes, str_genes, page, cs) }}">{{ page }}</a></li>
+		            {% else %}
+		            <li align="center" class="active"><a href="#">{{ page }}</a></li>
+		            {% endif %}
+		          {% else %}
+		          <li align="center"><span style="border : 0px">…</span></l>
+                          {% endif %}
+		        {%- endfor %}
+                        {% if pagination.has_next %}
+                        <li align="center"><a href="{{ url_for_disease_casereport_page(str_disease, str_phenotypes, str_genes, pagination.page + 1, cs) }}">&raquo;</a></li>
+		        {% endif %}
+                      </ul>
+                    </td>
+                    <!-- END: Pagination upper_part -->
+	            <!-- START: Show selector for "per page" -->
+                    <td align="right" valign="top">
+		      <p><br></p>
+		      <!-- http://qiita.com/act823/items/3a203f1f96e7fe52f69d -->
+		      <select id="changesize_selector" name="changesize_selector" onchange="submit(this.form)">
+			{% if cs == "20" %}
+			<option id="selector_20" value="20" selected>20</option>
+			<option id="selector_40" value="40">40</option>
+			<option id="selector_60" value="60">60</option>
+			<option id="selector_100" value="100">100</option>
+			{% endif %}
+			{% if cs == "40" %}
+			<option id="selector_20" value="20">20</option>
+			<option id="selector_40" value="40" selected>40</option>
+			<option id="selector_60" value="60">60</option>
+			<option id="selector_100" value="100">100</option>
+			{% endif %}
+			{% if cs == "60" %}
+			<option id="selector_20" value="20">20</option>
+			<option id="selector_40" value="40">40</option>
+			<option id="selector_60" value="60" selected>60</option>
+			<option id="selector_100" value="100">100</option>
+			{% endif %}
+			{% if cs == "100" %}
+			<option id="selector_20" value="20">20</option>
+			<option id="selector_40" value="40">40</option>
+			<option id="selector_60" value="20">60</option>
+			<option id="selector_100" value="100" selected>100</option>
+			{% endif %}
+		      </select>
+		      (per page)
+		    </td>
+		    <!-- END: Show selector for "per page" -->
+                  </tr>
+                </table>
+              </form>
+              <!-- END: FORM -->
+
+              <!-- START: Show result table -->
+	      <div clas="row">
+		<div class="col-sm-12">
+		  <div align="right">
+		    <span class="label label-primary"><font size="3"><b>Matched Phenotype</b></font></span>&nbsp;
+		    <span class="label label-default"><font size="3"><b>Gene</b></font></span>&nbsp;
+		    <span class="label label-danger"><font size="3"><b>Mutation</b></font></span>&nbsp;
+		    <span class="label label-success"><font size="3"><b>MeSH</b></font></span><br>
+		  </div>
+		  <table class="table table-striped">
+		    <thead>
+		      <tr>
+			<!-- th class="text-left">Rank<br>(Score)</th -->
+			<th class="text-left">Similarity</th>
+			<th class="text-left">PMID<br>(PMCID)</th>
+			<!--
+			    <th class="text-left">Year<br>Title<br>Citation Information<br>Matched Phenotype(s)<br>Gene(s)<br>Mutation(s)<br>MeSH</th>
+			<th class="text-left">Sex</th>
+			<th class="text-left">Age</th>
+			-->
+		      </tr>
+		    </thead>
+		    <tbody>
+		      <!-- http://tnakamura.hatenablog.com/entry/20110608/jinja2_for_loop_index -->
+                      {% for dict_similar_casereport in list_dict_similar_casereport %}
+		      <tr>
+			<!-- Rank -->
+			<!-- td rowspan="5">{{ dict_similar_casereport['rank'] }}<br>({{ dict_similar_casereport['match_score']|round(2) }})</td -->
+			<td rowspan="5">{{ (dict_similar_casereport['match_score']*100)|round(2) }}%</td>
+			<!-- PMID -->
+			<td rowspan="5">
+			  <a href="https://www.ncbi.nlm.nih.gov/pubmed/{{ dict_similar_casereport['pmid'] }}" target="_blank">{{ dict_similar_casereport['pmid'] }}</a><br>
+			  {% if dict_similar_casereport['PMCID'] != 0 %}
+		          <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC{{ dict_similar_casereport['PMCID'] }}" target="_blank">({{ dict_similar_casereport['PMCID'] }})</a><br>
+			  {% endif %}
+			</td>
+			<!-- Title -->
+			<td>
+			  <b>{{ dict_similar_casereport['title'] }}</b><br>
+			  {{ dict_similar_casereport['authors'] }}.<br>
+			  {{ dict_similar_casereport['so'] }}
+			</td>
+		      </tr>
+		      <tr>
+			<!-- Matched Phenotypes -->
+			<td>
+			  {% set prev_id = "" %}
+			  {% for dict_casereport_bestmatch_onto_id_term_hp in dict_similar_casereport['list_dict_casereport_bestmatch_onto_id_term_hp'] %}
+		            {% if prev_id != dict_casereport_bestmatch_onto_id_term_hp['onto_id_hp'] %}
+		            <span class="label label-primary"><font size="3"><a target="_blank" style="color:white;" href="{{ url_for_show_phenotype_context_page( str_disease, dict_casereport_bestmatch_onto_id_term_hp['onto_id_hp'], '1', '20' ) }}">{{ dict_casereport_bestmatch_onto_id_term_hp['onto_term_hp'] }}</a></font></span>
+		            {% set prev_id = dict_casereport_bestmatch_onto_id_term_hp['onto_id_hp'] %}
+		            {% endif %}
+			  {% endfor %}
+			</td>
+		      </tr>
+		      <tr>
+			<!-- Genes -->
+			<td>
+			  {% set prev_id = "" %}
+			  {% for dict_entrezid_symbol_synonym in dict_similar_casereport['list_dict_entrezid_symbol_synonym'] %}
+		            {% if prev_id != dict_entrezid_symbol_synonym['entrezid'] %}
+		            <a href="https://www.ncbi.nlm.nih.gov/clinvar/?term={{ dict_entrezid_symbol_synonym['symbol'] }}%5Bgene%5D" target="_blank"><span class="label label-default"><font size="3">{{ dict_entrezid_symbol_synonym['symbol'] }}</font></span></a>
+		            {% set prev_id = dict_entrezid_symbol_synonym['entrezid'] %}
+			    {% endif %}
+			  {% endfor %}
+			</td>
+		      </tr>
+		      <tr>
+			<!-- Mutations -->
+			<td>
+			  {% set prev_id = "" %}
+			  {% for dict_id_component_mention in dict_similar_casereport['list_dict_id_component_mention'] %}
+		            {% if prev_id != dict_id_component_mention['id'] %}
+		          <a href="https://www.ncbi.nlm.nih.gov/clinvar/?term={{ dict_id_component_mention['mention'] }}" target="_blank"><span class="label label-danger"><font size="3">{{ dict_id_component_mention['component'] }}</font></span></a>
+		            {% set prev_id = dict_id_component_mention['id'] %}
+			    {% endif %}
+			  {% endfor %}
+			</td>
+		      </tr>
+		      <tr>
+			<!-- MeSH -->
+			<td>
+			  {% set prev_id = "" %}
+			  {% for dict_sdui_str_mesh in dict_similar_casereport['list_dict_sdui_str_mesh'] %}
+		            {% if prev_id != dict_sdui_str_mesh['sdui'] %}
+		            <a href="https://www.ncbi.nlm.nih.gov/mesh/{{ dict_sdui_str_mesh['sdui'] }}" target="_blank"><span class="label label-success"><font size="3">{{ dict_sdui_str_mesh['str'] }}</font></span></a>
+		            {% set prev_id = dict_sdui_str_mesh['sdui'] %}
+			    {% endif %}
+			  {% endfor %}
+			</td>
+		      </tr>
+		      {% endfor %}
+		    </tbody>
+		  </table>
+		</div><!--/.col-sm-12-->
+	      </div><!--/row-->
+              <!-- END: Show result table -->
+
+	      <!-- START: Pagination lower_part -->
+	      <table width="100%" height="120">
+	        <tr>
+	          <td align="middle" valign="middle">
+	          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	            <ul class="pagination">
+		    {% if pagination.has_prev %}
+		      <li align="center"><a href="{{ url_for_disease_casereport_page(str_disease, str_phenotypes, str_genes, pagination.page - 1, cs) }}">&laquo;</a></li>
+		    {% endif %}
+		    {%- for page in pagination.iter_pages() %}
+		      {% if page %}
+		        {% if page != pagination.page %}
+		          <li align="center"><a href="{{ url_for_disease_casereport_page(str_disease, str_phenotypes, str_genes, page, cs) }}">{{ page }}</a></li>
+		        {% else %}
+		          <li align="center" class="active"><a href="#">{{ page }}</a></li>
+		        {% endif %}
+		      {% else %}
+		        <li align="center"><span style="border : 0px">…</span></l>
+                      {% endif %}
+		    {%- endfor %}
+                    {% if pagination.has_next %}
+                      <li align="center"><a href="{{ url_for_disease_casereport_page(str_disease, str_phenotypes, str_genes, pagination.page + 1, cs) }}">&raquo;</a></li>
+	            {% endif %}
+                    </ul>
+                  </td>
+                </tr>
+              </table>
+              <!-- END: Pagination lower_part -->
+
+
+              </div>
+              <div class="tab-pane fade" id="tab2default">Under Development</div>
+              <div class="tab-pane fade" id="tab3default">Under Development</div>
+            </div>
+          </div>
+        </div>
+        <!-- END: Nav-tabs -->
+
+
+        <!-- START: Lincense and Contact -->
+        <br><br>
+	<div class="container">
+	  <div class="row copyright">
+	    <div class="col-md-12 text-center">
+	      <p>
+		<small class="block"><a href="https://pubcasefinder.dbcls.jp/termsofservice_en">Terms of Service</a></small><br>
+		<small class="block">PubCaseFinder is provided by <a href="http://dbcls.rois.ac.jp">Database Center for Life Science</a> and is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/2.1/jp/deed.en">Creative Commons Attribution 2.1 Japan License</a>.</small><br>
+		<small class="block">Comments & suggestions are welcome. Please contact to : support AT dbcls DOT rois DOT ac DOT jp</small><br>
+		<br>
+		<a href="http://dbcls.rois.ac.jp"><img src="/static/images/DBCLS_logo_en_2014.png" width="20%" class="pull-center" /></a>
+	      </p>
+	    </div>
+	  </div>
+	</div>
+        <!-- END: Lincense and Contact -->
+      </div>
+    </div>
+    <!-- END: main contents -->
+
+
+    <!-- START: Import JavaScript -->	
+    <!-- jQuery -->
+    <script src="/static/js/jquery.min.js"></script>
+    <!-- jQuery Easing -->
+    <script src="/static/js/jquery.easing.1.3.js"></script>
+    <!-- Bootstrap -->
+    <script src="/static/js/bootstrap.min.js"></script>
+    <!-- Waypoints -->
+    <script src="/static/js/jquery.waypoints.min.js"></script>
+    <!-- countTo -->
+    <script src="/static/js/jquery.countTo.js"></script>
+    <!-- Magnific Popup -->
+    <script src="/static/js/jquery.magnific-popup.min.js"></script>
+    <script src="/static/js/magnific-popup-options.js"></script>
+    <!-- Stellar -->
+    <script src="/static/js/jquery.stellar.min.js"></script>
+    <!-- Main -->
+    <script src="/static/js/main.js"></script>
+    <!-- END: Import JavaScript -->	
+
+
+    <!-- START: jquery-tokeninput -->
+    <script type="text/javascript" src="/static/js/jquery.tokeninput.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function() {
+        $("#tokeninput_hpo").tokenInput("https://pubcasefinder.dbcls.jp/tokeninput_hpo", {
+          theme: "facebook",
+          prePopulate: {{ json_phenotypes|safe }}
+        });
+        $("#tokeninput_filter_casereport").tokenInput("https://pubcasefinder.dbcls.jp/tokeninput_filter_casereport", {
+          theme: "facebook",
+          prePopulate: {{ json_genes|safe }}
+        });
+        $("#tokeninput_hpo_filter_clear").click(function (){
+          $("#tokeninput_hpo").tokenInput("clear");
+          $("#tokeninput_filter_casereport").tokenInput("clear");
+          return false;
+        });
+      });
+    </script>
+    <!-- END: jquery-tokeninput -->
+
+
+{% endblock %}
+

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+
+<html>
+
+  <!-- STARRT: head -->
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>PubCaseFinder</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="PubCaseFinder is a diagnosis assistant tool for rare diseases based on phenotypic similarity" />
+    <meta name="keywords" content="PubCaseFinder PubCases Rare Disease Phenotype Gene Match Differential Diagnosis Assist" />
+    <meta name="author" content="Database Center for Life Science" />
+
+    <!-- Facebook and Twitter integration -->
+    <meta property="og:title" content=""/>
+    <meta property="og:image" content=""/>
+    <meta property="og:url" content=""/>
+    <meta property="og:site_name" content=""/>
+    <meta property="og:description" content=""/>
+    <meta name="twitter:title" content="" />
+    <meta name="twitter:image" content="" />
+    <meta name="twitter:url" content="" />
+    <meta name="twitter:card" content="" />
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+	
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="/static/css/animate.css">
+    <!-- Icomoon Icon Fonts-->
+    <link rel="stylesheet" href="/static/css/icomoon.css">
+    <!-- Bootstrap  -->
+    <link rel="stylesheet" href="/static/css/bootstrap.css">
+    
+    <!-- Magnific Popup -->
+    <link rel="stylesheet" href="/static/css/magnific-popup.css">
+
+    <!-- Theme style  -->
+    <link rel="stylesheet" href="/static/css/style.css">
+    
+    <!-- Modernizr JS -->
+    <script src="/static/js/modernizr-2.6.2.min.js"></script>
+    <!-- FOR IE9 below -->
+    <!--[if lt IE 9]>
+    <script src="/static/js/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- jquery-tokeninput -->
+    <link rel="stylesheet" href="/static/css/token-input-facebook.css" type="text/css" />
+
+  </head>
+  <!-- END: head -->
+
+
+  <!-- STARRT: body -->
+  <body>
+
+    <!-- START: navigation -->
+    <div class="fh5co-loader"></div>
+    <div id="page">
+      <nav class="fh5co-nav" role="navigation">
+	<div class="container">
+	  <div class="row">
+	    <div class="col-xs-2 text-left">
+	      <div id="fh5co-logo"><a href="/"><font size="6">PubCaseFinder</font></a></div>
+	    </div>
+	    <div class="col-xs-10 text-right menu-1">
+	      <ul>
+		<li><font color="white" size="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;( Last Index Update: July. 20. 2017 )&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><li>
+		<li class="active"><a href="/">Home</a></li>
+		<li><a href="/static/pdf/Summary_PubCaseFinder.pdf">About</a></li>
+		<!--
+		<li><a href="/">Search</a></li>
+		<li><a href="disease.html">Disease</a></li>
+		<li><a href="ftp.dbcls.jp">Download</a></li>
+		<li><a href="portal.html">Portal</a></li>
+		-->
+	      </ul>
+	    </div>
+	  </div>
+	</div>
+      </nav>
+    </div>
+    <!-- END: navigation -->
+
+    <!-- START: navigation background -->
+    <header id="fh5co-header" class="fh5co-cover" role="banner" style="background-image:url(images/img_bg_1.jpg);" data-stellar-background-ratio="0.5">
+      <div class="overlay"></div>
+    </header>
+    <!-- END: navigation background -->
+
+
+    {% block content %}{% endblock %}
+
+
+    <!-- START: gototop -->
+    <div class="gototop js-top">
+      <a href="#" class="js-gotop"><i class="icon-arrow-up"></i></a>
+    </div>
+    <!-- END: gototop -->
+
+  </body>
+  <!-- END: body -->
+
+</html>
+
