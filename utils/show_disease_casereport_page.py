@@ -221,7 +221,10 @@ def search_similar_casereport(str_disease, str_phenotypes, str_genes):
             max_ic_casereport_onto_id_hp = ""
             # 文献の症状セット
             for casereport_onto_id_hp in list_casereport_onto_id_hp:
-                ic = dict_common_root_hp_ic[patient_onto_id_hp][casereport_onto_id_hp]
+                # BUGFIX: 2017/10/07
+                ## keyが空の場合あり
+                if patient_onto_id_hp in dict_common_root_hp_ic:
+                    ic = dict_common_root_hp_ic[patient_onto_id_hp][casereport_onto_id_hp]
                 if ic > max_ic:
                     max_ic = ic
                     max_ic_casereport_onto_id_hp = casereport_onto_id_hp
