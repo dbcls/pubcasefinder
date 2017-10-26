@@ -1,0 +1,249 @@
+{% extends "base.html" %}
+{% block content %}
+
+		
+    <div class="fh5co-loader"></div>
+	
+
+    <!-- div id="fh5co-team" -->
+    <div id="fh5co-testimonial">
+      <div class="container">
+        <div class="row animate-box row-pb-md">
+
+	  <!-- START: Terms of Service for PubCaseFinder -->
+          <div align="center"><h1>PubCaseFinder API</h1></div>
+	  <!-- <div align="center"><p><a href="/termsofservice_ja">Japanese version</a> of this document is also available.</p></div> -->
+	  <br><br>
+	  <!-- END: Terms of Service for PubCaseFinder -->
+
+	  <!-- START: ACCEPTANCE OF TERMS OF SERVICE -->
+          <div class="col-md-8 col-md-offset-2 text-left fh5co-heading">
+            <h3>OVERVIEW</h3>
+            <p>PubCaseFinder is a diagnostic assistance system that enables clinicians to match structured phenotype profiles - and associated genes - against previously published case reports and receive a ranked list of possible disease diagnosis.</p>
+	    <div style="border-style: solid ; border-width: 1px;padding: 20px 20px 20px 20px;">
+	      HTTP POST to remote server: <br><mark>https://pubcasefinder.dbcls.jp/mme/match</mark>
+	    </div>
+	    <br>
+          </div>
+	  <!-- END: ACCEPTANCE OF TERMS OF SERVICE -->
+
+	  <!-- START: MODIFICATIONS TO TERMS OF SERVICE -->
+          <div class="col-md-8 col-md-offset-2 text-left fh5co-heading">
+            <h3>VERSIONING</h3>
+            <p>See details below:<br>
+	    <a href="https://github.com/ga4gh/mme-apis/blob/master/search-api.md">https://github.com/ga4gh/mme-apis/blob/master/search-api.md</a>
+	    </p>
+	    <br>
+          </div>
+	  <!-- END: MODIFICATIONS TO TERMS OF SERVICE -->
+
+	  <!-- START: COPYRIGHT -->
+          <div class="col-md-8 col-md-offset-2 text-left fh5co-heading">
+            <h3>SEARCH REQUEST</h3>
+            <p>HTTP POST request to <mark>https://pubcasefinder.dbcls.jp/mme/match</mark>, with an <mark>application/json</mark> body with the following format:<br>
+	    <a href="https://github.com/ga4gh/mme-apis/blob/master/search-api.md">https://github.com/ga4gh/mme-apis/blob/master/search-api.md</a>
+	    </p>
+	    <br>
+          </div>
+	  <!-- END: COPYRIGHT -->
+
+	  <!-- START: DISCLAIMER OF WARRANTIES -->
+          <div class="col-md-8 col-md-offset-2 text-left fh5co-heading">
+            <h3>SEARCH RESULTS RESPONSE</h3>
+            <p>A synchronous <mark>application/json</mark> response, of the following form:</p>
+
+
+	    <ul><li><h4>Example:</h4></li></ul>
+	    <pre>
+<code>
+{
+"results": [
+    {
+      "patient": {
+        "contact": {
+          "href": "https://pubcasefinder.dbcls.jp/disease_casereport/disease:ORDO:2573/phenotype:HP:0001009,HP:0001249,HP:0001250,HP:0002072,HP:0002315/gene:/page:1/size:20", 
+          "name": "PubCaseFinder"
+        }, 
+        "features": [
+          {
+            "id": "HP:0002072"
+          }, 
+          {
+            "id": "HP:0001249"
+          }, 
+          {
+            "id": "HP:0002076"
+          }, 
+          {
+            "id": "HP:0001250"
+          }, 
+          {
+            "id": "HP:0001009"
+          }
+        ], 
+        "genomicFeatures": [
+          {
+            "gene": {
+              "id": "ENSG00000107796", 
+              "label": "ACTA2"
+            }
+          }
+        ], 
+        "id": "ORDO:2573", 
+        "label": "Moyamoya disease"
+      }, 
+      "score": {
+        "patient": 1.0
+      }
+    },
+    …
+  ]
+}</code>
+	    </pre>
+
+	    <br>
+	    <ul>
+	      <li><h4>Results:</h4></li>
+	      <ul>
+		<li>Is a list of matches, where each match has a <b>patient</b> object which means a candidate disease diagnosis, and a <b>score</b> object with information about how well the <b>candidate disease diagnosis</b> object matched.</li>
+	      </ul>
+	    </ul>
+
+	    <br>
+	    <ul>
+	      <li><h4>Patient:</h4></li>
+	      <ul>
+		<li>A <b>patient</b> object means a candidate disease diagnosis.</li>
+	      </ul>
+	    </ul>
+
+
+	    <br>
+	    <ul>
+	      <li><h4>Contact:</h4></li>
+	      <ul>
+		<li>The contact information includes the URL for PubCaseFinder that shows a ranked list of previously published case reports</li>
+		<ul>
+		  <li>href : The URL for PubCaseFinder</li>
+		  <li>name : “PubCaseFinder” </li>
+		</ul>
+	      </ul>
+	    </ul>
+
+
+	    <br>
+	    <ul>
+	      <li><h4>Features:</h4></li>
+	      <ul>
+		<li>Is a <b>list of features</b> described by:</li>
+		<ul>
+		  <li>id: an HPO term identifier of the form: <b>HP:#######</b></li>
+		  <!-- li>label: a human readable description of the phenotypic feature, such as the HPO term name</li -->
+		</ul>
+	      </ul>
+	    </ul>
+
+
+	    <br>
+	    <ul>
+	      <li><h4>GenomicFeatures:</h4></li>
+	      <ul>
+		<li>Is a <b>list of candidate causal genes</b> described by:</li>
+		<ul>
+		  <li>gene:</li>
+		  <ul>
+		    <li>id: Ensembl gene ID</li>
+		    <li>label: a human-readable description of the effect.</li>
+		  </ul>
+		</ul>
+	      </ul>
+	    </ul>
+
+
+	    <br>
+	    <ul>
+	      <li><h4>ID:</h4></li>
+	      <ul>
+		<li>An identifier for a candidate disease diagnosis in Orphanet.</li>
+	      </ul>
+	    </ul>
+
+
+	    <br>
+	    <ul>
+	      <li><h4>Label:</h4></li>
+	      <ul>
+		<li>A name of a candidate disease diagnosis in Orphanet.</li>
+	      </ul>
+	    </ul>
+
+	    <br>
+	    <ul>
+	      <li><h4>Score:</h4></li>
+	      <ul>
+		<li>Information about how well this result of a candidate disease diagnosis matched the query patient.</li>
+		<li>Currently, this has a single field, <b>patient</b>, with a numerical value corresponding to the overall score of the match. This score must be in the range [0, 1], where 0.0 is a poor match and 1.0 is a perfect match.</li>
+	      </ul>
+	    </ul>
+
+          </div>
+	  <!-- END: DISCLAIMER OF WARRANTIES -->
+
+        </div>
+      </div>
+    </div>
+
+
+    <!-- START: Lincense and Contact -->
+    <footer id="fh5co-footer" role="contentinfo">
+      <div class="container">
+        <div class="row copyright">
+          <div class="col-md-12 text-center">
+            <p>
+              <small class="block"><a href="/termsofservice_en">Terms of Service</a></small>
+              <small class="block">PubCaseFinder is provided by <a href="http://dbcls.rois.ac.jp">Database Center for Life Science</a> and is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/2.1/jp/deed.en">\
+Creative Commons Attribution 2.1 Japan License</a>.</small>
+              <small class="block">Comments & suggestions are welcome. Please contact to : support AT dbcls DOT rois DOT ac DOT jp</small>
+              <br>
+              <a href="http://dbcls.rois.ac.jp"><img src="/static/images/DBCLS_logo_en_2014.png" width="20%" class="pull-center" /></a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <!-- END: Lincense and Contact -->
+
+
+    <div class="gototop js-top">
+      <a href="#" class="js-gotop"><i class="icon-arrow-up"></i></a>
+    </div>
+
+
+    <!-- START: Import JavaScript -->
+    <!-- jQuery -->
+    <script src="/static/js/jquery.min.js"></script>
+    <!-- jQuery Easing -->
+    <script src="/static/js/jquery.easing.1.3.js"></script>
+    <!-- Bootstrap -->
+    <script src="/static/js/bootstrap.min.js"></script>
+    <!-- Waypoints -->
+    <script src="/static/js/jquery.waypoints.min.js"></script>
+    <!-- countTo -->
+    <script src="/static/js/jquery.countTo.js"></script>
+    <!-- Magnific Popup -->
+    <script src="/static/js/jquery.magnific-popup.min.js"></script>
+    <script src="/static/js/magnific-popup-options.js"></script>
+    <!-- Stellar -->
+    <script src="/static/js/jquery.stellar.min.js"></script>
+    <!-- Main -->
+    <script src="/static/js/main.js"></script>
+    <!-- END: Import JavaScript -->
+
+	
+{% endblock %}
+
+
+
+
+
+
