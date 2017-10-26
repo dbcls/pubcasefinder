@@ -87,6 +87,14 @@ def index():
 
 
 #####
+# PubCaseFinder API in English
+## GET: 
+@app.route('/pubcasefinder_api_en')
+def pubcasefinder_api_en():
+    return render_template('pubcasefinder_api_en.html')
+
+
+#####
 # terms of service in English
 ## GET: 
 @app.route('/termsofservice_en')
@@ -303,7 +311,7 @@ def search_POST():
 @app.route('/disease_casereport/disease:<string:disease>/phenotype:<string:phenotypes>/gene:<string:genes>/page:<int:page>/size:<string:size>', methods=['GET'])
 def REST_API_disease_casereport_phenotypes_genes(disease, phenotypes, genes, page, size):
     if request.method == 'GET' or request.method == 'POST':
-        list_dict_phenotype,list_dict_gene,list_dict_similar_casereport_pagination, dict_onto_id_term_ordo, pagination, total_hit, disease_definition = show_disease_casereport_page(disease, phenotypes, genes, page, size)
+        list_dict_phenotype,list_dict_gene,list_dict_similar_casereport_pagination, dict_onto_id_term_ordo, pagination, total_hit, disease_definition, list_dict_Disease_phenotype_Orphanet, list_dict_Disease_phenotype_CaseReport, list_dict_DiseaseGene_gene = show_disease_casereport_page(disease, phenotypes, genes, page, size)
         return render_template('disease_casereport.html',
                                str_disease=disease,
                                str_phenotypes=phenotypes,
@@ -315,7 +323,10 @@ def REST_API_disease_casereport_phenotypes_genes(disease, phenotypes, genes, pag
                                pagination=pagination,
                                total_hit=total_hit,
                                cs=size,
-                               str_disease_definition=disease_definition
+                               str_disease_definition=disease_definition,
+                               list_dict_Disease_phenotype_Orphanet=list_dict_Disease_phenotype_Orphanet,
+                               list_dict_Disease_phenotype_CaseReport=list_dict_Disease_phenotype_CaseReport,
+                               list_dict_DiseaseGene_gene=list_dict_DiseaseGene_gene
                            )
     else:
         return render_template('index.html')
@@ -328,7 +339,7 @@ def REST_API_disease_casereport_phenotypes_genes(disease, phenotypes, genes, pag
 def REST_API_disease_casereport_phenotypes(disease, phenotypes, page, size):
     genes = ""
     if request.method == 'GET':
-        list_dict_phenotype,list_dict_gene,list_dict_similar_casereport_pagination, dict_onto_id_term_ordo, pagination, total_hit, disease_definition = show_disease_casereport_page(disease, phenotypes, genes, page, size)
+        list_dict_phenotype,list_dict_gene,list_dict_similar_casereport_pagination, dict_onto_id_term_ordo, pagination, total_hit, disease_definition, list_dict_Disease_phenotype_Orphanet, list_dict_Disease_phenotype_CaseReport, list_dict_DiseaseGene_gene = show_disease_casereport_page(disease, phenotypes, genes, page, size)
         return render_template('disease_casereport.html',
                                str_disease=disease,
                                str_phenotypes=phenotypes, 
@@ -340,7 +351,10 @@ def REST_API_disease_casereport_phenotypes(disease, phenotypes, page, size):
                                pagination=pagination,
                                total_hit=total_hit,
                                cs=size,
-                               str_disease_definition=disease_definition
+                               str_disease_definition=disease_definition,
+                               list_dict_Disease_phenotype_Orphanet=list_dict_Disease_phenotype_Orphanet,
+                               list_dict_Disease_phenotype_CaseReport=list_dict_Disease_phenotype_CaseReport,
+                               list_dict_DiseaseGene_gene=list_dict_DiseaseGene_gene
         )
     else:
         return render_template('index.html')
@@ -353,7 +367,7 @@ def REST_API_disease_casereport_phenotypes(disease, phenotypes, page, size):
 def REST_API_disease_casereport_genes(disease, genes, page, size):
     phenotypes = ""
     if request.method == 'GET':
-        list_dict_phenotype,list_dict_gene,list_dict_similar_casereport_pagination, dict_onto_id_term_ordo, pagination, total_hit, disease_definition = show_disease_casereport_page(disease, phenotypes, genes, page, size)
+        list_dict_phenotype,list_dict_gene,list_dict_similar_casereport_pagination, dict_onto_id_term_ordo, pagination, total_hit, disease_definition, list_dict_Disease_phenotype_Orphanet, list_dict_Disease_phenotype_CaseReport, list_dict_DiseaseGene_gene = show_disease_casereport_page(disease, phenotypes, genes, page, size)
         return render_template('disease_casereport.html',
                                str_disease=disease,
                                str_phenotypes=phenotypes, 
@@ -365,7 +379,10 @@ def REST_API_disease_casereport_genes(disease, genes, page, size):
                                pagination=pagination,
                                total_hit=total_hit,
                                cs=size,
-                               str_disease_definition=disease_definition
+                               str_disease_definition=disease_definition,
+                               list_dict_Disease_phenotype_Orphanet=list_dict_Disease_phenotype_Orphanet,
+                               list_dict_Disease_phenotype_CaseReport=list_dict_Disease_phenotype_CaseReport,
+                               list_dict_DiseaseGene_gene=list_dict_DiseaseGene_gene
         )
     else:
         return render_template('index.html')
@@ -379,7 +396,7 @@ def REST_API_disease_casereport_none(disease, page, size):
     phenotypes = ""
     genes = ""
     if request.method == 'GET':
-        list_dict_phenotype,list_dict_gene,list_dict_similar_casereport_pagination, dict_onto_id_term_ordo, pagination, total_hit, disease_definition = show_disease_casereport_page(disease, phenotypes, genes, page, size)
+        list_dict_phenotype,list_dict_gene,list_dict_similar_casereport_pagination, dict_onto_id_term_ordo, pagination, total_hit, disease_definition, list_dict_Disease_phenotype_Orphanet, list_dict_Disease_phenotype_CaseReport, list_dict_DiseaseGene_gene = show_disease_casereport_page(disease, phenotypes, genes, page, size)
         return render_template('disease_casereport.html',
                                str_disease=disease,
                                str_phenotypes=phenotypes,
@@ -391,7 +408,10 @@ def REST_API_disease_casereport_none(disease, page, size):
                                pagination=pagination,
                                total_hit=total_hit,
                                cs=size,
-                               str_disease_definition=disease_definition
+                               str_disease_definition=disease_definition,
+                               list_dict_Disease_phenotype_Orphanet=list_dict_Disease_phenotype_Orphanet,
+                               list_dict_Disease_phenotype_CaseReport=list_dict_Disease_phenotype_CaseReport,
+                               list_dict_DiseaseGene_gene=list_dict_DiseaseGene_gene
         )
     else:
         return render_template('index.html')
@@ -474,7 +494,8 @@ def tokeninput_hpo():
         ## SQLのLIKEを使うときのTips
         ### http://d.hatena.ne.jp/heavenshell/20111027/1319712031
         OBJ_MYSQL = MySQLdb.connect(unix_socket="/opt/services/case/local/mysql-5.7.13/mysql.sock", host="localhost", db=db_name, user=db_user, passwd=db_pw, charset="utf8")
-        sql_OntoTerm = u"select OntoID, OntoIDTerm from OntoTermHP where OntoType='label' and ObsoleteFlg=0 and PhenotypicAbnormalityFlg=1 and OntoIDTerm like %s order by OntoTerm"
+        #sql_OntoTerm = u"select OntoID, OntoIDTerm from OntoTermHP where OntoType='label' and ObsoleteFlg=0 and PhenotypicAbnormalityFlg=1 and OntoIDTerm like %s order by OntoTerm"
+        sql_OntoTerm = u"select distinct uid, uid_value from IndexFormHP where uid_value like %s order by value"
         cursor_OntoTerm = OBJ_MYSQL.cursor()
         cursor_OntoTerm.execute(sql_OntoTerm, ("%" + tokeninput +"%",))
         values = cursor_OntoTerm.fetchall()
@@ -659,7 +680,7 @@ def REST_API_JSON_MME_POST():
 #####
 @app.route('/mme', methods=['GET'])
 def REST_API_JSON_MME_GET():
-    return render_template('index.html')
+    return render_template('pubcasefinder_api_en.html')
 
 
 #####

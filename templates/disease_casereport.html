@@ -241,11 +241,109 @@
                 </tr>
               </table>
               <!-- END: Pagination lower_part -->
-
-
               </div>
-              <div class="tab-pane fade" id="tab2default">Under Development</div>
-              <div class="tab-pane fade" id="tab3default">Under Development</div>
+
+              <div class="tab-pane fade" id="tab2default">
+		<br>
+		<h2>Phenotype(s) retrieved from Orphanet</h2>
+  		<p><font size="4" color="black">&nbsp;&nbsp;&nbsp;&nbsp;Total: <b>{{ list_dict_Disease_phenotype_Orphanet|length }}</b></font></p>
+		<!-- START: Show result table -->
+		<div clas="row">
+		  <div class="col-sm-12">
+		    <table class="table table-striped">
+		      <thead>
+			<tr>
+			  <th class="text-left">HPO ID</th>
+			  <th class="text-left">Term</th>
+			  <th class="text-left">Frequency</th>
+			</tr>
+		      </thead>
+		      <tbody>
+			{% for dict_Disease_phenotype_Orphanet in list_dict_Disease_phenotype_Orphanet %}
+			<tr>
+			  <!-- HPO ID -->
+			  <td><a href="http://compbio.charite.de/hpoweb/showterm?id={{ dict_Disease_phenotype_Orphanet['id_onto_hp'] }}" target="_blank">{{ dict_Disease_phenotype_Orphanet['id_onto_hp'] }}</a></td>
+			  <!-- Term -->
+			  <td>{{ dict_Disease_phenotype_Orphanet['term'] }}</td>
+			  <!-- Frequency -->
+			  <td>{{ dict_Disease_phenotype_Orphanet['freq'] }}</td>
+			</tr>
+			{% endfor %}
+		      </tbody>
+		    </table>
+		    <br><br>
+		  </div><!--/.col-sm-12-->
+		</div><!--/row-->
+		<!-- END: Show result table -->
+
+		<h2>Phenotype(s) extracted from case reports</h2>
+  		<p><font size="4" color="black">&nbsp;&nbsp;&nbsp;&nbsp;Total: <b>{{ list_dict_Disease_phenotype_CaseReport|length }}</b></font></p>
+		<!-- START: Show result table -->
+		<div clas="row">
+		  <div class="col-sm-12">
+		    <table class="table table-striped">
+		      <thead>
+			<tr>
+			  <th class="text-left">HPO ID</th>
+			  <th class="text-left">Term</th>
+			  <th class="text-left"># of case reports</th>
+			</tr>
+		      </thead>
+		      <tbody>
+			{% for dict_Disease_phenotype_CaseReport in list_dict_Disease_phenotype_CaseReport %}
+			<tr>
+			  <!-- HPO ID -->
+			  <td><a href="http://compbio.charite.de/hpoweb/showterm?id={{ dict_Disease_phenotype_CaseReport['id_onto_hp'] }}" target="_blank">{{ dict_Disease_phenotype_CaseReport['id_onto_hp'] }}</a></td>
+			  <!-- Term -->
+			  <td>{{ dict_Disease_phenotype_CaseReport['term'] }}</td>
+			  <!-- Frequency -->
+			  <td><a target="_blank" href="{{ url_for_show_phenotype_context_page( str_disease, dict_Disease_phenotype_CaseReport['id_onto_hp'], '1', '20' ) }}">{{ dict_Disease_phenotype_CaseReport['freq'] }}</a></td>
+			</tr>
+			{% endfor %}
+		      </tbody>
+		    </table>
+		  </div><!--/.col-sm-12-->
+		</div><!--/row-->
+		<!-- END: Show result table -->
+		<br>
+              </div>
+              <div class="tab-pane fade" id="tab3default">
+
+		<br>
+		<h2>Causative gene(s) retrieved from Orphanet</h2>
+  		<p><font size="4" color="black">&nbsp;&nbsp;&nbsp;&nbsp;Total: <b>{{ list_dict_DiseaseGene_gene|length }}</b></font></p>
+		<!-- START: Show result table -->
+		<div clas="row">
+		  <div class="col-sm-12">
+		    <table class="table table-striped">
+		      <thead>
+			<tr>
+			  <th class="text-left">Symbol</th>
+			  <th class="text-left">Name</th>
+			  <th class="text-left">Entrez Gene ID</th>
+			</tr>
+		      </thead>
+		      <tbody>
+			{% for dict_DiseaseGene_gene in list_dict_DiseaseGene_gene %}
+			<tr>
+			  <!-- symbol -->
+			  <td><a href="https://www.ncbi.nlm.nih.gov/clinvar/?term={{ dict_DiseaseGene_gene['symbol'] }}%5Bgene%5D" target="_blank">{{ dict_DiseaseGene_gene['symbol'] }}</a></td>
+			  <!-- Name -->
+			  <td>{{ dict_DiseaseGene_gene['name'] }}</td>
+			  <!-- entrez_id -->
+			  <td><a href="https://www.ncbi.nlm.nih.gov/gene/{{ dict_DiseaseGene_gene['entrez_id'] }}" target="_blank">{{ dict_DiseaseGene_gene['entrez_id'] }}</a></td>
+			</tr>
+			{% endfor %}
+		      </tbody>
+		    </table>
+		    <br><br>
+		  </div><!--/.col-sm-12-->
+		</div><!--/row-->
+		<!-- END: Show result table -->
+
+
+
+	      </div>
             </div>
           </div>
         </div>

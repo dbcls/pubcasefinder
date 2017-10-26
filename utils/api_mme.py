@@ -237,7 +237,7 @@ def make_JSON_IRUD(phenotypes, genes, size_disease, size_casereport):
             # flag for record top hit
             flg_casereport = 1
             # caluculate phenotypic similarity between a patient and case reports.
-            list_dict_phenotype,list_dict_gene,list_dict_similar_casereport_pagination, dict_onto_id_term_ordo, pagination, total_hit, disease_definition = show_disease_casereport_page(disease_id, phenotypes, '', '1', size_casereport)
+            list_dict_phenotype,list_dict_gene,list_dict_similar_casereport_pagination, dict_onto_id_term_ordo, pagination, total_hit, disease_definition, list_dict_Disease_phenotype_Orphanet, list_dict_Disease_phenotype_CaseReport, list_dict_DiseaseGene_gene = show_disease_casereport_page(disease_id, phenotypes, '', '1', size_casereport)
             for dict_similar_casereport_pagination in list_dict_similar_casereport_pagination:
                 rank_cs                   = dict_similar_casereport_pagination['rank']
                 pmid_cs                   = dict_similar_casereport_pagination['pmid']

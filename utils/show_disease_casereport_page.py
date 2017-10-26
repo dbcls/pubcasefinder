@@ -93,6 +93,88 @@ def show_disease_casereport_page(disease, phenotypes, genes, page, size):
 
 
     #####
+    # Diseaseテーブルから対象疾患の全てのフェノタイプを取得（Orphanetから取得したフェノタイプのみ）
+    ## HPOFrequencyのOrphaNumberとNameの対応
+    ## 453310 : Obligate (100%)
+    ## 453311 : Very frequent (99-80%)
+    ## 453312 : Frequent (79-30%)
+    ## 453313 : Occasional (29-5%)
+    ## 453314 : Very rare (&lt;4-1%)
+    ## 453315 : Excluded (0%)
+    list_dict_Disease_phenotype_Orphanet = []
+    sql_Disease_phenotype_Orphanet = u"select a.OntoIDHP, b.OntoTerm, a.Frequency from Disease as a left join OntoTermHP as b on a.OntoIDHP=b.OntoID where b.OntoType='label' and a.Source='Orphanet' and a.OntoIDORDO=%s order by cast(a.Frequency as SIGNED), a.OntoIDHP"
+    cursor_Disease_phenotype_Orphanet = OBJ_MYSQL.cursor()
+    cursor_Disease_phenotype_Orphanet.execute(sql_Disease_phenotype_Orphanet, (disease,))
+    values = cursor_Disease_phenotype_Orphanet.fetchall()
+    cursor_Disease_phenotype_Orphanet.close()
+    for value in values:
+        id_onto_hp = value[0]
+        term       = value[1]
+        freq       = value[2]
+        if freq == "453310":
+            freq = "Obligate (100%)"
+        elif freq == "453311":
+            freq = "Very frequent (99-80%)"
+        elif freq == "453312":
+            freq = "Frequent (79-30%)"
+        elif freq == "453313":
+            freq = "Occasional (29-5%)"
+        elif freq == "453314":
+            freq = "Very rare (4-1%)"
+        elif freq == "453315":
+            freq = "Excluded (0%)"
+
+        dict_Disease_phenotype_Orphanet = {}
+        dict_Disease_phenotype_Orphanet['id_onto_hp']    = id_onto_hp
+        dict_Disease_phenotype_Orphanet['term']          = term
+        dict_Disease_phenotype_Orphanet['freq']          = freq
+        list_dict_Disease_phenotype_Orphanet.append(dict_Disease_phenotype_Orphanet)
+
+
+    #####
+    # Diseaseテーブルから対象疾患の全てのフェノタイプを取得（症例報告から取得したフェノタイプのみ）
+    list_dict_Disease_phenotype_CaseReport = []
+    sql_Disease_phenotype_CaseReport = u"select a.OntoIDHP, b.OntoTerm, a.Frequency from Disease as a left join OntoTermHP as b on a.OntoIDHP=b.OntoID where b.OntoType='label' and a.Source='CaseReport' and a.OntoIDORDO=%s order by cast(a.Frequency as SIGNED) desc, a.OntoIDHP"
+    cursor_Disease_phenotype_CaseReport = OBJ_MYSQL.cursor()
+    cursor_Disease_phenotype_CaseReport.execute(sql_Disease_phenotype_CaseReport, (disease,))
+    values = cursor_Disease_phenotype_CaseReport.fetchall()
+    cursor_Disease_phenotype_CaseReport.close()
+    for value in values:
+        id_onto_hp = value[0]
+        term       = value[1]
+        freq       = value[2]
+
+        dict_Disease_phenotype_CaseReport = {}
+        dict_Disease_phenotype_CaseReport['id_onto_hp']    = id_onto_hp
+        dict_Disease_phenotype_CaseReport['term']          = term
+        dict_Disease_phenotype_CaseReport['freq']          = freq
+        list_dict_Disease_phenotype_CaseReport.append(dict_Disease_phenotype_CaseReport)
+
+
+    #####
+    # DiseaseGeneテーブルから対象疾患の全ての疾患原因遺伝子を取得
+    list_dict_DiseaseGene_gene = []
+    sql_DiseaseGene_gene = u"select OrphaNumber, Name, Symbol, Source, EntrezID from DiseaseGene where OntoIDORDO=%s"
+    cursor_DiseaseGene_gene = OBJ_MYSQL.cursor()
+    cursor_DiseaseGene_gene.execute(sql_DiseaseGene_gene, (disease,))
+    values = cursor_DiseaseGene_gene.fetchall()
+    cursor_DiseaseGene_gene.close()
+    for value in values:
+        orpha_number = value[0]
+        name         = value[1]
+        symbol       = value[2]
+        source       = value[3]
+        entrez_id    = value[4]
+        dict_DiseaseGene_gene = {}
+        dict_DiseaseGene_gene['orpha_number'] = orpha_number
+        dict_DiseaseGene_gene['name']         = name
+        dict_DiseaseGene_gene['symbol']       = symbol
+        dict_DiseaseGene_gene['source']       = source
+        dict_DiseaseGene_gene['entrez_id']    = entrez_id.replace('ENT:', '')
+        list_dict_DiseaseGene_gene.append(dict_DiseaseGene_gene)
+
+
+    #####
     # total件数を取得
     total_hit = len(list_dict_similar_casereport)
     pagination = Pagination(int(page), limit, total_hit)
@@ -106,7 +188,7 @@ def show_disease_casereport_page(disease, phenotypes, genes, page, size):
 
     OBJ_MYSQL.close()
 
-    return list_dict_phenotype, list_dict_gene, list_dict_similar_casereport_pagination, dict_onto_id_term_ordo, pagination, total_hit, disease_definition
+    return list_dict_phenotype, list_dict_gene, list_dict_similar_casereport_pagination, dict_onto_id_term_ordo, pagination, total_hit, disease_definition, list_dict_Disease_phenotype_Orphanet, list_dict_Disease_phenotype_CaseReport, list_dict_DiseaseGene_gene
 
 
 #####

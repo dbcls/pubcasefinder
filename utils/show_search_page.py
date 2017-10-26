@@ -33,7 +33,8 @@ def show_search_page(phenotypes, genes, page, size):
     if phenotypes != "":
         for phenotype in phenotypes.split(","):
             OBJ_MYSQL = MySQLdb.connect(unix_socket="/opt/services/case/local/mysql-5.7.13/mysql.sock", host="localhost", db=db_name, user=db_user, passwd=db_pw, charset="utf8")
-            sql_OntoTerm = u"select OntoIDTerm from OntoTermHP where OntoType='label' and OntoID=%s"
+            #sql_OntoTerm = u"select OntoIDTerm from OntoTermHP where OntoType='label' and OntoID=%s"
+            sql_OntoTerm = u"select uid_value from IndexFormHP where uid=%s"
             cursor_OntoTerm = OBJ_MYSQL.cursor()
             cursor_OntoTerm.execute(sql_OntoTerm, (phenotype,))
             values = cursor_OntoTerm.fetchall()
