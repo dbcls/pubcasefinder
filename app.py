@@ -23,6 +23,7 @@ app = Flask(__name__)
 #####
 # DB設定
 app.config.from_pyfile('config.cfg')
+db_sock = app.config['DBSOCK']
 db_name = app.config['DBNAME']
 db_user = app.config['DBUSER']
 db_pw   = app.config['DBPW']
@@ -493,7 +494,7 @@ def tokeninput_hpo():
         # OntoTermテーブルからHPのtermを検索
         ## SQLのLIKEを使うときのTips
         ### http://d.hatena.ne.jp/heavenshell/20111027/1319712031
-        OBJ_MYSQL = MySQLdb.connect(unix_socket="/opt/services/case/local/mysql-5.7.13/mysql.sock", host="localhost", db=db_name, user=db_user, passwd=db_pw, charset="utf8")
+        OBJ_MYSQL = MySQLdb.connect(unix_socket=db_sock, host="localhost", db=db_name, user=db_user, passwd=db_pw, charset="utf8")
         #sql_OntoTerm = u"select OntoID, OntoIDTerm from OntoTermHP where OntoType='label' and ObsoleteFlg=0 and PhenotypicAbnormalityFlg=1 and OntoIDTerm like %s order by OntoTerm"
         sql_OntoTerm = u"select distinct uid, uid_value from IndexFormHP where uid_value like %s order by value"
         cursor_OntoTerm = OBJ_MYSQL.cursor()
@@ -533,7 +534,7 @@ def tokeninput_genes():
         # DiseaseGeneテーブルからSymbol及びSynonymを検索
         ## SQLのLIKEを使うときのTips
         ### http://d.hatena.ne.jp/heavenshell/20111027/1319712031
-        OBJ_MYSQL = MySQLdb.connect(unix_socket="/opt/services/case/local/mysql-5.7.13/mysql.sock", host="localhost", db=db_name, user=db_user, passwd=db_pw, charset="utf8")
+        OBJ_MYSQL = MySQLdb.connect(unix_socket=db_sock, host="localhost", db=db_name, user=db_user, passwd=db_pw, charset="utf8")
         # IndexFormSearchテーブルからクエリにマッチするレコードを取得
         sql_IndexFormSearch = u"select distinct uid, uid_value from IndexFormSearch where uid_value like %s order by uid_value"
         cursor_IndexFormSearch = OBJ_MYSQL.cursor()
@@ -573,7 +574,7 @@ def tokeninput_filter_casereport():
         # DiseaseGeneテーブルからSymbol及びSynonymを検索
         ## SQLのLIKEを使うときのTips
         ### http://d.hatena.ne.jp/heavenshell/20111027/1319712031
-        OBJ_MYSQL = MySQLdb.connect(unix_socket="/opt/services/case/local/mysql-5.7.13/mysql.sock", host="localhost", db=db_name, user=db_user, passwd=db_pw, charset="utf8")
+        OBJ_MYSQL = MySQLdb.connect(unix_socket=db_sock, host="localhost", db=db_name, user=db_user, passwd=db_pw, charset="utf8")
         # IndexFormDiseaseCaseReportテーブルからクエリにマッチするレコードを取得
         sql_IndexFormDiseaseCaseReport = u"select distinct uid, uid_value from IndexFormDiseaseCaseReport where uid_value like %s order by uid_value"
         cursor_IndexFormDiseaseCaseReport = OBJ_MYSQL.cursor()

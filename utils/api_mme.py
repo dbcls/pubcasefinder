@@ -16,6 +16,7 @@ app = Flask(__name__)
 #####
 # DB設定
 app.config.from_pyfile('../config.cfg')
+db_sock = app.config['DBSOCK']
 db_name = app.config['DBNAME']
 db_user = app.config['DBUSER']
 db_pw   = app.config['DBPW']
@@ -58,7 +59,7 @@ def make_JSON_MME(dict_json):
     dict_EntrezID2EnsemblID = {}
 
     # retrieve all records of GeneName2ID
-    OBJ_MYSQL = MySQLdb.connect(unix_socket="/opt/services/case/local/mysql-5.7.13/mysql.sock", host="localhost", db=db_name, user=db_user, passwd=db_pw, charset="utf8")
+    OBJ_MYSQL = MySQLdb.connect(unix_socket=db_sock, host="localhost", db=db_name, user=db_user, passwd=db_pw, charset="utf8")
     sql_GeneName2ID = u"select GeneName, EntrezID from GeneName2ID;"
     cursor_GeneName2ID = OBJ_MYSQL.cursor()
     cursor_GeneName2ID.execute(sql_GeneName2ID)
@@ -71,7 +72,7 @@ def make_JSON_MME(dict_json):
         dict_EntrezID[entrez_gene_id] = 1
 
     # retrieve all records of EntrezID2EnsemblID
-    OBJ_MYSQL = MySQLdb.connect(unix_socket="/opt/services/case/local/mysql-5.7.13/mysql.sock", host="localhost", db=db_name, user=db_user, passwd=db_pw, charset="utf8")
+    OBJ_MYSQL = MySQLdb.connect(unix_socket=db_sock, host="localhost", db=db_name, user=db_user, passwd=db_pw, charset="utf8")
     sql_EntrezID2EnsemblID = u"select EntrezGeneID, EnsemblGeneID from EntrezID2EnsemblID;"
     cursor_EntrezID2EnsemblID = OBJ_MYSQL.cursor()
     cursor_EntrezID2EnsemblID.execute(sql_EntrezID2EnsemblID)

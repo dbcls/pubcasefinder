@@ -12,6 +12,7 @@ app = Flask(__name__)
 #####
 # DB設定
 app.config.from_pyfile('../config.cfg')
+db_sock = app.config['DBSOCK']
 db_name = app.config['DBNAME']
 db_user = app.config['DBUSER']
 db_pw   = app.config['DBPW']
@@ -32,7 +33,7 @@ def show_search_page(phenotypes, genes, page, size):
 
     if phenotypes != "":
         for phenotype in phenotypes.split(","):
-            OBJ_MYSQL = MySQLdb.connect(unix_socket="/opt/services/case/local/mysql-5.7.13/mysql.sock", host="localhost", db=db_name, user=db_user, passwd=db_pw, charset="utf8")
+            OBJ_MYSQL = MySQLdb.connect(unix_socket=db_sock, host="localhost", db=db_name, user=db_user, passwd=db_pw, charset="utf8")
             #sql_OntoTerm = u"select OntoIDTerm from OntoTermHP where OntoType='label' and OntoID=%s"
             sql_OntoTerm = u"select uid_value from IndexFormHP where uid=%s"
             cursor_OntoTerm = OBJ_MYSQL.cursor()
@@ -49,7 +50,7 @@ def show_search_page(phenotypes, genes, page, size):
 
     if genes != "":
         for gene in genes.split(","):
-            OBJ_MYSQL = MySQLdb.connect(unix_socket="/opt/services/case/local/mysql-5.7.13/mysql.sock", host="localhost", db=db_name, user=db_user, passwd=db_pw, charset="utf8")
+            OBJ_MYSQL = MySQLdb.connect(unix_socket=db_sock, host="localhost", db=db_name, user=db_user, passwd=db_pw, charset="utf8")
             sql_IndexFormSearch = u"select uid_value from IndexFormSearch where uid=%s"
             cursor_IndexFormSearch = OBJ_MYSQL.cursor()
             cursor_IndexFormSearch.execute(sql_IndexFormSearch, (gene,))
@@ -85,7 +86,7 @@ def search_similar_disease(str_phenotypes, str_genes):
         dict_genes[gene] = 1
 
     # MySQL接続　初期設定
-    OBJ_MYSQL = MySQLdb.connect(unix_socket="/opt/services/case/local/mysql-5.7.13/mysql.sock", host="localhost", db=db_name, user=db_user, passwd=db_pw, charset="utf8")
+    OBJ_MYSQL = MySQLdb.connect(unix_socket=db_sock, host="localhost", db=db_name, user=db_user, passwd=db_pw, charset="utf8")
 
     ## OntoTermテーブル及びOrphanetテーブルからORDOの全termを取得
     dict_OntoTerm_ordo = {}

@@ -13,6 +13,7 @@ app = Flask(__name__)
 #####
 # DB設定
 app.config.from_pyfile('../config.cfg')
+db_sock = app.config['DBSOCK']
 db_name = app.config['DBNAME']
 db_user = app.config['DBUSER']
 db_pw   = app.config['DBPW']
@@ -22,7 +23,7 @@ db_pw   = app.config['DBPW']
 # 類似症例報告検索画面を表示
 #####
 def show_disease_casereport_page(disease, phenotypes, genes, page, size):
-    OBJ_MYSQL = MySQLdb.connect(unix_socket="/opt/services/case/local/mysql-5.7.13/mysql.sock", host="localhost", db=db_name, user=db_user, passwd=db_pw, charset="utf8")
+    OBJ_MYSQL = MySQLdb.connect(unix_socket=db_sock, host="localhost", db=db_name, user=db_user, passwd=db_pw, charset="utf8")
     limit = int(size)
 
     #####
@@ -213,7 +214,7 @@ def search_similar_casereport(str_disease, str_phenotypes, str_genes):
 
     #####
     # MySQL接続　初期設定
-    OBJ_MYSQL = MySQLdb.connect(unix_socket="/opt/services/case/local/mysql-5.7.13/mysql.sock", host="localhost", db=db_name, user=db_user, passwd=db_pw, charset="utf8")
+    OBJ_MYSQL = MySQLdb.connect(unix_socket=db_sock, host="localhost", db=db_name, user=db_user, passwd=db_pw, charset="utf8")
 
 
     #####

@@ -13,6 +13,7 @@ app = Flask(__name__)
 #####
 # DB設定
 app.config.from_pyfile('../config.cfg')
+db_sock = app.config['DBSOCK']
 db_name = app.config['DBNAME']
 db_user = app.config['DBUSER']
 db_pw   = app.config['DBPW']
@@ -24,7 +25,7 @@ def show_phenotype_context_page(id_disease, id_phenotype, page, size):
 
     list_dict_phenotype_context = []
     limit = int(size)
-    OBJ_MYSQL = MySQLdb.connect(unix_socket="/opt/services/case/local/mysql-5.7.13/mysql.sock", host="localhost", db=db_name, user=db_user, passwd=db_pw, charset="utf8")
+    OBJ_MYSQL = MySQLdb.connect(unix_socket=db_sock, host="localhost", db=db_name, user=db_user, passwd=db_pw, charset="utf8")
     term_disease = ""
     term_phenotype = ""
 
