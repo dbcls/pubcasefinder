@@ -86,34 +86,40 @@ def make_JSON_MME(dict_json):
         dict_EntrezID[entrez_gene_id]            = 1
 
     # parse json
-    dict_patient = dict_json['patient']
+    dict_patient = {}
+    if 'patient' in dict_json:
+        dict_patient = dict_json['patient']
 
     # features
-    list_features = dict_patient['features']
-    for feature in list_features:
-        id_hpo   = feature['id']
-        list_phenotypes.append(id_hpo)
+    list_features = []
+    if 'features' in dict_patient:
+        list_features = dict_patient['features']
+        for feature in list_features:
+            id_hpo   = feature['id']
+            list_phenotypes.append(id_hpo)
 
     # genomicFeatures
-    list_genomicFeatures = dict_patient['genomicFeatures']    
-    for genomicFeature in list_genomicFeatures:
-        gene           = genomicFeature['gene']
-        gene_id        = gene['id']
-        entrez_gene_id = ''
+    list_genomicFeatures = []
+    if 'genomicFeatures' in dict_patient:
+        list_genomicFeatures = dict_patient['genomicFeatures']
+        for genomicFeature in list_genomicFeatures:
+            gene           = genomicFeature['gene']
+            gene_id        = gene['id']
+            entrez_gene_id = ''
         
-        # correspond to <gene symbol>|<ensembl gene ID>|<entrez gene ID>
-        ## <gene symbol>
-        if gene_id in dict_GeneName2EntrezID:
-            entrez_gene_id = dict_GeneName2EntrezID[gene_id]
-            list_genes.append("ENT:" + str(entrez_gene_id))
-        ## <ensembl gene ID>
-        elif gene_id in dict_EnsemblID2EntrezID:
-            entrez_gene_id = dict_EnsemblID2EntrezID[gene_id]
-            list_genes.append("ENT:" + str(entrez_gene_id))
-        ## <entrez gene ID>
-        elif gene_id in dict_EntrezID:
-            entrez_gene_id = gene_id
-            list_genes.append("ENT:" + str(entrez_gene_id))
+            # correspond to <gene symbol>|<ensembl gene ID>|<entrez gene ID>
+            ## <gene symbol>
+            if gene_id in dict_GeneName2EntrezID:
+                entrez_gene_id = dict_GeneName2EntrezID[gene_id]
+                list_genes.append("ENT:" + str(entrez_gene_id))
+            ## <ensembl gene ID>
+            elif gene_id in dict_EnsemblID2EntrezID:
+                entrez_gene_id = dict_EnsemblID2EntrezID[gene_id]
+                list_genes.append("ENT:" + str(entrez_gene_id))
+            ## <entrez gene ID>
+            elif gene_id in dict_EntrezID:
+                entrez_gene_id = gene_id
+                list_genes.append("ENT:" + str(entrez_gene_id))
 
     # make string
     phenotypes = ",".join(list_phenotypes)
