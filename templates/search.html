@@ -12,7 +12,7 @@
 	  <table>
 	    <tr>
 	      <td nowrap>
-		<h2>Query phenotype(s)</h2>
+		<h2>Patient's phenotype(s)</h2>
 	      </td>
 	      <td nowrap>
 		<!-- 参考：http://proengineer.internous.co.jp/content/columnfeature/7605 -->
@@ -49,18 +49,18 @@
 	  <textarea class="form-control" rows="1" id="tokeninput_genes" name="str_genes"></textarea>
 	  <!-- END: Narrow down the diseases by Gene(s) -->
 	  <br>
-	  <button type="submit" class="btn btn-primary">Re-search</button>		    
+	  <button type="submit" class="btn btn-primary">Get diagnosis</button>		    
 	  <button id="tokeninput_hpo_genes_clear" class="btn btn-default">Clear</button>
 
 	  <table width="100%" height="120">
 	    <tr>
 	      <!-- START: Show total number -->
-	      <td align="center" valign="top">
+	      <td align="left" valign="top">
 		<p><br></p>
-		<p><font size="4" color="black">Total: <b>{{ total_hit }}</b></font></p>
+		<p>Total: <font size="4" color="black"><b>{{ total_hit }}</b></font> (diseases)</p>
 	      </td>
 	      <!-- END: Show total number -->
-	      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+	      <!-- td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td -->
 	      <!-- START: Pagination upper_part -->
 	      <td align="middle" valign="middle">
 		<ul class="pagination">
@@ -82,6 +82,7 @@
                     <li align="center"><a href="{{ url_for_search_page(str_phenotypes, str_genes, pagination.page + 1, cs) }}">&raquo;</a></li>
 		  {% endif %}
                 </ul>
+	        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	      </td>
               <!-- END: Pagination upper_part -->
 	      <!-- START: Show selector for "per page" -->
@@ -133,7 +134,7 @@
 
 	      <thead>
 		<tr>
-		  <!-- th style="width:100px;" class="text-left">Rank (Score)</th -->
+		  <!-- th style="width:100px;" class="text-left">Rank</th -->
 		  <th style="width:100px;" class="text-left">Similarity</th>	
 		  <th style="width:200px;" class="text-left">Disease Name</th>
 		  <th></th>
@@ -147,8 +148,9 @@
                 {% for dict_similar_disease in list_dict_similar_disease %}
 		  <tr>
 		    <!-- Rank -->
+		    <!-- td rowspan="3" width="10">{{ dict_similar_disease['rank'] }}</td -->
+		    <!-- Similarity -->
 		    <td rowspan="3">
-		      <!-- {{ dict_similar_disease['rank'] }}<br>({{ dict_similar_disease['match_score']|round(2) }}) -->
 		      {{ (dict_similar_disease['match_score']*100)|round(2) }}%
 		    </td>
 		    <!-- Disease Name -->

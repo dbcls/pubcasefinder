@@ -163,6 +163,7 @@ def search_similar_disease(str_phenotypes, str_genes):
     ## http://stackoverflow.com/questions/4574609/executing-select-where-in-using-mysqldb
     #sql = u"select a.OntoIDORDO, a.IndexOntoIDHP, a.DiseaseOntoIDHP, a.DiseaseOntoIDHPSource, a.CommonRootHP, b.IC from IndexDiseaseHP as a left join IC as b on a.CommonRootHP=b.OntoID where b.OntoName='HP' and a.OntoIDORDO in (select distinct OntoID from Orphanet where RareDiseaseFlg=1) and a.IndexOntoIDHP in (%s) order by a.OntoIDORDO, a.DiseaseOntoIDHP"
     sql = u"select OntoIDORDO, IndexOntoIDHP, DiseaseOntoIDHP, DiseaseOntoIDHPSource, CommonRootHP, CommonRootHPIC from IndexDiseaseHP where OntoIDORDO in (select distinct OntoID from Orphanet where RareDiseaseFlg=1) and IndexOntoIDHP in (%s) order by OntoIDORDO, DiseaseOntoIDHP"
+    #sql = u"select OntoIDORDO, IndexOntoIDHP, DiseaseOntoIDHP, DiseaseOntoIDHPSource, CommonRootHP, CommonRootHPIC from IndexDiseaseHPFreq10000 where OntoIDORDO in (select distinct OntoID from Orphanet where RareDiseaseFlg=1) and IndexOntoIDHP in (%s) order by OntoIDORDO, DiseaseOntoIDHP"
     in_p=', '.join(map(lambda x: '%s', list_phenotypes))
     sql = sql % in_p
     cursor = OBJ_MYSQL.cursor()

@@ -489,14 +489,13 @@ def tokeninput_hpo():
 
         # requestから値を取得
         tokeninput = request.args.get("q")
-        #hpo_list = request.args.get("hpo_list")
 
         # OntoTermテーブルからHPのtermを検索
         ## SQLのLIKEを使うときのTips
         ### http://d.hatena.ne.jp/heavenshell/20111027/1319712031
         OBJ_MYSQL = MySQLdb.connect(unix_socket=db_sock, host="localhost", db=db_name, user=db_user, passwd=db_pw, charset="utf8")
-        #sql_OntoTerm = u"select OntoID, OntoIDTerm from OntoTermHP where OntoType='label' and ObsoleteFlg=0 and PhenotypicAbnormalityFlg=1 and OntoIDTerm like %s order by OntoTerm"
-        sql_OntoTerm = u"select distinct uid, uid_value from IndexFormHP where uid_value like %s order by value"
+        #sql_OntoTerm = u"select distinct uid, uid_value from IndexFormHP where uid_value like %s order by value"
+        sql_OntoTerm = u"select distinct a.uid, a.uid_value, b.FreqSelf from IndexFormHP as a left join IC as b on a.uid=b.OntoID where a.uid_value like %s order by b.FreqSelf desc, value"
         cursor_OntoTerm = OBJ_MYSQL.cursor()
         cursor_OntoTerm.execute(sql_OntoTerm, ("%" + tokeninput +"%",))
         values = cursor_OntoTerm.fetchall()
