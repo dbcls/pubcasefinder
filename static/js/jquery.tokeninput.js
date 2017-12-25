@@ -340,7 +340,8 @@
                           hide_dropdown();
                       } else {
                           // set a timeout just long enough to let this function finish.
-                          setTimeout(function(){ do_search(); }, 5);
+                          // FIX: 20171207 fujiwara setTimeout(function(){ do_search(); }, 5);
+                          setTimeout(function(){ do_search(); }, 50);
                       }
                       break;
 
@@ -376,7 +377,8 @@
                   default:
                     if (String.fromCharCode(event.which)) {
                       // set a timeout just long enough to let this function finish.
-                      setTimeout(function(){ do_search(); }, 5);
+                      // FIX: 20171207 fujiwara setTimeout(function(){ do_search(); }, 5);
+                      setTimeout(function(){ do_search(); }, 50);
                     }
                     break;
               }
