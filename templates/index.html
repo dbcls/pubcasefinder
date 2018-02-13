@@ -5,6 +5,7 @@
     <!-- START: FORM -->
     <div id="fh5co-project">
       <div class="container">
+	<br><br>
 	<form name="search" action="/search_disease" method="post" class="form-group">
 	  <table>
 	    <tr>
@@ -23,6 +24,7 @@
 	  <button type="submit" class="btn btn-primary">Get diagnosis</button>
 	  <button id="tokeninput_hpo_clear" class="btn btn-default">Clear</button>
 	</form>
+	<br><br>
       </div>
     </div>
     <!-- END: FORM -->
@@ -32,6 +34,9 @@
     <div id="fh5co-services" class="fh5co-bg-section border-bottom">
       <div class="container">
 	<div class="row">
+	  <div align="center"><h1><font color="#337ab7">PubCaseFinder is a diagnosis support system for <b>rare diseases</b>.</font></h1></div>
+	  <div align="center"><b>"For a set of patient's phenotypes, as input, PubCaseFinder suggests a ranked list of rare diseases based on phenotypic similarity."</b></div>
+	  <!--
 	  <div class="col-md-3 col-sm-6 ">
 	    <div align="center"><h1><b><font color="#337ab7">About</font></b></h1></div>
 	    <p>PubCaseFinder is a diagnosis assistant system for rare diseases based on phenotypic similarity.</p>
@@ -48,6 +53,7 @@
 	    <div align="center"><h1><b><font color="#337ab7">Database</font></b></h1></div>
 	    <p>Phenotype-associations for 4,066 rare diseases are <a href="http://togodb.org/db/disease_phenotype_associations_20170720">HERE</a>.</p>
 	  </div>
+	  -->
           <div align="center">
             &nbsp;<br>
             &nbsp;<br>
@@ -73,14 +79,6 @@
 	<div class="row">
 	  <div class="col-md-3 col-sm-6 animate-box" data-animate-effect="fadeInLeft">
 	    <span class="icon">
-	      <i class="ti-download"></i>
-	    </span>
-	    <span class="counter"><span class="js-counter" data-from="0" data-to="1" data-speed="1500" data-refresh-interval="50">1</span>M+</span>
-	    <span class="counter-label">Case Reports</span><br>
-	    <a href="https://www.ncbi.nlm.nih.gov/pubmed/?term=%22case+reports%22%5BPublication+Type%5D+OR+%22case+reports%22%5Bti%5D+OR+%22case+report%22%5Bti%5D">&gt;&gt; PubMed</a>
-	  </div>
-	  <div class="col-md-3 col-sm-6 animate-box" data-animate-effect="fadeInLeft">
-	    <span class="icon">
 	      <i class="ti-face-smile"></i>
 	    </span>
 	    <span class="counter"><span class="js-counter" data-from="0" data-to="4066" data-speed="1500" data-refresh-interval="50">1</span></span>
@@ -102,6 +100,14 @@
 	    <span class="counter"><span class="js-counter" data-from="0" data-to="4002" data-speed="1500" data-refresh-interval="50">1</span></span>
 	    <span class="counter-label">Disease-Gene Associations</span><br>
 	    <a href="http://togodb.org/db/disease_gene_associations_20170720">&gt;&gt; List</a>
+	  </div>
+	  <div class="col-md-3 col-sm-6 animate-box" data-animate-effect="fadeInLeft">
+	    <span class="icon">
+	      <i class="ti-download"></i>
+	    </span>
+	    <span class="counter"><span class="js-counter" data-from="0" data-to="1" data-speed="1500" data-refresh-interval="50">1</span>M+</span>
+	    <span class="counter-label">Case Reports</span><br>
+	    <a href="https://www.ncbi.nlm.nih.gov/pubmed/?term=%22case+reports%22%5BPublication+Type%5D+OR+%22case+reports%22%5Bti%5D+OR+%22case+report%22%5Bti%5D">&gt;&gt; PubMed</a>
 	  </div>
 	</div>
       </div>
@@ -137,7 +143,7 @@
 	    <p>
 	      <small class="block"><a href="/termsofservice_en">Terms of Service</a></small>
 	      <small class="block">PubCaseFinder is provided by <a href="http://dbcls.rois.ac.jp">Database Center for Life Science</a> and is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/2.1/jp/deed.en">Creative Commons Attribution 2.1 Japan License</a>.</small> 
-	      <small class="block">Comments & suggestions are welcome. Please contact to : support AT dbcls DOT rois DOT ac DOT jp</small>
+	      <small class="block">Comments & suggestions are welcome. Please contact to : <a href="mailto:pubcasefinder@dbcls.rois.ac.jp" href="#">pubcasefinder@dbcls.rois.ac.jp</a></small>
 	      <br>
 	      <a href="http://dbcls.rois.ac.jp"><img src="/static/images/DBCLS_logo_en_2014.png" width="20%" class="pull-center" /></a>
 	    </p>
