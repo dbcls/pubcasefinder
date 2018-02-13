@@ -155,7 +155,7 @@
 		    </td>
 		    <!-- Disease Name -->
 		    <td rowspan="3">
-		      <a href="{{ url_for_disease_casereport_page(dict_similar_disease['onto_id_ordo'], str_phenotypes, '', '1', '20') }}">{{ dict_similar_disease['onto_term_ordo'] }}<br>({{dict_similar_disease['onto_id_ordo']}})</a>
+		      <a href="{{ url_for_disease_casereport_page(dict_similar_disease['onto_id_ordo'], str_phenotypes, '', '1', '20') }}">{{ dict_similar_disease['onto_term_ordo'] }}<br>({{dict_similar_disease['onto_id_ordo']}})<br><b>&gt;&gt; {{dict_similar_disease['total_num_case_reports']}}</b> Case Reports</a>
 		    </td>
 		    <!-- Matched Phenotypes -->
 		    <td>
@@ -180,13 +180,14 @@
 		      {% endfor %}
 		    </td>
 		  </tr>
+		  <!--
 		  <tr>
 		    <td>
-		      <!-- External References -->
+		      < External References >
 		      {% set flg_ICD10_ini = 0 %}
 		      {% set flg_OMIM_ini = 0 %}
 		      {% for dict_reference_source in dict_similar_disease['reference_source'] %}
-		        <!-- ICD-10 -->
+		        < ICD-10 >
 			{% if dict_reference_source['source'] == "ICD-10" %}
 		          {% if flg_ICD10_ini == 0 %}
 		            ICD-10 ( <a href="{{ dict_reference_source['link'] }}" target="_blank"><u><font color="#0431B4">{{ dict_reference_source['reference'] }}</font></u></a>
@@ -195,7 +196,7 @@
 		            ,&nbsp;<a href="{{ dict_reference_source['link'] }}" target="_blank"><u><font color="#0431B4">{{ dict_reference_source['reference'] }}</font></u></a>
 		          {% endif %}
 			{% endif %}
-			<!-- OMIM -->
+			< OMIM >
 			{% if dict_reference_source['source'] == "OMIM" %}
 		          {% if flg_OMIM_ini == 0 %}
 		            {% if flg_ICD10_ini == 1 %}
@@ -211,6 +212,12 @@
 		          )
 			{% endif %}
 	              {% endfor %}
+		    </td>
+		  </tr>
+		  -->
+		  <tr>
+		    <td>
+		      <b>[Disease definition]</b><br><font color="black">{{ dict_similar_disease['onto_term_ordo_disease_definition'] }}</font><br>&nbsp;
 		    </td>
 		  </tr>
 		{% endfor %}
@@ -257,7 +264,7 @@
 	      <p>
 		<small class="block"><a href="/termsofservice_en">Terms of Service</a></small><br>
 		<small class="block">PubCaseFinder is provided by <a href="http://dbcls.rois.ac.jp">Database Center for Life Science</a> and is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/2.1/jp/deed.en">Creative Commons Attribution 2.1 Japan License</a>.</small><br>
-		<small class="block">Comments & suggestions are welcome. Please contact to : support AT dbcls DOT rois DOT ac DOT jp</small><br>
+		<small class="block">Comments & suggestions are welcome. Please contact to : <a href="mailto:pubcasefinder@dbcls.rois.ac.jp" href="#">pubcasefinder@dbcls.rois.ac.jp</a></small><br>
 		<br>
 		<a href="http://dbcls.rois.ac.jp"><img src="/static/images/DBCLS_logo_en_2014.png" width="20%" class="pull-center" /></a>
 	      </p>
