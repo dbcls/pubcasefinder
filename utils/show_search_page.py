@@ -73,6 +73,20 @@ def show_search_page(phenotypes, genes, page, size):
     end = start + limit
     list_dict_similar_disease_pagination = list_dict_similar_disease[start:end]
 
+    # 各疾患で報告されている症例報告数を収納
+    OBJ_MYSQL = MySQLdb.connect(unix_socket=db_sock, host="localhost", db=db_name, user=db_user, passwd=db_pw, charset="utf8")
+    for dict_similar_disease in list_dict_similar_disease_pagination:
+        onto_id_ordo = dict_similar_disease['onto_id_ordo']
+        sql = u"select count(distinct PMID) from AnnotOntoORDOHP where OntoIDORDO=%s"
+        cursor = OBJ_MYSQL.cursor()
+        cursor.execute(sql, (onto_id_ordo,))
+        #cursor.execute(sql, ("ORDO:2573",))
+        values = cursor.fetchall()
+        cursor.close()
+        total_num_case_reports = values[0][0]
+        dict_similar_disease['total_num_case_reports'] = total_num_case_reports
+    OBJ_MYSQL.close()
+
     return list_dict_phenotype, list_dict_gene, list_dict_similar_disease_pagination, pagination, total_hit
 
 
@@ -114,6 +128,18 @@ def search_similar_disease(str_phenotypes, str_genes):
     cursor_OntoTerm_hp.close()
     for value in values:
         dict_OntoTerm_hp[value[0]] = value[1]
+
+
+    # OrphanetテーブルからDisease definitionを取得
+    dict_disease_definition = {}
+    sql_Orphanet_disease_definition = u"select OntoID, DiseaseDefinition from Orphanet group by OntoID"
+    cursor_Orphanet_disease_definition = OBJ_MYSQL.cursor()
+    cursor_Orphanet_disease_definition.execute(sql_Orphanet_disease_definition)
+    values = cursor_Orphanet_disease_definition.fetchall()
+    cursor_Orphanet_disease_definition.close()
+    for value in values:
+        dict_disease_definition[value[0]] = value[1]
+
 
     ## DiseaseLinkテーブルから各疾患のReferenceを取得
     dict_DiseaseLink = {}
@@ -240,6 +266,7 @@ def search_similar_disease(str_phenotypes, str_genes):
 
             dict_similar_diseases[onto_id_ordo]['onto_term_ordo'] = dict_OntoTerm_ordo[onto_id_ordo] if onto_id_ordo in dict_OntoTerm_ordo else ""
             #dict_similar_diseases[onto_id_ordo]['orpha_number']   = orpha_number
+            dict_similar_diseases[onto_id_ordo]['onto_term_ordo_disease_definition'] = dict_disease_definition[onto_id_ordo] if onto_id_ordo in dict_disease_definition else ""
 
     # DiseaseGeneテーブルから各疾患に関連するGenes/Variantsを取得
     dict_disease_gene = {}
@@ -323,6 +350,7 @@ def search_similar_disease(str_phenotypes, str_genes):
             dict_similar_disease['match_score']           = 0
         dict_similar_disease['onto_term_ordo']            = dict_similar_diseases[onto_id_ordo]['onto_term_ordo']
         #dict_similar_disease['orpha_number']              = dict_similar_diseases[onto_id_ordo]['orpha_number']
+        dict_similar_disease['onto_term_ordo_disease_definition'] = dict_similar_diseases[onto_id_ordo]['onto_term_ordo_disease_definition']
         dict_similar_disease['onto_id_hp_index']          = ",".join(dict_similar_diseases[onto_id_ordo]['onto_id_hp_index'])
         dict_similar_disease['onto_id_hp_disease']        = ",".join(dict_similar_diseases[onto_id_ordo]['onto_id_hp_disease'])
         dict_similar_disease['onto_id_term_hp_disease']   = sorted(dict_similar_diseases[onto_id_ordo]['onto_id_term_hp_disease'], key=lambda x: x['onto_term_hp_disease'])
