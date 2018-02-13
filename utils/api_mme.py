@@ -126,7 +126,10 @@ def make_JSON_MME(dict_json):
     genes      = ",".join(list_genes)
 
     # search diseases and case reports
-    dict_results = make_search_results_MME(phenotypes, genes, '100000', '0', dict_EntrezID2EnsemblID)
+    #dict_results = make_search_results_MME(phenotypes, genes, '100000', '0', dict_EntrezID2EnsemblID)
+    ## the request from PhenomeCentral to return top 100
+    ## 2018.02.07
+    dict_results = make_search_results_MME(phenotypes, genes, '100', '0', dict_EntrezID2EnsemblID)
 
     return dict_results
 
