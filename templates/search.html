@@ -49,9 +49,17 @@
 	  <textarea class="form-control" rows="1" id="tokeninput_genes" name="str_genes"></textarea>
 	  <!-- END: Narrow down the diseases by Gene(s) -->
 	  <br>
-	  <button type="submit" class="btn btn-primary">Get diagnosis</button>		    
-	  <button id="tokeninput_hpo_genes_clear" class="btn btn-default">Clear</button>
-	  <div align="right"><a href="{{ url_for_download_results_search_page(str_phenotypes, str_genes, '1', '20') }}">Download Results</a></div>
+	  <table width="100%">
+	    <tr>
+	      <td>
+		<button type="submit" class="btn btn-primary">Get diagnosis</button>		    
+		<button id="tokeninput_hpo_genes_clear" class="btn btn-default">Clear</button>
+	      </td>
+	      <td align="right">
+		<input type="button" class="btn btn-primary" value="Download Results" onClick='location.href="{{ url_for_download_results_search_page(str_phenotypes, str_genes, '1', '20') }}"'>
+	      </td>
+	    </tr>
+	  </table>
 
 	  <table width="100%" height="120">
 	    <tr>
@@ -315,11 +323,11 @@
     <script type="text/javascript" src="/static/js/jquery.tokeninput.js"></script>
     <script type="text/javascript">
       $(document).ready(function() {
-        $("#tokeninput_hpo").tokenInput("https://dev-pubcasefinder.dbcls.jp/tokeninput_hpo", {
+        $("#tokeninput_hpo").tokenInput("https://pubcasefinder.dbcls.jp/tokeninput_hpo", {
           theme: "facebook",
           prePopulate: {{ json_phenotypes|safe }}
         });
-        $("#tokeninput_genes").tokenInput("https://dev-pubcasefinder.dbcls.jp/tokeninput_genes", {
+        $("#tokeninput_genes").tokenInput("https://pubcasefinder.dbcls.jp/tokeninput_genes", {
           theme: "facebook",
           prePopulate: {{ json_genes|safe }}
         });
