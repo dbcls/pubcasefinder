@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 
-from flask import Flask, render_template, request, redirect, url_for, jsonify
+from flask import Flask, render_template, request, redirect, url_for, jsonify, make_response
 import os
 import re
 import MySQLdb
 import json
 import sys
 from werkzeug import secure_filename
+from io import StringIO, BytesIO
+import csv
 
 # Seach core
 from utils.pagination import Pagination
@@ -70,6 +72,23 @@ app.jinja_env.globals['url_for_disease_casereport_page'] = url_for_disease_caser
 def url_for_show_phenotype_context_page(disease, phenotype, page, size):
     return url_for('REST_API_show_phenotype_context', disease=disease, phenotype=phenotype, page=page, size=size)
 app.jinja_env.globals['url_for_show_phenotype_context_page'] = url_for_show_phenotype_context_page
+
+
+
+#####
+# url_for_download_results_search_page()
+# 類似疾患検索ページの結果をダウンロード
+#####
+def url_for_download_results_search_page(phenotypes, genes, page, cs):
+    if phenotypes != "" and genes != "":
+        return url_for('REST_API_download_results_search_phenotypes_genes', phenotypes=phenotypes, genes=genes, page=page, size=cs)
+    elif phenotypes != "":
+        return url_for('REST_API_download_results_search_phenotypes', phenotypes=phenotypes, page=page, size=cs)
+    elif genes != "":
+        return url_for('REST_API_download_results_search_genes', genes=genes, page=page, size=cs)
+    else:
+        return url_for('REST_API_download_results_search_none', page=page, size=cs)
+app.jinja_env.globals['url_for_download_results_search_page'] = url_for_download_results_search_page
 
 
 
@@ -476,6 +495,189 @@ def REST_API_show_phenotype_context(disease, phenotype, page, size):
 
 
 #####
+# download results search page
+## GET: dwonload results search page with phenotype and gene
+@app.route('/download_results_search_disease/phenotype:<string:phenotypes>/gene:<string:genes>/page:<int:page>/size:<string:size>', methods=['GET'])
+def REST_API_download_results_search_phenotypes_genes(phenotypes, genes, page, size):
+    if request.method == 'GET':
+        list_dict_phenotype,list_dict_gene,list_dict_similar_disease_pagination, pagination, total_hit = show_search_page(phenotypes, genes, page, '1000000')
+
+        # Python 3系 https://stackoverflow.com/questions/13120127/how-can-i-use-io-stringio-with-the-csv-module/13120279
+        #f = StringIO()
+        # Python 2系
+        f = BytesIO()
+        writer = csv.writer(f, delimiter="\t", quotechar='"', quoting=csv.QUOTE_MINIMAL, lineterminator="\n")
+        writer.writerow(['Rank','Score','Disease-Id','Disease-Name','Matched-Phenotype','Causative-Gene'])
+
+        rank = 1;
+        for dict_similar_disease in list_dict_similar_disease_pagination:
+            prev_id_hp = ""
+            list_matched_phenotype = []
+            for dict_onto_id_term_hp_disease in dict_similar_disease['onto_id_term_hp_disease']:
+                if prev_id_hp != dict_onto_id_term_hp_disease['onto_id_hp_disease']:
+                    list_matched_phenotype.append(dict_onto_id_term_hp_disease['onto_id_hp_disease'])
+                    prev_id_hp = dict_onto_id_term_hp_disease['onto_id_hp_disease']
+
+
+            prev_id_entrez = ""
+            list_causative_gene = []
+            for dict_orpha_number_symbol_synonym in dict_similar_disease['orpha_number_symbol_synonym']:
+                if prev_id_entrez != dict_orpha_number_symbol_synonym['entrez_id']:
+                    list_causative_gene.append(dict_orpha_number_symbol_synonym['symbol'])
+                    prev_id_entrez = dict_orpha_number_symbol_synonym['entrez_id']
+
+            writer.writerow([rank, round(dict_similar_disease['match_score'],4), dict_similar_disease['onto_id_ordo'], dict_similar_disease['onto_term_ordo'].encode('utf-8'), u','.join(list_matched_phenotype).encode('utf-8'), u','.join(list_causative_gene).encode('utf-8')])
+            rank += 1
+
+        res = make_response()
+        res.data = f.getvalue()
+        res.headers['Content-Type'] = 'text/tsv'
+        res.headers['Content-Disposition'] = 'attachment; filename=results.tsv'
+        return res
+    else:
+        return render_template('index.html')
+
+    return
+
+
+## GET: download results search page with phenotype
+@app.route('/download_results_search_disease/phenotype:<string:phenotypes>/gene:/page:<int:page>/size:<string:size>', methods=['GET'])
+def REST_API_download_results_search_phenotypes(phenotypes, page, size):
+    genes = ""
+    if request.method == 'GET':
+        list_dict_phenotype,list_dict_gene,list_dict_similar_disease_pagination, pagination, total_hit = show_search_page(phenotypes, genes, page, '1000000')
+
+        # Python 3系 https://stackoverflow.com/questions/13120127/how-can-i-use-io-stringio-with-the-csv-module/13120279
+        #f = StringIO()
+        # Python 2系
+        f = BytesIO()
+        writer = csv.writer(f, delimiter="\t", quotechar='"', quoting=csv.QUOTE_MINIMAL, lineterminator="\n")
+        writer.writerow(['Rank','Score','Disease-Id','Disease-Name','Matched-Phenotype','Causative-Gene'])
+
+        rank = 1
+        for dict_similar_disease in list_dict_similar_disease_pagination:
+            prev_id_hp = ""
+            list_matched_phenotype = []
+            for dict_onto_id_term_hp_disease in dict_similar_disease['onto_id_term_hp_disease']:
+                if prev_id_hp != dict_onto_id_term_hp_disease['onto_id_hp_disease']:
+                    list_matched_phenotype.append(dict_onto_id_term_hp_disease['onto_id_hp_disease'])
+                    prev_id_hp = dict_onto_id_term_hp_disease['onto_id_hp_disease']
+
+
+            prev_id_entrez = ""
+            list_causative_gene = []
+            for dict_orpha_number_symbol_synonym in dict_similar_disease['orpha_number_symbol_synonym']:
+                if prev_id_entrez != dict_orpha_number_symbol_synonym['entrez_id']:
+                    list_causative_gene.append(dict_orpha_number_symbol_synonym['symbol'])
+                    prev_id_entrez = dict_orpha_number_symbol_synonym['entrez_id']
+
+            writer.writerow([rank, round(dict_similar_disease['match_score'],4), dict_similar_disease['onto_id_ordo'], dict_similar_disease['onto_term_ordo'].encode('utf-8'), u','.join(list_matched_phenotype).encode('utf-8'), u','.join(list_causative_gene).encode('utf-8')])
+            rank += 1
+
+        res = make_response()
+        res.data = f.getvalue()
+        res.headers['Content-Type'] = 'text/tsv'
+        res.headers['Content-Disposition'] = 'attachment; filename=results.tsv'
+        return res
+    else:
+        return render_template('index.html')
+
+    return
+
+
+## GET: downloads results search page with gene
+@app.route('/download_results_search_disease/phenotype:/gene:<string:genes>/page:<int:page>/size:<string:size>', methods=['GET'])
+def REST_API_download_results_search_genes(genes, page, size):
+    phenotypes = ""
+    if request.method == 'GET':
+        list_dict_phenotype,list_dict_gene,list_dict_similar_disease_pagination, pagination, total_hit = show_search_page(phenotypes, genes, page, '1000000')
+
+        # Python 3系 https://stackoverflow.com/questions/13120127/how-can-i-use-io-stringio-with-the-csv-module/13120279
+        #f = StringIO()
+        # Python 2系
+        f = BytesIO()
+        writer = csv.writer(f, delimiter="\t", quotechar='"', quoting=csv.QUOTE_MINIMAL, lineterminator="\n")
+        writer.writerow(['Rank','Score','Disease-Id','Disease-Name','Matched-Phenotype','Causative-Gene'])
+
+        rank = 1
+        for dict_similar_disease in list_dict_similar_disease_pagination:
+            prev_id_hp = ""
+            list_matched_phenotype = []
+            for dict_onto_id_term_hp_disease in dict_similar_disease['onto_id_term_hp_disease']:
+                if prev_id_hp != dict_onto_id_term_hp_disease['onto_id_hp_disease']:
+                    list_matched_phenotype.append(dict_onto_id_term_hp_disease['onto_id_hp_disease'])
+                    prev_id_hp = dict_onto_id_term_hp_disease['onto_id_hp_disease']
+
+
+            prev_id_entrez = ""
+            list_causative_gene = []
+            for dict_orpha_number_symbol_synonym in dict_similar_disease['orpha_number_symbol_synonym']:
+                if prev_id_entrez != dict_orpha_number_symbol_synonym['entrez_id']:
+                    list_causative_gene.append(dict_orpha_number_symbol_synonym['symbol'])
+                    prev_id_entrez = dict_orpha_number_symbol_synonym['entrez_id']
+
+            writer.writerow([rank, round(dict_similar_disease['match_score'],4), dict_similar_disease['onto_id_ordo'], dict_similar_disease['onto_term_ordo'].encode('utf-8'), u','.join(list_matched_phenotype).encode('utf-8'), u','.join(list_causative_gene).encode('utf-8')])
+            rank += 1
+
+        res = make_response()
+        res.data = f.getvalue()
+        res.headers['Content-Type'] = 'text/tsv'
+        res.headers['Content-Disposition'] = 'attachment; filename=results.tsv'
+        return res
+    else:
+        return render_template('index.html')
+
+    return
+
+
+## GET: download results search page without phenotype and gene
+@app.route('/download_results_search_disease/phenotype:/gene:/page:<int:page>/size:<string:size>', methods=['GET'])
+def REST_API_download_results_search_none(page, size):
+    phenotypes = ""
+    genes = ""
+    if request.method == 'GET':
+        list_dict_phenotype,list_dict_gene,list_dict_similar_disease_pagination, pagination, total_hit = show_search_page(phenotypes, genes, page, '1000000')
+
+        # Python 3系 https://stackoverflow.com/questions/13120127/how-can-i-use-io-stringio-with-the-csv-module/13120279
+        #f = StringIO()
+        # Python 2系
+        f = BytesIO()
+        writer = csv.writer(f, delimiter="\t", quotechar='"', quoting=csv.QUOTE_MINIMAL, lineterminator="\n")
+        writer.writerow(['Rank','Score','Disease-Id','Disease-Name','Matched-Phenotype','Causative-Gene'])
+
+        rank = 1
+        for dict_similar_disease in list_dict_similar_disease_pagination:
+            prev_id_hp = ""
+            list_matched_phenotype = []
+            for dict_onto_id_term_hp_disease in dict_similar_disease['onto_id_term_hp_disease']:
+                if prev_id_hp != dict_onto_id_term_hp_disease['onto_id_hp_disease']:
+                    list_matched_phenotype.append(dict_onto_id_term_hp_disease['onto_id_hp_disease'])
+                    prev_id_hp = dict_onto_id_term_hp_disease['onto_id_hp_disease']
+
+
+            prev_id_entrez = ""
+            list_causative_gene = []
+            for dict_orpha_number_symbol_synonym in dict_similar_disease['orpha_number_symbol_synonym']:
+                if prev_id_entrez != dict_orpha_number_symbol_synonym['entrez_id']:
+                    list_causative_gene.append(dict_orpha_number_symbol_synonym['symbol'])
+                    prev_id_entrez = dict_orpha_number_symbol_synonym['entrez_id']
+
+            writer.writerow([rank, round(dict_similar_disease['match_score'],4), dict_similar_disease['onto_id_ordo'], dict_similar_disease['onto_term_ordo'].encode('utf-8'), u','.join(list_matched_phenotype).encode('utf-8'), u','.join(list_causative_gene).encode('utf-8')])
+            rank += 1
+
+        res = make_response()
+        res.data = f.getvalue()
+        res.headers['Content-Type'] = 'text/tsv'
+        res.headers['Content-Disposition'] = 'attachment; filename=results.tsv'
+        return res
+    else:
+        return render_template('index.html')
+
+    return
+
+
+
+#####
 # tokeninput_hpo()
 # complement input for phenotypes
 #####
@@ -705,6 +907,8 @@ def validateFileSize(file):
             return False
 
     return True
+
+
 
 
 

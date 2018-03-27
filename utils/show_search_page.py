@@ -102,7 +102,7 @@ def search_similar_disease(str_phenotypes, str_genes):
     # MySQL接続　初期設定
     OBJ_MYSQL = MySQLdb.connect(unix_socket=db_sock, host="localhost", db=db_name, user=db_user, passwd=db_pw, charset="utf8")
 
-    ## OntoTermテーブル及びOrphanetテーブルからORDOの全termを取得
+    ## OntoTermテーブルからORDOの全termを取得
     dict_OntoTerm_ordo = {}
     sql_OntoTerm_ordo = u"select distinct OntoID, OntoTerm from OntoTermORDO where OntoType='label'"
     cursor_OntoTerm_ordo = OBJ_MYSQL.cursor()
@@ -111,14 +111,23 @@ def search_similar_disease(str_phenotypes, str_genes):
     cursor_OntoTerm_ordo.close()
     for value in values:
         dict_OntoTerm_ordo[value[0]] = value[1]
-    sql_Orphanet = u"select distinct OntoID, OntoTerm from Orphanet"
+
+    ## OrphanetテーブルからORDOの全termを取得
+    ### OntoTermテーブルはORDOから取得しているが、OrphanetテーブルはOrphanetのXMLから取得している
+    ## Orphanetテーブルから各疾患ごとのアノテーションHPO数を取得
+    ## Orphanetテーブルから各疾患ごとのアノテーションHPOの合計ICを取得
+    dict_AnnotationHPONum   = {}
+    dict_AnnotationHPOSumIC = {}
+    sql_Orphanet = u"select distinct OntoID, OntoTerm, AnnotationHPONum, AnnotationHPOSumIC from Orphanet"
     cursor_Orphanet = OBJ_MYSQL.cursor()
     cursor_Orphanet.execute(sql_Orphanet)
     values = cursor_Orphanet.fetchall()
     cursor_Orphanet.close()
     for value in values:
-        dict_OntoTerm_ordo[value[0]] = value[1]
-
+        dict_OntoTerm_ordo[value[0]]      = value[1]
+        dict_AnnotationHPONum[value[0]]   = value[2]
+        dict_AnnotationHPOSumIC[value[0]] = value[3]
+        
     ## OntoTermHPテーブルからHPの全termを取得
     dict_OntoTerm_hp = {}
     sql_OntoTerm_hp = u"select distinct OntoID, OntoTerm from OntoTermHP where OntoType='label'"
@@ -184,9 +193,13 @@ def search_similar_disease(str_phenotypes, str_genes):
         ic = value[1]
         dict_IC[onto_id_ordo] = ic
 
+
+
+
         
-    ## 各疾患でのICの合計を取得
-    ## http://stackoverflow.com/questions/4574609/executing-select-where-in-using-mysqldb
+    ## 各疾患とのスコアを算出
+    ### インデックステーブルを利用して、各疾患でのICの合計を取得
+    ### http://stackoverflow.com/questions/4574609/executing-select-where-in-using-mysqldb
     #sql = u"select a.OntoIDORDO, a.IndexOntoIDHP, a.DiseaseOntoIDHP, a.DiseaseOntoIDHPSource, a.CommonRootHP, b.IC from IndexDiseaseHP as a left join IC as b on a.CommonRootHP=b.OntoID where b.OntoName='HP' and a.OntoIDORDO in (select distinct OntoID from Orphanet where RareDiseaseFlg=1) and a.IndexOntoIDHP in (%s) order by a.OntoIDORDO, a.DiseaseOntoIDHP"
     sql = u"select OntoIDORDO, IndexOntoIDHP, DiseaseOntoIDHP, DiseaseOntoIDHPSource, CommonRootHP, CommonRootHPIC from IndexDiseaseHP where OntoIDORDO in (select distinct OntoID from Orphanet where RareDiseaseFlg=1) and IndexOntoIDHP in (%s) order by OntoIDORDO, DiseaseOntoIDHP"
     in_p=', '.join(map(lambda x: '%s', list_phenotypes))
@@ -196,6 +209,8 @@ def search_similar_disease(str_phenotypes, str_genes):
     values = cursor.fetchall()
     cursor.close()
 
+
+    ####
     ## データを収納
     list_dict_similar_disease = []
     dict_similar_diseases = {}
@@ -361,6 +376,9 @@ def search_similar_disease(str_phenotypes, str_genes):
         ## 外部リファレンス
         if onto_id_ordo in dict_DiseaseLink:
             dict_similar_disease['reference_source'] = sorted(dict_DiseaseLink[onto_id_ordo], key=lambda x: x['source'])
+        ## HPOアノテーション数とHPOアノテーション合計IC
+        dict_similar_disease['annotation_hp_num']        = dict_AnnotationHPONum[onto_id_ordo]
+        dict_similar_disease['annotation_hp_sum_ic']     = dict_AnnotationHPOSumIC[onto_id_ordo]
 
         list_dict_similar_disease.append(dict_similar_disease)
 
@@ -383,8 +401,14 @@ def search_similar_disease(str_phenotypes, str_genes):
     #        prev_sum_ic = dict_similar_disease['sum_ic']
     #        rank_deposit += 1
 
+    ####
+    # スコアを基にランキングを作成
+    ## スコアが同一の場合は、以下の値でランキング
+    ### アノテーションされたHPOの数
+    ### アノテーションされたHPOのICの合計値
     prev_match_score = 0
-    for dict_similar_disease in sorted(list_dict_similar_disease, key=lambda x: (-float(x['match_score']),x['onto_term_ordo'])):
+    #for dict_similar_disease in sorted(list_dict_similar_disease, key=lambda x: (-float(x['match_score']),x['onto_term_ordo'])):
+    for dict_similar_disease in sorted(list_dict_similar_disease, key=lambda x: (-float(x['match_score']),int(x['annotation_hp_num']),-float(x['annotation_hp_sum_ic']))):
         if dict_similar_disease['match_score'] != prev_match_score:
             rank = rank + 1 + rank_deposit 
             dict_similar_disease['rank'] = rank
