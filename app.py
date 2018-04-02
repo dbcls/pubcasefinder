@@ -22,6 +22,9 @@ from utils.api_mme import make_JSON_MME, make_JSON_IRUD
 
 app = Flask(__name__)
 
+# debug
+app.debug = True
+
 #####
 # DB設定
 app.config.from_pyfile('config.cfg')
@@ -267,6 +270,7 @@ def search_POST():
         phenotypes = re.sub(r'^,+', '', phenotypes)
         phenotypes = re.sub(r',+$', '', phenotypes)
 
+
         ##### 
         # Entrez Gene ID リストを含むファイルを処理
         # requestオブジェクトからfileを取得
@@ -507,6 +511,9 @@ def REST_API_download_results_search_phenotypes_genes(phenotypes, genes, page, s
         # Python 2系
         f = BytesIO()
         writer = csv.writer(f, delimiter="\t", quotechar='"', quoting=csv.QUOTE_MINIMAL, lineterminator="\n")
+        ## out header
+        writer.writerow(['# Query(Phenotypes): ' + phenotypes])
+        writer.writerow(['# Query(Genes): ' + genes])
         writer.writerow(['Rank','Score','Disease-Id','Disease-Name','Matched-Phenotype','Causative-Gene'])
 
         rank = 1;
@@ -552,6 +559,9 @@ def REST_API_download_results_search_phenotypes(phenotypes, page, size):
         # Python 2系
         f = BytesIO()
         writer = csv.writer(f, delimiter="\t", quotechar='"', quoting=csv.QUOTE_MINIMAL, lineterminator="\n")
+        ## out header
+        writer.writerow(['# Query(Phenotypes): ' + phenotypes])
+        writer.writerow(['# Query(Genes): ' + genes])
         writer.writerow(['Rank','Score','Disease-Id','Disease-Name','Matched-Phenotype','Causative-Gene'])
 
         rank = 1
@@ -597,6 +607,9 @@ def REST_API_download_results_search_genes(genes, page, size):
         # Python 2系
         f = BytesIO()
         writer = csv.writer(f, delimiter="\t", quotechar='"', quoting=csv.QUOTE_MINIMAL, lineterminator="\n")
+        ## out header
+        writer.writerow(['# Query(Phenotypes): ' + phenotypes])
+        writer.writerow(['# Query(Genes): ' + genes])
         writer.writerow(['Rank','Score','Disease-Id','Disease-Name','Matched-Phenotype','Causative-Gene'])
 
         rank = 1
@@ -643,6 +656,9 @@ def REST_API_download_results_search_none(page, size):
         # Python 2系
         f = BytesIO()
         writer = csv.writer(f, delimiter="\t", quotechar='"', quoting=csv.QUOTE_MINIMAL, lineterminator="\n")
+        ## out header
+        writer.writerow(['# Query(Phenotypes): ' + phenotypes])
+        writer.writerow(['# Query(Genes): ' + genes])
         writer.writerow(['Rank','Score','Disease-Id','Disease-Name','Matched-Phenotype','Causative-Gene'])
 
         rank = 1
