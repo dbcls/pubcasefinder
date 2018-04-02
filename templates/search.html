@@ -12,13 +12,13 @@
 	  <table>
 	    <tr>
 	      <td nowrap>
-		<h2>Patient's phenotype(s)</h2>
+                <h2>Input patient's <b>signs</b> and <b>symptoms</b></h2>
 	      </td>
 	      <td nowrap>
 		<!-- 参考：http://proengineer.internous.co.jp/content/columnfeature/7605 -->
 		<!-- 参考：https://www.marineroad.com/staff-blog/14026.html -->
 		<label for="file_hpo_list">
-		  <span style="cursor:pointer;"><font color="#0431B4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+ Upload File (HPO List) : </font></span>
+		  <span style="cursor:pointer;"><font color="#0431B4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+ Upload File (HPO ID List) : </font></span>
 		  <input type="file" id="file_hpo_list" name="file_hpo_list" style="display:none;" onchange="$('#filename_hpo_list').val($(this).prop('files')[0].name)">
 		</label>
 		<input type="text" id="filename_hpo_list" name="filename_hpo_list" size="90" style=border:none; readonly onClick="$('#file').click();">
