@@ -1,0 +1,228 @@
+@keyframes popup-hierarchy-hpo-keyframe-superclass-translate {
+	from {
+		transform: translate(0%, 0px);
+	}
+	to {
+		transform: translate(33%, 0px);
+	}
+}
+
+@keyframes popup-hierarchy-hpo-keyframe-subclass-translate {
+	from {
+		transform: translate(0%, 0px);
+	}
+	to {
+		transform: translate(-33%, 0px);
+	}
+}
+
+@keyframes popup-hierarchy-hpo-keyframe-hidden {
+	from {
+		opacity: 1;
+	}
+	to {
+		opacity: 0;
+	}
+}
+
+.popup-hierarchy-hpo-inline-content {
+	display:none;
+}
+.popup-hierarchy-hpo-table {
+	display:table;
+	border-collapse:separate;
+	border-spacing: 20px;
+	width:100%;
+	margin: 0 auto;
+}
+.popup-hierarchy-hpo-caption {
+	display:table-caption;
+	text-align:center;
+	font-weight:bold;
+}
+.popup-hierarchy-hpo-tr {
+	display:table-row;
+}
+.popup-hierarchy-hpo-td {
+	display:table-cell;
+/*	border:1px solid gray;*/
+	width:33%;
+/*
+	max-width:33%;
+*/
+	text-align: center;
+	vertical-align: top;
+}
+.popup-hierarchy-hpo-base {
+	display:inline-block;
+	background-color: #ffffff;
+	border: 6px solid #4472C4;
+	border-radius: 10px;
+	width: 100%;
+	color: #000000;
+}
+
+
+.popup-hierarchy-hpo-title {
+	color: #ffffff;
+	background-color: #4472C4;
+}
+.popup-hierarchy-hpo-other-content>.popup-hierarchy-hpo-title {
+	text-align: center;
+}
+
+.popup-hierarchy-hpo-content {
+	padding: 10px;
+}
+
+.popup-hierarchy-hpo-link-base {
+	display: table;
+	border-collapse: collapse;
+	white-space: nowrap;
+	width: 100%;
+}
+
+.popup-hierarchy-hpo-link {
+	white-space: normal;
+	color: #4472C4;
+/*	display: inline-block;*/
+	display: table-cell;
+	text-decoration: underline;
+	border: transparent 1px dotted;
+	border-radius: 8px;
+	padding: 0 4px;
+	transition: 0s;
+}
+.popup-hierarchy-hpo-link:focus,
+.popup-hierarchy-hpo-link-focus {
+/*
+	color: red;
+*/
+	color: #4472C4;
+	text-decoration: underline;
+	border-color: gray;
+	background-color: #FBE5D6;
+}
+.popup-hierarchy-hpo-link:hover {
+	text-decoration: underline;
+}
+
+
+
+
+.popup-hierarchy-hpo-buttons {
+	padding: 8px;
+	text-align: left;
+	position: relative;
+}
+.popup-hierarchy-hpo-buttons-base {
+	display: inline-block;
+	position: relative;
+	white-space: nowrap;
+}
+.popup-hierarchy-hpo-buttons-base>button {
+/*
+	color: #ffffff;
+	background-color: #FF0E58;
+	border-radius: 10px;
+	border-color: #FF0E58;
+*/
+	padding-top: 2px;
+	padding-bottom: 2px;
+/*	font-size: 1em;*/
+}
+
+.popup-hierarchy-hpo-buttons-base>button:last-child {
+	margin-right: 0;
+}
+
+.popup-hierarchy-hpo-link-base button {
+	font-size: 0.8em;
+
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-left: 4px;
+	padding-right: 4px;
+	margin-bottom: 0;
+}
+
+
+.popup-hierarchy-hpo-close-button {
+/*
+	background: transparent;
+	position: absolute;
+	right: 10px;
+	top: 0;
+	display: inline-block;
+	cursor: pointer;
+	font-weight: bold;
+	color: #666;
+*/
+
+	background: transparent;
+	display: inline-block;
+	cursor: pointer;
+	font-weight: bold;
+	color: white;
+	padding-right: 4px;
+}
+
+.popup-hierarchy-hpo-superclass {
+	text-align: right;
+}
+.popup-hierarchy-hpo-subclass {
+	text-align: left;
+
+}
+.popup-hierarchy-hpo-selectedphenotype {
+}
+.popup-hierarchy-hpo-selectedphenotype.popup-hierarchy-hpo-base {
+	border: 6px solid #D0D0D0;
+	color: #000000;
+}
+.popup-hierarchy-hpo-selectedphenotype .popup-hierarchy-hpo-title {
+	color: #000000;
+	background-color: #D0D0D0;
+}
+.popup-hierarchy-hpo-selectedphenotype .popup-hierarchy-hpo-content {
+	border: 1px solid #000000;
+}
+
+
+
+.popup-hierarchy-hpo-selectedphenotype button {
+	font-size: 0.8em;
+
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-left: 4px;
+	padding-right: 4px;
+}
+
+.popup-hierarchy-hpo-content-table {
+	display:table;
+	border-collapse:separate;
+	border-spacing: 2px;
+/*	width:100%;*/
+	margin: 0 auto;
+}
+.popup-hierarchy-hpo-content-tr {
+	display:table-row;
+}
+.popup-hierarchy-hpo-content-th {
+	display:table-cell;
+	text-align: left;
+	vertical-align: top;
+	font-weight: bold;
+}
+.popup-hierarchy-hpo-content-td {
+	display:table-cell;
+	text-align: left;
+	vertical-align: top;
+}
+
+.popup-hierarchy-hpo-loading {
+	color: #ffffff;
+	text-align: center;
+	width: 100%;
+}
