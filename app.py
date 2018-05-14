@@ -813,6 +813,130 @@ def tokeninput_filter_casereport():
 
 
 #####
+# popup_hierarchy_hpo()
+# オントロジーのバージョンをSQL内で"20170630"に固定しているので、要修正
+#####
+@app.route('/popup_hierarchy_hpo', methods=['GET', 'POST'])
+def popup_hierarchy_hpo():
+
+    list_json = []
+
+    # GETメソッドの値を取得
+    if request.method == 'GET':
+
+        # requestから値を取得
+        onto_id = request.args.get("q")
+
+        # MySQLへ接続
+        OBJ_MYSQL = MySQLdb.connect(unix_socket=db_sock, host="localhost", db=db_name, user=db_user, passwd=db_pw, charset="utf8")
+
+        # JSONデータ
+        dict_json = {}
+
+        # OntoTermHPInformationテーブルから情報取得
+	sql_information = u"select OntoName, OntoSynonym, OntoDefinition, OntoParentNum, OntoChildNum, OntoNameJa from OntoTermHPInformation where OntoVersion='20170630' and OntoID=%s"
+        sql_informations_fmt = u"select OntoID, OntoName, OntoSynonym, OntoDefinition, OntoChildNum, OntoNameJa from OntoTermHPInformation where OntoVersion='20170630' and OntoID in (%s)"
+
+        sql_hierarchy_parent = u"select OntoParentID from OntoTermHPHierarchy where OntoVersion='20170630' and OntoID=%s"
+        sql_hierarchy_child  = u"select OntoID from OntoTermHPHierarchy where OntoVersion='20170630' and OntoParentID=%s"
+
+        # OntoTermHPInformationテーブルからクエリにマッチするレコードを取得
+        cursor_information = OBJ_MYSQL.cursor()
+        cursor_information.execute(sql_information, (onto_id,))
+        values_information = cursor_information.fetchall()
+        cursor_information.close()
+
+        for value_information in values_information:
+            dict_self_class = {}
+            onto_name       = value_information[0]
+            onto_synonym    = value_information[1]
+            onto_definition = value_information[2]
+            onto_parent_num = value_information[3]
+            onto_child_num  = value_information[4]
+            onto_name_ja    = value_information[5]
+            dict_self_class['id']         = onto_id
+            dict_self_class['name']       = onto_name
+            dict_self_class['name_ja']    = onto_name_ja if onto_name_ja != "" else onto_name
+            dict_self_class['synonym']    = onto_synonym
+            dict_self_class['definition'] = onto_definition
+
+            list_parent_child_onto_id = []
+            # OntoTermHPHierarchyから親クラスの情報取得
+            list_parent_onto_id = []
+            if onto_parent_num > 0:
+                cursor_hierarchy_parent = OBJ_MYSQL.cursor()
+                cursor_hierarchy_parent.execute(sql_hierarchy_parent, (onto_id,))
+                values_hierarchy_parent = cursor_hierarchy_parent.fetchall()
+                cursor_hierarchy_parent.close()
+
+                for value_hierarchy_parent in values_hierarchy_parent:
+                    parent_onto_id = value_hierarchy_parent[0]
+                    list_parent_onto_id.append(parent_onto_id)
+                    list_parent_child_onto_id.append(parent_onto_id)
+
+            # OntoTermHPHierarchyから子クラスの情報取得
+            list_child_onto_id = []
+            if onto_child_num > 0:
+                cursor_hierarchy_child = OBJ_MYSQL.cursor()
+                cursor_hierarchy_child.execute(sql_hierarchy_child, (onto_id,))
+                values_hierarchy_child = cursor_hierarchy_child.fetchall()
+                cursor_hierarchy_child.close()
+
+                for value_hierarchy_child in values_hierarchy_child:
+                    child_onto_id = value_hierarchy_child[0]
+                    list_child_onto_id.append(child_onto_id)
+                    list_parent_child_onto_id.append(child_onto_id)
+
+            # OntoTermHPInformations_fmtテーブルからクエリにマッチするレコードを取得
+            in_onto_id=', '.join(map(lambda x: '%s', list_parent_child_onto_id))
+            sql_informations_fmt = sql_informations_fmt % in_onto_id
+            cursor_informations_fmt = OBJ_MYSQL.cursor()
+            cursor_informations_fmt.execute(sql_informations_fmt, list_parent_child_onto_id)
+            values_informations_fmt = cursor_informations_fmt.fetchall()
+            cursor_informations_fmt.close()
+
+            dict_all_class = {}
+            for value_informations_fmt in values_informations_fmt:
+                onto_id         = value_informations_fmt[0]
+                onto_name       = value_informations_fmt[1]
+                onto_synonym    = value_informations_fmt[2]
+                onto_definition = value_informations_fmt[3]
+                onto_child_num  = value_informations_fmt[4]
+                onto_name_ja    = value_informations_fmt[5]
+                dict_all_class[onto_id] = {}
+                dict_all_class[onto_id]['id']      = onto_id
+                dict_all_class[onto_id]['name']    = onto_name
+                dict_all_class[onto_id]['name_ja'] = onto_name_ja if onto_name_ja != "" else onto_name
+                dict_all_class[onto_id]['count']   = onto_child_num
+
+            # JSON作成
+            ## self class リスト
+            list_self_class = []
+            list_self_class.append(dict_self_class)
+
+            ## parent class リスト
+            list_super_class = []
+            if len(list_parent_onto_id) > 0:
+                for parent_onto_id in list_parent_onto_id:
+                    list_super_class.append(dict_all_class[parent_onto_id])
+
+            ## child class リスト
+            list_sub_class = []
+            if len(list_child_onto_id) > 0:
+                for child_onto_id in list_child_onto_id:
+                    list_sub_class.append(dict_all_class[child_onto_id])
+            
+            ## dict_json に収納
+            dict_json['selfclass']  = list_self_class
+            dict_json['superclass'] = list_super_class
+            dict_json['subclass']   = list_sub_class
+
+    OBJ_MYSQL.close()
+
+    return jsonify(dict_json)
+
+
+#####
 # GET: API for IRUD Exchange
 #      show search page with phenotype and gene
 #      /search/phenotype:HPO:Id,HPO:id/gene:gene1,gene2/size_disease:N/size_casereport:N
