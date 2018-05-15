@@ -5,16 +5,12 @@
     <div id="fh5co-project">
       <div class="container">
 
-
       <h2><b><a target="_blank" href="http://www.orpha.net/consor/cgi-bin/OC_Exp.php?Expert={{ dict_onto_id_term_ordo['onto_id_nonprefix_ordo'] }}">{{ dict_onto_id_term_ordo['onto_term_ordo'] }}</a></b></h2>
       <div style="border-style: solid ; border-width: 1px;padding: 20px 20px 20px 20px;">
         <h4>Disease definition</h4>
         {{ str_disease_definition }}
       </div>
       <br><br>
-
-
-
 
       <!-- START: Nav-tabs -->
       <div class="panel with-nav-tabs panel-default">
@@ -413,6 +409,15 @@
       });
     </script>
     <!-- END: jquery-tokeninput -->
+
+    <!-- START: popup-hierarchy-hpo -->
+    <script src="/static/js/popup-hierarchy-hpo.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function() {
+        $("#tokeninput_hpo").popupRelationHPO('/popup_hierarchy_hpo');
+      });
+    </script>
+    <!-- END: popup-hierarchy-hpo -->
 
 
 {% endblock %}

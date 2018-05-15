@@ -185,8 +185,8 @@
           $("#tokeninput_hpo").tokenInput("add", {id: "HP:0001009", name: "HP:0001009 Telangiectasia"});
           $("#tokeninput_hpo").tokenInput("add", {id: "HP:0001249", name: "HP:0001249 Intellectual disability"});
           $("#tokeninput_hpo").tokenInput("add", {id: "HP:0001250", name: "HP:0001250 Seizures"});
-          $("#tokeninput_hpo").tokenInput("add", {id: "HP:0002072", name: "HP:0002072 Headache"});
-          $("#tokeninput_hpo").tokenInput("add", {id: "HP:0002315", name: "HP:0002315 Chorea"});
+          $("#tokeninput_hpo").tokenInput("add", {id: "HP:0002072", name: "HP:0002072 Chorea"});
+          $("#tokeninput_hpo").tokenInput("add", {id: "HP:0002315", name: "HP:0002315 Headache"});
           return false;
         });
         $("#tokeninput_hpo").tokenInput("/tokeninput_hpo", {
@@ -200,14 +200,14 @@
     </script>
     <!-- END: jquery-tokeninput -->
 
-    <!-- START: jquery-tokeninput -->
+    <!-- START: popup-hierarchy-hpo -->
     <script src="/static/js/popup-hierarchy-hpo.js"></script>
     <script type="text/javascript">
       $(document).ready(function() {
-        $("#tokeninput_hpo").popupRelationHPO('./popup_hierarchy_hpo');
+        $("#tokeninput_hpo").popupRelationHPO('/popup_hierarchy_hpo');
       });
     </script>
-    <!-- END: jquery-tokeninput -->
+    <!-- END: popup-hierarchy-hpo -->
 
 
 {% endblock %}
