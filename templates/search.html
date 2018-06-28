@@ -52,11 +52,11 @@
 	  <table width="100%">
 	    <tr>
 	      <td>
-		<button type="submit" class="btn btn-primary">Get diagnosis</button>		    
-		<button id="tokeninput_hpo_genes_clear" class="btn btn-default">Clear</button>
+		<input type="button" class="btn btn-primary" value="Download Results" onClick='location.href="{{ url_for_download_results_search_page(str_phenotypes, str_genes, '1', '20') }}"'>
 	      </td>
 	      <td align="right">
-		<input type="button" class="btn btn-primary" value="Download Results" onClick='location.href="{{ url_for_download_results_search_page(str_phenotypes, str_genes, '1', '20') }}"'>
+		<button type="submit" class="btn btn-primary">Get diagnosis</button>		    
+		<button id="tokeninput_hpo_genes_clear" class="btn btn-default">Clear</button>
 	      </td>
 	    </tr>
 	  </table>
