@@ -25,6 +25,11 @@
 	}
 }
 
+.mfp-s-ready .mfp-content,
+.mfp-s-ready .mfp-preloader {
+	height:100%;
+}
+
 .popup-hierarchy-hpo-inline-content {
 	display:none;
 }
@@ -63,11 +68,13 @@
 }
 
 
-.popup-hierarchy-hpo-title {
+.popup-hierarchy-hpo-top-bar,
+.popup-hierarchy-hpo-bottom-bar {
 	color: #ffffff;
 	background-color: #4472C4;
 }
-.popup-hierarchy-hpo-other-content>.popup-hierarchy-hpo-title {
+.popup-hierarchy-hpo-other-content>.popup-hierarchy-hpo-top-bar,
+.popup-hierarchy-hpo-other-content>.popup-hierarchy-hpo-bottom-bar {
 	text-align: center;
 }
 
@@ -93,7 +100,10 @@
 	padding: 0 4px;
 	transition: 0s;
 }
-.popup-hierarchy-hpo-link:focus,
+.popup-hierarchy-hpo-link:focus {
+	color: #4472C4;
+	text-decoration: underline;
+}
 .popup-hierarchy-hpo-link-focus {
 /*
 	color: red;
@@ -109,6 +119,15 @@
 
 
 
+.popup-hierarchy-hpo-button-disabled {
+	opacity: 0.2;
+	cursor: default;
+}
+
+.popup-hierarchy-hpo-button-add,
+.popup-hierarchy-hpo-button-replace {
+	transition: unset;
+}
 
 .popup-hierarchy-hpo-buttons {
 	padding: 8px;
@@ -177,26 +196,55 @@
 .popup-hierarchy-hpo-selectedphenotype {
 }
 .popup-hierarchy-hpo-selectedphenotype.popup-hierarchy-hpo-base {
+/*
 	border: 6px solid #D0D0D0;
 	color: #000000;
+*/
+	border: 6px solid #4472C4;
+	color: #ffffff;
 }
-.popup-hierarchy-hpo-selectedphenotype .popup-hierarchy-hpo-title {
+.popup-hierarchy-hpo-selectedphenotype .popup-hierarchy-hpo-top-bar,
+.popup-hierarchy-hpo-selectedphenotype .popup-hierarchy-hpo-bottom-bar {
+/*
 	color: #000000;
 	background-color: #D0D0D0;
+*/
+	color: #ffffff;
+	background-color: #4472C4;
+}
+.popup-hierarchy-hpo-selectedphenotype .popup-hierarchy-hpo-bottom-bar {
+	padding-top: 2px;
 }
 .popup-hierarchy-hpo-selectedphenotype .popup-hierarchy-hpo-content {
+/*
 	border: 1px solid #000000;
+*/
+	border: 1px solid #4472C4;
 }
 
 
 
-.popup-hierarchy-hpo-selectedphenotype button {
-	font-size: 0.8em;
+/*.popup-hierarchy-hpo-selectedphenotype button {*/
+.popup-hierarchy-hpo-top-bar button,
+.popup-hierarchy-hpo-bottom-bar button {
+/*	font-size: 0.8em;*/
 
 	padding-top: 0px;
 	padding-bottom: 0px;
 	padding-left: 4px;
 	padding-right: 4px;
+}
+
+.popup-hierarchy-hpo-top-bar button {
+	margin-bottom: 5px;
+}
+.popup-hierarchy-hpo-bottom-bar button {
+	margin-bottom: 0;
+	margin-top: 0;
+	min-width: 70px;
+}
+.popup-hierarchy-hpo-bottom-bar button.btn-default {
+	border: 2px solid white;
 }
 
 .popup-hierarchy-hpo-content-table {
@@ -224,5 +272,7 @@
 .popup-hierarchy-hpo-loading {
 	color: #ffffff;
 	text-align: center;
+	vertical-align: middle;
 	width: 100%;
+	height: 100%;
 }
