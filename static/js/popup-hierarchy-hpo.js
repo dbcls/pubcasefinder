@@ -531,7 +531,8 @@
 //					console.log('back addOriginalTokenInputItem()',getTokenInputItems(),getOriginalTokenInputItems());
 			}
 			setTimeout(function(){
-				closeMagnificPopup();
+			    closeMagnificPopup();
+			    $('div.'+tokeninput_classes['dropdown']).css({'display':'none'});
 			},100);
 //			console.log('end   executionOKCancel()',getTokenInputItems(),getOriginalTokenInputItems());
 			return;
