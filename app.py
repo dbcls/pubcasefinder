@@ -9,6 +9,8 @@ import sys
 from werkzeug import secure_filename
 from io import StringIO, BytesIO
 import csv
+# https://blog.capilano-fw.com/?p=398
+from flask_babel import gettext,Babel
 
 # Seach core
 from utils.pagination import Pagination
@@ -22,6 +24,12 @@ from utils.api_mme import make_JSON_MME, make_JSON_IRUD
 
 app = Flask(__name__)
 
+# https://github.com/shibacow/flask_babel_sample/blob/master/srv.py
+babel = Babel(app)
+@babel.localeselector
+def get_locale():
+    return request.accept_languages.best_match(['ja', 'ja_JP', 'en'])
+
 # debug
 app.debug = True
 
@@ -32,7 +40,6 @@ db_sock = app.config['DBSOCK']
 db_name = app.config['DBNAME']
 db_user = app.config['DBUSER']
 db_pw   = app.config['DBPW']
-
 
 #####
 # url_for_search_page()
@@ -260,16 +267,15 @@ def search_POST():
                 ## テキストボックスの遺伝子リストとファイル内の遺伝子リストを結合
                 list_phenotypes.extend(list_phenotypes_file_removed)
 
-        ## リスト内の重複を削除
+        ## 症状リスト内の重複を削除
         list_phenotypes_uniq = []
         for phenotype in list_phenotypes:
-            if phenotype not in list_phenotypes_uniq:
+            if phenotype not in list_phenotypes_uniq and phenotype.replace('_ja', '') not in list_phenotypes_uniq and phenotype + '_ja' not in list_phenotypes_uniq:
                 list_phenotypes_uniq.append(phenotype)
 
         phenotypes = ','.join(list_phenotypes_uniq)
         phenotypes = re.sub(r'^,+', '', phenotypes)
         phenotypes = re.sub(r',+$', '', phenotypes)
-
 
         ##### 
         # Entrez Gene ID リストを含むファイルを処理
@@ -299,7 +305,7 @@ def search_POST():
                 ## テキストボックスの遺伝子リストとファイル内の遺伝子リストを結合
                 list_genes.extend(list_genes_file_removed)
 
-        ## リスト内の重複を削除
+        ## 遺伝子リスト内の重複を削除
         list_genes_uniq = []
         for gene in list_genes:
             if gene not in list_genes_uniq:
@@ -456,11 +462,33 @@ def disease_casereport_POST():
 
         # requestオブジェクトからクエリのphenotypesを取得
         phenotypes = request.form['str_phenotypes']
+        list_phenotypes = phenotypes.split(',')
 
         # requestオブジェクトからクエリのgenesを取得
         genes = request.form['str_genes']
+        list_genes = genes.split(',')
 
         page=1
+
+        ## 症状リスト内の重複を削除
+        list_phenotypes_uniq = []
+        for phenotype in list_phenotypes:
+            if phenotype not in list_phenotypes_uniq and phenotype.replace('_ja', '') not in list_phenotypes_uniq and phenotype + '_ja' not in list_phenotypes_uniq:
+                list_phenotypes_uniq.append(phenotype)
+
+        phenotypes = ','.join(list_phenotypes_uniq)
+        phenotypes = re.sub(r'^,+', '', phenotypes)
+        phenotypes = re.sub(r',+$', '', phenotypes)
+
+        ## 遺伝子リスト内の重複を削除
+        list_genes_uniq = []
+        for gene in list_genes:
+            if gene not in list_genes_uniq:
+                list_genes_uniq.append(gene)
+
+        genes = ','.join(list_genes_uniq)
+        genes = re.sub(r'^,+', '', genes)
+        genes = re.sub(r',+$', '', genes)
 
         # POSTメソッドをRESTのURLにredirect
         if phenotypes != "" and genes != "":
@@ -712,8 +740,8 @@ def tokeninput_hpo():
         ## SQLのLIKEを使うときのTips
         ### http://d.hatena.ne.jp/heavenshell/20111027/1319712031
         OBJ_MYSQL = MySQLdb.connect(unix_socket=db_sock, host="localhost", db=db_name, user=db_user, passwd=db_pw, charset="utf8")
-        #sql_OntoTerm = u"select distinct uid, uid_value from IndexFormHP where uid_value like %s order by value"
-        sql_OntoTerm = u"select distinct a.uid, a.uid_value, b.FreqSelf from IndexFormHP as a left join IC as b on a.uid=b.OntoID where a.uid_value like %s order by b.FreqSelf desc, value"
+        # ICテーブルに存在する各termの頻度で、表示するtermをソート
+        sql_OntoTerm = u"select distinct a.uid, a.uid_value, b.FreqSelf from IndexFormHP as a left join IC as b on replace(a.uid, '_ja', '')=b.OntoID where a.uid_value like %s order by b.FreqSelf desc, value"
         cursor_OntoTerm = OBJ_MYSQL.cursor()
         cursor_OntoTerm.execute(sql_OntoTerm, ("%" + tokeninput +"%",))
         values = cursor_OntoTerm.fetchall()
@@ -825,7 +853,9 @@ def popup_hierarchy_hpo():
     if request.method == 'GET':
 
         # requestから値を取得
-        onto_id = request.args.get("q")
+        #onto_id = request.args.get("q")
+        onto_id_pre = request.args.get("q")
+        onto_id = onto_id_pre.replace('_ja', '')
 
         # MySQLへ接続
         OBJ_MYSQL = MySQLdb.connect(unix_socket=db_sock, host="localhost", db=db_name, user=db_user, passwd=db_pw, charset="utf8")

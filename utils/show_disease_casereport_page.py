@@ -6,8 +6,16 @@ import MySQLdb
 
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 from utils.pagination import Pagination
+from flask_babel import gettext,Babel
+
 
 app = Flask(__name__)
+
+# https://github.com/shibacow/flask_babel_sample/blob/master/srv.py
+babel = Babel(app)
+@babel.localeselector
+def get_locale():
+    return request.accept_languages.best_match(['ja', 'ja_JP', 'en'])
 
 
 #####
@@ -26,9 +34,17 @@ def show_disease_casereport_page(disease, phenotypes, genes, page, size):
     OBJ_MYSQL = MySQLdb.connect(unix_socket=db_sock, host="localhost", db=db_name, user=db_user, passwd=db_pw, charset="utf8")
     limit = int(size)
 
+    # 日本語HP IDに対応（HP:xxxxx_ja）
+    list_phenotypes_remove_ja = []
+    for phenotype in phenotypes.split(","):
+        list_phenotypes_remove_ja.append(phenotype.replace('_ja', ''))
+    phenotypes_remove_ja = ','.join(list_phenotypes_remove_ja)
+
+
     #####
     # 類似症例報告検索
-    list_dict_similar_casereport = search_similar_casereport(disease, phenotypes, genes)
+    #list_dict_similar_casereport = search_similar_casereport(disease, phenotypes, genes)
+    list_dict_similar_casereport = search_similar_casereport(disease, phenotypes_remove_ja, genes)
         
 
     #####
@@ -38,12 +54,14 @@ def show_disease_casereport_page(disease, phenotypes, genes, page, size):
 
     if phenotypes != "":
         for phenotype in phenotypes.split(","):
-            sql_OntoTerm = u"select OntoIDTerm from OntoTermHP where OntoType='label' and OntoID=%s"
+            #sql_OntoTerm = u"select OntoIDTerm from OntoTermHP where OntoType='label' and OntoID=%s"
+            sql_OntoTerm = u"select uid_value from IndexFormHP where uid=%s"
             cursor_OntoTerm = OBJ_MYSQL.cursor()
             cursor_OntoTerm.execute(sql_OntoTerm, (phenotype,))
             values = cursor_OntoTerm.fetchall()
             cursor_OntoTerm.close()
-            onto_id_term = values[0][0]
+            #onto_id_term = values[0][0]
+            onto_id_term = values[0][0] if values else ''
 
             dict_phenotype = {}
             dict_phenotype['id'] = phenotype
@@ -218,15 +236,25 @@ def search_similar_casereport(str_disease, str_phenotypes, str_genes):
 
 
     #####
-    # OntoTermHPテーブルからHPの全termを取得
+    # OntoTermHPテーブルまたはOntoTermHPInformationテーブルからHPの全termを取得
+    ## localeがenの場合はOntoTermHPから英語のHPO termを取得
+    ## localeがenでない場合はOntoTermHPInformationから日本語のHPO termを取得
     dict_OntoTerm_hp = {}
-    sql_OntoTerm_hp = u"select distinct OntoID, OntoTerm from OntoTermHP where OntoType='label'"
+    sql_OntoTerm_hp = ""
+    if get_locale() == "en":
+        sql_OntoTerm_hp = u"select distinct OntoID, OntoTerm from OntoTermHP where OntoType='label'"
+    else:
+        sql_OntoTerm_hp = u"select distinct OntoID, OntoName, OntoNameJa from OntoTermHPInformation"
     cursor_OntoTerm_hp = OBJ_MYSQL.cursor()
     cursor_OntoTerm_hp.execute(sql_OntoTerm_hp)
     values = cursor_OntoTerm_hp.fetchall()
     cursor_OntoTerm_hp.close()
-    for value in values:
-        dict_OntoTerm_hp[value[0]] = value[1]
+    if get_locale() == "en":
+        for value in values:
+            dict_OntoTerm_hp[value[0]] = value[1]
+    else:
+        for value in values:
+            dict_OntoTerm_hp[value[0]] = value[1] if value[2]=="" else value[2]
 
 
     #####

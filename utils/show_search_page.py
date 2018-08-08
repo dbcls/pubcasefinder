@@ -6,8 +6,17 @@ import MySQLdb
 
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 from utils.pagination import Pagination
+from flask_babel import gettext,Babel
+
 
 app = Flask(__name__)
+
+# https://github.com/shibacow/flask_babel_sample/blob/master/srv.py
+babel = Babel(app)
+@babel.localeselector
+def get_locale():
+    return request.accept_languages.best_match(['ja', 'ja_JP', 'en'])
+
 
 #####
 # DB設定
@@ -24,8 +33,15 @@ def show_search_page(phenotypes, genes, page, size):
 
     limit = int(size)
 
+    # 日本語HP IDに対応（HP:xxxxx_ja）
+    list_phenotypes_remove_ja = []
+    for phenotype in phenotypes.split(","):
+        list_phenotypes_remove_ja.append(phenotype.replace('_ja', ''))
+    phenotypes_remove_ja = ','.join(list_phenotypes_remove_ja)
+
     # 類似疾患検索
-    list_dict_similar_disease = search_similar_disease(phenotypes, genes)
+    #list_dict_similar_disease = search_similar_disease(phenotypes, genes)
+    list_dict_similar_disease = search_similar_disease(phenotypes_remove_ja, genes)
         
     # クエリ表示用に取得したphenotypesをJSON形式に変換
     list_dict_phenotype = []
@@ -127,16 +143,26 @@ def search_similar_disease(str_phenotypes, str_genes):
         dict_OntoTerm_ordo[value[0]]      = value[1]
         dict_AnnotationHPONum[value[0]]   = value[2]
         dict_AnnotationHPOSumIC[value[0]] = value[3]
+
         
-    ## OntoTermHPテーブルからHPの全termを取得
+    # OntoTermHPテーブルまたはOntoTermHPInformationテーブルからHPの全termを取得                                                                                                                                                                                                                                       
+    ## localeがenの場合はOntoTermHPから英語のHPO termを取得                                                                                                                                                                                                                                                                      ## localeがenでない場合はOntoTermHPInformationから日本語のHPO termを取得 
     dict_OntoTerm_hp = {}
-    sql_OntoTerm_hp = u"select distinct OntoID, OntoTerm from OntoTermHP where OntoType='label'"
+    sql_OntoTerm_hp = ""
+    if get_locale() == "en":
+        sql_OntoTerm_hp = u"select distinct OntoID, OntoTerm from OntoTermHP where OntoType='label'"
+    else:
+        sql_OntoTerm_hp = u"select distinct OntoID, OntoName, OntoNameJa from OntoTermHPInformation"
     cursor_OntoTerm_hp = OBJ_MYSQL.cursor()
     cursor_OntoTerm_hp.execute(sql_OntoTerm_hp)
     values = cursor_OntoTerm_hp.fetchall()
     cursor_OntoTerm_hp.close()
-    for value in values:
-        dict_OntoTerm_hp[value[0]] = value[1]
+    if get_locale() == "en":
+        for value in values:
+            dict_OntoTerm_hp[value[0]] = value[1]
+    else:
+        for value in values:
+            dict_OntoTerm_hp[value[0]] = value[1] if value[2]=="" else value[2]
 
 
     # OrphanetテーブルからDisease definitionを取得
@@ -192,9 +218,6 @@ def search_similar_disease(str_phenotypes, str_genes):
         onto_id_ordo = value[0]
         ic = value[1]
         dict_IC[onto_id_ordo] = ic
-
-
-
 
         
     ## 各疾患とのスコアを算出
