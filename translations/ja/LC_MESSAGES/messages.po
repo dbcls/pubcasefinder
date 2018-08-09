@@ -6,12 +6,143 @@
 msgid "Update"
 msgstr "最終更新日：2017年7月20日"
 
-msgid "Home"
-msgstr "トップページ"
-
 msgid "About"
 msgstr "ヘルプ"
+
+msgid "TermsOfService_URL"
+msgstr "/termsofservice_ja"
+
+msgid "TermsOfService"
+msgstr "利用規約"
 
 msgid "Contact"
 msgstr "お問い合わせ"
 
+msgid "index_textbox_title"
+msgstr "患者の <b>徴候</b>・<b>症状</b> を入力"
+
+msgid "index_button_search"
+msgstr "疾患を検索"
+
+msgid "index_button_clear"
+msgstr "クリア"
+
+msgid "index_Sample"
+msgstr "毛細血管拡張、知的障害、発作、舞踏病、頭痛"
+
+msgid "index_Sample_1_id"
+msgstr "HP:0001009_ja"
+
+msgid "index_Sample_1_name"
+msgstr "HP:0001009 毛細血管拡張"
+
+msgid "index_Sample_2_id"
+msgstr "HP:0001249_ja"
+
+msgid "index_Sample_2_name"
+msgstr "HP:0001249 知的障害"
+
+msgid "index_Sample_3_id"
+msgstr "HP:0001250_ja"
+
+msgid "index_Sample_3_name"
+msgstr "HP:0001250 発作"
+
+msgid "index_Sample_4_id"
+msgstr "HP:0002072_ja"
+
+msgid "index_Sample_4_name"
+msgstr "HP:0002072 舞踏病"
+
+msgid "index_Sample_5_id"
+msgstr "HP:0002315_ja"
+
+msgid "index_Sample_5_name"
+msgstr "HP:0002315 頭痛"
+
+msgid "search_textbox_title_narrowdown"
+msgstr "<b>疾患原因遺伝子</b> を入力"
+
+msgid "search_label_upload_hpo"
+msgstr "＋ファイル（HPO ID）"
+
+msgid "search_label_upload_gene"
+msgstr "＋ファイル（Entrez Gene ID）"
+
+msgid "search_button_download"
+msgstr "結果をダウンロード"
+
+msgid "search_label_total"
+msgstr "合計"
+
+msgid "search_label_disease"
+msgstr "（疾患）"
+
+msgid "search_label_perpage"
+msgstr "（表示件数）"
+
+msgid "search_label_MatchedPhenotype"
+msgstr "対応する徴候・症状"
+
+msgid "search_label_CausativeGene"
+msgstr "疾患原因遺伝子"
+
+msgid "search_label_rank"
+msgstr "順位"
+
+msgid "search_label_similarity"
+msgstr "（類似度）"
+
+msgid "search_label_DiseaseName"
+msgstr "疾患名"
+
+msgid "search_label_DiseaseID"
+msgstr "（疾患ID）"
+
+msgid "disease_label_DiseaseDefinition"
+msgstr "疾患定義"
+
+msgid "disease_tab_CaseReport"
+msgstr "症例報告"
+
+msgid "disease_tab_Phenotype"
+msgstr "徴候・症状"
+
+msgid "disease_tab_CausativeGene"
+msgstr "疾患原因遺伝子"
+
+msgid "disease_button_search"
+msgstr "症例報告を検索"
+
+msgid "disease_label_paper"
+msgstr "（症例報告）"
+
+msgid "disease_label_gene"
+msgstr "遺伝子"
+
+msgid "disease_label_mutation"
+msgstr "変異"
+
+msgid "disease_label_mesh"
+msgstr "キーワード（MeSH）"
+
+msgid "disesase_TabPheno_label_orphanet"
+msgstr "徴候・症状リスト（Orphanetデータベースから取得）"
+
+msgid "disesase_TabPheno_label_casereport"
+msgstr "徴候・症状リスト（症例報告から取得）"
+
+msgid "disease_TabPheno_label_term"
+msgstr "徴候・症状"
+
+msgid "disease_TabPheno_label_freq"
+msgstr "頻度"
+
+msgid "disease_TabPheno_label_num_casereport"
+msgstr "症例報告数"
+
+msgid "disesase_TabGene_label_orphanet"
+msgstr "疾患原因遺伝子リスト（Orphanetデータベースから取得）"
+
+msgid "disease_TabGene_label_name"
+msgstr "遺伝子名"

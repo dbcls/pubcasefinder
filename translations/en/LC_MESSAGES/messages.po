@@ -6,12 +6,143 @@
 msgid "Update"
 msgstr "Update: July. 20. 2017"
 
-msgid "Home"
-msgstr "Home"
-
 msgid "About"
 msgstr "About"
+
+msgid "TermsOfService_URL"
+msgstr "/termsofservice_en"
+
+msgid "TermsOfService"
+msgstr "Terms of Service"
 
 msgid "Contact"
 msgstr "Contact"
 
+msgid "index_textbox_title"
+msgstr "Input patient's <b>signs</b> and <b>symptoms</b>"
+
+msgid "index_button_search"
+msgstr "Get diagnosis"
+
+msgid "index_button_clear"
+msgstr "Clear"
+
+msgid "index_Sample"
+msgstr "Telangiectasia, Intellectual disability, Seizures, Chorea, Headache"
+
+msgid "index_Sample_1_id"
+msgstr "HP:0001009"
+
+msgid "index_Sample_1_name"
+msgstr "HP:0001009 Telangiectasia"
+
+msgid "index_Sample_2_id"
+msgstr "HP:0001249"
+
+msgid "index_Sample_2_name"
+msgstr "HP:0001249 Intellectual disability"
+
+msgid "index_Sample_3_id"
+msgstr "HP:0001250"
+
+msgid "index_Sample_3_name"
+msgstr "HP:0001250 Seizures"
+
+msgid "index_Sample_4_id"
+msgstr "HP:0002072"
+
+msgid "index_Sample_4_name"
+msgstr "HP:0002072 Chorea"
+
+msgid "index_Sample_5_id"
+msgstr "HP:0002315"
+
+msgid "index_Sample_5_name"
+msgstr "HP:0002315 Headache"
+
+msgid "search_textbox_title_narrowdown"
+msgstr "Input <b>disease-causative genes</b>"
+
+msgid "search_label_upload_hpo"
+msgstr "+ Upload File (HPO ID)"
+
+msgid "search_label_upload_gene"
+msgstr "+ Upload File (Entrez Gene ID)"
+
+msgid "search_button_download"
+msgstr "Download Results"
+
+msgid "search_label_total"
+msgstr "Total"
+
+msgid "search_label_disease"
+msgstr "(diseases)"
+
+msgid "search_label_perpage"
+msgstr "(per page)"
+
+msgid "search_label_MatchedPhenotype"
+msgstr "<b>Matched Phenotype</b>"
+
+msgid "search_label_CausativeGene"
+msgstr "<b>Causative Gene</b>"
+
+msgid "search_label_rank"
+msgstr "Rank"
+
+msgid "search_label_similarity"
+msgstr "(Similarity)"
+
+msgid "search_label_DiseaseName"
+msgstr "Disease Name"
+
+msgid "search_label_DiseaseID"
+msgstr "(Disease ID)"
+
+msgid "disease_label_DiseaseDefinition"
+msgstr "Disease Definition"
+
+msgid "disease_tab_CaseReport"
+msgstr "Case Reports"
+
+msgid "disease_tab_Phenotype"
+msgstr "Phenotypes"
+
+msgid "disease_tab_CausativeGene"
+msgstr "Causative Genes"
+
+msgid "disease_button_search"
+msgstr "Search"
+
+msgid "disease_label_paper"
+msgstr "(papers)"
+
+msgid "disease_label_gene"
+msgstr "<b>Gene</b>"
+
+msgid "disease_label_mutation"
+msgstr "<b>Mutation</b>"
+
+msgid "disease_label_mesh"
+msgstr "<b>MeSH</b>"
+
+msgid "disesase_TabPheno_label_orphanet"
+msgstr "Phenotype(s) retrieved from Orphanet"
+
+msgid "disesase_TabPheno_label_casereport"
+msgstr "Phenotype(s) retrieved from case reports"
+
+msgid "disease_TabPheno_label_term"
+msgstr "Term"
+
+msgid "disease_TabPheno_label_freq"
+msgstr "Frequency"
+
+msgid "disease_TabPheno_label_num_casereport"
+msgstr "# of case reports"
+
+msgid "disesase_TabGene_label_orphanet"
+msgstr "Causative gene(s) retrieved from Orphanet"
+
+msgid "disease_TabGene_label_name"
+msgstr "Gene Name"

@@ -7,7 +7,7 @@
 
       <h2><b><a target="_blank" href="http://www.orpha.net/consor/cgi-bin/OC_Exp.php?Expert={{ dict_onto_id_term_ordo['onto_id_nonprefix_ordo'] }}">{{ dict_onto_id_term_ordo['onto_term_ordo'] }}</a></b></h2>
       <div style="border-style: solid ; border-width: 1px;padding: 20px 20px 20px 20px;">
-        <h4>Disease definition</h4>
+        <h4><u>{{ _('disease_label_DiseaseDefinition') }}</u></h4>
         {{ str_disease_definition }}
       </div>
       <br><br>
@@ -16,9 +16,9 @@
       <div class="panel with-nav-tabs panel-default">
         <div class="panel-heading">
           <ul class="nav nav-tabs">
-            <li class="active"><a href="#tab1default" data-toggle="tab">Case Reports ( {{ total_hit }} )</a></li>
-            <li><a href="#tab2default" data-toggle="tab">Phenotypes</a></li>
-            <li><a href="#tab3default" data-toggle="tab">Causative Genes</a></li>
+            <li class="active"><a href="#tab1default" data-toggle="tab"><b>{{ _('disease_tab_CaseReport') }}</b><!-- ( {{ total_hit }} )--></a></li>
+            <li><a href="#tab2default" data-toggle="tab"><b>{{ _('disease_tab_Phenotype') }}</b></a></li>
+            <li><a href="#tab3default" data-toggle="tab"><b>{{ _('disease_tab_CausativeGene') }}</b></a></li>
           </ul>
         </div>
         <div class="panel-body">
@@ -31,7 +31,7 @@
 
 
 		<br>
-                <h2>Input patient's <b>signs</b> and <b>symptoms</b></h2>
+                <h2>{{ _('index_textbox_title') }}</h2>
 		<textarea class="form-control" rows="1" id="tokeninput_hpo" name="str_phenotypes"></textarea>
 		<br>
 		<h2>Narrow down the case reports</h2>
@@ -39,8 +39,8 @@
 		<br>
 		<input type="hidden" name="str_disease" value="{{ str_disease }}">
 		<div align="right">
-		  <button type="submit" class="btn btn-primary">Search</button>		    
-		  <button id="tokeninput_hpo_filter_clear" class="btn btn-default">Clear</button>
+		  <button type="submit" class="btn btn-primary">{{ _('disease_button_search') }}</button>
+		  <button id="tokeninput_hpo_filter_clear" class="btn btn-default">{{ _('index_button_clear') }}</button>
 		</div>
 
 		<table width="100%" height="120">
@@ -48,7 +48,7 @@
 		    <!-- START: Show total number -->
 		    <td align="left" valign="top">
 		      <p><br></p>
-		      <p>Total: <font size="4" color="black"><b>{{ total_hit }}</b></font> (papers)</p>
+		      <p>{{ _('search_label_total') }}: <font size="4" color="black"><b>{{ total_hit }}</b></font> {{ _('disease_label_paper') }}</p>
 		    </td>
 		    <!-- END: Show total number -->
 		    <!-- td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td -->
@@ -106,7 +106,7 @@
 			<option id="selector_100" value="100" selected>100</option>
 			{% endif %}
 		      </select>
-		      (per page)
+		      {{ _('search_label_perpage') }}
 		    </td>
 		    <!-- END: Show selector for "per page" -->
                   </tr>
@@ -118,16 +118,15 @@
 	      <div clas="row">
 		<div class="col-sm-12">
 		  <div align="right">
-		    <span class="label label-primary"><font size="3"><b>Matched Phenotype</b></font></span>&nbsp;
-		    <span class="label label-default"><font size="3"><b>Gene</b></font></span>&nbsp;
-		    <span class="label label-danger"><font size="3"><b>Mutation</b></font></span>&nbsp;
-		    <span class="label label-success"><font size="3"><b>MeSH</b></font></span><br>
+		    <span class="label label-primary"><font size="3">{{ _('search_label_MatchedPhenotype') }}</font></span>&nbsp;
+		    <span class="label label-default"><font size="3">{{ _('disease_label_gene') }}</font></span>&nbsp;
+		    <span class="label label-danger"><font size="3">{{ _('disease_label_mutation') }}</font></span>&nbsp;
+		    <span class="label label-success"><font size="3">{{ _('disease_label_mesh') }}</font></span><br>
 		  </div>
 		  <table class="table table-striped">
 		    <thead>
 		      <tr>
-			<!-- th class="text-left">Rank<br>(Score)</th -->
-			<th class="text-left">Similarity</th>
+			<th class="text-left">{{ _('search_label_rank') }}<br>{{ _('search_label_similarity') }}</th>
 			<th class="text-left">PMID<br>(PMCID)</th>
 			<!--
 			    <th class="text-left">Year<br>Title<br>Citation Information<br>Matched Phenotype(s)<br>Gene(s)<br>Mutation(s)<br>MeSH</th>
@@ -141,8 +140,8 @@
                       {% for dict_similar_casereport in list_dict_similar_casereport %}
 		      <tr>
 			<!-- Rank -->
-			<!-- td rowspan="5">{{ dict_similar_casereport['rank'] }}<br>({{ dict_similar_casereport['match_score']|round(2) }})</td -->
-			<td rowspan="5">{{ (dict_similar_casereport['match_score']*100)|round(2) }}%</td>
+			<td rowspan="5">{{ dict_similar_casereport['rank'] }}<br>({{ (dict_similar_casereport['match_score']*100)|round(1) }}%)</td>
+			<!--td rowspan="5">{{ (dict_similar_casereport['match_score']*100)|round(1) }}%</td -->
 			<!-- PMID -->
 			<td rowspan="5">
 			  <a href="https://www.ncbi.nlm.nih.gov/pubmed/{{ dict_similar_casereport['pmid'] }}" target="_blank">{{ dict_similar_casereport['pmid'] }}</a><br>
@@ -244,8 +243,8 @@
 
               <div class="tab-pane fade" id="tab2default">
 		<br>
-		<h2>Phenotype(s) retrieved from Orphanet</h2>
-  		<p><font size="4" color="black">&nbsp;&nbsp;&nbsp;&nbsp;Total: <b>{{ list_dict_Disease_phenotype_Orphanet|length }}</b></font></p>
+		<h2>{{ _('disesase_TabPheno_label_orphanet') }}</h2>
+  		<p><font size="4" color="black">&nbsp;&nbsp;&nbsp;&nbsp;{{ _('search_label_total') }}: <b>{{ list_dict_Disease_phenotype_Orphanet|length }}</b></font></p>
 		<!-- START: Show result table -->
 		<div clas="row">
 		  <div class="col-sm-12">
@@ -253,8 +252,8 @@
 		      <thead>
 			<tr>
 			  <th class="text-left">HPO ID</th>
-			  <th class="text-left">Term</th>
-			  <th class="text-left">Frequency</th>
+			  <th class="text-left">{{ _('disease_TabPheno_label_term') }}</th>
+			  <th class="text-left">{{ _('disease_TabPheno_label_freq') }}</th>
 			</tr>
 		      </thead>
 		      <tbody>
@@ -275,8 +274,8 @@
 		</div><!--/row-->
 		<!-- END: Show result table -->
 
-		<h2>Phenotype(s) extracted from case reports</h2>
-  		<p><font size="4" color="black">&nbsp;&nbsp;&nbsp;&nbsp;Total: <b>{{ list_dict_Disease_phenotype_CaseReport|length }}</b></font></p>
+		<h2>{{ _('disesase_TabPheno_label_casereport') }}</h2>
+  		<p><font size="4" color="black">&nbsp;&nbsp;&nbsp;&nbsp;{{ _('search_label_total') }}: <b>{{ list_dict_Disease_phenotype_CaseReport|length }}</b></font></p>
 		<!-- START: Show result table -->
 		<div clas="row">
 		  <div class="col-sm-12">
@@ -284,8 +283,8 @@
 		      <thead>
 			<tr>
 			  <th class="text-left">HPO ID</th>
-			  <th class="text-left">Term</th>
-			  <th class="text-left"># of case reports</th>
+			  <th class="text-left">{{ _('disease_TabPheno_label_term') }}</th>
+			  <th class="text-left">{{ _('disease_TabPheno_label_num_casereport') }}</th>
 			</tr>
 		      </thead>
 		      <tbody>
@@ -309,7 +308,7 @@
               <div class="tab-pane fade" id="tab3default">
 
 		<br>
-		<h2>Causative gene(s) retrieved from Orphanet</h2>
+		<h2>{{ _('disesase_TabGene_label_orphanet') }}</h2>
   		<p><font size="4" color="black">&nbsp;&nbsp;&nbsp;&nbsp;Total: <b>{{ list_dict_DiseaseGene_gene|length }}</b></font></p>
 		<!-- START: Show result table -->
 		<div clas="row">
@@ -317,8 +316,8 @@
 		    <table class="table table-striped">
 		      <thead>
 			<tr>
-			  <th class="text-left">Symbol</th>
-			  <th class="text-left">Name</th>
+			  <th class="text-left">Gene Symbol</th>
+			  <th class="text-left">{{ _('disease_TabGene_label_name') }}</th>
 			  <th class="text-left">Entrez Gene ID</th>
 			</tr>
 		      </thead>
@@ -339,8 +338,6 @@
 		  </div><!--/.col-sm-12-->
 		</div><!--/row-->
 		<!-- END: Show result table -->
-
-
 
 	      </div>
             </div>

@@ -12,13 +12,13 @@
 	  <table>
 	    <tr>
 	      <td nowrap>
-                <h2>Input patient's <b>signs</b> and <b>symptoms</b></h2>
+                <h2>{{ _('index_textbox_title') }}</h2>
 	      </td>
 	      <td nowrap>
 		<!-- 参考：http://proengineer.internous.co.jp/content/columnfeature/7605 -->
 		<!-- 参考：https://www.marineroad.com/staff-blog/14026.html -->
 		<label for="file_hpo_list">
-		  <span style="cursor:pointer;"><font color="#0431B4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+ Upload File (HPO ID List) : </font></span>
+		  <span style="cursor:pointer;"><font color="#0431B4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ _('search_label_upload_hpo')}} : </font></span>
 		  <input type="file" id="file_hpo_list" name="file_hpo_list" style="display:none;" onchange="$('#filename_hpo_list').val($(this).prop('files')[0].name)">
 		</label>
 		<input type="text" id="filename_hpo_list" name="filename_hpo_list" size="40" style=border:none; readonly onClick="$('#file').click();">
@@ -32,14 +32,14 @@
 	  <table>
 	    <tr>
 	      <td nowrap>
-		<h2>Narrow down the diseases</h2>
+		<h2>{{ _('search_textbox_title_narrowdown') }}</h2>
 	      </td>
 	      <td nowrap>
 		<!-- 参考：http://proengineer.internous.co.jp/content/columnfeature/7605 -->
 		<!-- 参考：https://www.marineroad.com/staff-blog/14026.html -->
 		<label for="file_gene_list">
 		  <!-- <span style="cursor:pointer;"><font color="#F73859">+ Upload File (Entrez Gene ID List) : </font></span> -->
-		  <span style="cursor:pointer;"><font color="#0431B4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+ Upload File (Entrez Gene ID List) : </font></span>
+		  <span style="cursor:pointer;"><font color="#0431B4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ _('search_label_upload_gene')}} : </font></span>
 		  <input type="file" id="file_gene_list" name="file_gene_list" style="display:none;" onchange="$('#filename_gene_list').val($(this).prop('files')[0].name)">
 		</label>
 		<input type="text" id="filename_gene_list" name="filename_gene_list" size="50" style=border:none; readonly onClick="$('#file').click();">
@@ -52,11 +52,11 @@
 	  <table width="100%">
 	    <tr>
 	      <td>
-		<input type="button" class="btn btn-primary" value="Download Results" onClick='location.href="{{ url_for_download_results_search_page(str_phenotypes, str_genes, '1', '20') }}"'>
+		<input type="button" class="btn btn-primary" value="{{ _('search_button_download') }}" onClick='location.href="{{ url_for_download_results_search_page(str_phenotypes, str_genes, '1', '20') }}"'>
 	      </td>
 	      <td align="right">
-		<button type="submit" class="btn btn-primary">Get diagnosis</button>		    
-		<button id="tokeninput_hpo_genes_clear" class="btn btn-default">Clear</button>
+		<button type="submit" class="btn btn-primary">{{ _('index_button_search') }}</button>
+		<button id="tokeninput_hpo_genes_clear" class="btn btn-default">{{ _('index_button_clear') }}</button>
 	      </td>
 	    </tr>
 	  </table>
@@ -66,7 +66,7 @@
 	      <!-- START: Show total number -->
 	      <td align="left" valign="top">
 		<p><br></p>
-		<p>Total: <font size="4" color="black"><b>{{ total_hit }}</b></font> (diseases)</p>
+		<p>{{ _('search_label_total') }}: <font size="4" color="black"><b>{{ total_hit }}</b></font> {{ _('search_label_disease') }}</p>
 	      </td>
 	      <!-- END: Show total number -->
 	      <!-- td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td -->
@@ -135,7 +135,7 @@
 		    <option id="selector_100" value="100" selected>100</option>
 		  {% endif %}
 		</select>
-		(per page)
+		{{ _('search_label_perpage') }}
 	      </td>
 	      <!-- END: Show selector for "per page" -->
             </tr>
@@ -148,16 +148,16 @@
 	  <div class="col-sm-12">
 
             <div align="right">
-              <span class="label label-primary"><font size="3"><b>Matched Phenotype</b></font></span>&nbsp;
-              <span class="label label-default"><font size="3"><b>Causative Gene</b></font></span><br>
+              <span class="label label-primary"><font size="3">{{ _('search_label_MatchedPhenotype') }}</font></span>&nbsp;
+              <span class="label label-default"><font size="3">{{ _('search_label_CausativeGene') }}</font></span><br>
             </div>
 	    <table class="table table-striped">
 
 	      <thead>
 		<tr>
-		  <!-- th style="width:100px;" class="text-left">Rank</th -->
-		  <th style="width:100px;" class="text-left">Similarity</th>	
-		  <th style="width:200px;" class="text-left">Disease Name</th>
+		  <th style="width:100px;" class="text-left">{{ _('search_label_rank') }}<br>{{ _('search_label_similarity') }}</th>
+		  <!-- th style="width:100px;" class="text-left">Similarity</th -->
+		  <th style="width:200px;" class="text-left">{{ _('search_label_DiseaseName') }}<br>{{ _('search_label_DiseaseID') }}</th>
 		  <th></th>
 		  <!--
 		  <th class="text-left">Matched Phenotype(s)<br>Causative Gene(s)<br>External Reference(s)</th>
@@ -169,11 +169,8 @@
                 {% for dict_similar_disease in list_dict_similar_disease %}
 		  <tr>
 		    <!-- Rank -->
-		    <!-- td rowspan="3" width="10">{{ dict_similar_disease['rank'] }}</td -->
 		    <!-- Similarity -->
-		    <td rowspan="3">
-		      {{ (dict_similar_disease['match_score']*100)|round(2) }}%
-		    </td>
+		    <td rowspan="3" width="10">{{ dict_similar_disease['rank'] }}<br>({{ (dict_similar_disease['match_score']*100)|round(1) }}%)</td>
 		    <!-- Disease Name -->
 		    <td rowspan="3">
 		      <a href="{{ url_for_disease_casereport_page(dict_similar_disease['onto_id_ordo'], str_phenotypes, '', '1', '20') }}">{{ dict_similar_disease['onto_term_ordo'] }}<br>({{dict_similar_disease['onto_id_ordo']}})<br><b>&gt;&gt; {{dict_similar_disease['total_num_case_reports']}}</b> Case Reports</a>
@@ -238,7 +235,7 @@
 		  -->
 		  <tr>
 		    <td>
-		      <b>[Disease definition]</b><br><font color="black">{{ dict_similar_disease['onto_term_ordo_disease_definition'] }}</font><br>&nbsp;
+		      <font color="black">{{ dict_similar_disease['onto_term_ordo_disease_definition'] }}</font><br>&nbsp;
 		    </td>
 		  </tr>
 		{% endfor %}
