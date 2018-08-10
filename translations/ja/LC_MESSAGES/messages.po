@@ -28,7 +28,7 @@ msgid "index_button_clear"
 msgstr "クリア"
 
 msgid "index_Sample"
-msgstr "毛細血管拡張、知的障害、発作、舞踏病、頭痛"
+msgstr "<font size="4">毛細血管拡張、知的障害、発作、舞踏病、頭痛</font>"
 
 msgid "index_Sample_1_id"
 msgstr "HP:0001009_ja"
@@ -60,8 +60,11 @@ msgstr "HP:0002315_ja"
 msgid "index_Sample_5_name"
 msgstr "HP:0002315 頭痛"
 
+msgid "index_label_intro_title"
+msgstr "<b>希少疾患・症例を効率良く検索できる希少疾患診断支援システム</b>"
+
 msgid "search_textbox_title_narrowdown"
-msgstr "<b>疾患原因遺伝子</b> を入力"
+msgstr "希少疾患を絞り込む"
 
 msgid "search_label_upload_hpo"
 msgstr "＋ファイル（HPO ID）"
@@ -99,17 +102,23 @@ msgstr "疾患名"
 msgid "search_label_DiseaseID"
 msgstr "（疾患ID）"
 
+msgid "search_label_related_casereport"
+msgstr "関連症例報告を検索"
+
 msgid "disease_label_DiseaseDefinition"
 msgstr "疾患定義"
 
 msgid "disease_tab_CaseReport"
-msgstr "症例報告"
+msgstr "<font size="4">症例報告</font>"
 
 msgid "disease_tab_Phenotype"
-msgstr "徴候・症状"
+msgstr "<font size="4">徴候・症状</font>"
 
 msgid "disease_tab_CausativeGene"
-msgstr "疾患原因遺伝子"
+msgstr "<font size="4">疾患原因遺伝子</font>"
+
+msgid "disease_textbox_title_narrow_casereport"
+msgstr "症例報告を絞り込む"
 
 msgid "disease_button_search"
 msgstr "症例報告を検索"

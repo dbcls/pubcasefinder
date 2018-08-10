@@ -511,7 +511,7 @@ def disease_casereport_POST():
 ## GET: display phenotype_context page
 @app.route('/phenotype_context/disease:<string:disease>/phenotype:<string:phenotype>/page:<int:page>/size:<string:size>', methods=['GET'])
 def REST_API_show_phenotype_context(disease, phenotype, page, size):
-    term_disease, term_phenotype, list_dict_phenotype_context, pagination, total_hit = show_phenotype_context_page(disease, phenotype, page, size)
+    term_disease, term_phenotype, list_dict_phenotype_context, pagination, total_hit, disease_definition, phenotype_definition = show_phenotype_context_page(disease, phenotype, page, size)
     nonprefix_disease = disease.replace('ORDO:', '')
     return render_template('phenotype_context.html',
                            id_disease=disease,
@@ -522,7 +522,9 @@ def REST_API_show_phenotype_context(disease, phenotype, page, size):
                            list_dict_phenotype_context=list_dict_phenotype_context,
                            pagination=pagination,
                            total_hit=total_hit,
-                           size=size)
+                           size=size,
+                           disease_definition=disease_definition,
+                           phenotype_definition=phenotype_definition)
 
 
 

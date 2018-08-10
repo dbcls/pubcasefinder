@@ -60,8 +60,11 @@ msgstr "HP:0002315"
 msgid "index_Sample_5_name"
 msgstr "HP:0002315 Headache"
 
+msgid "index_label_intro_title"
+msgstr "PubCaseFinder is a diagnosis support system for <b>rare diseases.</b>"
+
 msgid "search_textbox_title_narrowdown"
-msgstr "Input <b>disease-causative genes</b>"
+msgstr "Narrow down the rare diseases"
 
 msgid "search_label_upload_hpo"
 msgstr "+ Upload File (HPO ID)"
@@ -99,17 +102,23 @@ msgstr "Disease Name"
 msgid "search_label_DiseaseID"
 msgstr "(Disease ID)"
 
+msgid "search_label_related_casereport"
+msgstr "Related case reports"
+
 msgid "disease_label_DiseaseDefinition"
 msgstr "Disease Definition"
 
 msgid "disease_tab_CaseReport"
-msgstr "Case Reports"
+msgstr "<b>Case Reports</b>"
 
 msgid "disease_tab_Phenotype"
-msgstr "Phenotypes"
+msgstr "<b>Phenotypes</b>"
 
 msgid "disease_tab_CausativeGene"
-msgstr "Causative Genes"
+msgstr "<b>Causative Genes</b>"
+
+msgid "disease_textbox_title_narrow_casereport"
+msgstr "Narrow down the case reports"
 
 msgid "disease_button_search"
 msgstr "Search"

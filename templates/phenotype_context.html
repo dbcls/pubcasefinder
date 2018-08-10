@@ -8,6 +8,18 @@
 
 	<!-- START: FORM -->
 	<!-- <form name="search" action="/search" method="post" class="form-group"> -->
+
+        <h2><b><a target="_blank" href="http://www.orpha.net/consor/cgi-bin/OC_Exp.php?Expert={{ id_nonprefix_disease }}">{{ term_disease }}</a></b></h2>
+        <div style="border-style: solid ; border-width: 1px;padding: 20px 20px 20px 20px;">
+          {{ disease_definition }}
+        </div>
+	<br>
+        <h2><b><a style="color:#337ab7;" target="_blank" href="http://compbio.charite.de/hpoweb/showterm?id={{ id_phenotype }}">{{ term_phenotype }}</a></b></h2>
+        <div style="border-style: solid ; border-width: 1px;padding: 20px 20px 20px 20px;">
+          {{ phenotype_definition }}
+        </div>
+
+	<!--
 	  <table>
 	    <tr>
 	      <td><h2>Disease: </h2></td>
@@ -20,6 +32,7 @@
 	      <td><h2><b><a style="color:#337ab7;" target="_blank" href="http://compbio.charite.de/hpoweb/showterm?id={{ id_phenotype }}">{{ term_phenotype }}</a></b></h2></td>
 	    </tr>
 	  </table>
+	-->
 	  <br>
 
 	  <table width="100%" height="120">
@@ -27,7 +40,7 @@
 	      <!-- START: Show total number -->
 	      <td align="center" valign="top">
 		<p><br></p>
-		<p><font size="4" color="black">Total: <b>{{ total_hit }}</b></font></p>
+		<p><font size="4" color="black">{{ _('search_label_total') }}: <b>{{ total_hit }}</b></font></p>
 	      </td>
 	      <!-- END: Show total number -->
 
@@ -88,7 +101,7 @@
 		    <option id="selector_100" selected="selected">100</option>
 		  {% endif %}
 		</select>
-		(per page)
+		{{ _('search_label_perpage') }}
 	      </td>
 	      <!-- END: Show selector for "per page" -->
             </tr>
@@ -118,7 +131,7 @@
 		    <td rowspan="4">
 		      <a href="https://www.ncbi.nlm.nih.gov/pubmed/{{ dict_phenotype_context['PMID'] }}">{{ dict_phenotype_context['PMID'] }}</a><br>
 		      {% if dict_phenotype_context['PMCID'] != 0 %}
-		        ({{ dict_phenotype_context['PMCID'] }})
+                        <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC{{ dict_phenotype_context['PMCID'] }}" target="_blank">(<u>{{ dict_phenotype_context['PMCID'] }}</u>)</a><br>
 		      {% endif %}
 		    </td>
 		    <!-- Sex -->

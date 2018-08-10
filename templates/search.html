@@ -173,7 +173,7 @@
 		    <td rowspan="3" width="10">{{ dict_similar_disease['rank'] }}<br>({{ (dict_similar_disease['match_score']*100)|round(1) }}%)</td>
 		    <!-- Disease Name -->
 		    <td rowspan="3">
-		      <a href="{{ url_for_disease_casereport_page(dict_similar_disease['onto_id_ordo'], str_phenotypes, '', '1', '20') }}">{{ dict_similar_disease['onto_term_ordo'] }}<br>({{dict_similar_disease['onto_id_ordo']}})<br><b>&gt;&gt; {{dict_similar_disease['total_num_case_reports']}}</b> Case Reports</a>
+		      <a href="{{ url_for_disease_casereport_page(dict_similar_disease['onto_id_ordo'], str_phenotypes, '', '1', '20') }}">{{ dict_similar_disease['onto_term_ordo'] }}<br>({{dict_similar_disease['onto_id_ordo']}})<br>&gt;&gt; <!--{{dict_similar_disease['total_num_case_reports']}}--> <u>{{ _('search_label_related_casereport') }}</u></a>
 		    </td>
 		    <!-- Matched Phenotypes -->
 		    <td>

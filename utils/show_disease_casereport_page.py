@@ -121,7 +121,8 @@ def show_disease_casereport_page(disease, phenotypes, genes, page, size):
     ## 453314 : Very rare (&lt;4-1%)
     ## 453315 : Excluded (0%)
     list_dict_Disease_phenotype_Orphanet = []
-    sql_Disease_phenotype_Orphanet = u"select a.OntoIDHP, b.OntoTerm, a.Frequency from Disease as a left join OntoTermHP as b on a.OntoIDHP=b.OntoID where b.OntoType='label' and a.Source='Orphanet' and a.OntoIDORDO=%s order by cast(a.Frequency as SIGNED), a.OntoIDHP"
+    #sql_Disease_phenotype_Orphanet = u"select a.OntoIDHP, b.OntoTerm, a.Frequency from Disease as a left join OntoTermHP as b on a.OntoIDHP=b.OntoID where b.OntoType='label' and a.Source='Orphanet' and a.OntoIDORDO=%s order by cast(a.Frequency as SIGNED), a.OntoIDHP"
+    sql_Disease_phenotype_Orphanet = u"select a.OntoIDHP, b.OntoName, a.Frequency, b.OntoNameJa from Disease as a left join OntoTermHPInformation as b on a.OntoIDHP=b.OntoID where a.Source='Orphanet' and a.OntoIDORDO=%s order by cast(a.Frequency as SIGNED), a.OntoIDHP"
     cursor_Disease_phenotype_Orphanet = OBJ_MYSQL.cursor()
     cursor_Disease_phenotype_Orphanet.execute(sql_Disease_phenotype_Orphanet, (disease,))
     values = cursor_Disease_phenotype_Orphanet.fetchall()
@@ -130,6 +131,7 @@ def show_disease_casereport_page(disease, phenotypes, genes, page, size):
         id_onto_hp = value[0]
         term       = value[1]
         freq       = value[2]
+        term_ja    = value[3]
         if freq == "453310":
             freq = "Obligate (100%)"
         elif freq == "453311":
@@ -145,7 +147,7 @@ def show_disease_casereport_page(disease, phenotypes, genes, page, size):
 
         dict_Disease_phenotype_Orphanet = {}
         dict_Disease_phenotype_Orphanet['id_onto_hp']    = id_onto_hp
-        dict_Disease_phenotype_Orphanet['term']          = term
+        dict_Disease_phenotype_Orphanet['term']          = term if get_locale() == "en" or term_ja == "" else term_ja
         dict_Disease_phenotype_Orphanet['freq']          = freq
         list_dict_Disease_phenotype_Orphanet.append(dict_Disease_phenotype_Orphanet)
 
@@ -153,7 +155,8 @@ def show_disease_casereport_page(disease, phenotypes, genes, page, size):
     #####
     # Diseaseテーブルから対象疾患の全てのフェノタイプを取得（症例報告から取得したフェノタイプのみ）
     list_dict_Disease_phenotype_CaseReport = []
-    sql_Disease_phenotype_CaseReport = u"select a.OntoIDHP, b.OntoTerm, a.Frequency from Disease as a left join OntoTermHP as b on a.OntoIDHP=b.OntoID where b.OntoType='label' and a.Source='CaseReport' and a.OntoIDORDO=%s order by cast(a.Frequency as SIGNED) desc, a.OntoIDHP"
+    #sql_Disease_phenotype_CaseReport = u"select a.OntoIDHP, b.OntoTerm, a.Frequency from Disease as a left join OntoTermHP as b on a.OntoIDHP=b.OntoID where b.OntoType='label' and a.Source='CaseReport' and a.OntoIDORDO=%s order by cast(a.Frequency as SIGNED) desc, a.OntoIDHP"
+    sql_Disease_phenotype_CaseReport = u"select a.OntoIDHP, b.OntoName, a.Frequency, b.OntoNameJa from Disease as a left join OntoTermHPInformation as b on a.OntoIDHP=b.OntoID where a.Source='CaseReport' and a.OntoIDORDO=%s order by cast(a.Frequency as SIGNED) desc, a.OntoIDHP"
     cursor_Disease_phenotype_CaseReport = OBJ_MYSQL.cursor()
     cursor_Disease_phenotype_CaseReport.execute(sql_Disease_phenotype_CaseReport, (disease,))
     values = cursor_Disease_phenotype_CaseReport.fetchall()
@@ -162,10 +165,11 @@ def show_disease_casereport_page(disease, phenotypes, genes, page, size):
         id_onto_hp = value[0]
         term       = value[1]
         freq       = value[2]
+        term_ja    = value[3]
 
         dict_Disease_phenotype_CaseReport = {}
         dict_Disease_phenotype_CaseReport['id_onto_hp']    = id_onto_hp
-        dict_Disease_phenotype_CaseReport['term']          = term
+        dict_Disease_phenotype_CaseReport['term']          = term if get_locale() == "en" or term_ja == "" else term_ja
         dict_Disease_phenotype_CaseReport['freq']          = freq
         list_dict_Disease_phenotype_CaseReport.append(dict_Disease_phenotype_CaseReport)
 
@@ -438,6 +442,20 @@ def search_similar_casereport(str_disease, str_phenotypes, str_genes):
 
 
     #####
+    # MESHInformationテーブルからMeSHの日本語ラベルを取得
+    dict_mesh_ja = {}
+    sql_MESHInformation = u"select MESHID, LabelJa from MESHInformation"
+    cursor_MESHInformation = OBJ_MYSQL.cursor()
+    cursor_MESHInformation.execute(sql_MESHInformation)
+    values = cursor_MESHInformation.fetchall()
+    cursor_MESHInformation.close()
+    for value in values:
+        id_mesh = value[0]
+        label_ja = value[1]
+        dict_mesh_ja[id_mesh] = label_ja
+
+
+    #####
     # PMID_MESHテーブルから各症例報告にアノテーションされたMeSHセットを取得
     dict_casereport_mesh = {}
     for pmid in dict_similar_casereports.keys():
@@ -450,6 +468,11 @@ def search_similar_casereport(str_disease, str_phenotypes, str_genes):
         for value in values:
             sdui_mesh = value[0]
             str_mesh = value[1]
+
+            # 日本語のラベルが存在する場合は、日本語のラベルに変換
+            if get_locale() != "en":
+                str_mesh = dict_mesh_ja[sdui_mesh] if sdui_mesh in dict_mesh_ja else str_mesh
+
             if len(str_mesh) > 50:
                 str_mesh = str_mesh[:50] + "..."
             if sdui_mesh == "":

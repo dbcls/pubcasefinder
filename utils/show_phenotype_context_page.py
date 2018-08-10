@@ -28,8 +28,27 @@ def show_phenotype_context_page(id_disease, id_phenotype, page, size):
     OBJ_MYSQL = MySQLdb.connect(unix_socket=db_sock, host="localhost", db=db_name, user=db_user, passwd=db_pw, charset="utf8")
     term_disease = ""
     term_phenotype = ""
+    disease_definition = ""
+    phenotype_definition = ""
 
     if id_disease != "" and id_phenotype != "":
+
+        # Disease definitionを取得
+        sql_Orphanet = u"select DiseaseDefinition from Orphanet where OntoID=%s group by OntoID"
+        cursor_Orphanet = OBJ_MYSQL.cursor()
+        cursor_Orphanet.execute(sql_Orphanet, (id_disease,))
+        values = cursor_Orphanet.fetchall()
+        cursor_Orphanet.close()
+        disease_definition = values[0][0] if values else ''
+
+        # Phenotype definitionを取得
+        sql_OntoTermHPInformation = u"select OntoDefinition from OntoTermHPInformation where OntoID=%s"
+        cursor_OntoTermHPInformation = OBJ_MYSQL.cursor()
+        cursor_OntoTermHPInformation.execute(sql_OntoTermHPInformation, (id_phenotype,))
+        values = cursor_OntoTermHPInformation.fetchall()
+        cursor_OntoTermHPInformation.close()
+        phenotype_definition = values[0][0] if values else ''
+
         # idからtermを取得
         ## term_disease
         sql_OntoTerm = u"select OntoTerm from OntoTermORDO where OntoType='label' and OntoID=%s"
@@ -170,8 +189,7 @@ def show_phenotype_context_page(id_disease, id_phenotype, page, size):
 
     OBJ_MYSQL.close()
 
-    return term_disease, term_phenotype, list_dict_phenotype_context_pagination, pagination, total_hit
-
+    return term_disease, term_phenotype, list_dict_phenotype_context_pagination, pagination, total_hit, disease_definition, phenotype_definition
 
 
 #####

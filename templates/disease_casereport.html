@@ -7,7 +7,7 @@
 
       <h2><b><a target="_blank" href="http://www.orpha.net/consor/cgi-bin/OC_Exp.php?Expert={{ dict_onto_id_term_ordo['onto_id_nonprefix_ordo'] }}">{{ dict_onto_id_term_ordo['onto_term_ordo'] }}</a></b></h2>
       <div style="border-style: solid ; border-width: 1px;padding: 20px 20px 20px 20px;">
-        <h4><u>{{ _('disease_label_DiseaseDefinition') }}</u></h4>
+        <!-- h4><u>{{ _('disease_label_DiseaseDefinition') }}</u></h4 -->
         {{ str_disease_definition }}
       </div>
       <br><br>
@@ -16,25 +16,23 @@
       <div class="panel with-nav-tabs panel-default">
         <div class="panel-heading">
           <ul class="nav nav-tabs">
-            <li class="active"><a href="#tab1default" data-toggle="tab"><b>{{ _('disease_tab_CaseReport') }}</b><!-- ( {{ total_hit }} )--></a></li>
-            <li><a href="#tab2default" data-toggle="tab"><b>{{ _('disease_tab_Phenotype') }}</b></a></li>
-            <li><a href="#tab3default" data-toggle="tab"><b>{{ _('disease_tab_CausativeGene') }}</b></a></li>
+            <li class="active"><a href="#tab1default" data-toggle="tab">{{ _('disease_tab_CaseReport') }}<!-- ( {{ total_hit }} )--></a></li>
+            <li><a href="#tab2default" data-toggle="tab">{{ _('disease_tab_Phenotype') }}</a></li>
+            <li><a href="#tab3default" data-toggle="tab">{{ _('disease_tab_CausativeGene') }}</a></li>
           </ul>
         </div>
         <div class="panel-body">
           <div class="tab-content">
             <div class="tab-pane fade in active" id="tab1default">
 
-
 	      <!-- START: FORM -->
 	      <form name="disease_casereport" action="/disease_casereport" method="post" class="form-group">
-
 
 		<br>
                 <h2>{{ _('index_textbox_title') }}</h2>
 		<textarea class="form-control" rows="1" id="tokeninput_hpo" name="str_phenotypes"></textarea>
 		<br>
-		<h2>Narrow down the case reports</h2>
+		<h2>{{ _('disease_textbox_title_narrow_casereport') }}</h2>
 		<textarea class="form-control" rows="1" id="tokeninput_filter_casereport" name="str_genes"></textarea>
 		<br>
 		<input type="hidden" name="str_disease" value="{{ str_disease }}">
@@ -126,7 +124,7 @@
 		  <table class="table table-striped">
 		    <thead>
 		      <tr>
-			<th class="text-left">{{ _('search_label_rank') }}<br>{{ _('search_label_similarity') }}</th>
+			<th width="100" class="text-left">{{ _('search_label_rank') }}<br>{{ _('search_label_similarity') }}</th>
 			<th class="text-left">PMID<br>(PMCID)</th>
 			<!--
 			    <th class="text-left">Year<br>Title<br>Citation Information<br>Matched Phenotype(s)<br>Gene(s)<br>Mutation(s)<br>MeSH</th>
@@ -144,9 +142,9 @@
 			<!--td rowspan="5">{{ (dict_similar_casereport['match_score']*100)|round(1) }}%</td -->
 			<!-- PMID -->
 			<td rowspan="5">
-			  <a href="https://www.ncbi.nlm.nih.gov/pubmed/{{ dict_similar_casereport['pmid'] }}" target="_blank">{{ dict_similar_casereport['pmid'] }}</a><br>
+			  <a href="https://www.ncbi.nlm.nih.gov/pubmed/{{ dict_similar_casereport['pmid'] }}" target="_blank"><u>{{ dict_similar_casereport['pmid'] }}</u></a><br>
 			  {% if dict_similar_casereport['PMCID'] != 0 %}
-		          <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC{{ dict_similar_casereport['PMCID'] }}" target="_blank">({{ dict_similar_casereport['PMCID'] }})</a><br>
+		          <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC{{ dict_similar_casereport['PMCID'] }}" target="_blank">(<u>{{ dict_similar_casereport['PMCID'] }}</u>)</a><br>
 			  {% endif %}
 			</td>
 			<!-- Title -->
@@ -309,7 +307,7 @@
 
 		<br>
 		<h2>{{ _('disesase_TabGene_label_orphanet') }}</h2>
-  		<p><font size="4" color="black">&nbsp;&nbsp;&nbsp;&nbsp;Total: <b>{{ list_dict_DiseaseGene_gene|length }}</b></font></p>
+  		<p><font size="4" color="black">&nbsp;&nbsp;&nbsp;&nbsp;{{ _('search_label_total') }}: <b>{{ list_dict_DiseaseGene_gene|length }}</b></font></p>
 		<!-- START: Show result table -->
 		<div clas="row">
 		  <div class="col-sm-12">
