@@ -13,7 +13,7 @@ msgid "TermsOfService_URL"
 msgstr "/termsofservice_en"
 
 msgid "TermsOfService"
-msgstr "Terms of Service"
+msgstr "Terms"
 
 msgid "Contact"
 msgstr "Contact"
