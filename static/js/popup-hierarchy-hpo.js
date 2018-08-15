@@ -71,17 +71,17 @@
 				revert : '元に戻す',
 				ok : 'OK',
 				cancel : 'Cancel',
-				id : 'id',
-				name : 'name',
-				english : 'English',
-				definition : 'definition',
-				synonym : 'synonym'
+				id : 'ID',
+				name : '症状名(日)',
+				english : '症状名(英)',
+				definition : '定義',
+				synonym : 'Synonyms'
 			},
 			'en' : {
-				superclass : 'superclass',
-				subclass : 'subclass',
+				superclass : 'Superclass',
+				subclass : 'Subclass',
 //				selectedphenotype: 'selected phenotype',
-				selectedphenotype: 'patient\’s signs and symptoms',
+				selectedphenotype: 'Patient\’s signs and symptoms',
 				replace : 'Replace',
 				add : 'Add',
 				jpn : 'JPN',
@@ -89,11 +89,11 @@
 				revert : 'revert',
 				ok : 'OK',
 				cancel : 'Cancel',
-				id : 'id',
-				name : 'name',
+				id : 'ID',
+				name : 'Label',
 				english : 'English',
-				definition : 'definition',
-				synonym : 'synonym'
+				definition : 'Definition',
+				synonym : 'Synonyms'
 			}
 		}
 	};
