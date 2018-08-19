@@ -103,7 +103,10 @@ msgid "search_label_DiseaseID"
 msgstr "(Disease ID)"
 
 msgid "search_label_related_casereport"
-msgstr "Related case reports"
+msgstr "Search case reports"
+
+msgid "search_label_search_image_google"
+msgstr "Search images (Google)"
 
 msgid "disease_label_DiseaseDefinition"
 msgstr "Disease Definition"
