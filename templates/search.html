@@ -235,7 +235,7 @@
 		  -->
 		  <tr>
 		    <td>
-                      <p style="margin-bottom:0.6em;"><font color="black">{{ dict_similar_disease['onto_term_ordo_disease_definition'] }}</font>
+                      <p style="margin-bottom:0.6em;"><font color="black">{{ dict_similar_disease['onto_term_ordo_disease_definition'] | safe }}</font>
 		        {% if get_locale() != "en" and dict_similar_disease['onto_term_ordo_disease_definition'] != "" %}
 			  <a href="https://translate.google.co.jp/?hl=ja#en/ja/{{ dict_similar_disease['onto_term_ordo_disease_definition'] | replace('/', '%2F') }}" target="_blank"><font color="#0431B4">&nbsp;&gt;&gt;&nbsp;{{ _('search_label_translate_google') }}</font></a>
 		        {% endif %}
