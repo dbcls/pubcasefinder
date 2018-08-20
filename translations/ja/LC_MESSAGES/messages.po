@@ -102,6 +102,9 @@ msgstr "疾患名"
 msgid "search_label_DiseaseID"
 msgstr "（疾患ID）"
 
+msgid "search_label_translate_google"
+msgstr "翻訳 (Google)"
+
 msgid "search_label_related_casereport"
 msgstr "症例報告検索"
 

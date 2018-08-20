@@ -145,8 +145,7 @@ def search_similar_disease(str_phenotypes, str_genes):
         dict_AnnotationHPOSumIC[value[0]] = value[3]
 
         
-    # OntoTermHPテーブルまたはOntoTermHPInformationテーブルからHPの全termを取得                                                                                                                                                                                                                                       
-    ## localeがenの場合はOntoTermHPから英語のHPO termを取得                                                                                                                                                                                                                                                                      ## localeがenでない場合はOntoTermHPInformationから日本語のHPO termを取得 
+    # OntoTermHPテーブルまたはOntoTermHPInformationテーブルからHPの全termを取得                                                                                                                                                                  ## localeがenの場合はOntoTermHPから英語のHPO termを取得                                                                                                                                                                                      ## localeがenでない場合はOntoTermHPInformationから日本語のHPO termを取得 
     dict_OntoTerm_hp = {}
     sql_OntoTerm_hp = ""
     if get_locale() == "en":
@@ -173,7 +172,13 @@ def search_similar_disease(str_phenotypes, str_genes):
     values = cursor_Orphanet_disease_definition.fetchall()
     cursor_Orphanet_disease_definition.close()
     for value in values:
-        dict_disease_definition[value[0]] = value[1]
+        if value[1] is not None:
+            #disease_definition = str((value[1]).encode('utf-8'))
+            disease_definition = (value[1]).encode('utf-8')
+            dict_disease_definition[value[0]] = disease_definition
+            #if get_locale() != "en" and type(value[1]) is str:
+            #if get_locale() != "en":
+                #dict_disease_definition[value[0]] = disease_definition + "<a href='https://translate.google.co.jp/?hl=ja#en/ja/" + disease_definition  + "' target='_blank'><font color='#0431B4'>&nbsp;&nbsp;&gt;&gt;&nbsp;Translate (Google)</font></a>"
 
 
     ## DiseaseLinkテーブルから各疾患のReferenceを取得

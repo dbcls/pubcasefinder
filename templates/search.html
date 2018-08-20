@@ -235,8 +235,12 @@
 		  -->
 		  <tr>
 		    <td>
-		      <p style="margin-bottom:0.6em;"><font color="black">{{ dict_similar_disease['onto_term_ordo_disease_definition'] }}</font></p>
-		      <a href="http://www.google.com/search?q={{ dict_similar_disease['onto_term_ordo'] }}&tbm=isch"><u><font color="#0431B4">{{ _('search_label_search_image_google') }}</font></u></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <p style="margin-bottom:0.6em;"><font color="black">{{ dict_similar_disease['onto_term_ordo_disease_definition'] }}</font>
+		        {% if get_locale() != "en" and dict_similar_disease['onto_term_ordo_disease_definition'] != "" %}
+			  <a href="https://translate.google.co.jp/?hl=ja#en/ja/{{ dict_similar_disease['onto_term_ordo_disease_definition'] }}" target="_blank"><font color="#0431B4">&nbsp;&gt;&gt;&nbsp;{{ _('search_label_translate_google') }}</font></a>
+		        {% endif %}
+		      </p>
+		      <a href="http://www.google.com/search?q={{ dict_similar_disease['onto_term_ordo'] }}&tbm=isch" target="_blank"><u><font color="#0431B4">{{ _('search_label_search_image_google') }}</font></u></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		      <a href="{{ url_for_disease_casereport_page(dict_similar_disease['onto_id_ordo'], str_phenotypes, '', '1', '20') }}"><u><font color="#0431B4">{{ _('search_label_related_casereport') }}</font></u></a>
 		    </td>
 		  </tr>

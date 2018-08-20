@@ -29,6 +29,7 @@ babel = Babel(app)
 @babel.localeselector
 def get_locale():
     return request.accept_languages.best_match(['ja', 'ja_JP', 'en'])
+app.jinja_env.globals.update(get_locale=get_locale)
 
 # debug
 app.debug = True
