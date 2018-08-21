@@ -451,7 +451,7 @@
               });
               var abs = $(this).find('AbstractText').text();
               $("#abstract" + pmid).empty();
-              $("#abstract" + pmid).append(abs);
+              $("#abstract" + pmid).append(abs + "<a href='https://translate.google.co.jp/?hl=ja#en/ja/" + abs + "' target='_blank'><font color='#0431B4'>&nbsp;&gt;&gt;&nbsp;{{ _('search_label_translate_google') }}</font></a>");
             });
           }
         });
