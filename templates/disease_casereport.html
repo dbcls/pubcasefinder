@@ -453,7 +453,9 @@
               $("#abstract" + pmid).empty();
 
               {% if get_locale() != "en" %}
-                abs = abs + "<a href='https://translate.google.co.jp/?hl=ja#en/ja/" + abs.replace(/\//g, "%2F") + "' target='_blank'><font color='#0431B4'>&nbsp;&gt;&gt;&nbsp;{{ _('search_label_translate_google') }}</font></a>";
+                var abs_url = abs.replace(/\//g, "%2F")
+                var abs_url = abs.replace(/\'/g, "%27")
+                abs = abs + "<a href='https://translate.google.co.jp/?hl=ja#en/ja/" + abs_url + "' target='_blank'><font color='#0431B4'>&nbsp;&gt;&gt;&nbsp;{{ _('search_label_translate_google') }}</font></a>";
               {% endif %}
               $("#abstract" + pmid).append(abs);
             });
