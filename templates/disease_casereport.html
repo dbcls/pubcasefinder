@@ -79,25 +79,36 @@
 		      <p><br></p>
 		      <!-- http://qiita.com/act823/items/3a203f1f96e7fe52f69d -->
 		      <select id="changesize_selector" name="changesize_selector" onchange="submit(this.form)">
+			{% if cs == "10" %}
+			<option id="selector_20" value="10" selected>10</option
+>			<option id="selector_20" value="20">20</option>
+			<option id="selector_40" value="40">40</option>
+			<option id="selector_60" value="60">60</option>
+			<option id="selector_100" value="100">100</option>
+			{% endif %}
 			{% if cs == "20" %}
+			<option id="selector_20" value="10">10</option>
 			<option id="selector_20" value="20" selected>20</option>
 			<option id="selector_40" value="40">40</option>
 			<option id="selector_60" value="60">60</option>
 			<option id="selector_100" value="100">100</option>
 			{% endif %}
 			{% if cs == "40" %}
+			<option id="selector_20" value="10">10</option>
 			<option id="selector_20" value="20">20</option>
 			<option id="selector_40" value="40" selected>40</option>
 			<option id="selector_60" value="60">60</option>
 			<option id="selector_100" value="100">100</option>
 			{% endif %}
 			{% if cs == "60" %}
+			<option id="selector_20" value="10">10</option>
 			<option id="selector_20" value="20">20</option>
 			<option id="selector_40" value="40">40</option>
 			<option id="selector_60" value="60" selected>60</option>
 			<option id="selector_100" value="100">100</option>
 			{% endif %}
 			{% if cs == "100" %}
+			<option id="selector_20" value="10">10</option>
 			<option id="selector_20" value="20">20</option>
 			<option id="selector_40" value="40">40</option>
 			<option id="selector_60" value="60">60</option>
@@ -147,11 +158,16 @@
 		          <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC{{ dict_similar_casereport['PMCID'] }}" target="_blank">(<u>{{ dict_similar_casereport['PMCID'] }}</u>)</a><br>
 			  {% endif %}
 			</td>
-			<!-- Title -->
+			<!-- Title, Authors, So -->
 			<td>
 			  <b>{{ dict_similar_casereport['title'] }}</b><br>
 			  {{ dict_similar_casereport['authors'] }}.<br>
 			  {{ dict_similar_casereport['so'] }}
+			  <div id="PlagOpen{{ dict_similar_casereport['pmid'] }}"><a href="#" title="Show abstract" onclick="showPlagin({{ dict_similar_casereport['pmid'] }});return false;"><font color="#0431B4">[ Show abstract ]</font></a></div>
+			  <div id="PlagClose{{ dict_similar_casereport['pmid'] }}" style="display: none"><a href="#" title="Hide abstract" onclick="showPlagin({{ dict_similar_casereport['pmid'] }});return false;"><font color="#0431B4">[ Hide abstract ]</font></a>
+			  <br>
+			  <font color="black"><span id="abstract{{ dict_similar_casereport['pmid'] }}"></span></font>
+			  </div>
 			</td>
 		      </tr>
 		      <tr>
@@ -415,6 +431,43 @@
       });
     </script>
     <!-- END: popup-hierarchy-hpo -->
+
+    <script type="text/javascript">
+      function showPlagin(idno){
+
+        $.ajax({
+          type: "GET",
+          url: "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi",
+          data: "db=pubmed&query_key=1&id=" + idno + "&retmode=xml&rettype=abstract",
+          dataType: "xml",
+          success: function(xml){
+            $(xml).find("PubmedArticle").each(function(){
+              var pmid = "";
+              $(this).find('ArticleId').each(function(){
+                var type = $(this).attr('IdType');
+                if( type == "pubmed" ){
+                  pmid = $(this).text();
+                }
+              });
+              var abs = $(this).find('AbstractText').text();
+              $("#abstract" + pmid).empty();
+              $("#abstract" + pmid).append(abs);
+            });
+          }
+        });
+
+        pc = ('PlagClose' + (idno));
+        po = ('PlagOpen' + (idno));
+        if( document.getElementById(pc).style.display == "none" ) {
+          document.getElementById(pc).style.display = "block";
+          document.getElementById(po).style.display = "none";
+        }
+        else {
+          document.getElementById(pc).style.display = "none";
+          document.getElementById(po).style.display = "block";
+        }
+      }
+    </script>
 
 
 {% endblock %}
