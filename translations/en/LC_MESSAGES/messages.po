@@ -103,10 +103,10 @@ msgid "search_label_DiseaseID"
 msgstr "(Disease ID)"
 
 msgid "search_label_related_casereport"
-msgstr "Search case reports"
+msgstr "Find case reports"
 
 msgid "search_label_search_image_google"
-msgstr "Search images (Google)"
+msgstr "Find images (Google)"
 
 msgid "disease_label_DiseaseDefinition"
 msgstr "Disease Definition"
@@ -124,7 +124,7 @@ msgid "disease_textbox_title_narrow_casereport"
 msgstr "Narrow down the case reports"
 
 msgid "disease_button_search"
-msgstr "Search"
+msgstr "Find case reports"
 
 msgid "disease_label_paper"
 msgstr "(papers)"
