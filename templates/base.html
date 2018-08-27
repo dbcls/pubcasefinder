@@ -90,7 +90,11 @@
 	      <ul>
 		<li><font color="white" size="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;( {{ _('Update') }} )&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><li>
 		<!-- li class="active"><a href="/">Home</a></li -->
-		<li><a href="/static/pdf/Summary_PubCaseFinder.pdf" target="_blank">{{ _('About') }}</a></li>
+		{% if get_locale() == "en" %}
+		  <li><a href="/static/pdf/Summary_PubCaseFinder.pdf" target="_blank">{{ _('About') }}</a></li>
+		{% else %}
+		  <li><a href="/static/pdf/PubCaseFinder_manual_ja.pdf" target="_blank">{{ _('About') }}</a></li>
+		{% endif %}
 		<li><a href="{{ _('TermsOfService_URL') }}">{{ _('TermsOfService') }}</a></li>
 		<li><a href="/mme">API</a></li>
 		<li><a title="Comments & suggestions are welcome!" href="mailto:pubcasefinder@dbcls.rois.ac.jp" href="#">{{ _('Contact') }}</a></li>
