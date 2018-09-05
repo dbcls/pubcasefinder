@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 
-<html>
+{% if get_locale() == "en" %}
+<html lang="en">
+{% else %}
+<html lang="ja">
+{% endif %}
 
   <!-- STARRT: head -->
   <head>
@@ -125,6 +129,8 @@
 
   </body>
   <!-- END: body -->
+
+  <script type="text/javascript" src="https://dbcls.rois.ac.jp/DBCLS-common-header-footer/common-footer/script/common-footer.js" id="common-footer__script"></script>
 
 </html>
 
