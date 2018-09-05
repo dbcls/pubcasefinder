@@ -63,6 +63,9 @@ msgstr "HP:0002315 頭痛"
 msgid "index_label_intro_title"
 msgstr "<b>希少疾患・症例を効率良く検索できる希少疾患診断支援システム</b>"
 
+msgid "index_label_citation"
+msgstr "あなたの研究で PubCaseFinder を利用した場合は、次の論文を引用してください："
+
 msgid "search_textbox_title_narrowdown"
 msgstr "希少疾患を絞り込む"
 

@@ -63,6 +63,9 @@ msgstr "HP:0002315 Headache"
 msgid "index_label_intro_title"
 msgstr "PubCaseFinder is a diagnosis support system for <b>rare diseases.</b>"
 
+msgid "index_label_citation"
+msgstr "When you use PubCaseFinder in your publications, please cite:"
+
 msgid "search_textbox_title_narrowdown"
 msgstr "Narrow down the rare diseases"
 
