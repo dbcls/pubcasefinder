@@ -145,24 +145,25 @@ def search_similar_disease(str_phenotypes, str_genes):
         dict_AnnotationHPOSumIC[value[0]] = value[3]
 
         
-    # OntoTermHPテーブルまたはOntoTermHPInformationテーブルからHPの全termを取得                                                                                                                                                                  ## localeがenの場合はOntoTermHPから英語のHPO termを取得                                                                                                                                                                                      ## localeがenでない場合はOntoTermHPInformationから日本語のHPO termを取得 
+    # OntoTermHPテーブルまたはOntoTermHPInformationテーブルからHPの全termを取得
+    ## localeがenの場合はOntoTermHPから英語のHPO termを取得
+    ## localeがenでない場合はOntoTermHPInformationから日本語のHPO termを取得 
     dict_OntoTerm_hp = {}
     sql_OntoTerm_hp = ""
-    if get_locale() == "en":
-        sql_OntoTerm_hp = u"select distinct OntoID, OntoTerm from OntoTermHP where OntoType='label'"
-    else:
+    if get_locale() == "ja" or get_locale() == "ja_JP":
         sql_OntoTerm_hp = u"select distinct OntoID, OntoName, OntoNameJa from OntoTermHPInformation"
+    else:
+        sql_OntoTerm_hp = u"select distinct OntoID, OntoTerm from OntoTermHP where OntoType='label'"
     cursor_OntoTerm_hp = OBJ_MYSQL.cursor()
     cursor_OntoTerm_hp.execute(sql_OntoTerm_hp)
     values = cursor_OntoTerm_hp.fetchall()
     cursor_OntoTerm_hp.close()
-    if get_locale() == "en":
-        for value in values:
-            dict_OntoTerm_hp[value[0]] = value[1]
-    else:
+    if get_locale() == "ja" or get_locale() == "ja_JP":
         for value in values:
             dict_OntoTerm_hp[value[0]] = value[1] if value[2]=="" else value[2]
-
+    else:
+        for value in values:
+            dict_OntoTerm_hp[value[0]] = value[1]
 
     # OrphanetテーブルからDisease definitionを取得
     dict_disease_definition = {}
