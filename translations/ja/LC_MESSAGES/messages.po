@@ -3,6 +3,12 @@
 # This file is distributed under the same license as the PROJECT project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2018.
 #
+msgid "base_title"
+msgstr "希少疾患診断支援システム : PubCaseFinder"
+
+msgid "base_description"
+msgstr "患者の症状を入力するだけで、約4000の希少疾患を関連性の高い順にランキングする希少疾患診断支援システム。疾患毎に過去の症例も合わせて検索できます。"
+
 msgid "Update"
 msgstr "最終更新日：2017年7月20日"
 
@@ -64,7 +70,7 @@ msgid "index_label_intro_title"
 msgstr "<b>希少疾患・症例を効率良く検索できる希少疾患診断支援システム</b>"
 
 msgid "index_label_citation"
-msgstr "あなたの研究で PubCaseFinder を利用した場合は、次の論文を引用してください："
+msgstr "When you use PubCaseFinder in your publications, please cite:"
 
 msgid "search_textbox_title_narrowdown"
 msgstr "希少疾患を絞り込む"

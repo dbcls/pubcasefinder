@@ -3,6 +3,12 @@
 # This file is distributed under the same license as the PROJECT project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2018.
 #
+msgid "base_title"
+msgstr "A Phenotype-Driven Differential-Diagnosis System : PubCaseFinder"
+
+msgid "base_description"
+msgstr "PubCaseFinder is a phenotype-driven differential-diagnosis system that uses the disease-phenotype associations extracted from one million case reports."
+
 msgid "Update"
 msgstr "Update: July. 20. 2017"
 
