@@ -148,7 +148,7 @@ def show_disease_casereport_page(disease, phenotypes, genes, page, size):
         dict_Disease_phenotype_Orphanet = {}
         dict_Disease_phenotype_Orphanet['id_onto_hp']    = id_onto_hp
         #dict_Disease_phenotype_Orphanet['term']          = term if get_locale() == "en" or term_ja == "" else term_ja
-        dict_Disease_phenotype_Orphanet['term']          = term_ja if (get_locale() == "ja" or get_locale() == "ja_JP") and term_ja == "" else term
+        dict_Disease_phenotype_Orphanet['term']          = term_ja if (get_locale() == "ja" or get_locale() == "ja_JP") and term_ja != "" else term
         dict_Disease_phenotype_Orphanet['freq']          = freq
         list_dict_Disease_phenotype_Orphanet.append(dict_Disease_phenotype_Orphanet)
 
@@ -171,7 +171,7 @@ def show_disease_casereport_page(disease, phenotypes, genes, page, size):
         dict_Disease_phenotype_CaseReport = {}
         dict_Disease_phenotype_CaseReport['id_onto_hp']    = id_onto_hp
         #dict_Disease_phenotype_CaseReport['term']          = term if get_locale() == "en" or term_ja == "" else term_ja
-        dict_Disease_phenotype_CaseReport['term']          = term_ja if (get_locale() == "ja" or get_locale() == "ja_JP") and term_ja == "" else term
+        dict_Disease_phenotype_CaseReport['term']          = term_ja if (get_locale() == "ja" or get_locale() == "ja_JP") and term_ja != "" else term
         dict_Disease_phenotype_CaseReport['freq']          = freq
         list_dict_Disease_phenotype_CaseReport.append(dict_Disease_phenotype_CaseReport)
 
