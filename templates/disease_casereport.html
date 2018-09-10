@@ -163,8 +163,8 @@
 			  <b>{{ dict_similar_casereport['title'] }}</b><br>
 			  {{ dict_similar_casereport['authors'] }}.<br>
 			  {{ dict_similar_casereport['so'] }}
-			  <div id="PlagOpen{{ dict_similar_casereport['pmid'] }}"><a href="#" title="Show abstract" onclick="showPlagin({{ dict_similar_casereport['pmid'] }});return false;"><font color="#0431B4">[ Show abstract ]</font></a></div>
-			  <div id="PlagClose{{ dict_similar_casereport['pmid'] }}" style="display: none"><a href="#" title="Hide abstract" onclick="showPlagin({{ dict_similar_casereport['pmid'] }});return false;"><font color="#0431B4">[ Hide abstract ]</font></a>
+			  <div id="PlagOpen{{ dict_similar_casereport['pmid'] }}"><a href="#" title="Show abstract" onclick="showPlagin({{ dict_similar_casereport['pmid'] }});return false;"><font color="#0431B4">[ {{ _('disease_label_show_abstract') }} ]</font></a></div>
+			  <div id="PlagClose{{ dict_similar_casereport['pmid'] }}" style="display: none"><a href="#" title="Hide abstract" onclick="showPlagin({{ dict_similar_casereport['pmid'] }});return false;"><font color="#0431B4">[ {{ _('disease_label_hide_abstract')}} ]</font></a>
 			  <br>
 			  <font color="black"><span id="abstract{{ dict_similar_casereport['pmid'] }}"></span></font>
 			  </div>
@@ -437,7 +437,7 @@
 
               {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
                 var abs_url = abs.replace(/\//g, "%2F")
-                var abs_url = abs.replace(/\'/g, "%27")
+                abs_url = abs_url.replace(/\'/g, "%27")
                 abs = abs + "<a href='https://translate.google.co.jp/?hl=ja#en/ja/" + abs_url + "' target='_blank'><font color='#0431B4'>&nbsp;&gt;&gt;&nbsp;{{ _('search_label_translate_google') }}</font></a>";
               {% endif %}
               $("#abstract" + pmid).append(abs);

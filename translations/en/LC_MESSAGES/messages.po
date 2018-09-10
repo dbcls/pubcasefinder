@@ -147,6 +147,12 @@ msgstr "<b>Mutation</b>"
 msgid "disease_label_mesh"
 msgstr "<b>MeSH</b>"
 
+msgid "disease_label_show_abstract"
+msgstr "Show abstract"
+
+msgid "disease_label_hide_abstract"
+msgstr "Hide abstract"
+
 msgid "disesase_TabPheno_label_orphanet"
 msgstr "Phenotype(s) retrieved from Orphanet"
 

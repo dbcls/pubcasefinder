@@ -150,6 +150,12 @@ msgstr "変異"
 msgid "disease_label_mesh"
 msgstr "キーワード（MeSH）"
 
+msgid "disease_label_show_abstract"
+msgstr "抄録を表示"
+
+msgid "disease_label_hide_abstract"
+msgstr "抄録を非表示"
+
 msgid "disesase_TabPheno_label_orphanet"
 msgstr "徴候・症状リスト（Orphanetデータベースから取得）"
 
