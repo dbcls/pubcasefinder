@@ -73,13 +73,22 @@ msgid "index_label_citation"
 msgstr "When you use PubCaseFinder in your publications, please cite:"
 
 msgid "search_textbox_title_narrowdown"
-msgstr "Narrow down the rare diseases"
+msgstr "Narrow down the diseases"
 
 msgid "search_label_upload_hpo"
 msgstr "+ Upload File (HPO ID)"
 
 msgid "search_label_upload_gene"
 msgstr "+ Upload File (Entrez Gene ID)"
+
+msgid "search_tab_Orphanet"
+msgstr "<b>Rare Diseases ( Orphanet )</b>"
+
+msgid "search_tab_OMIM"
+msgstr "<b>Genetic Diseases ( OMIM )</b>"
+
+msgid "search_button_download_summary"
+msgstr "Download Summary of Results"
 
 msgid "search_button_download"
 msgstr "Download Results"
@@ -88,7 +97,7 @@ msgid "search_label_total"
 msgstr "Total"
 
 msgid "search_label_disease"
-msgstr "(diseases)"
+msgstr "results"
 
 msgid "search_label_perpage"
 msgstr "(per page)"

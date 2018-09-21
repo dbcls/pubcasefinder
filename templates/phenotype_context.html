@@ -11,12 +11,12 @@
 
         <h2><b><a target="_blank" href="http://www.orpha.net/consor/cgi-bin/OC_Exp.php?Expert={{ id_nonprefix_disease }}">{{ term_disease }}</a></b></h2>
         <div style="border-style: solid ; border-width: 1px;padding: 20px 20px 20px 20px;">
-          {{ disease_definition }}
+          {{ disease_definition | replace("None", "") }}
         </div>
 	<br>
         <h2><b><a style="color:#337ab7;" target="_blank" href="https://hpo.jax.org/app/browse/term/{{ id_phenotype }}">{{ term_phenotype }}</a></b></h2>
         <div style="border-style: solid ; border-width: 1px;padding: 20px 20px 20px 20px;">
-          {{ phenotype_definition }}
+          {{ phenotype_definition | replace("None", "")  }}
         </div>
 
 	<!--

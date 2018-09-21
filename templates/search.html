@@ -52,7 +52,7 @@
 	  <table width="100%">
 	    <tr>
 	      <td>
-		<input type="button" class="btn btn-primary" value="{{ _('search_button_download') }}" onClick='location.href="{{ url_for_download_results_search_page(str_phenotypes, str_genes, '1', '20') }}"'>
+		<input type="button" class="btn btn-info" value="{{ _('search_button_download_summary') }}" onClick='location.href="{{ url_for_download_summary(str_phenotypes, str_genes, '1', '10') }}"'>
 	      </td>
 	      <td align="right">
 		<button type="submit" class="btn btn-primary">{{ _('index_button_search') }}</button>
@@ -60,26 +60,58 @@
 	      </td>
 	    </tr>
 	  </table>
+	  <br>
+	  <br>
 
-	  <table width="100%" height="120">
-	    <tr>
-	      <!-- START: Show total number -->
-	      <td align="left" valign="top">
-		<p><br></p>
-		<p>{{ _('search_label_total') }}: <font size="4" color="black"><b>{{ total_hit }}</b></font> {{ _('search_label_disease') }}</p>
-	      </td>
+
+
+      <!-- START: Nav-tabs -->
+      <div class="panel with-nav-tabs panel-default">
+        <div class="panel-heading">
+          <ul class="nav nav-tabs">
+	    {% if active_tab == "orphanet" %}
+            <li class="active"><a href="#tab1default" data-toggle="tab"><div width="100" align="center">{{ _('search_tab_Orphanet') }}&nbsp;&nbsp;{{ '{:,.0f}'.format(total_hit) }} {{ _('search_label_disease') }}</div></a></li>
+            <li><a href="#tab2default" data-toggle="tab"><div width="100" align="center">{{ _('search_tab_OMIM') }}&nbsp;&nbsp;{{ '{:,.0f}'.format(total_hit_omim) }} {{ _('search_label_disease') }}</div></a></li>
+	    {% else %}
+            <li><a href="#tab1default" data-toggle="tab"><div width="100" align="center">{{ _('search_tab_Orphanet') }}&nbsp;&nbsp;{{ '{:,.0f}'.format(total_hit) }} {{ _('search_label_disease') }}</div></a></li>
+            <li class="active"><a href="#tab2default" data-toggle="tab"><div width="100" align="center">{{ _('search_tab_OMIM') }}&nbsp;&nbsp;{{ '{:,.0f}'.format(total_hit_omim) }} {{ _('search_label_disease') }}</div></a></li>
+	    {% endif %}
+          </ul>
+        </div>
+
+        <div class="panel-body">
+          <div class="tab-content">
+
+        <!-- Start: Orphanet tab -->
+	{% if active_tab == "orphanet" %}
+        <div class="tab-pane fade in active" id="tab1default">
+	{% else %}
+        <div class="tab-pane fade" id="tab1default">
+	{% endif %}
+
+
+
+
+	  <div clas="row">
+	    <div class="col-sm-12">
+	      <table width="100%" height="60">
+		<tr>
+		  <td align="left" valign="top" width="230">
+		    <p><br></p>
+		    <p>{{ _('search_label_total') }}: <font size="4" color="black"><b>{{ '{:,.0f}'.format(total_hit) }}</b></font> {{ _('search_label_disease') }}</p>
+		  </td>
 	      <!-- END: Show total number -->
-	      <!-- td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td -->
+
 	      <!-- START: Pagination upper_part -->
 	      <td align="middle" valign="middle">
 		<ul class="pagination">
 		  {% if pagination.has_prev %}
-		    <li align="center"><a href="{{ url_for_search_page(str_phenotypes, str_genes, pagination.page - 1, cs) }}">&laquo;</a></li>
+		    <li align="center"><a href="{{ url_for_search_page(str_phenotypes, str_genes, (pagination.page - 1) ~ ',' ~ pagination_omim.page, cs ~ ',' ~ cs_omim ~ ',' ~ 'orphanet') }}">&laquo;</a></li>
 		  {% endif %}
 		  {%- for page in pagination.iter_pages() %}
 		    {% if page %}
 		      {% if page != pagination.page %}
-		        <li align="center"><a href="{{ url_for_search_page(str_phenotypes, str_genes, page, cs) }}">{{ page }}</a></li>
+		        <li align="center"><a href="{{ url_for_search_page(str_phenotypes, str_genes, page ~ ',' ~ pagination_omim.page, cs ~ ',' ~ cs_omim ~ ',' ~ 'orphanet') }}">{{ page }}</a></li>
 		      {% else %}
 		        <li align="center" class="active"><a href="#">{{ page }}</a></li>
 		      {% endif %}
@@ -88,51 +120,53 @@
                     {% endif %}
 		  {%- endfor %}
                   {% if pagination.has_next %}
-                    <li align="center"><a href="{{ url_for_search_page(str_phenotypes, str_genes, pagination.page + 1, cs) }}">&raquo;</a></li>
+                    <li align="center"><a href="{{ url_for_search_page(str_phenotypes, str_genes, (pagination.page + 1) ~ ',' ~ pagination_omim.page, cs ~ ',' ~ cs_omim ~ ',' ~ 'orphanet') }}">&raquo;</a></li>
 		  {% endif %}
                 </ul>
-	        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	      </td>
               <!-- END: Pagination upper_part -->
+
 	      <!-- START: Show selector for "per page" -->
-              <td align="right" valign="top">
+	      <input type="hidden" name="page_orphanet" value="{{ pagination.page }}">
+	      <input type="hidden" name="changesize_selector_orphanet" value="{{ cs }}">
+              <td align="right" valign="top" width="200">
 		<p><br></p>
 		<!-- http://qiita.com/act823/items/3a203f1f96e7fe52f69d -->
-		<select id="changesize_selector" name="changesize_selector" onchange="submit(this.form)">
+		<select id="changesize_selector_orphanet_link" name="changesize_selector_orphanet_link" onchange="changesize_orphanet()">
 		  {% if cs == "10" %}
-		    <option id="selector_10" value="10" selected>10</option>
-		    <option id="selector_20" value="20">20</option>
-		    <option id="selector_40" value="40">40</option>
-		    <option id="selector_60" value="60">60</option>
-		    <option id="selector_100" value="100">100</option>
+		    <option id="selector_10" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ pagination_omim.page, '10,' ~ cs_omim ~ ',orphanet') }}" selected>10</option>
+		    <option id="selector_20" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ pagination_omim.page, '20,' ~ cs_omim ~ ',orphanet') }}">20</option>
+		    <option id="selector_40" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ pagination_omim.page, '40,' ~ cs_omim ~ ',orphanet') }}">40</option>
+		    <option id="selector_60" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ pagination_omim.page, '60,' ~ cs_omim ~ ',orphanet') }}">60</option>
+		    <option id="selector_100" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ pagination_omim.page, '100,' ~ cs_omim ~ ',orphanet') }}">100</option>
 		  {% endif %}
 		  {% if cs == "20" %}
-		    <option id="selector_10" value="10">10</option>
-		    <option id="selector_20" value="20" selected>20</option>
-		    <option id="selector_40" value="40">40</option>
-		    <option id="selector_60" value="60">60</option>
-		    <option id="selector_100" value="100">100</option>
+		    <option id="selector_10" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ pagination_omim.page, '10,' ~ cs_omim ~ ',orphanet') }}">10</option>
+		    <option id="selector_20" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ pagination_omim.page, '20,' ~ cs_omim ~ ',orphanet') }}" selected>20</option>
+		    <option id="selector_40" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ pagination_omim.page, '40,' ~ cs_omim ~ ',orphanet') }}">40</option>
+		    <option id="selector_60" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ pagination_omim.page, '60,' ~ cs_omim ~ ',orphanet') }}">60</option>
+		    <option id="selector_100" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ pagination_omim.page, '100,' ~ cs_omim ~ ',orphanet') }}">100</option>
 		  {% endif %}
 		  {% if cs == "40" %}
-		    <option id="selector_10" value="10">10</option>
-		    <option id="selector_20" value="20">20</option>
-		    <option id="selector_40" value="40" selected>40</option>
-		    <option id="selector_60" value="60">60</option>
-		    <option id="selector_100" value="100">100</option>
+		    <option id="selector_10" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ pagination_omim.page, '10,' ~ cs_omim ~ ',orphanet') }}">10</option>
+		    <option id="selector_20" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ pagination_omim.page, '20,' ~ cs_omim ~ ',orphanet') }}">20</option>
+		    <option id="selector_40" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ pagination_omim.page, '40,' ~ cs_omim ~ ',orphanet') }}" selected>40</option>
+		    <option id="selector_60" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ pagination_omim.page, '60,' ~ cs_omim ~ ',orphanet') }}">60</option>
+		    <option id="selector_100" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ pagination_omim.page, '100,' ~ cs_omim ~ ',orphanet') }}">100</option>
 		  {% endif %}
 		  {% if cs == "60" %}
-		    <option id="selector_10" value="10">10</option>
-		    <option id="selector_20" value="20">20</option>
-		    <option id="selector_40" value="40">40</option>
-		    <option id="selector_60" value="60" selected>60</option>
-		    <option id="selector_100" value="100">100</option>
+		    <option id="selector_10" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ pagination_omim.page, '10,' ~ cs_omim ~ ',orphanet') }}">10</option>
+		    <option id="selector_20" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ pagination_omim.page, '20,' ~ cs_omim ~ ',orphanet') }}">20</option>
+		    <option id="selector_40" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ pagination_omim.page, '40,' ~ cs_omim ~ ',orphanet') }}">40</option>
+		    <option id="selector_60" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ pagination_omim.page, '60,' ~ cs_omim ~ ',orphanet') }}" selected>60</option>
+		    <option id="selector_100" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ pagination_omim.page, '100,' ~ cs_omim ~ ',orphanet') }}">100</option>
 		  {% endif %}
 		  {% if cs == "100" %}
-		    <option id="selector_10" value="10">10</option>
-		    <option id="selector_20" value="20">20</option>
-		    <option id="selector_40" value="40">40</option>
-		    <option id="selector_60" value="60">60</option>
-		    <option id="selector_100" value="100" selected>100</option>
+		    <option id="selector_10" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ pagination_omim.page, '10,' ~ cs_omim ~ ',orphanet') }}">10</option>
+		    <option id="selector_20" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ pagination_omim.page, '20,' ~ cs_omim ~ ',orphanet') }}">20</option>
+		    <option id="selector_40" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ pagination_omim.page, '40,' ~ cs_omim ~ ',orphanet') }}">40</option>
+		    <option id="selector_60" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ pagination_omim.page, '60,' ~ cs_omim ~ ',orphanet') }}">60</option>
+		    <option id="selector_100" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ pagination_omim.page, '100,' ~ cs_omim ~ ',orphanet') }}" selected>100</option>
 		  {% endif %}
 		</select>
 		{{ _('search_label_perpage') }}
@@ -140,28 +174,31 @@
 	      <!-- END: Show selector for "per page" -->
             </tr>
           </table>
-	</form>
-        <!-- END: FORM -->
+	  <!-- START: Controller -->
+
+
+
+
+
+	<!-- START: Show download button -->
+        <div align="right">
+	  <input type="button" class="btn btn-info" value="{{ _('search_button_download') }}" onClick='location.href="{{ url_for_download_results_search_page(str_phenotypes, str_genes, '1', '10') }}"'>
+	</div>
+	<!-- END: Show download button -->
+
 
         <!-- START: Show result table -->
-	<div clas="row">
-	  <div class="col-sm-12">
-
-            <div align="right">
-              <span class="label label-primary"><font size="3">{{ _('search_label_MatchedPhenotype') }}</font></span>&nbsp;
-              <span class="label label-default"><font size="3">{{ _('search_label_CausativeGene') }}</font></span><br>
-            </div>
 	    <table class="table table-striped">
-
 	      <thead>
 		<tr>
 		  <th style="width:100px;" class="text-left">{{ _('search_label_rank') }}<br>{{ _('search_label_similarity') }}</th>
-		  <!-- th style="width:100px;" class="text-left">Similarity</th -->
 		  <th style="width:200px;" class="text-left">{{ _('search_label_DiseaseName') }}<br>{{ _('search_label_DiseaseID') }}</th>
-		  <th></th>
-		  <!--
-		  <th class="text-left">Matched Phenotype(s)<br>Causative Gene(s)<br>External Reference(s)</th>
-		  -->
+		  <th>
+		    <div align="right">
+		      <span class="label label-primary"><font size="3"><b>{{ _('search_label_MatchedPhenotype') }}</b></font></span>&nbsp;
+		      <span class="label label-default"><font size="3"><b>{{ _('search_label_CausativeGene') }}</b></font></span><br>
+		    </div>
+		  </th>
 		</tr>
 	      </thead>
 	      <tbody>
@@ -258,12 +295,12 @@
 	      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	      <ul class="pagination">
 		{% if pagination.has_prev %}
-		  <li align="center"><a href="{{ url_for_search_page(str_phenotypes, str_genes, pagination.page - 1, cs) }}">&laquo;</a></li>
+		  <li align="center"><a href="{{ url_for_search_page(str_phenotypes, str_genes, (pagination.page - 1) ~ ',' ~ pagination_omim.page, cs ~ ',' ~ cs_omim ~ ',' ~ 'orphanet') }}">&laquo;</a></li>
 		{% endif %}
 		{%- for page in pagination.iter_pages() %}
 		  {% if page %}
 		    {% if page != pagination.page %}
-		      <li align="center"><a href="{{ url_for_search_page(str_phenotypes, str_genes, page, cs) }}">{{ page }}</a></li>
+		      <li align="center"><a href="{{ url_for_search_page(str_phenotypes, str_genes, page ~ ',' ~ pagination_omim.page, cs ~ ',' ~ cs_omim ~ ',' ~ 'orphanet') }}">{{ page }}</a></li>
 		    {% else %}
 		      <li align="center" class="active"><a href="#">{{ page }}</a></li>
 		    {% endif %}
@@ -272,13 +309,242 @@
                   {% endif %}
 		{%- endfor %}
                 {% if pagination.has_next %}
-                  <li align="center"><a href="{{ url_for_search_page(str_phenotypes, str_genes, pagination.page + 1, cs) }}">&raquo;</a></li>
+                  <li align="center"><a href="{{ url_for_search_page(str_phenotypes, str_genes, (pagination.page + 1) ~ ',' ~ pagination_omim.page, cs ~ ',' ~ cs_omim ~ ',' ~ 'orphanet') }}">&raquo;</a></li>
 	        {% endif %}
               </ul>
             </td>
           </tr>
         </table>
         <!-- END: Pagination lower_part -->
+
+
+
+	</div>
+
+
+
+
+
+
+        <!-- Start: OMIM tab -->
+	{% if active_tab == "omim" %}
+        <div class="tab-pane fade in active" id="tab2default">
+	{% else %}
+        <div class="tab-pane fade" id="tab2default">
+	{% endif %}
+
+
+	<div clas="row">
+	  <div class="col-sm-12">
+
+
+	  <table width="100%" height="60">
+	    <tr>
+	      <!-- START: Show total number -->
+	      <td align="left" valign="top" width="230">
+		<p><br></p>
+		<p>{{ _('search_label_total') }}: <font size="4" color="black"><b>{{ total_hit_omim }}</b></font> {{ _('search_label_disease') }}</p>
+	      </td>
+	      <!-- END: Show total number -->
+
+	      <!-- START: Pagination upper_part -->
+	      <td align="middle" valign="middle">
+		<ul class="pagination">
+		  {% if pagination_omim.has_prev %}
+		    <li align="center"><a href="{{ url_for_search_page(str_phenotypes, str_genes, pagination.page ~ ',' ~ (pagination_omim.page - 1), cs ~ ',' ~ cs_omim ~ ',' ~ 'omim') }}">&laquo;</a></li>
+		  {% endif %}
+		  {%- for page in pagination_omim.iter_pages() %}
+		    {% if page %}
+		      {% if page != pagination_omim.page %}
+		        <li align="center"><a href="{{ url_for_search_page(str_phenotypes, str_genes, pagination.page ~ ',' ~ page, cs ~ ',' ~ cs_omim ~ ',' ~ 'omim') }}">{{ page }}</a></li>
+		      {% else %}
+		        <li align="center" class="active"><a href="#">{{ page }}</a></li>
+		      {% endif %}
+		    {% else %}
+		      <li align="center"><span style="border : 0px">…</span></l>
+                    {% endif %}
+		  {%- endfor %}
+                  {% if pagination_omim.has_next %}
+                    <li align="center"><a href="{{ url_for_search_page(str_phenotypes, str_genes, pagination.page ~ ',' ~ (pagination_omim.page + 1), cs ~ ',' ~ cs_omim ~ ',' ~ 'omim') }}">&raquo;</a></li>
+		  {% endif %}
+                </ul>
+	      </td>
+              <!-- END: Pagination upper_part -->
+	      <!-- START: Show selector for "per page" -->
+	      <input type="hidden" name="page_omim" value="{{ pagination_omim.page }}">
+	      <input type="hidden" name="changesize_selector_omim" value="{{ cs_omim }}">
+              <td align="right" valign="top" width="200">
+		<p><br></p>
+		<!-- http://qiita.com/act823/items/3a203f1f96e7fe52f69d -->
+		<select id="changesize_selector_omim_link" name="changesize_selector_omim_link" onchange="changesize_omim()">
+		  {% if cs_omim == "10" %}
+		    <option id="selector_10" value="{{ url_for_search_page(str_phenotypes, str_genes, pagination.page ~ ',1', cs ~ ',10,omim') }}" selected>10</option>
+		    <option id="selector_20" value="{{ url_for_search_page(str_phenotypes, str_genes, pagination.page ~ ',1', cs ~ ',20,omim') }}">20</option>
+		    <option id="selector_40" value="{{ url_for_search_page(str_phenotypes, str_genes, pagination.page ~ ',1', cs ~ ',40,omim') }}">40</option>
+		    <option id="selector_60" value="{{ url_for_search_page(str_phenotypes, str_genes, pagination.page ~ ',1', cs ~ ',60,omim') }}">60</option>
+		    <option id="selector_100" value="{{ url_for_search_page(str_phenotypes, str_genes, pagination.page ~ ',1', cs ~ ',100,omim') }}">100</option>
+		  {% endif %}
+		  {% if cs_omim == "20" %}
+		    <option id="selector_10" value="{{ url_for_search_page(str_phenotypes, str_genes, pagination.page ~ ',1', cs ~ ',10,omim') }}">10</option>
+		    <option id="selector_20" value="{{ url_for_search_page(str_phenotypes, str_genes, pagination.page ~ ',1', cs ~ ',20,omim') }}" selected>20</option>
+		    <option id="selector_40" value="{{ url_for_search_page(str_phenotypes, str_genes, pagination.page ~ ',1', cs ~ ',40,omim') }}">40</option>
+		    <option id="selector_60" value="{{ url_for_search_page(str_phenotypes, str_genes, pagination.page ~ ',1', cs ~ ',60,omim') }}">60</option>
+		    <option id="selector_100" value="{{ url_for_search_page(str_phenotypes, str_genes, pagination.page ~ ',1', cs ~ ',100,omim') }}">100</option>
+		  {% endif %}
+		  {% if cs_omim == "40" %}
+		    <option id="selector_10" value="{{ url_for_search_page(str_phenotypes, str_genes, pagination.page ~ ',1', cs ~ ',10,omim') }}">10</option>
+		    <option id="selector_20" value="{{ url_for_search_page(str_phenotypes, str_genes, pagination.page ~ ',1', cs ~ ',20,omim') }}">20</option>
+		    <option id="selector_40" value="{{ url_for_search_page(str_phenotypes, str_genes, pagination.page ~ ',1', cs ~ ',40,omim') }}" selected>40</option>
+		    <option id="selector_60" value="{{ url_for_search_page(str_phenotypes, str_genes, pagination.page ~ ',1', cs ~ ',60,omim') }}">60</option>
+		    <option id="selector_100" value="{{ url_for_search_page(str_phenotypes, str_genes, pagination.page ~ ',1', cs ~ ',100,omim') }}">100</option>
+		  {% endif %}
+		  {% if cs_omim == "60" %}
+		    <option id="selector_10" value="{{ url_for_search_page(str_phenotypes, str_genes, pagination.page ~ ',1', cs ~ ',10,omim') }}">10</option>
+		    <option id="selector_20" value="{{ url_for_search_page(str_phenotypes, str_genes, pagination.page ~ ',1', cs ~ ',20,omim') }}">20</option>
+		    <option id="selector_40" value="{{ url_for_search_page(str_phenotypes, str_genes, pagination.page ~ ',1', cs ~ ',40,omim') }}">40</option>
+		    <option id="selector_60" value="{{ url_for_search_page(str_phenotypes, str_genes, pagination.page ~ ',1', cs ~ ',60,omim') }}" selected>60</option>
+		    <option id="selector_100" value="{{ url_for_search_page(str_phenotypes, str_genes, pagination.page ~ ',1', cs ~ ',100,omim') }}">100</option>
+		  {% endif %}
+		  {% if cs_omim == "100" %}
+		    <option id="selector_10" value="{{ url_for_search_page(str_phenotypes, str_genes, pagination.page ~ ',1', cs ~ ',10,omim') }}">10</option>
+		    <option id="selector_20" value="{{ url_for_search_page(str_phenotypes, str_genes, pagination.page ~ ',1', cs ~ ',20,omim') }}">20</option>
+		    <option id="selector_40" value="{{ url_for_search_page(str_phenotypes, str_genes, pagination.page ~ ',1', cs ~ ',40,omim') }}">40</option>
+		    <option id="selector_60" value="{{ url_for_search_page(str_phenotypes, str_genes, pagination.page ~ ',1', cs ~ ',60,omim') }}">60</option>
+		    <option id="selector_100" value="{{ url_for_search_page(str_phenotypes, str_genes, pagination.page ~ ',1', cs ~ ',100,omim') }}" selected>100</option>
+		  {% endif %}
+		</select>
+		{{ _('search_label_perpage') }}
+	      </td>
+	      <!-- END: Show selector for "per page" -->
+            </tr>
+          </table>
+	</form>
+        <!-- END: FORM -->
+
+        <!-- START: Download button -->
+        <div align="right">
+	  <input type="button" class="btn btn-info" value="{{ _('search_button_download') }}" onClick='location.href="{{ url_for_download_results_search_omim_page(str_phenotypes, str_genes, '1', '10') }}"'>
+        </div>
+	<table class="table table-striped">
+        <!-- END: Download button -->
+
+        <!-- START: Show result table -->
+
+	      <thead>
+		<tr>
+		  <th style="width:100px;" class="text-left">{{ _('search_label_rank') }}<br>{{ _('search_label_similarity') }}</th>
+		  <th style="width:200px;" class="text-left">{{ _('search_label_DiseaseName') }}<br>{{ _('search_label_DiseaseID') }}</th>
+		  <th>
+		    <div align="right">
+		      <span class="label label-primary"><font size="3"><b>{{ _('search_label_MatchedPhenotype') }}</b></font></span>&nbsp;
+		      <span class="label label-default"><font size="3"><b>{{ _('search_label_CausativeGene') }}</b></font></span><br>
+		    </div>
+		  </th>
+		</tr>
+	      </thead>
+	      <tbody>
+		<!-- http://tnakamura.hatenablog.com/entry/20110608/jinja2_for_loop_index -->
+                {% for dict_similar_disease_omim in list_dict_similar_disease_omim %}
+		  <tr>
+		    <!-- Rank -->
+		    <!-- Similarity -->
+		    <td rowspan="3" width="10">{{ dict_similar_disease_omim['rank'] }}<br>({{ (dict_similar_disease_omim['match_score']*100)|round(1) }}%)</td>
+		    <!-- Disease Name -->
+		    <td rowspan="3">
+		      <!--a href="{{ url_for_disease_casereport_page(dict_similar_disease_omim['onto_id_omim'], str_phenotypes, '', '1', '10') }}" target="_blank">{{ dict_similar_disease_omim['onto_term_omim'] }}<br>({{dict_similar_disease_omim['onto_id_omim']}})</a-->
+		      <a href="https://www.omim.org/entry/{{ dict_similar_disease_omim['onto_id_omim'] | replace('OMIM:', '') }}" target="_blank">{{ dict_similar_disease_omim['onto_term_omim'] }}<br>({{dict_similar_disease_omim['onto_id_omim']}})</a>
+		    </td>
+		    <!-- Matched Phenotypes -->
+		    <td>
+		      {% set prev_id = "" %}
+		      {% for dict_onto_id_term_hp_disease in dict_similar_disease_omim['onto_id_term_hp_disease'] %}
+		        {% if prev_id != dict_onto_id_term_hp_disease['onto_id_hp_disease'] %}
+		          <!--span class="label label-primary"><font size="3"><a target="_blank" style="color:white;" href="{{ url_for_show_phenotype_context_page( dict_similar_disease_omim['onto_id_omim'], dict_onto_id_term_hp_disease['onto_id_hp_disease'], '1', '20' ) }}">{{ dict_onto_id_term_hp_disease['onto_term_hp_disease'] }}</a></font></span-->
+		          <span class="label label-primary"><font size="3"><a target="_blank" style="color:white;" href="https://hpo.jax.org/app/browse/term/{{ dict_onto_id_term_hp_disease['onto_id_hp_disease'] }}">{{ dict_onto_id_term_hp_disease['onto_term_hp_disease'] }}</a></font></span>
+		          {% set prev_id = dict_onto_id_term_hp_disease['onto_id_hp_disease'] %}
+		        {% endif %}
+                      {% endfor %}
+		    </td>
+		  </tr>
+		  <tr>
+		    <!-- Causative Genes -->
+		    <td>
+		      {% set prev_id = "" %}
+		      {% for dict_omim_symbol_synonym in dict_similar_disease_omim['omim_symbol_synonym'] %}
+		        {% if prev_id != dict_omim_symbol_synonym['entrez_id'] %}
+		          <a href="https://www.ncbi.nlm.nih.gov/clinvar/?term={{ dict_omim_symbol_synonym['symbol'] }}%5Bgene%5D" target="_blank"><span class="label label-default"><font size="3">{{ dict_omim_symbol_synonym['symbol'] }}</font></span></a>
+		          {% set prev_id = dict_omim_symbol_synonym['entrez_id'] %}
+			{% endif %}
+		      {% endfor %}
+		    </td>
+		  </tr>
+		  <tr>
+		    <td>
+                      <p style="margin-bottom:0.6em;"><font color="black">{{ dict_similar_disease_omim['onto_term_omim_disease_definition'] | safe }}</font>
+		        {% if (get_locale() == "ja" or get_locale() == "ja_JP") and dict_similar_disease_omim['onto_term_omim_disease_definition'] != "" %}
+			  <a href="https://translate.google.co.jp/?hl=ja#en/ja/{{ dict_similar_disease_omim['onto_term_omim_disease_definition'] | replace('/', '%2F') }}" target="_blank"><font color="#0431B4">&nbsp;&gt;&gt;&nbsp;{{ _('search_label_translate_google') }}</font></a>
+		        {% endif %}
+		      </p>
+		      <a href="http://www.google.com/search?q={{ dict_similar_disease_omim['onto_term_omim'] }}&tbm=isch" target="_blank"><u><font color="#0431B4">{{ _('search_label_search_image_google') }}</font></u></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		      <!--a href="{{ url_for_disease_casereport_page(dict_similar_disease_omim['onto_id_omim'], str_phenotypes, '', '1', '10') }}" target="_blank"><u><font color="#0431B4">{{ _('search_label_related_casereport') }}</font></u></a-->
+		    </td>
+		  </tr>
+		{% endfor %}
+	      </tbody>
+	    </table>
+	  </div><!--/.col-sm-12-->
+	</div><!--/row-->
+        <!-- END: Show result table -->
+
+	<!-- START: Pagination lower_part -->
+	<table width="100%" height="120">
+	  <tr>
+	    <td align="middle" valign="middle">
+	      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	      <ul class="pagination">
+		{% if pagination_omim.has_prev %}
+		  <li align="center"><a href="{{ url_for_search_page(str_phenotypes, str_genes, pagination.page ~ ',' ~ (pagination_omim.page - 1), cs ~ ',' ~ cs_omim ~ ',' ~ 'omim') }}">&laquo;</a></li>
+		{% endif %}
+		{%- for page in pagination_omim.iter_pages() %}
+		  {% if page %}
+		    {% if page != pagination_omim.page %}
+		      <li align="center"><a href="{{ url_for_search_page(str_phenotypes, str_genes, pagination.page ~ ',' ~ page, cs ~ ',' ~ cs_omim ~ ',' ~ 'omim') }}">{{ page }}</a></li>
+		    {% else %}
+		      <li align="center" class="active"><a href="#">{{ page }}</a></li>
+		    {% endif %}
+		  {% else %}
+		    <li align="center"><span style="border : 0px">…</span></l>
+                  {% endif %}
+		{%- endfor %}
+                {% if pagination_omim.has_next %}
+                  <li align="center"><a href="{{ url_for_search_page(str_phenotypes, str_genes, pagination.page ~ ',' ~ (pagination_omim.page + 1), cs ~ ',' ~ cs_omim ~ ',' ~ 'omim') }}">&raquo;</a></li>
+	        {% endif %}
+              </ul>
+            </td>
+          </tr>
+        </table>
+        <!-- END: Pagination lower_part -->
+
+
+
+
+	    </div>
+
+
+
+
+
+	</div>
+	</div>
+	</div>
+
+
+
+
+
+
+
+
 
       </div>
     </div>
@@ -337,7 +603,19 @@
       });
     </script>
     <!-- END: popup-hierarchy-hpo -->
-
+    
+    <!-- START: javascript changesize -->
+    <script type="text/javascript">
+      function changesize_orphanet() {
+      var browser = document.search.changesize_selector_orphanet_link.value;
+        location.href = browser
+      }
+      function changesize_omim() {
+      var browser = document.search.changesize_selector_omim_link.value;
+        location.href = browser
+      }
+    </script>
+    <!-- END: javascript changesize -->
 
 {% endblock %}
 
