@@ -5,30 +5,39 @@
     <!-- START: FORM -->
     <div id="fh5co-project">
       <div class="container">
-	<br><br>
 	<form name="search" action="/search_disease" method="post" class="form-group">
-	  <table>
+	  <div align="middle"><a href="/"><img src="/static/images/logo_PubCaseFinder_white.png" width="600"></a></div>
+	  <br>
+	  <table width="100%">
 	    <tr>
-	      <td>
-		<h2>{{ _('index_textbox_title') }}</h2>
-	      </td>
-	      <td>
-		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" id="ex_phenotypes"><font color="#0431B4"><u>ex) {{ _('index_Sample') }}</u></font></a>
-	      </td>
+	      {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+	      <td><button data-toggle="tooltip" title="{{ _('index_Q_tooltip') }}" class="btn btn-primary" type="button" onClick="window.open().location.href='/static/pdf/PubCaseFinder_manual_ja.pdf'"><font size="4">?</font></button></td>
+	      {% else %}
+	      <td><button data-toggle="tooltip" title="{{ _('index_Q_tooltip') }}" class="btn btn-primary" type="button" onClick="window.open().location.href='/static/pdf/Summary_PubCaseFinder.pdf'"><font size="4">?</font></button></td>
+	      {% endif %}
+	      <td>&nbsp;</td>
+	      <td width="100%"><textarea class="form-control" rows="2" id="tokeninput_hpo" name="str_phenotypes"></textarea></td>
 	    </tr>
 	  </table>
-	  <textarea class="form-control" rows="2" id="tokeninput_hpo" name="str_phenotypes"></textarea>
 	  <input type="hidden" name="str_genes" value="">
 	  <input type="hidden" name="page_orphanet" value="1">
 	  <input type="hidden" name="page_omim" value="1">
 	  <input type="hidden" name="changesize_selector_orphanet" value="10">
 	  <input type="hidden" name="changesize_selector_omim" value="10">
 	  <br>
-	  <div align="right">
-	  <button type="submit" class="btn btn-primary">{{ _('index_button_search') }}</button>
-	  <button id="tokeninput_hpo_clear" class="btn btn-default"<>{{ _('index_button_clear') }}</button>
-	  </div>
+	  <table width="100%">
+	    <tr>
+	      <td valign="top">
+		<a href="#" id="ex_phenotypes"><font color="#0431B4"><u>ex) {{ _('index_Sample') }}</u></font></a>
+	      </td>
+	      <td align="right">
+		<button type="submit" class="btn btn-primary">{{ _('index_button_search') }}</button>
+		<button id="tokeninput_hpo_clear" class="btn btn-default"<>{{ _('index_button_clear') }}</button>
+	      </td>
+	    </tr>
+	  </table>
 	</form>
+	<br><br>
 	<br><br>
       </div>
     </div>
@@ -134,6 +143,7 @@
 	      <li><p align="left">Wei CH et. al., PubTator: a Web-based text mining tool for assisting Biocuration, Nucleic acids research, 2013, 41 (W1): W518-W522. doi: 10.1093/nar/gkt44</p></li>
 	      <li><p align="left">HPO-Japanese alpha version</p></li>
 	      <li><p align="left">jQuery Tokeninput: Copyright (c) James Smith, Released under the MIT license, <a href="https://opensource.org/licenses/mit-license.php">https://opensource.org/licenses/mit-license.php</a></p></li>
+	      <li><p align="left">Bootstrap template, Copyright <a href="https://freehtml5.co">FREEHTML5.CO</a> licensed by <a href="https://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a></p></li>
 	    </ol>
 	  </div>
 	</div>

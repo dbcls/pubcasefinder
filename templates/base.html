@@ -84,33 +84,35 @@
     <!-- START: navigation -->
     <div class="fh5co-loader"></div>
     <div id="page">
-      <nav class="fh5co-nav" role="navigation">
-	<div class="container">
-	  <div class="row">
-	    <div class="col-xs-2 text-left">
-	      <div id="fh5co-logo"><a href="/"><font size="6">PubCaseFinder</font></a></div>
-	    </div>
-	    <div class="col-xs-10 text-right menu-1">
-	      <ul>
-		<li><font color="white" size="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;( {{ _('Update') }} )&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><li>
-		<!-- li class="active"><a href="/">Home</a></li -->
-		{% if get_locale() == "ja" or get_locale() == "ja_JP" %}
-		  <li><a href="/static/pdf/PubCaseFinder_manual_ja.pdf" target="_blank">{{ _('About') }}</a></li>
-		{% else %}
-		  <li><a href="/static/pdf/Summary_PubCaseFinder.pdf" target="_blank">{{ _('About') }}</a></li>
-		{% endif %}
-		<li><a href="{{ _('TermsOfService_URL') }}">{{ _('TermsOfService') }}</a></li>
-		<li><a href="/mme">API</a></li>
-		<li><a title="Comments & suggestions are welcome!" href="mailto:pubcasefinder@dbcls.rois.ac.jp" href="#">{{ _('Contact') }}</a></li>
-	      </ul>
-	    </div>
+
+    <nav class="fh5co-nav" role="navigation">
+      <div class="container">
+	<div class="row">
+	  <div class="col-xs-2 text-left">
+	    <div id="fh5co-logo"><a href="/">PubCaseFinder</a></div>
+	    <!--div id="fh5co-logo"><a href="/"><image src="/static/images/logo_PubCaseFinder_blue.png" width="300"></a></div-->
+	  </div>
+	  <div class="col-xs-10 text-right menu-1">
+	    <ul>
+	      <li><font color="white" size="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;( {{ _('Update') }} )&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><li>
+	      {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+	      <li><a href="/static/pdf/PubCaseFinder_manual_ja.pdf" target="_blank">{{ _('About') }}</a></li>
+	      {% else %}
+	      <li><a href="/static/pdf/Summary_PubCaseFinder.pdf" target="_blank">{{ _('About') }}</a></li>
+	      {% endif %}
+	      <li><a href="{{ _('TermsOfService_URL') }}">{{ _('TermsOfService') }}</a></li>
+	      <li><a href="/mme">API</a></li>
+	      <li><a title="Comments & suggestions are welcome!" href="mailto:pubcasefinder@dbcls.rois.ac.jp" href="#">{{ _('Contact') }}</a></li>
+	    </ul>
 	  </div>
 	</div>
-      </nav>
-    </div>
+      </div>
+    </nav>
+    <!--/div-->
     <!-- END: navigation -->
 
     <!-- START: navigation background -->
+
     <!--header id="fh5co-header" class="fh5co-cover" role="banner" style="background-image:url(/static/images/img_bg_1.jpg);" data-stellar-background-ratio="0.5"-->
     <header id="fh5co-header" class="fh5co-cover" role="banner">
       <div class="overlay"></div>
@@ -131,6 +133,14 @@
   <!-- END: body -->
 
   <script type="text/javascript" src="https://dbcls.rois.ac.jp/DBCLS-common-header-footer/common-footer/script/common-footer.js" id="common-footer__script"></script>
+
+  <!-- START: activate tool-tip -->
+  <script type="text/javascript">
+    $(document).ready(function () {
+      $('[data-toggle="tooltip"]').tooltip()
+    });
+  </script>
+  <!-- END: activate tool-tip -->
 
 </html>
 

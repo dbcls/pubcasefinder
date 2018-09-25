@@ -10,7 +10,7 @@ msgid "base_description"
 msgstr "PubCaseFinder is a phenotype-driven differential-diagnosis system that uses the disease-phenotype associations extracted from one million case reports."
 
 msgid "Update"
-msgstr "Update: July. 20. 2017"
+msgstr "Update: Sep. 25. 2018"
 
 msgid "About"
 msgstr "About"
@@ -23,6 +23,9 @@ msgstr "Terms"
 
 msgid "Contact"
 msgstr "Contact"
+
+msgid "index_Q_tooltip"
+msgstr "Input patient's signs and symptoms"
 
 msgid "index_textbox_title"
 msgstr "Input patient's <b>signs</b> and <b>symptoms</b>"

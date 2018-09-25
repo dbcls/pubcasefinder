@@ -10,7 +10,7 @@ msgid "base_description"
 msgstr "患者の症状を入力するだけで、約4000の希少疾患を関連性の高い順にランキングする希少疾患診断支援システム。疾患毎に過去の症例も合わせて検索できます。"
 
 msgid "Update"
-msgstr "最終更新日：2017年7月20日"
+msgstr "最終更新日：2018年9月25日"
 
 msgid "About"
 msgstr "ヘルプ"
@@ -23,6 +23,9 @@ msgstr "利用規約"
 
 msgid "Contact"
 msgstr "お問い合わせ"
+
+msgid "index_Q_tooltip"
+msgstr "患者の徴候・症状を入力"
 
 msgid "index_textbox_title"
 msgstr "患者の <b>徴候</b>・<b>症状</b> を入力"
