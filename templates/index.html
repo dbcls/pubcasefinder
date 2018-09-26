@@ -18,24 +18,30 @@
 	      <td>&nbsp;</td>
 	      <td width="100%"><textarea class="form-control" rows="2" id="tokeninput_hpo" name="str_phenotypes"></textarea></td>
 	    </tr>
+	    <tr><td><br></td></tr>
+	    <tr>
+	      <td></td>
+	      <td></td>
+	      <td>
+		<table width="100%">
+		  <tr>
+		    <td valign="top">
+		      <a href="#" id="ex_phenotypes"><font color="#0431B4"><u>ex) {{ _('index_Sample') }}</u></font></a>
+		    </td>
+		    <td align="right">
+		      <button type="submit" class="btn btn-primary">{{ _('index_button_search') }}</button>
+		      <button id="tokeninput_hpo_clear" class="btn btn-default"<>{{ _('index_button_clear') }}</button>
+                    </td>
+                  </tr>
+                </table>
+	      </td>
+	    </tr>
 	  </table>
 	  <input type="hidden" name="str_genes" value="">
 	  <input type="hidden" name="page_orphanet" value="1">
 	  <input type="hidden" name="page_omim" value="1">
 	  <input type="hidden" name="changesize_selector_orphanet" value="10">
 	  <input type="hidden" name="changesize_selector_omim" value="10">
-	  <br>
-	  <table width="100%">
-	    <tr>
-	      <td valign="top">
-		<a href="#" id="ex_phenotypes"><font color="#0431B4"><u>ex) {{ _('index_Sample') }}</u></font></a>
-	      </td>
-	      <td align="right">
-		<button type="submit" class="btn btn-primary">{{ _('index_button_search') }}</button>
-		<button id="tokeninput_hpo_clear" class="btn btn-default"<>{{ _('index_button_clear') }}</button>
-	      </td>
-	    </tr>
-	  </table>
 	</form>
 	<br><br>
 	<br><br>
