@@ -20,9 +20,9 @@
 		      <td>&nbsp;</td>
 		      <td>
 			{% if get_locale() == "ja" or get_locale() == "ja_JP" %}
-			<button data-toggle="tooltip" title="{{ _('index_Q_tooltip') }}" class="btn btn-primary" type="button" onClick="window.open().location.href='/static/pdf/PubCaseFinder_manual_ja.pdf'"><font size="4">?</font></button>
+			<button data-toggle="tooltip" title="{{ _('index_Q_tooltip') }}" class="btn btn-default" type="button" onClick="window.open().location.href='/static/pdf/PubCaseFinder_manual_ja.pdf'"><font size="4">?</font></button>
 			{% else %}
-			<button data-toggle="tooltip" title="{{ _('index_Q_tooltip') }}" class="btn btn-primary" type="button" onClick="window.open().location.href='/static/pdf/Summary_PubCaseFinder.pdf'"><font size="4">?</font></button>
+			<button data-toggle="tooltip" title="{{ _('index_Q_tooltip') }}" class="btn btn-default" type="button" onClick="window.open().location.href='/static/pdf/Summary_PubCaseFinder.pdf'"><font size="4">?</font></button>
 			{% endif %}
 		      </td>
 		    </tr>
