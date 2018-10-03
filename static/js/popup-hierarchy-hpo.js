@@ -84,8 +84,8 @@
 
 		language : {
 			'ja' : {
-				superclass : '上位',
-				subclass : '下位',
+				superclass : '上位概念',
+				subclass : '下位概念',
 //				selectedphenotype: '選択した症状',
 				selectedphenotype: '患者の徴候および症状',
 				replace : '置換',
@@ -98,11 +98,11 @@
 				clear : 'Clear',
 				close : 'Close',
 
-				id : 'id',
-				name : 'name',
-				english : 'English',
-				definition : 'definition',
-				synonym : 'synonym',
+				id : 'HPO Id',
+				name : '症状(日)',
+				english : '症状(英)',
+				definition : '症状定義',
+				synonym : 'Synonym',
 
 				phenotouch : 'PhenoTouch',
 				webgltitle : '身体各部位を選択',
@@ -125,8 +125,8 @@
 				hponame : 'Name'
 			},
 			'en' : {
-				superclass : 'superclass',
-				subclass : 'subclass',
+				superclass : 'Superclass',
+				subclass : 'Subclass',
 //				selectedphenotype: 'selected phenotype',
 				selectedphenotype: 'patient\’s signs and symptoms',
 				replace : 'Replace',
@@ -139,11 +139,11 @@
 				clear : 'Clear',
 				close : 'Close',
 
-				id : 'id',
-				name : 'name',
+				id : 'HPO Id',
+				name : 'Name',
 				english : 'English',
-				definition : 'definition',
-				synonym : 'synonym',
+				definition : 'Definition',
+				synonym : 'Synonym',
 
 				phenotouch : 'PhenoTouch',
 				webgltitle : 'Touch body parts',
