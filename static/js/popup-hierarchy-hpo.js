@@ -2051,6 +2051,7 @@
 					if($a.length){
 						$a.addClass(current_settings.cssLinkFocusClass);
 						$a.get(0).focus();
+					        setTimeout(function(){ $a.get(0).focus(); },10); //←追加行
 						$(document.body).on('keydown', eventKeydown);
 					}
 					else{
