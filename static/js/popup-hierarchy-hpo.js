@@ -178,7 +178,8 @@
 		,id_regexp : new RegExp("^(HP:[0-9]+)(.*)")
 		,obj_ext : '.obj'
 //		,obj_ext : '.ogz'
-		,obj_url : '/phenotouch/objs/'
+		,obj_url : '/phenotouch/objs/',
+		use_webgl : false
 	};
 
 	var TOKENINPUT_SETTINGS_KEY = 'settings';
@@ -295,23 +296,11 @@
 		}
 
 		function getTokenInputItemNodes(){
-//			return $(input).tokenInput('get');
 			return $('ul.'+tokeninput_classes['tokenList']+'.'+current_settings.cssTokenListClass+'>li.'+tokeninput_classes['token']+'.'+current_settings.cssTokenClass).toArray();
 		}
 
 		function getTokenInputItems(){
-//			return $.map(getTokenInputItemNodes(),function(data){ return $(data).data(OBJECT_KEY); });
 			return $.map(getTokenInputItemNodes(),function(data){ return $(data).data(TOKENINPUT_ITEM_SETTINGS_KEY); });
-/*
-//			return getTokenInputElement().tokenInput('get');
-			try{
-				return $.map(getTokenInputElement().tokenInput('get'), function(data){
-					return $.extend(true, {},data);
-				});
-			}catch(e){
-				return [];
-			}
-*/
 		}
 
 		function getTokenInputElement(){
@@ -319,7 +308,6 @@
 		}
 
 		function _addTokenInputItem(token,selectedToken){
-//			console.log('_addTokenInputItem',token,selectedToken);
 			if(!isBoolean(selectedToken)) selectedToken = false;
 			var $li = $(current_settings.nodeName+'.'+current_settings.cssSelectedPhenotypeClass+ ' ul.'+tokeninput_classes['tokenList']+'.'+current_settings.cssTokenListClass+'>li.'+tokeninput_classes['token']).not('.'+current_settings.cssTokenClass).addClass(current_settings.cssTokenClass);
 			if(isObject(selectedToken) && selectedToken.id && selectedToken.id===token.id){
@@ -328,67 +316,15 @@
 				clearSelectedTokenInputItems();
 				$li.addClass(tokeninput_classes['selectedToken']);
 			}
-/*
-			if($li.length){
-				var data = $li.data(TOKENINPUT_ITEM_SETTINGS_KEY);
-				console.log(data);
-				if(isObject(data) && data.id_suffix===undefined && isString(data.id) && current_settings.id_regexp.test(data.id)){
-					data.id_suffix = RegExp.$2;
-					data.id = RegExp.$1;
-					$li.data(TOKENINPUT_ITEM_SETTINGS_KEY,data);
-					console.log(data);
-				}
-			}
-*/
 			return $li;
 		}
 
 		function addTokenInputItem(token,selectedToken){
 			var name = token.name;
-
 			getTokenInputElement().tokenInput('add',token);
-/*
-			var $li = $(current_settings.nodeName+'.'+current_settings.cssSelectedPhenotypeClass+ ' ul.'+tokeninput_classes['tokenList']+'.'+current_settings.cssTokenListClass+'>li.'+tokeninput_classes['token']).not('.'+current_settings.cssTokenClass).addClass(current_settings.cssTokenClass);
-			if(isObject(selectedToken) && selectedToken.id && selectedToken.id===token.id){
-				$li.addClass(tokeninput_classes['selectedToken']);
-			}else if(isBoolean(selectedToken) && selectedToken){
-				$li.addClass(tokeninput_classes['selectedToken']);
-			}
-			return $li;
-*/
 			return _addTokenInputItem(token,selectedToken);
-
-/*
-			var $li = $('<li>').addClass(tokeninput_classes['token']).addClass(current_settings.cssTokenClass).data(OBJECT_KEY, token).appendTo($('ul.'+current_settings.cssTokenListClass));
-			$('<p>').text(name).data(OBJECT_KEY, token).appendTo($li);
-			$('<span>').css({'display':'inline-block'}).addClass(tokeninput_classes['tokenDelete']).text('×').data(OBJECT_KEY, token).appendTo($li).on('click', function(e){
-
-				var data = $(this).data(OBJECT_KEY) || {};
-				$(this).parent('li').remove();
-
-				if(isObject(runSearchOptions)){
-					if(isArray(runSearchOptions.tokenInputItems)) runSearchOptions.tokenInputItems = $.grep(runSearchOptions.tokenInputItems || [],function(token){return token.id!==data.id;});
-					if(isArray(runSearchOptions.tokenInputItemNodes)) runSearchOptions.tokenInputItemNodes = getTokenInputItemNodes();
-				}
-
-				changeStateAddOrReplace();
-				e.preventDefault();
-				e.stopPropagation();
-				return false;
-			});
-			if(isObject(selectedToken) && selectedToken.id && selectedToken.id===token.id){
-				$li.addClass(tokeninput_classes['selectedToken']);
-			}else if(isBoolean(selectedToken) && selectedToken){
-				$li.addClass(tokeninput_classes['selectedToken']);
-			}
-			return $li;
-*/
-
-
 		}
 		function removeTokenInputItems(){
-//			return $(input).tokenInput('clear');
-//			$('ul.'+current_settings.cssTokenListClass).empty();
 			return getTokenInputElement().tokenInput('clear');
 		}
 		function getSelectedTokenInputItems(){
@@ -448,8 +384,6 @@
 
 					if(isNumeric(this.count)){
 						if(options.formatNumber){
-//							$number_html = $('<div>').addClass(current_settings.cssLinkNumberClass);
-//							$('<span>').text(this.count).appendTo($number_html);
 							$number_html = $('<span>').addClass(current_settings.cssLinkNumberClass).text(this.count);
 						}
 						else{
@@ -462,10 +396,6 @@
 						'self' : $.extend(true, {},this)
 					};
 
-////					var $link_base = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssLinkBaseClass).appendTo($content);
-//					var $link_base_base = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssLinkBaseRowClass).appendTo($content);
-
-//					var $link_base = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssLinkBaseClass).appendTo($link_base_base);
 					var $link_base = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssLinkBaseClass).css({'display':'table-row'}).appendTo($content);
 
 					//superclass
@@ -478,7 +408,6 @@
 
 					var $a = $('<a>')
 					.addClass(current_settings.cssLinkClass)
-//					.text(text)
 					.attr({'href':'#'})
 					.data(OBJECT_KEY, this)
 					.click(function(){
@@ -496,7 +425,6 @@
 							},500);
 						}else{
 							if(click_timeoutID){
-//								console.log('clearTimeout');
 								clearTimeout(click_timeoutID);
 							}
 							click_timeoutID = setTimeout(function(){
@@ -509,10 +437,6 @@
 					.appendTo($a_base);
 
 					$('<span>').text(text).appendTo($a);
-
-
-////					if($number_html) $number_html.appendTo($link_base);
-//					if($number_html) $number_html.appendTo($a);
 
 
 					//subclass
@@ -573,12 +497,6 @@
 			else{
 				$buttonReplace.addClass(current_settings.cssButtonDisabledClass);
 			}
-
-
-//				if(disabled) $button.addClass(current_settings.cssButtonDisabledClass);
-
-//current_settings.cssButtonAddClass
-//current_settings.cssButtonReplaceClass
 		}
 
 		function executionAddOrReplace(e){
@@ -599,15 +517,11 @@
 
 			if(params.exec==='add'){
 				addTokenInputItem(new_token);
-//				runSearchOptions.tokenInputItems.push(new_token);
-
-//				$button.parent(current_settings.nodeName+'.'+current_settings.cssButtonBaseClass).find('button').off('click',executionAddOrReplace).css({opacity:0.2,cursor:'default'});
 			}
 			else if(params.exec==='replace'){
 				var $selectedToken = $('li.'+tokeninput_classes['selectedToken']+'.'+current_settings.cssTokenClass);
 				var selectedToken = null;
 				if($selectedToken && $selectedToken.length) selectedToken = $selectedToken.data(TOKENINPUT_ITEM_SETTINGS_KEY);
-//				console.log('selectedToken',selectedToken);
 
 				var new_arr = [];
 				var new_index = -1;
@@ -628,8 +542,6 @@
 				}
 				if(new_arr.length){
 					tokeninput_target = $.extend(true, {},params.self);
-//					runSearchOptions.tokenInputItems = [];
-//					$.each(new_arr, function(){runSearchOptions.tokenInputItems.push(this);});
 
 					removeTokenInputItems();
 					$.each(new_arr, function(index){
@@ -652,22 +564,13 @@
 
 		function addExecuteButtons(data,disabled){
 			if(!isBoolean(disabled)) disabled = disabled ? true : false;
-//			disabled = false;
 
 			var $button_base = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssButtonBaseClass);
 
 			$.each(['add','replace'], function(){
 				var key = this;
 				var $button = $('<button>').addClass('btn btn-primary').addClass(key=='add'?current_settings.cssButtonAddClass:current_settings.cssButtonReplaceClass).data(OBJECT_KEY,  $.extend(true, {},data,{'exec' : key.toLowerCase()})   ).text(current_settings.language[getCurrentLanguage()][key]).appendTo($button_base);
-/*
-				if(!disabled){
-					$button.on('click',executionAddOrReplace);
-				}else{
-					$button.css({opacity:0.2,cursor:'default'});
-				}
-*/
 				$button.on('click',executionAddOrReplace);
-//				if(disabled) $button.addClass(current_settings.cssButtonDisabledClass);
 			});
 			return $button_base;
 		}
@@ -678,7 +581,6 @@
 			var params = $button.data(OBJECT_KEY) || {};
 			runSearchOptions.hasJA = params.exec==='jpn';
 			if(executionLanguage_timeoutID){
-//				console.log('clearTimeout');
 				clearTimeout(executionLanguage_timeoutID);
 			}
 			executionLanguage_timeoutID = setTimeout(function(){
@@ -697,26 +599,7 @@
 			});
 			return $button_base;
 		}
-/*
-		function executionRevert(){
-			var $button = $(this);
-			var params = $button.data(OBJECT_KEY) || {};
-			var hasJA = params.exec==='jpn';
-			setTimeout(function(){
-				showResults(tokeninput_target_results);
-			},100);
-		}
 
-		function addRevertButton(){
-			var $button_base = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssButtonBaseClass);
-			$.each(['revert'], function(){
-				var key = this;
-				var $button = $('<button>').addClass('btn btn-primary').data(OBJECT_KEY,  $.extend(true, {},{'exec' : key.toLowerCase()})   ).text(current_settings.language[getCurrentLanguage()][key]).appendTo($button_base);
-				$button.on('click',executionRevert);
-			});
-			return $button_base;
-		}
-*/
 		function executionPhenoTouch(){
 			var $button = $(this);
 			var params = $button.data(OBJECT_KEY) || {};
@@ -729,22 +612,6 @@
 				$(window).resize();
 
 				if(window.__threeBitsRenderer && !__threeBitsRenderer.isLoadingObj()){
-//					__threeBitsRenderer.focus(__isFirstThreeBitsRenderer);
-//					__threeBitsRenderer._calcCameraPos();
-//					__threeBitsRenderer._render();
-//					__isFirstThreeBitsRenderer = false;
-/*
-					var $webgl_content_base_table = $inlineContent.find(current_settings.nodeName+'.'+current_settings.cssTableClass+'.'+current_settings.cssWebGLContentBaseClass);
-					console.log('__isFirstThreeBitsRenderer',__isFirstThreeBitsRenderer, $webgl_content_base_table.is(':visible'));
-					if($webgl_content_base_table.is(':visible') && __isFirstThreeBitsRenderer){
-						__isFirstThreeBitsRenderer = false;
-					}
-*/
-
-//					click_callback();
-
-//					$inlineContent.find(current_settings.nodeName+'.'+current_settings.cssCheckboxGroupClass).find('input[type=checkbox]').triggerHandler('click');
-
 				}
 
 			}
@@ -762,18 +629,14 @@
 
 		function executionOKCancel(){
 			var $button = $(this);
-//			console.log('start executionOKCancel()',getTokenInputItems(),getOriginalTokenInputItems());
 			var params = $button.data(OBJECT_KEY) || {};
 			if(params.exec==='ok'){
-//					console.log('call addOriginalTokenInputItem()',getTokenInputItems(),getOriginalTokenInputItems());
 					addOriginalTokenInputItem();
-//					console.log('back addOriginalTokenInputItem()',getTokenInputItems(),getOriginalTokenInputItems());
 			}
 			setTimeout(function(){
 				closeMagnificPopup();
 				$('div.'+tokeninput_classes['dropdown']).css({'display':'none'});
 			},100);
-//			console.log('end   executionOKCancel()',getTokenInputItems(),getOriginalTokenInputItems());
 			return;
 		}
 
@@ -852,7 +715,6 @@
 
 			var language = current_settings.language[getCurrentLanguage()];
 
-//			console.log(tokeninput_target);
 			if(!tokeninput_target){
 				tokeninput_target_results = $.extend(true, {},results);
 				tokeninput_target = $.extend(true, {},results[current_settings.keySelfclass][0]);
@@ -871,7 +733,6 @@
 			if($table.length==0){
 				$table = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssTableClass).addClass(current_settings.cssTokenInputContentBaseClass).appendTo($inlineContentBase);
 				$table.css({
-//					'margin-top':'90px',
 					'border-spacing':'5px',
 					'margin-top':'104px',
 					'margin-left':'0',
@@ -899,12 +760,6 @@
 
 				var $language_button = $('<button>')
 					.addClass(current_settings.cssLanguageChangeClass)
-//					.css({
-//						'position':'absolute',
-//						'width':'70px',
-//						'border':'2px solid white',
-//						'top':'-2px'
-//					})
 					.addClass('btn btn-default')
 					.appendTo($selectedphenotype_title_td_right)
 					.text('')
@@ -916,26 +771,16 @@
 
 				var $language_select = $('<select>')
 					.attr({'name':'language'})
-//					.css({
-//						'opacity':'0',
-//					})
 					.addClass(current_settings.cssLanguageChangeClass)
 					.appendTo($selectedphenotype_title_td_right)
 					.change(function(){
-	//					console.log('change');
 						var $select = $(this);
 						var $select_option = $select.find('option:selected');
-	//					console.log($select_option,$select_option.val());
-	//					$select_option.val()
-//						$select.attr('data-language', $select_option.val());
-
-//						console.log($select_option.text());
 						$select.prev('button').html($select_option.text()+'&nbsp;▼');
 
 
 						runSearchOptions.hasJA = $select_option.val()==='ja';
 						if(executionLanguage_timeoutID){
-			//				console.log('clearTimeout');
 							clearTimeout(executionLanguage_timeoutID);
 						}
 						executionLanguage_timeoutID = setTimeout(function(){
@@ -950,28 +795,13 @@
 
 
 				var $td = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssTdClass).css({'width':'8.5%'}).appendTo($tr);
-//				addPhenoTouchButtons().css({'width':'100%'}).appendTo($td);
-				$('<'+current_settings.nodeName+'>')
-					.addClass(current_settings.cssWebGLSwitchContentClass)
-					.appendTo($td)
-					.data(OBJECT_KEY, $.extend(true, {},{'exec' : 'phenotouch'}) )
-					.click(executionPhenoTouch);
-
-/*
-				$('<img>')
-					.attr({'src':'static/css/popup-hierarchy-hpo/ICON_PhenoTouch.png','width':'100','height':'100'})
-					.css({
-						'width':'104px',
-						'height':'104px',
-						'border-radius':'10px',
-						'cursor':'pointer',
-						'border':'6px solid #4472C4',
-						'margin-left':'15px'
-					})
-					.appendTo($td)
-					.data(OBJECT_KEY, $.extend(true, {},{'exec' : 'phenotouch'}) )
-					.click(executionPhenoTouch);
-*/
+				if(current_settings.use_webgl){
+					$('<'+current_settings.nodeName+'>')
+						.addClass(current_settings.cssWebGLSwitchContentClass)
+						.appendTo($td)
+						.data(OBJECT_KEY, $.extend(true, {},{'exec' : 'phenotouch'}) )
+						.click(executionPhenoTouch);
+				}
 
 				var onResult = function(results){
 					getTokenInputElement().off('add.tokenInput').on('add.tokenInput', function(token){
@@ -1034,7 +864,6 @@
 
 				if(runSearchOptions.tokenInputItems && runSearchOptions.tokenInputItems.length){
 					runSearchOptions.tokenInputItems.forEach(function(tokenInputItem,index){
-	//					console.log($selectedphenotype_textarea.tokenInput('add', tokenInputItem));
 						var selectedToken = isArray(runSearchOptions.tokenInputItemNodes) && $(runSearchOptions.tokenInputItemNodes).eq(index).hasClass(tokeninput_classes['selectedToken']) ? true : false;
 						addTokenInputItem(tokenInputItem,selectedToken);
 					});
@@ -1050,11 +879,8 @@
 
 				var $selectedphenotype_bottom_bar_td_left = $('<'+current_settings.nodeName+'>').css({'display':'table-cell','text-align':'left','padding-left':'4px'}).appendTo($selectedphenotype_bottom_bar_tr);
 				var $selectedphenotype_bottom_bar_td_center = $('<'+current_settings.nodeName+'>').css({'display':'table-cell','text-align':'center'}).appendTo($selectedphenotype_bottom_bar_tr);
-	//			addLanguageButtons().appendTo($selectedphenotype_bottom_bar_td_center);
-	//			addOKCancelButtons().appendTo($selectedphenotype_bottom_bar_td_center);
 				var $selectedphenotype_bottom_bar_td_right = $('<'+current_settings.nodeName+'>').css({'display':'table-cell','text-align':'right','padding-right':'4px'}).appendTo($selectedphenotype_bottom_bar_tr);
 
-//				addPhenoTouchButtons().appendTo($selectedphenotype_bottom_bar_td_left);
 
 				if(current_settings.clearButtonAlign=='left'){
 					addClearButtons().appendTo($selectedphenotype_bottom_bar_td_left);
@@ -1081,21 +907,12 @@
 
 			var $language_select = $('select[name=language]');
 			$language_select.find('option').prop('selected', false);
-//			$language_select.find('option[name='+getCurrentLanguage()+']').prop('selected', true);
 			$language_select.prev('button').html($language_select.find('option[name='+getCurrentLanguage()+']').prop('selected', true).text()+'&nbsp;▼');
 
 			$('*[data-language-key]').each(function(){
 				var key = $(this).attr('data-language-key');
 				$(this).text(language[key]);
 			});
-
-
-//			var $td = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssTdClass).appendTo($tr);
-
-
-
-
-
 
 
 			/////////////////////////////////////////////////////////////////////////
@@ -1148,8 +965,6 @@
 
 				var title_text_arr = [];
 
-//				var language = current_settings.language[getCurrentLanguage()];
-
 				$.each(results[current_settings.keySelfclass], function(){
 					var result = this;
 					if($title && title_text_arr.length === 0){
@@ -1167,10 +982,6 @@
 						var $title_tr = $('<'+current_settings.nodeName+'>').css({'display':'table-row'}).appendTo($title_table);
 						var $title_td1 = $('<'+current_settings.nodeName+'>').css({'display':'table-cell','text-align':'left','padding-left':'4px'}).text(title_text_arr.join(' ')).appendTo($title_tr);
 						var $title_td2 = $('<'+current_settings.nodeName+'>').css({'display':'table-cell','text-align':'right','width':'20px'}).appendTo($title_tr);
-//						$('<'+current_settings.nodeName+'>').addClass(current_settings.cssCloseButtonClass).text('X').click(function(){closeMagnificPopup();}).appendTo($title_td2);
-
-//						addLanguageButtons().appendTo($title_td2);
-
 					}
 
 					$.each(['id','name','English','definition','synonym'], function(){
@@ -1225,736 +1036,585 @@
 			/////////////////////////////////////////////////////////////////////////
 			// WebGL
 			/////////////////////////////////////////////////////////////////////////
-//			$inlineContentBase.find(current_settings.nodeName+'.'+current_settings.cssTableClass+'.'+current_settings.cssClassContentBaseClass).hide();	//DEBUG
+			if(current_settings.use_webgl){
 
 
-			$webgl_content_base_table = $inlineContentBase.find(current_settings.nodeName+'.'+current_settings.cssTableClass+'.'+current_settings.cssWebGLContentBaseClass);
-			if($webgl_content_base_table.length==0){
-				__isFirstThreeBitsRenderer = true;
+				$webgl_content_base_table = $inlineContentBase.find(current_settings.nodeName+'.'+current_settings.cssTableClass+'.'+current_settings.cssWebGLContentBaseClass);
+				if($webgl_content_base_table.length==0){
+					__isFirstThreeBitsRenderer = true;
 
 
-				$webgl_content_base_table = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssTableClass).addClass(current_settings.cssWebGLContentBaseClass).appendTo($inlineContentBase);
-				$webgl_content_base_table.css({'width':'84%'});
-				$webgl_content_base_table.hide();
+					$webgl_content_base_table = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssTableClass).addClass(current_settings.cssWebGLContentBaseClass).appendTo($inlineContentBase);
+					$webgl_content_base_table.css({'width':'84%'});
+					$webgl_content_base_table.hide();
 
-				var $tr = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssTrClass).appendTo($webgl_content_base_table);
-				var $td = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssTdClass).appendTo($tr);
-				$td.css({'width':'65%'});
+					var $tr = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssTrClass).appendTo($webgl_content_base_table);
+					var $td = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssTdClass).appendTo($tr);
+					$td.css({'width':'65%'});
 
-				var $webgl_content_base = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssBaseClass).addClass(current_settings.cssWebGLContentClass).appendTo($td);
-				$webgl_content_base.css({'position':'relative'});
-
-
-				var $webgl_content_title = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssTopBarClass).css({'display':'table','border-collapse':'collapse','width':'100%'}).appendTo($webgl_content_base);
-				var $webgl_content_title_tr = $('<'+current_settings.nodeName+'>').css({'display':'table-row'}).appendTo($webgl_content_title);
-				var $webgl_content_title_td1 = $('<'+current_settings.nodeName+'>').css({'display':'table-cell','text-align':'left','padding-left':'0.5em'}).attr({'data-language-key':'webgltitle'}).text(language['webgltitle']).appendTo($webgl_content_title_tr);
-				var $webgl_content_title_td2 = $('<'+current_settings.nodeName+'>').css({'display':'table-cell','text-align':'right','width':'20px'}).appendTo($webgl_content_title_tr);
-
-//				$('<'+current_settings.nodeName+'>').addClass(current_settings.cssCloseButtonClass).text('X').click(function(){
-				$('<button>')
-					.addClass('btn btn-default')
-					.attr({'data-language-key':'close'})
-					.css({'min-width':'70px','padding':'1px 4px','border':'2px solid white'})
-					.text(language['close'])
-					.click(function(){
-						var $inlineContentBase = getContentBaseElement();
-						if($inlineContentBase.length){
-							$inlineContentBase.find(current_settings.nodeName+'.'+current_settings.cssTableClass+'.'+current_settings.cssClassContentBaseClass).show();
-							$inlineContentBase.find(current_settings.nodeName+'.'+current_settings.cssTableClass+'.'+current_settings.cssWebGLContentBaseClass).hide();
-							$inlineContentBase.find(current_settings.nodeName+'.'+current_settings.cssWebGLSwitchContentClass).show();
-						}
-					})
-					.appendTo($webgl_content_title_td2);
-
-				var $webgl_chechkbox_group = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssContentClass).addClass(current_settings.cssCheckboxGroupClass).appendTo($webgl_content_base);
-				$webgl_chechkbox_group.css({'height':'30px','border-bottom':'1px solid gray','padding':'2px 0px','text-align':'left','vertical-align':'middle'});
-
-//				$.each(['bone','muscle','vessel','internal','other'], function(){
-				$.each(current_settings.use_segments, function(){
-					var text = this.toString();
-					var name = text.toLowerCase();
-					if(isString(language[name])) text = language[name];
-					var id = CSS_PREFIX+'checkbox-'+name;
-//					console.log(id,text,text==='Bone');
-//					$('<input type=checkbox>').attr({'name':name,'value':name,'id':id}).prop('checked', name==='bone').css({'margin-left':'10px'}).appendTo($webgl_chechkbox_group);
-					$('<input type=checkbox>').attr({'name':name,'value':name,'id':id}).prop('checked', name===current_settings.use_segments[0]).css({'margin-left':'10px'}).appendTo($webgl_chechkbox_group);
-					$('<label>').attr({'for':id}).css({'margin-left':'2px','margin-right':'10px'}).text(text).appendTo($webgl_chechkbox_group);
-				});
+					var $webgl_content_base = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssBaseClass).addClass(current_settings.cssWebGLContentClass).appendTo($td);
+					$webgl_content_base.css({'position':'relative'});
 
 
+					var $webgl_content_title = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssTopBarClass).css({'display':'table','border-collapse':'collapse','width':'100%'}).appendTo($webgl_content_base);
+					var $webgl_content_title_tr = $('<'+current_settings.nodeName+'>').css({'display':'table-row'}).appendTo($webgl_content_title);
+					var $webgl_content_title_td1 = $('<'+current_settings.nodeName+'>').css({'display':'table-cell','text-align':'left','padding-left':'0.5em'}).attr({'data-language-key':'webgltitle'}).text(language['webgltitle']).appendTo($webgl_content_title_tr);
+					var $webgl_content_title_td2 = $('<'+current_settings.nodeName+'>').css({'display':'table-cell','text-align':'right','width':'20px'}).appendTo($webgl_content_title_tr);
 
-				var $webgl_content = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssContentClass).appendTo($webgl_content_base);
-				$webgl_content.css({'padding':'0px','position':'relative','overflow':'hidden'});
-
-				var $webgl_home_content = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssWebGLHomeContentClass).appendTo($webgl_content).click(function(){
-					__threeBitsRenderer._setHorizontal(0)._setVertical(0).focus(true);
-					$(this).hide();
-				}).hide();
-
-				if(window.threeBitsRenderer){
-
-//					var skin_art_ids = [];
-
-					var _click_callback = function(use_load){
-//						console.log('call _click_callback');
-						if(!isBoolean(use_load)) use_load = true;
-
-						__threeBitsRenderer.removeAllSpeechBalloon();
-
-						var paths = [];
-						var checked_category = {};
-						var $checked = $webgl_chechkbox_group.find('input[type=checkbox]:checked');
-//						console.log($checked);
-						if($checked.length){
-
-							var $fmalist_content_base = $(current_settings.nodeName+'.'+current_settings.cssFMAListContentClass);
-							var $fmalist_content = $fmalist_content_base.find(current_settings.nodeName+'.'+current_settings.cssContentClass);
-							var $fmalist_content_tr = $fmalist_content.find('table tr');
-							var pick_objid_hash = {};
-//							var speech_balloon_hash = {};
-							var obj_color_hash = {};
-							var obj_hide_hash = {};
-							var fma_hide_hash = {};
-							if($fmalist_content_tr.length>1){
-//								console.log($fmalist_content_tr.length);
-								$fmalist_content_tr.each(function(){
-									var $tr = $(this);
-									var fma_id = $tr.data('fma_id');
-									if(isEmpty(fma_id)) return;
-/*
-									var $input_color = $tr.find('input[type=color][name=color]');
-									if($input_color.length){
-										var fma_color = $input_color.data('fma_color');
-										var val_color = $input_color.val();
-										if(isString(fma_color) && isString(val_color) && fma_color.toUpperCase() != val_color.toUpperCase()){
-											Object.keys(fma2obj[fma_id]).forEach(function(objid){
-												obj_color_hash[objid] = val_color.toUpperCase();
-											});
-										}
-									}
-
-									var $input_hide = $tr.find('input[type=checkbox][name=hide]:checked');
-									if($input_hide.length){
-										Object.keys(fma2obj[fma_id]).forEach(function(objid){
-											obj_hide_hash[objid] = true;
-										});
-										fma_hide_hash[fma_id] = true;
-									}
-*/
-
-									var fma_name = $tr.data('fma_name');
-//									speech_balloon_hash[fma_id] = {text:fma_name,point:[]};
-
-									var hash = $tr.data('pick_objid') || {};
-									Object.keys(hash).forEach(function(objid){
-										pick_objid_hash[objid] = hash[objid];
-
-//										if(hash[objid].point) speech_balloon_hash[fma_id].point.push(hash[objid].point);
-
-									});
-
-//									if(speech_balloon_hash[fma_id].point.length==0) delete speech_balloon_hash[fma_id];
-
-
-								});
-
-/*
-//								var speech_balloon_colors = ['#FF0000','#FFFF00','#00FF00','#00FFFF','#0000FF','#FF00FF','#800000','#808000','#008000','#008080','#000080','#800080'];
-								var speech_balloon_colors = ['#FF0000','#00FF00','#00FFFF','#0000FF','#FF00FF','#800000','#808000','#008000','#008080','#000080','#800080'];
-								var speech_balloon_colors_length = speech_balloon_colors.length;
-								var speech_balloon_sort = function(a,b){
-									if(speech_balloon_hash[a]['text']<speech_balloon_hash[b]['text']) return -1;
-									if(speech_balloon_hash[a]['text']>speech_balloon_hash[b]['text']) return  1;
-									return 0;
-								};
-								Object.keys(speech_balloon_hash).sort(speech_balloon_sort).forEach(function(fma_id,index){
-									var color = speech_balloon_colors[(speech_balloon_colors_length+index)%speech_balloon_colors_length];
-									var element = __threeBitsRenderer.createSpeechBalloon(speech_balloon_hash[fma_id].point,{text:speech_balloon_hash[fma_id].text,color:color});
-								});
-*/
+					$('<button>')
+						.addClass('btn btn-default')
+						.attr({'data-language-key':'close'})
+						.css({'min-width':'70px','padding':'1px 4px','border':'2px solid white'})
+						.text(language['close'])
+						.click(function(){
+							var $inlineContentBase = getContentBaseElement();
+							if($inlineContentBase.length){
+								$inlineContentBase.find(current_settings.nodeName+'.'+current_settings.cssTableClass+'.'+current_settings.cssClassContentBaseClass).show();
+								$inlineContentBase.find(current_settings.nodeName+'.'+current_settings.cssTableClass+'.'+current_settings.cssWebGLContentBaseClass).hide();
+								$inlineContentBase.find(current_settings.nodeName+'.'+current_settings.cssWebGLSwitchContentClass).show();
 							}
-//							console.log(pick_objid_hash);
+						})
+						.appendTo($webgl_content_title_td2);
 
-							$checked.each(function(){
-								var category = $(this).val();
-								checked_category[category] = null;
+					var $webgl_chechkbox_group = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssContentClass).addClass(current_settings.cssCheckboxGroupClass).appendTo($webgl_content_base);
+					$webgl_chechkbox_group.css({'height':'30px','border-bottom':'1px solid gray','padding':'2px 0px','text-align':'left','vertical-align':'middle'});
+
+					$.each(current_settings.use_segments, function(){
+						var text = this.toString();
+						var name = text.toLowerCase();
+						if(isString(language[name])) text = language[name];
+						var id = CSS_PREFIX+'checkbox-'+name;
+						$('<input type=checkbox>').attr({'name':name,'value':name,'id':id}).prop('checked', name===current_settings.use_segments[0]).css({'margin-left':'10px'}).appendTo($webgl_chechkbox_group);
+						$('<label>').attr({'for':id}).css({'margin-left':'2px','margin-right':'10px'}).text(text).appendTo($webgl_chechkbox_group);
+					});
+
+					var $webgl_content = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssContentClass).appendTo($webgl_content_base);
+					$webgl_content.css({'padding':'0px','position':'relative','overflow':'hidden'});
+
+					var $webgl_home_content = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssWebGLHomeContentClass).appendTo($webgl_content).click(function(){
+						__threeBitsRenderer._setHorizontal(0)._setVertical(0).focus(true);
+						$(this).hide();
+					}).hide();
+
+					if(window.threeBitsRenderer){
+
+						var _click_callback = function(use_load){
+							if(!isBoolean(use_load)) use_load = true;
+
+							__threeBitsRenderer.removeAllSpeechBalloon();
+
+							var paths = [];
+							var checked_category = {};
+							var $checked = $webgl_chechkbox_group.find('input[type=checkbox]:checked');
+							if($checked.length){
+
+								var $fmalist_content_base = $(current_settings.nodeName+'.'+current_settings.cssFMAListContentClass);
+								var $fmalist_content = $fmalist_content_base.find(current_settings.nodeName+'.'+current_settings.cssContentClass);
+								var $fmalist_content_tr = $fmalist_content.find('table tr');
+								var pick_objid_hash = {};
+								var obj_color_hash = {};
+								var obj_hide_hash = {};
+								var fma_hide_hash = {};
+								if($fmalist_content_tr.length>1){
+									$fmalist_content_tr.each(function(){
+										var $tr = $(this);
+										var fma_id = $tr.data('fma_id');
+										if(isEmpty(fma_id)) return;
+
+										var fma_name = $tr.data('fma_name');
+
+										var hash = $tr.data('pick_objid') || {};
+										Object.keys(hash).forEach(function(objid){
+											pick_objid_hash[objid] = hash[objid];
+										});
+									});
+								}
+
+								$checked.each(function(){
+									var category = $(this).val();
+									checked_category[category] = null;
+									if(category2obj['category'][category]){
+										Object.keys(category2obj['category'][category]).forEach(function(objid){
+											var params = {};
+											params[Ag.Def.OBJ_ID_DATA_FIELD_ID] = objid;
+											params[Ag.Def.CONCEPT_DATA_COLOR_DATA_FIELD_ID] = isDefined(pick_objid_hash[objid]) ? '#FF0000' : (isDefined(obj_color_hash[objid]) ? obj_color_hash[objid] : category2obj['category'][category][objid][Ag.Def.CONCEPT_DATA_COLOR_DATA_FIELD_ID]);
+											params[Ag.Def.OBJ_URL_DATA_FIELD_ID] = current_settings.obj_url+objid+current_settings.obj_ext;
+											params[Ag.Def.CONCEPT_DATA_OPACITY_DATA_FIELD_ID] = category=='other'?SKIN.OPACITY:1.0;
+											params[Ag.Def.CONCEPT_DATA_VISIBLE_DATA_FIELD_ID] = isDefined(obj_hide_hash[objid]) ? false : true;
+											params[Ag.Def.USE_FOR_BOUNDING_BOX_FIELD_ID] = false;
+											params[Ag.Def.CONCEPT_DATA_SELECTED_DATA_FIELD_ID] = category=='other'?true:false;
+											paths.push(params);
+										});
+									}
+								});
+							}
+							if(!isDefined(checked_category['other'])){
+								var category = 'other';
 								if(category2obj['category'][category]){
 									Object.keys(category2obj['category'][category]).forEach(function(objid){
 										var params = {};
 										params[Ag.Def.OBJ_ID_DATA_FIELD_ID] = objid;
-										params[Ag.Def.CONCEPT_DATA_COLOR_DATA_FIELD_ID] = isDefined(pick_objid_hash[objid]) ? '#FF0000' : (isDefined(obj_color_hash[objid]) ? obj_color_hash[objid] : category2obj['category'][category][objid][Ag.Def.CONCEPT_DATA_COLOR_DATA_FIELD_ID]);
+										params[Ag.Def.CONCEPT_DATA_COLOR_DATA_FIELD_ID] = category2obj['category'][category][objid][Ag.Def.CONCEPT_DATA_COLOR_DATA_FIELD_ID];
 										params[Ag.Def.OBJ_URL_DATA_FIELD_ID] = current_settings.obj_url+objid+current_settings.obj_ext;
-										params[Ag.Def.CONCEPT_DATA_OPACITY_DATA_FIELD_ID] = category=='other'?SKIN.OPACITY:1.0;
-										params[Ag.Def.CONCEPT_DATA_VISIBLE_DATA_FIELD_ID] = isDefined(obj_hide_hash[objid]) ? false : true;
+										params[Ag.Def.CONCEPT_DATA_OPACITY_DATA_FIELD_ID] = SKIN.DEFAULT_OPACITY;
+										params[Ag.Def.CONCEPT_DATA_VISIBLE_DATA_FIELD_ID] = true;
 										params[Ag.Def.USE_FOR_BOUNDING_BOX_FIELD_ID] = false;
-										params[Ag.Def.CONCEPT_DATA_SELECTED_DATA_FIELD_ID] = category=='other'?true:false;
 										paths.push(params);
 									});
 								}
-							});
-						}
-						if(!isDefined(checked_category['other'])){
-							var category = 'other';
-							if(category2obj['category'][category]){
-								Object.keys(category2obj['category'][category]).forEach(function(objid){
-									var params = {};
-									params[Ag.Def.OBJ_ID_DATA_FIELD_ID] = objid;
-									params[Ag.Def.CONCEPT_DATA_COLOR_DATA_FIELD_ID] = category2obj['category'][category][objid][Ag.Def.CONCEPT_DATA_COLOR_DATA_FIELD_ID];
-									params[Ag.Def.OBJ_URL_DATA_FIELD_ID] = current_settings.obj_url+objid+current_settings.obj_ext;
-									params[Ag.Def.CONCEPT_DATA_OPACITY_DATA_FIELD_ID] = SKIN.DEFAULT_OPACITY;
-									params[Ag.Def.CONCEPT_DATA_VISIBLE_DATA_FIELD_ID] = true;
-									params[Ag.Def.USE_FOR_BOUNDING_BOX_FIELD_ID] = false;
-									paths.push(params);
-								});
 							}
-						}
-						if(paths.length){
-							if(use_load){
-								__threeBitsRenderer.loadObj(paths);
+							if(paths.length){
+								if(use_load){
+									__threeBitsRenderer.loadObj(paths);
+								}
+								else{
+									__threeBitsRenderer.setObjProperties(paths);
+								}
 							}
-							else{
-								__threeBitsRenderer.setObjProperties(paths);
-							}
-						}
-					};
+						};
 
-					var click_callback = function(e){
-//						console.log('call click_callback');
-						$(__threeBitsRenderer.domElement()).one('hide', _click_callback);
-						__threeBitsRenderer.hideAllObj();
-					};
-					$webgl_chechkbox_group.find('input[type=checkbox]').on('click', function(e){
-//						console.log('click checkbox');
-						__threeBitsRenderer.fireEvent('progress',__threeBitsRenderer,'Please wait...');
-						setTimeout(click_callback.call(undefined,e),250)
-					});
-
-
-
-					if(!window.__threeBitsRenderer){
-						window.__threeBitsRenderer = new threeBitsRenderer({
-							width:108,
-							height:108,
-							rate:1,
-							minZoom: 1,
-							maxZoom: 23,
-							backgroundColor: '#FFFFFF',
+						var click_callback = function(e){
+							$(__threeBitsRenderer.domElement()).one('hide', _click_callback);
+							__threeBitsRenderer.hideAllObj();
+						};
+						$webgl_chechkbox_group.find('input[type=checkbox]').on('click', function(e){
+							__threeBitsRenderer.fireEvent('progress',__threeBitsRenderer,'Please wait...');
+							setTimeout(click_callback.call(undefined,e),250)
 						});
-					}
-					var $domElement = $(__threeBitsRenderer.domElement());
-					$domElement.show();
-//					__threeBitsRenderer.domElement().style.display = '';
-//					__threeBitsRenderer.hideAllObj();
-					$domElement.css({'z-index':'1'}).appendTo($webgl_content)
-					.on('pick', function(e,ren,intersects){
-//						console.log('pick',ren,intersects,e);
-//						_click_callback(false);
-						var fma_ids = {};
-						var fma_colors = {};
-//						var hpo_ids = {};
-						var fma2pickobj = {};
 
-						var name_key = 'name';
-						if(runSearchOptions.hasJA) name_key += '_ja';
 
-						if(isArray(intersects) && intersects.length && isObject(window.category2obj)){
-//							var paths_hash = {};
 
-							var checked_category = {};
-							var $checked_category = $webgl_chechkbox_group.find('input[type=checkbox]:checked');
-							$checked_category.each(function(){
-								var category = $(this).val();
-								checked_category[category] = null;
+						if(!window.__threeBitsRenderer){
+							window.__threeBitsRenderer = new threeBitsRenderer({
+								width:108,
+								height:108,
+								rate:1,
+								minZoom: 1,
+								maxZoom: 23,
+								backgroundColor: '#FFFFFF',
 							});
+						}
+						var $domElement = $(__threeBitsRenderer.domElement());
+						$domElement.show();
+						$domElement.css({'z-index':'1'}).appendTo($webgl_content)
+						.on('pick', function(e,ren,intersects){
+							var fma_ids = {};
+							var fma_colors = {};
+							var fma2pickobj = {};
+
+							var name_key = 'name';
+							if(runSearchOptions.hasJA) name_key += '_ja';
+
+							if(isArray(intersects) && intersects.length && isObject(window.category2obj)){
+
+								var checked_category = {};
+								var $checked_category = $webgl_chechkbox_group.find('input[type=checkbox]:checked');
+								$checked_category.each(function(){
+									var category = $(this).val();
+									checked_category[category] = null;
+								});
 
 
 
-							var exists_parts = false;
+								var exists_parts = false;
 
-							intersects.forEach(function(intersect){
-								if(exists_parts) return false;
-								if(isObject(intersect) && intersect.object && isString(intersect.object[Ag.Def.OBJ_ID_DATA_FIELD_ID]) && intersect.object[Ag.Def.OBJ_ID_DATA_FIELD_ID].length){
-//									console.log(intersect);
+								intersects.forEach(function(intersect){
+									if(exists_parts) return false;
+									if(isObject(intersect) && intersect.object && isString(intersect.object[Ag.Def.OBJ_ID_DATA_FIELD_ID]) && intersect.object[Ag.Def.OBJ_ID_DATA_FIELD_ID].length){
 
-									var art_id = intersect.object[Ag.Def.OBJ_ID_DATA_FIELD_ID];
-//									console.log('pick','art_id',art_id);
+										var art_id = intersect.object[Ag.Def.OBJ_ID_DATA_FIELD_ID];
 
-//									Object.keys(category2obj).forEach(function(category){
-									$checked_category.each(function(){
-										var category = $(this).val();
+										$checked_category.each(function(){
+											var category = $(this).val();
 
-										if(exists_parts) return false;
-										if(isObject(category2obj['category'][category][art_id])){
-//											console.log(category2obj['category'][category][art_id]);
+											if(exists_parts) return false;
+											if(isObject(category2obj['category'][category][art_id])){
 
-											var color = category2obj['category'][category][art_id]['color'];
+												var color = category2obj['category'][category][art_id]['color'];
 
-											if(isString(category2obj['category'][category][art_id]['FMA'])){
-												var fma_id = category2obj['category'][category][art_id]['FMA'];
+												if(isString(category2obj['category'][category][art_id]['FMA'])){
+													var fma_id = category2obj['category'][category][art_id]['FMA'];
 
 
-													if(exists_parts) return false;
+														if(exists_parts) return false;
 
-//													if(!category2obj['category'][category][art_id]['FMA'][fma_id]['is_element']) return;
-													exists_parts = true;
-//													console.log('pick',category,art_id,fma_id);
+														exists_parts = true;
 
-													fma_ids[fma_id] = category2obj['FMA'][fma_id];
-													fma_colors[fma_id] = color;
+														fma_ids[fma_id] = category2obj['FMA'][fma_id];
+														fma_colors[fma_id] = color;
 
-													var disp_fma_id = fma_id;
-													if(fma_id.match(/^(FMA)([0-9]+.*)$/)){
-														disp_fma_id = RegExp.$1+':'+RegExp.$2;
-													}
-													var fma_name = isString(fma_ids[fma_id][name_key]) ? fma_ids[fma_id][name_key] : fma_ids[fma_id]['name'];
+														var disp_fma_id = fma_id;
+														if(fma_id.match(/^(FMA)([0-9]+.*)$/)){
+															disp_fma_id = RegExp.$1+':'+RegExp.$2;
+														}
+														var fma_name = isString(fma_ids[fma_id][name_key]) ? fma_ids[fma_id][name_key] : fma_ids[fma_id]['name'];
 
-													if(isEmpty(fma2pickobj[fma_id])) fma2pickobj[fma_id] = {};
-													if(isEmpty(fma2pickobj[fma_id][art_id])){
-														fma2pickobj[fma_id][art_id] = {
-															fma_id: disp_fma_id,
-															fma_name: fma_name,
-															distance: intersect.distance,
-															point: {
-																x: intersect.point.x,
-																y: intersect.point.y,
-																z: intersect.point.z
-															}
-														};
+														if(isEmpty(fma2pickobj[fma_id])) fma2pickobj[fma_id] = {};
+														if(isEmpty(fma2pickobj[fma_id][art_id])){
+															fma2pickobj[fma_id][art_id] = {
+																fma_id: disp_fma_id,
+																fma_name: fma_name,
+																distance: intersect.distance,
+																point: {
+																	x: intersect.point.x,
+																	y: intersect.point.y,
+																	z: intersect.point.z
+																}
+															};
 
-														//該当するFMAに対応するOBJを選択状態する為
-														if(exists_parts){
-															if(isArray(fma_ids[fma_id]['other_art_ids'])){
-																fma_ids[fma_id]['other_art_ids'].forEach(function(other_art_id){
-																	fma2pickobj[fma_id][other_art_id] = {
-																		fma_id: disp_fma_id,
-																		fma_name: fma_name
-																	};
-																});
-															}
-															if(isObject(fma_ids[fma_id]['art_ids'])){
-
-//																var $checked_category = $webgl_chechkbox_group.find('input[type=checkbox]:checked');
-																$checked_category.each(function(){
-																	var checked_category = $(this).val();
-//																	if(checked_category == category) return;
-
-																	if(isArray(fma_ids[fma_id]['art_ids'][checked_category])){
-
-																		fma_ids[fma_id]['art_ids'][checked_category].forEach(function(other_art_id){
-																			if(other_art_id == art_id) return;
-																			fma2pickobj[fma_id][other_art_id] = {
-																				fma_id: disp_fma_id,
-																				fma_name: fma_name
-																			};
-																		});
-
-																	}
-
-																});
-
-
+															//該当するFMAに対応するOBJを選択状態する為
+															if(exists_parts){
+																if(isArray(fma_ids[fma_id]['other_art_ids'])){
+																	fma_ids[fma_id]['other_art_ids'].forEach(function(other_art_id){
+																		fma2pickobj[fma_id][other_art_id] = {
+																			fma_id: disp_fma_id,
+																			fma_name: fma_name
+																		};
+																	});
+																}
+																if(isObject(fma_ids[fma_id]['art_ids'])){
+																	$checked_category.each(function(){
+																		var checked_category = $(this).val();
+																		if(isArray(fma_ids[fma_id]['art_ids'][checked_category])){
+																			fma_ids[fma_id]['art_ids'][checked_category].forEach(function(other_art_id){
+																				if(other_art_id == art_id) return;
+																				fma2pickobj[fma_id][other_art_id] = {
+																					fma_id: disp_fma_id,
+																					fma_name: fma_name
+																				};
+																			});
+																		}
+																	});
+																}
 															}
 														}
-
-													}
-
+												}
 											}
-										}
-									});
-								}
-							});
-						}
-						else{
-//							click_callback();
-						}
-//						console.log(fma_ids,hpo_ids);
-
-						var $fmalist_content_base = $(current_settings.nodeName+'.'+current_settings.cssFMAListContentClass);
-						$fmalist_content_base.hide();
-						var $fmalist_title = $fmalist_content_base.find(current_settings.nodeName+'.'+current_settings.cssTopBarClass);
-						var $fmalist_content = $fmalist_content_base.find(current_settings.nodeName+'.'+current_settings.cssContentClass);
-						$fmalist_content.css({'height':($fmalist_content_base.innerHeight()-$fmalist_title.height())+'px','overflow':'auto','padding':'0'});
-						$fmalist_content.empty();
-
-						var $hpolist_content_base = $(current_settings.nodeName+'.'+current_settings.cssHPOListContentClass);
-						var $hpolist_title = $hpolist_content_base.find(current_settings.nodeName+'.'+current_settings.cssTopBarClass).text('');
-						var $hpolist_content = $hpolist_content_base.find(current_settings.nodeName+'.'+current_settings.cssContentClass);
-
-						var height = $webgl_content_base.innerHeight();
-//						$hpolist_content.css({'max-height':($hpolist_content_base.innerHeight()-$hpolist_title.height())+'px','overflow':'auto','padding':'10px'});
-						$hpolist_content.css({'max-height':(height-$hpolist_title.height())+'px','overflow':'auto','padding':'10px'});
-						$hpolist_content.empty();
-
-						if(true || Object.keys(fma_ids).length){
-							var table_css = {};//{'width':'100%','font-size':'0.85em'};
-							var head_css = {};//{'background-color':'#DDDDDD','cursor':'default'};
-							var th_css = {};//{'padding':'0 2px','border':'1px solid #F0F0F0'};
-							var td_left_css = {};//$.extend({},th_css,{'text-align':'left','vertical-align':'top'});
-							var td_center_css = $.extend(true, {},td_left_css,{'padding':'0','text-align':'center'});
-							var td_right_css = $.extend(true, {},td_left_css,{'padding':'0','text-align':'right'});
-
-							var $fmalist_content_table = $('<table>').css(table_css).appendTo($fmalist_content);
-							var $tr = $('<tr>').appendTo($fmalist_content_table).css(head_css);
-							var $th = $('<th>').text(language['fmaid']).appendTo($tr).css(th_css);
-							var $th = $('<th>').text(language['fmaname']).appendTo($tr).css(th_css);
-							var $th = $('<th>').text(language['#ofphenotypes']).appendTo($tr).css(th_css);
-//							var $th = $('<th>').text(language['color']).appendTo($tr).css(th_css);
-//							var $th = $('<th>').text(language['hide']).appendTo($tr).css(th_css);
-
-							var $hpolist_content_table = $('<table>').css(table_css).appendTo($hpolist_content);
-							var $tr = $('<tr>').appendTo($hpolist_content_table).css(head_css);
-//							var $th = $('<th>').text(language['hpoid']).appendTo($tr).css(th_css);
-//							var $th = $('<th>').text(language['hponame']).attr({'colspan':'2'}).appendTo($tr).css(th_css);
-
-
-							var fma_sort = function(a,b){
-								var name_a = isString(fma_ids[a][name_key]) ? fma_ids[a][name_key] : fma_ids[a]['name'];
-								var name_b = isString(fma_ids[b][name_key]) ? fma_ids[b][name_key] : fma_ids[b]['name'];
-
-								if(name_a<name_b) return -1;
-								if(name_a>name_b) return  1;
-								return 0;
-							};
-
-							Object.keys(fma_ids).sort(fma_sort).forEach(function(fma_id,index,array){
-								var disp_fma_id = fma_id;
-								if(fma_id.match(/^(FMA)([0-9]+.*)$/)){
-									disp_fma_id = RegExp.$1+':'+RegExp.$2;
-								}
-								var fma_name = isString(fma_ids[fma_id][name_key]) ? fma_ids[fma_id][name_key] : fma_ids[fma_id]['name'];
-								var $tr = $('<tr>').attr({'data-fmaid':fma_id}).data({'disp_fma_id':disp_fma_id,'fma_id':fma_id,'fma_name':fma_name,'pick_objid': fma2pickobj[fma_id]||{} }).data(OBJECT_KEY, fma2obj[fma_id]).appendTo($fmalist_content_table)
-								.hover(
-									function(){
-										var $this_tr = $(this);
-										$this_tr.addClass(current_settings.cssFMAListContentHoverClass);
-									},
-									function(){
-										var $this_tr = $(this);
-										$this_tr.removeClass(current_settings.cssFMAListContentHoverClass);
-									}
-								)
-								.click(function(){
-									var language = current_settings.language[getCurrentLanguage()];
-
-									var $this_tr = $(this);
-									$fmalist_content_table.find('tr.'+current_settings.cssFMAListContentSelectClass).removeClass(current_settings.cssFMAListContentSelectClass);
-									$this_tr.addClass(current_settings.cssFMAListContentSelectClass);
-
-									var disp_fma_id = $this_tr.data('disp_fma_id');
-									var fma_id = $this_tr.data('fma_id');
-
-									var name_key = 'name';
-									if(runSearchOptions.hasJA) name_key += '_ja';
-
-									var fma = category2obj['FMA'][fma_id];
-
-									var fma_name = fma[name_key] ? fma[name_key] : fma['name']; //$this_tr.data('fma_name');
-									$hpolist_title.html(disp_fma_id+'&nbsp;'+fma_name);
-
-
-									$hpolist_content.empty();
-									var $hpolist_content_table = $('<table>').css(table_css).appendTo($hpolist_content);
-//									var $tr = $('<tr>').appendTo($hpolist_content_table).css(head_css);
-//									var $th = $('<th>').text(language['hpoid']).appendTo($tr).css(th_css);
-//									var $th = $('<th>').text(language['hponame']).attr({'colspan':'2'}).appendTo($tr).css(th_css);
-
-									var hpo_sort = function(a,b){
-										var hpo_ids = isObject(category2obj['HPO']) ? category2obj['HPO'] : fma_ids[fma_id]['HPO'];
-
-										var hpo_name_a = isString(hpo_ids[a][name_key]) ? hpo_ids[a][name_key] : hpo_ids[a]['name'];
-										var hpo_name_b = isString(hpo_ids[b][name_key]) ? hpo_ids[b][name_key] : hpo_ids[b]['name'];
-
-										if(hpo_name_a<hpo_name_b) return -1;
-										if(hpo_name_a>hpo_name_b) return  1;
-										return 0;
-									};
-
-									var hpo_ids = isObject(fma_ids[fma_id]['HPO']) ? Object.keys(fma_ids[fma_id]['HPO']) : fma_ids[fma_id]['HPO'];
-
-									hpo_ids.sort(hpo_sort).forEach(function(hpo_id){
-										var hpo_ids = isObject(category2obj['HPO']) ? category2obj['HPO'] : fma_ids[fma_id]['HPO'];
-
-										var hpo_name = isString(hpo_ids[hpo_id][name_key]) ? hpo_ids[hpo_id][name_key] : hpo_ids[hpo_id]['name'];
-
-										var $tr = $('<tr>').data({'hpo_id':hpo_id}).appendTo($hpolist_content_table);
-
-										var $td = $('<td>').css(td_center_css).css({'white-space':'nowrap'}).appendTo($tr);
-										$('<button>')
-											.addClass('btn btn-primary')
-											.addClass(current_settings.cssButtonAddClass)
-											.data(OBJECT_KEY,{self: $.extend(true, {id:hpo_id}, hpo_ids[hpo_id]), exec:'add'})/*.css({'margin':'0','padding':'0 2px','font-size':'inherit'})*/
-											.attr({'data-language-key':'add'})
-											.text(language['add'])
-											.appendTo($td)
-											.on('click',executionAddOrReplace);
-
-										$('<button>')
-											.addClass('btn btn-primary')
-											.addClass(current_settings.cssButtonReplaceClass)
-											.data(OBJECT_KEY,{self: $.extend(true, {id:hpo_id}, hpo_ids[hpo_id]), exec:'replace'})/*.css({'margin':'0','padding':'0 2px','font-size':'inherit'})*/
-											.attr({'data-language-key':'replace'})
-											.text(language['replace'])
-											.appendTo($td)
-											.on('click',executionAddOrReplace);
-
-
-										var $td = $('<td>').css(td_right_css).appendTo($tr);
-										$('<span>').addClass(current_settings.cssLinkNumberClass).text(hpo_ids[hpo_id]['count']).appendTo($td);
-
-//										var $td = $('<td>').text(hpo_id).appendTo($tr).css(td_left_css);
-										var $td = $('<td>')/*.text(hpo_name)*/.appendTo($tr).css(td_left_css);
-
-
-										var $a = $('<a>')
-										.addClass(current_settings.cssLinkClass)
-					//					.text(text)
-										.attr({'href':'#'})
-										.data(OBJECT_KEY, {id:hpo_id})
-										.click(function(){
-											var data = $(this).data(OBJECT_KEY);
-
-											if(false){
-												if(isString(options.classname) && options.classname === CSS_PREFIX+settings.keySubclass){
-													$(current_settings.nodeName+'.'+current_settings.cssTableClass).css({'animation':'popup-hierarchy-hpo-keyframe-subclass-translate 500ms ease-out 0s normal both'});
-												}
-												else if(isString(options.classname) && options.classname === CSS_PREFIX+current_settings.keySuperclass){
-													$(current_settings.nodeName+'.'+current_settings.cssTableClass).css({'animation':'popup-hierarchy-hpo-keyframe-superclass-translate 500ms ease-out 0s normal both'});
-												}
-												setTimeout(function(){
-													runSearch(data.id);
-												},500);
-											}else{
-												if(click_timeoutID){
-					//								console.log('clearTimeout');
-													clearTimeout(click_timeoutID);
-												}
-												click_timeoutID = setTimeout(function(){
-													click_timeoutID = null;
-													runSearch(data.id);
-												},100);
-											}
-											return false;
-										})
-										.appendTo($td);
-
-										$('<span>').text(hpo_name).appendTo($a);
-
-
-
-									});
-									changeStateAddOrReplace();
-								});
-								var $td = $('<td>').text(disp_fma_id).appendTo($tr).css(td_left_css);
-								var $td = $('<td>').text(fma_name).appendTo($tr).css(td_left_css);
-								var $td = $('<td>').text(fma_ids[fma_id]['#HPO']).appendTo($tr).css(td_center_css);
-/*
-								var $td = $('<td>').appendTo($tr).css(td_center_css);
-								var $input_color = $('<input type=color>').attr({name:'color'}).data({'fma_color':fma_colors[fma_id]}).val(fma_colors[fma_id]).appendTo($td)
-								.on('input',function(){	//FFでは、パレットで色を選択するたびに発生する。chromeでは、changeと同じタイミングでchangeの直前に発生する
-									console.log('input',$(this).val());
-									var $input_color = $(this);
-								})
-								.on('change',function(){
-									console.log('change',$(this).val());
-									var $input_color = $(this);
-									_click_callback(false);
-								});
-								$input_color.get(0).select();
-//								console.log('$input_color',$input_color.val());
-*/
-/*
-								var $td = $('<td>').appendTo($tr).css(td_center_css).click(function(e){
-									var $td = $(this);
-									$td.find('input[type=checkbox]').trigger('click');
-									e.preventDefault();
-									e.stopPropagation();
-									return false;
-								});
-								$('<input type=checkbox>').attr({name:'hide'}).data(OBJECT_KEY, fma2obj[fma_id]).appendTo($td).click(function(e){
-									_click_callback(false);
-									e.stopPropagation();
-								});
-*/
-
-								if(index==0){
-									setTimeout(function(){
-										$tr.click();
-									},100);
-								}
-
-							});
-
-						}
-						_click_callback(false);
-
-					})
-					.on('rotate', function(e,ren,value){
-//						console.log('rotate',ren,value);
-//						console.log('rotate',value);
-						if(value.H != 0 || value.V != 0){
-//							$(current_settings.nodeName+'.'+current_settings.cssWebGLHomeContentClass).show();
-						}
-					})
-					.on('zoom', function(e,ren,value){
-//						console.log('zoom',ren,value);
-//						console.log('zoom',value);
-						if(value != 1){
-//							$(current_settings.nodeName+'.'+current_settings.cssWebGLHomeContentClass).show();
-						}
-					})
-					.on('load', function(e,ren,successful,loadedParams){
-//						console.log('load',e,ren,successful,loadedParams);
-						var $progressElem = $webgl_content_base.find(current_settings.nodeName+'.'+current_settings.cssProgressClass);
-						$progressElem.remove();
-
-						if(isArray(loadedParams) && loadedParams.length){
-							var loadedParamsHash = {};
-							loadedParams.forEach(function(loadedParam){
-								if(isObject(loadedParam) && isString(loadedParam[Ag.Def.OBJ_ID_DATA_FIELD_ID]) && loadedParam[Ag.Def.OBJ_ID_DATA_FIELD_ID].length){
-									loadedParamsHash[loadedParam[Ag.Def.OBJ_ID_DATA_FIELD_ID]] = true;
-								}
-							});
-
-							if(isObject(window.category2obj)){
-								Object.keys(category2obj['category']).forEach(function(category){
-									if(isObject(category2obj['category'][category])){
-										Object.keys(category2obj['category'][category]).forEach(function(objid){
-											if(isBoolean(loadedParamsHash[objid]) && loadedParamsHash[objid]) category2obj['category'][category][objid]['loaded'] = true;
 										});
 									}
 								});
 							}
-						}
-
-						if(successful){
-							setTimeout(function(){
-								var paths = [];
-
-								$webgl_chechkbox_group.find('input[type=checkbox]:not(:checked)').each(function(){
-									var $checkbox = $(this);
-									if($checkbox/* && $checkbox.val()!='other'*/){
-										var category = $checkbox.val();
-//										console.log(category);
-
-										if(isObject(category2obj['category'][category])){
-											Object.keys(category2obj['category'][category]).forEach(function(objid){
-												if(category2obj['category'][category][objid]['loaded']) return;
-												var params = {};
-												params[Ag.Def.OBJ_ID_DATA_FIELD_ID] = objid;
-												params[Ag.Def.CONCEPT_DATA_COLOR_DATA_FIELD_ID] = category2obj['category'][category][objid][Ag.Def.CONCEPT_DATA_COLOR_DATA_FIELD_ID];
-												params[Ag.Def.OBJ_URL_DATA_FIELD_ID] = current_settings.obj_url+objid+current_settings.obj_ext;
-												params[Ag.Def.CONCEPT_DATA_OPACITY_DATA_FIELD_ID] = 1;
-												params[Ag.Def.CONCEPT_DATA_VISIBLE_DATA_FIELD_ID] = false;
-												params[Ag.Def.USE_FOR_BOUNDING_BOX_FIELD_ID] = false;
-												paths.push(params);
-											});
-										}
-									}
-								});
-								if(paths.length) __threeBitsRenderer.loadObj(paths);
-							},100);
-
-//							console.log('__isFirstThreeBitsRenderer',__isFirstThreeBitsRenderer, $webgl_content_base_table.is(':visible'));
-							if(__isFirstThreeBitsRenderer && $webgl_content_base_table.is(':visible')){
-								__threeBitsRenderer.focus(__isFirstThreeBitsRenderer);
-								__threeBitsRenderer._calcCameraPos();
-								__threeBitsRenderer._render();
-								__isFirstThreeBitsRenderer = false;
+							else{
 							}
 
-						}
+							var $fmalist_content_base = $(current_settings.nodeName+'.'+current_settings.cssFMAListContentClass);
+							$fmalist_content_base.hide();
+							var $fmalist_title = $fmalist_content_base.find(current_settings.nodeName+'.'+current_settings.cssTopBarClass);
+							var $fmalist_content = $fmalist_content_base.find(current_settings.nodeName+'.'+current_settings.cssContentClass);
+							$fmalist_content.css({'height':($fmalist_content_base.innerHeight()-$fmalist_title.height())+'px','overflow':'auto','padding':'0'});
+							$fmalist_content.empty();
 
-					})
-					.on('progress', function(e,ren,message){
-//						console.log('progress',e,ren,message);
-						var $progressElem = $webgl_content_base.find(current_settings.nodeName+'.'+current_settings.cssProgressClass);
-//						console.log('progress',$progressElem.length);
-						if($progressElem.length==0){
-							$progressElem = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssProgressClass).appendTo($webgl_content_base);
-						}
-						if(isString(message) && message.length){
-							$progressElem.text(message);
-							var innerHeight = $progressElem.innerHeight();
-							if(innerHeight<16) innerHeight = 16;
-							$progressElem.css({'line-height':innerHeight+'px'});
-						}
-						else{
+							var $hpolist_content_base = $(current_settings.nodeName+'.'+current_settings.cssHPOListContentClass);
+							var $hpolist_title = $hpolist_content_base.find(current_settings.nodeName+'.'+current_settings.cssTopBarClass).text('');
+							var $hpolist_content = $hpolist_content_base.find(current_settings.nodeName+'.'+current_settings.cssContentClass);
+
+							var height = $webgl_content_base.innerHeight();
+							$hpolist_content.css({'max-height':(height-$hpolist_title.height())+'px','overflow':'auto','padding':'10px'});
+							$hpolist_content.empty();
+
+							if(true || Object.keys(fma_ids).length){
+								var table_css = {};//{'width':'100%','font-size':'0.85em'};
+								var head_css = {};//{'background-color':'#DDDDDD','cursor':'default'};
+								var th_css = {};//{'padding':'0 2px','border':'1px solid #F0F0F0'};
+								var td_left_css = {};//$.extend({},th_css,{'text-align':'left','vertical-align':'top'});
+								var td_center_css = $.extend(true, {},td_left_css,{'padding':'0','text-align':'center'});
+								var td_right_css = $.extend(true, {},td_left_css,{'padding':'0','text-align':'right'});
+
+								var $fmalist_content_table = $('<table>').css(table_css).appendTo($fmalist_content);
+								var $tr = $('<tr>').appendTo($fmalist_content_table).css(head_css);
+								var $th = $('<th>').text(language['fmaid']).appendTo($tr).css(th_css);
+								var $th = $('<th>').text(language['fmaname']).appendTo($tr).css(th_css);
+								var $th = $('<th>').text(language['#ofphenotypes']).appendTo($tr).css(th_css);
+
+								var $hpolist_content_table = $('<table>').css(table_css).appendTo($hpolist_content);
+								var $tr = $('<tr>').appendTo($hpolist_content_table).css(head_css);
+
+								var fma_sort = function(a,b){
+									var name_a = isString(fma_ids[a][name_key]) ? fma_ids[a][name_key] : fma_ids[a]['name'];
+									var name_b = isString(fma_ids[b][name_key]) ? fma_ids[b][name_key] : fma_ids[b]['name'];
+
+									if(name_a<name_b) return -1;
+									if(name_a>name_b) return  1;
+									return 0;
+								};
+
+								Object.keys(fma_ids).sort(fma_sort).forEach(function(fma_id,index,array){
+									var disp_fma_id = fma_id;
+									if(fma_id.match(/^(FMA)([0-9]+.*)$/)){
+										disp_fma_id = RegExp.$1+':'+RegExp.$2;
+									}
+									var fma_name = isString(fma_ids[fma_id][name_key]) ? fma_ids[fma_id][name_key] : fma_ids[fma_id]['name'];
+									var $tr = $('<tr>').attr({'data-fmaid':fma_id}).data({'disp_fma_id':disp_fma_id,'fma_id':fma_id,'fma_name':fma_name,'pick_objid': fma2pickobj[fma_id]||{} }).data(OBJECT_KEY, fma2obj[fma_id]).appendTo($fmalist_content_table)
+									.hover(
+										function(){
+											var $this_tr = $(this);
+											$this_tr.addClass(current_settings.cssFMAListContentHoverClass);
+										},
+										function(){
+											var $this_tr = $(this);
+											$this_tr.removeClass(current_settings.cssFMAListContentHoverClass);
+										}
+									)
+									.click(function(){
+										var language = current_settings.language[getCurrentLanguage()];
+
+										var $this_tr = $(this);
+										$fmalist_content_table.find('tr.'+current_settings.cssFMAListContentSelectClass).removeClass(current_settings.cssFMAListContentSelectClass);
+										$this_tr.addClass(current_settings.cssFMAListContentSelectClass);
+
+										var disp_fma_id = $this_tr.data('disp_fma_id');
+										var fma_id = $this_tr.data('fma_id');
+
+										var name_key = 'name';
+										if(runSearchOptions.hasJA) name_key += '_ja';
+
+										var fma = category2obj['FMA'][fma_id];
+
+										var fma_name = fma[name_key] ? fma[name_key] : fma['name']; //$this_tr.data('fma_name');
+										$hpolist_title.html(disp_fma_id+'&nbsp;'+fma_name);
+
+
+										$hpolist_content.empty();
+										var $hpolist_content_table = $('<table>').css(table_css).appendTo($hpolist_content);
+
+										var hpo_sort = function(a,b){
+											var hpo_ids = isObject(category2obj['HPO']) ? category2obj['HPO'] : fma_ids[fma_id]['HPO'];
+
+											var hpo_name_a = isString(hpo_ids[a][name_key]) ? hpo_ids[a][name_key] : hpo_ids[a]['name'];
+											var hpo_name_b = isString(hpo_ids[b][name_key]) ? hpo_ids[b][name_key] : hpo_ids[b]['name'];
+
+											if(hpo_name_a<hpo_name_b) return -1;
+											if(hpo_name_a>hpo_name_b) return  1;
+											return 0;
+										};
+
+										var hpo_ids = isObject(fma_ids[fma_id]['HPO']) ? Object.keys(fma_ids[fma_id]['HPO']) : fma_ids[fma_id]['HPO'];
+
+										hpo_ids.sort(hpo_sort).forEach(function(hpo_id){
+											var hpo_ids = isObject(category2obj['HPO']) ? category2obj['HPO'] : fma_ids[fma_id]['HPO'];
+
+											var hpo_name = isString(hpo_ids[hpo_id][name_key]) ? hpo_ids[hpo_id][name_key] : hpo_ids[hpo_id]['name'];
+
+											var $tr = $('<tr>').data({'hpo_id':hpo_id}).appendTo($hpolist_content_table);
+
+											var $td = $('<td>').css(td_center_css).css({'white-space':'nowrap'}).appendTo($tr);
+											$('<button>')
+												.addClass('btn btn-primary')
+												.addClass(current_settings.cssButtonAddClass)
+												.data(OBJECT_KEY,{self: $.extend(true, {id:hpo_id}, hpo_ids[hpo_id]), exec:'add'})/*.css({'margin':'0','padding':'0 2px','font-size':'inherit'})*/
+												.attr({'data-language-key':'add'})
+												.text(language['add'])
+												.appendTo($td)
+												.on('click',executionAddOrReplace);
+
+											$('<button>')
+												.addClass('btn btn-primary')
+												.addClass(current_settings.cssButtonReplaceClass)
+												.data(OBJECT_KEY,{self: $.extend(true, {id:hpo_id}, hpo_ids[hpo_id]), exec:'replace'})/*.css({'margin':'0','padding':'0 2px','font-size':'inherit'})*/
+												.attr({'data-language-key':'replace'})
+												.text(language['replace'])
+												.appendTo($td)
+												.on('click',executionAddOrReplace);
+
+
+											var $td = $('<td>').css(td_right_css).appendTo($tr);
+											$('<span>').addClass(current_settings.cssLinkNumberClass).text(hpo_ids[hpo_id]['count']).appendTo($td);
+
+											var $td = $('<td>')/*.text(hpo_name)*/.appendTo($tr).css(td_left_css);
+
+											var $a = $('<a>')
+											.addClass(current_settings.cssLinkClass)
+											.attr({'href':'#'})
+											.data(OBJECT_KEY, {id:hpo_id})
+											.click(function(){
+												var data = $(this).data(OBJECT_KEY);
+
+												if(false){
+													if(isString(options.classname) && options.classname === CSS_PREFIX+settings.keySubclass){
+														$(current_settings.nodeName+'.'+current_settings.cssTableClass).css({'animation':'popup-hierarchy-hpo-keyframe-subclass-translate 500ms ease-out 0s normal both'});
+													}
+													else if(isString(options.classname) && options.classname === CSS_PREFIX+current_settings.keySuperclass){
+														$(current_settings.nodeName+'.'+current_settings.cssTableClass).css({'animation':'popup-hierarchy-hpo-keyframe-superclass-translate 500ms ease-out 0s normal both'});
+													}
+													setTimeout(function(){
+														runSearch(data.id);
+													},500);
+												}else{
+													if(click_timeoutID){
+														clearTimeout(click_timeoutID);
+													}
+													click_timeoutID = setTimeout(function(){
+														click_timeoutID = null;
+														runSearch(data.id);
+													},100);
+												}
+												return false;
+											})
+											.appendTo($td);
+
+											$('<span>').text(hpo_name).appendTo($a);
+
+										});
+										changeStateAddOrReplace();
+									});
+									var $td = $('<td>').text(disp_fma_id).appendTo($tr).css(td_left_css);
+									var $td = $('<td>').text(fma_name).appendTo($tr).css(td_left_css);
+									var $td = $('<td>').text(fma_ids[fma_id]['#HPO']).appendTo($tr).css(td_center_css);
+
+									if(index==0){
+										setTimeout(function(){
+											$tr.click();
+										},100);
+									}
+
+								});
+
+							}
+							_click_callback(false);
+
+						})
+						.on('rotate', function(e,ren,value){
+							if(value.H != 0 || value.V != 0){
+							}
+						})
+						.on('zoom', function(e,ren,value){
+							if(value != 1){
+							}
+						})
+						.on('load', function(e,ren,successful,loadedParams){
+							var $progressElem = $webgl_content_base.find(current_settings.nodeName+'.'+current_settings.cssProgressClass);
 							$progressElem.remove();
+
+							if(isArray(loadedParams) && loadedParams.length){
+								var loadedParamsHash = {};
+								loadedParams.forEach(function(loadedParam){
+									if(isObject(loadedParam) && isString(loadedParam[Ag.Def.OBJ_ID_DATA_FIELD_ID]) && loadedParam[Ag.Def.OBJ_ID_DATA_FIELD_ID].length){
+										loadedParamsHash[loadedParam[Ag.Def.OBJ_ID_DATA_FIELD_ID]] = true;
+									}
+								});
+
+								if(isObject(window.category2obj)){
+									Object.keys(category2obj['category']).forEach(function(category){
+										if(isObject(category2obj['category'][category])){
+											Object.keys(category2obj['category'][category]).forEach(function(objid){
+												if(isBoolean(loadedParamsHash[objid]) && loadedParamsHash[objid]) category2obj['category'][category][objid]['loaded'] = true;
+											});
+										}
+									});
+								}
+							}
+
+							if(successful){
+								setTimeout(function(){
+									var paths = [];
+
+									$webgl_chechkbox_group.find('input[type=checkbox]:not(:checked)').each(function(){
+										var $checkbox = $(this);
+										if($checkbox/* && $checkbox.val()!='other'*/){
+											var category = $checkbox.val();
+
+											if(isObject(category2obj['category'][category])){
+												Object.keys(category2obj['category'][category]).forEach(function(objid){
+													if(category2obj['category'][category][objid]['loaded']) return;
+													var params = {};
+													params[Ag.Def.OBJ_ID_DATA_FIELD_ID] = objid;
+													params[Ag.Def.CONCEPT_DATA_COLOR_DATA_FIELD_ID] = category2obj['category'][category][objid][Ag.Def.CONCEPT_DATA_COLOR_DATA_FIELD_ID];
+													params[Ag.Def.OBJ_URL_DATA_FIELD_ID] = current_settings.obj_url+objid+current_settings.obj_ext;
+													params[Ag.Def.CONCEPT_DATA_OPACITY_DATA_FIELD_ID] = 1;
+													params[Ag.Def.CONCEPT_DATA_VISIBLE_DATA_FIELD_ID] = false;
+													params[Ag.Def.USE_FOR_BOUNDING_BOX_FIELD_ID] = false;
+													paths.push(params);
+												});
+											}
+										}
+									});
+									if(paths.length) __threeBitsRenderer.loadObj(paths);
+								},100);
+
+								if(__isFirstThreeBitsRenderer && $webgl_content_base_table.is(':visible')){
+									__threeBitsRenderer.focus(__isFirstThreeBitsRenderer);
+									__threeBitsRenderer._calcCameraPos();
+									__threeBitsRenderer._render();
+									__isFirstThreeBitsRenderer = false;
+								}
+
+							}
+
+						})
+						.on('progress', function(e,ren,message){
+							var $progressElem = $webgl_content_base.find(current_settings.nodeName+'.'+current_settings.cssProgressClass);
+							if($progressElem.length==0){
+								$progressElem = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssProgressClass).appendTo($webgl_content_base);
+							}
+							if(isString(message) && message.length){
+								$progressElem.text(message);
+								var innerHeight = $progressElem.innerHeight();
+								if(innerHeight<16) innerHeight = 16;
+								$progressElem.css({'line-height':innerHeight+'px'});
+							}
+							else{
+								$progressElem.remove();
+							}
+						})
+						;
+						if(isObject(window.category2obj)){
+							click_callback();
 						}
-					})
-					;
-					if(isObject(window.category2obj)){
-						click_callback();
 					}
-				}
 
 
 
 
-				var $td = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssTdClass).appendTo($tr);
-				$td.css({'width':'35%'/*,'padding-left':'30px'*/});
+					var $td = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssTdClass).appendTo($tr);
+					$td.css({'width':'35%'/*,'padding-left':'30px'*/});
 
-				$table = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssTableClass).appendTo($td);
-				$table.css({'border-spacing':'0'});
+					$table = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssTableClass).appendTo($td);
+					$table.css({'border-spacing':'0'});
 
-				//FMA List
-				var $tr = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssTrClass).appendTo($table);
-				var $td = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssTdClass).appendTo($tr);
-				var $fmalist_content_base = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssBaseClass).addClass(current_settings.cssFMAListContentClass).appendTo($td);
-				$fmalist_content_base.hide();
+					//FMA List
+					var $tr = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssTrClass).appendTo($table);
+					var $td = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssTdClass).appendTo($tr);
+					var $fmalist_content_base = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssBaseClass).addClass(current_settings.cssFMAListContentClass).appendTo($td);
+					$fmalist_content_base.hide();
 
-				var $fmalist_title = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssTopBarClass).text(language['fmalisttitle']).appendTo($fmalist_content_base);
-				$fmalist_title.css({'text-align':'left','padding-left':'0.5em'});
-				var $fmalist_content = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssContentClass).appendTo($fmalist_content_base);
+					var $fmalist_title = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssTopBarClass).text(language['fmalisttitle']).appendTo($fmalist_content_base);
+					$fmalist_title.css({'text-align':'left','padding-left':'0.5em'});
+					var $fmalist_content = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssContentClass).appendTo($fmalist_content_base);
 
-				var $fmalist_content_table = $('<table>').appendTo($fmalist_content);
-				var $tr = $('<tr>').appendTo($fmalist_content_table);
-				var $th = $('<th>').text(language['fmaid']).appendTo($tr);
-				var $th = $('<th>').text(language['fmaname']).appendTo($tr);
-				var $th = $('<th>').text(language['#ofphenotypes']).appendTo($tr);
-
-
-				//HPO List
-				var $tr = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssTrClass).appendTo($table);
-				var $td = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssTdClass).appendTo($tr);
-				if($fmalist_content_base.is(':visible')) $td.css({'padding-top':'20px'});
-
-				var $hpolist_content_base = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssBaseClass).addClass(current_settings.cssHPOListContentClass).appendTo($td);
-				var $hpolist_title = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssTopBarClass).css({'min-height':'27px'}).text(language['hpolisttitle']).appendTo($hpolist_content_base);
-				$hpolist_title.css({'text-align':'left','padding-left':'0.5em'});
-				var $hpolist_content = $('<'+current_settings.nodeName+'>').css({'min-height':'27px'}).addClass(current_settings.cssContentClass).appendTo($hpolist_content_base);
-
-				var $hpolist_content_table = $('<table>').appendTo($hpolist_content);
-//				var $tr = $('<tr>').appendTo($hpolist_content_table);
-//				var $th = $('<th>').text(language['hpoid']).appendTo($tr);
-//				var $th = $('<th>').text(language['hponame']).attr({'colspan':'2'}).appendTo($tr);
+					var $fmalist_content_table = $('<table>').appendTo($fmalist_content);
+					var $tr = $('<tr>').appendTo($fmalist_content_table);
+					var $th = $('<th>').text(language['fmaid']).appendTo($tr);
+					var $th = $('<th>').text(language['fmaname']).appendTo($tr);
+					var $th = $('<th>').text(language['#ofphenotypes']).appendTo($tr);
 
 
-				$(window).resize(function(){
+					//HPO List
+					var $tr = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssTrClass).appendTo($table);
+					var $td = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssTdClass).appendTo($tr);
+					if($fmalist_content_base.is(':visible')) $td.css({'padding-top':'20px'});
 
-//					var css_overflow = $($.magnificPopup.instance.contentContainer).css('overflow');
-//					$($.magnificPopup.instance.contentContainer).css('overflow','hidden');
-					try{
-						var margin_top = Math.round($(window).innerHeight()*0.05);//0.0945;
-						if(margin_top<0) margin_top = 0;
-						$(current_settings.nodeName+'.'+current_settings.cssTableClass+'.'+current_settings.cssTokenInputContentBaseClass).css({'margin-top': margin_top+'px'});
-	//					console.log(margin_top);
+					var $hpolist_content_base = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssBaseClass).addClass(current_settings.cssHPOListContentClass).appendTo($td);
+					var $hpolist_title = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssTopBarClass).css({'min-height':'27px'}).text(language['hpolisttitle']).appendTo($hpolist_content_base);
+					$hpolist_title.css({'text-align':'left','padding-left':'0.5em'});
+					var $hpolist_content = $('<'+current_settings.nodeName+'>').css({'min-height':'27px'}).addClass(current_settings.cssContentClass).appendTo($hpolist_content_base);
 
-	//					console.log($webgl_content.width(),$webgl_content.height());
-						if($webgl_content_base_table.is(':visible') && $webgl_content.innerWidth()>0){
-	//						$webgl_content.css({'height':$webgl_content.innerWidth() - 90});
+					var $hpolist_content_table = $('<table>').appendTo($hpolist_content);
 
-							var webgl_content_height = $(window).innerHeight() - $webgl_content_base_table.offset().top - 120;
-							if(webgl_content_height<100) webgl_content_height = 100;
-							$webgl_content.css({'height': webgl_content_height });
+					$(window).resize(function(){
 
-							if(window.__threeBitsRenderer){
-//								if(__webglResizeTimeoutID) clearTimeout(__webglResizeTimeoutID);
-//								__webglResizeTimeoutID = setTimeout(function(){
+						try{
+							var margin_top = Math.round($(window).innerHeight()*0.05);//0.0945;
+							if(margin_top<0) margin_top = 0;
+							$(current_settings.nodeName+'.'+current_settings.cssTableClass+'.'+current_settings.cssTokenInputContentBaseClass).css({'margin-top': margin_top+'px'});
+
+							if($webgl_content_base_table.is(':visible') && $webgl_content.innerWidth()>0){
+
+								var webgl_content_height = $(window).innerHeight() - $webgl_content_base_table.offset().top - 120;
+								if(webgl_content_height<100) webgl_content_height = 100;
+								$webgl_content.css({'height': webgl_content_height });
+
+								if(window.__threeBitsRenderer){
 									__webglResizeTimeoutID = null;
-
-	//								console.log($webgl_content.innerWidth(),$webgl_content.innerHeight());
-//									console.log($webgl_content.innerWidth(),$webgl_content.width(),$('.popup-hierarchy-hpo-webgl-content>.popup-hierarchy-hpo-content').width());
 
 									__threeBitsRenderer._setSize($webgl_content.innerWidth(),$webgl_content.innerHeight());
 
@@ -1964,33 +1624,25 @@
 										__isFirstThreeBitsRenderer = false;
 									}
 									__threeBitsRenderer._render();
-//								},0);
-							}
+								}
 
-							if($fmalist_content_base.is(':visible')){
-								var height = $webgl_content_base.innerHeight() / 2 - 10;
-	//							$fmalist_content_base.css({'height':height});
-	//							$hpolist_content_base.css({'height':height});
+								if($fmalist_content_base.is(':visible')){
+									var height = $webgl_content_base.innerHeight() / 2 - 10;
 
-								$fmalist_content.css({'height':($fmalist_content_base.innerHeight()-$fmalist_title.height())+'px','overflow':'auto','padding':'0'});
-								$hpolist_content.css({'max-height':($hpolist_content_base.innerHeight()-$hpolist_title.height())+'px','overflow':'auto','padding':'10px'});
+									$fmalist_content.css({'height':($fmalist_content_base.innerHeight()-$fmalist_title.height())+'px','overflow':'auto','padding':'0'});
+									$hpolist_content.css({'max-height':($hpolist_content_base.innerHeight()-$hpolist_title.height())+'px','overflow':'auto','padding':'10px'});
+								}
+								else{
+									var height = $webgl_content_base.innerHeight();
+									$hpolist_content.css({'max-height':(height-$hpolist_title.height())+'px','overflow':'auto','padding':'10px'});
+								}
 							}
-							else{
-								var height = $webgl_content_base.innerHeight();
-	//							console.log('height',height);
-	//							$hpolist_content_base.css({'height':height});
-	//							$hpolist_content.css({'max-height':($hpolist_content_base.innerHeight()-$hpolist_title.height())+'px','overflow':'auto','padding':'10px'});
-								$hpolist_content.css({'max-height':(height-$hpolist_title.height())+'px','overflow':'auto','padding':'10px'});
-							}
+						}catch(e){
+							console.error(e);
 						}
-					}catch(e){
-						console.error(e);
-					}
-//					$($.magnificPopup.instance.contentContainer).css('overflow',css_overflow);
-
-				});
-				$webgl_content_base_table.hide();
-
+					});
+					$webgl_content_base_table.hide();
+				}
 
 				getTokenInputElement()
 				.on('add.tokenInput2',function(){
@@ -2012,11 +1664,6 @@
 			else{
 				$('tr.'+current_settings.cssFMAListContentSelectClass).triggerHandler('click');
 			}
-//			$webgl_content_base_table.hide();
-			//常に切り替える場合
-//			$inlineContentBase.find(current_settings.nodeName+'.'+current_settings.cssTableClass+'.'+current_settings.cssClassContentBaseClass).show();
-//			$inlineContentBase.find(current_settings.nodeName+'.'+current_settings.cssTableClass+'.'+current_settings.cssWebGLContentBaseClass).hide();
-
 
 			/////////////////////////////////////////////////////////////////////////
 			// token inputのリスト用のdivを移動
@@ -2027,9 +1674,7 @@
 
 			if($(current_settings.nodeName+'.'+current_settings.cssInlineContentClass+'>'+ current_settings.nodeName + '.'+current_settings.cssInlineContentBaseClass).length){
 				openMagnificPopup({
-	//				items: {src:   current_settings.nodeName+'.'+current_settings.cssInlineContentClass+'>'+ current_settings.nodeName + '.'+current_settings.cssTableClass },
 					items: {src:   current_settings.nodeName+'.'+current_settings.cssInlineContentClass+'>'+ current_settings.nodeName + '.'+current_settings.cssInlineContentBaseClass },
-	//				items: {src:   current_settings.nodeName+'.'+current_settings.cssInlineContentClass+'>'+ current_settings.nodeName },
 					type: 'inline',
 					modal: false,
 					showCloseBtn: false
@@ -2051,7 +1696,7 @@
 					if($a.length){
 						$a.addClass(current_settings.cssLinkFocusClass);
 						$a.get(0).focus();
-					        setTimeout(function(){ $a.get(0).focus(); },10); //←追加行
+					        setTimeout(function(){ $a.get(0).focus(); },30); //←追加行
 						$(document.body).on('keydown', eventKeydown);
 					}
 					else{
@@ -2073,7 +1718,6 @@
 					$a.get(0).click();
 				}
 				else if(e.which==38){
-//					var expr = current_settings.nodeName+'.'+current_settings.cssLinkBaseRowClass;
 					var expr = current_settings.nodeName+'.'+current_settings.cssLinkBaseClass;
 					var $prev_a = $a.parents(expr).prev(expr).find('a.'+current_settings.cssLinkClass);
 					if($prev_a.length){
@@ -2085,7 +1729,6 @@
 					}
 				}
 				else if(e.which==40){
-//					var expr = current_settings.nodeName+'.'+current_settings.cssLinkBaseRowClass;
 					var expr = current_settings.nodeName+'.'+current_settings.cssLinkBaseClass;
 					var $next_a = $a.parents(expr).next(expr).find('a.'+current_settings.cssLinkClass);
 					if($next_a.length){
@@ -2123,20 +1766,16 @@
 
 		function closeMagnificPopup(){
 			var magnificPopup = $.magnificPopup.instance;
-//			console.log(magnificPopup);
 			if(magnificPopup && isFunction(magnificPopup.close)){
 
 				if(window.__threeBitsRenderer){
 					var $domElement = $(__threeBitsRenderer.domElement());
 					$domElement.off('pick').off('rotate').off('zoom').off('load').off('progress');
-//					console.log($domElement.parent().get(0));
 					if($domElement.parent().get(0)!=document.body){
 						$domElement.appendTo(document.body);
 						$domElement.hide();
-//						__isFirstThreeBitsRenderer = true;
 					}
 					else{
-//						$().appendTo($webgl_content)
 					}
 				}
 
@@ -2159,24 +1798,17 @@
 				closeOnBgClick: false,
 				callbacks: {
 					beforeOpen: function() {
-//						console.log('beforeOpen');
 					},
 					elementParse: function(item) {
-//						console.log('elementParse');
 					},
 					change: function() {
-//						console.log('change');
 					},
 					resize: function() {
-//						console.log('resize');
 					},
 					open: function() {
 						if(getLoadingElement().is(':visible')){
-//							console.log('open loading!!');
 							return
 						}
-
-//						console.log('open');
 
 						var func = function(){
 							if(timeoutID){
@@ -2197,17 +1829,13 @@
 
 					},
 					beforeClose: function() {
-//						console.log('beforeClose');
 					},
 					close: function() {
-//						console.log('close');
 						$(document.body).off('keydown', eventKeydown);
 					},
 					afterClose: function() {
-//						console.log('afterClose');
 					},
 					updateStatus: function(data) {
-//						console.log('updateStatus');
 					}
 				}
 			});
@@ -2226,9 +1854,6 @@
 			}
 			else{
 				var $inlineContent = emptyInlineContent();
-	//			var $loading = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssLoadingClass).text(current_settings.loadingText).appendTo($inlineContent);
-	//			var $loading = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssLoadingClass).appendTo($inlineContent);
-	//			$('<span>').text(current_settings.loadingText).appendTo($loading);
 
 				var $table = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssTableClass).addClass(current_settings.cssLoadingClass).appendTo($inlineContent);
 				var $tr = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssTrClass).appendTo($table);
@@ -2278,7 +1903,6 @@
 			}
 
 			showLoading();
-//			return;
 
 			var url = computeURL();
 
@@ -2378,17 +2002,14 @@
 					var $li_node;
 					if($(this).get(0).nodeName.toLowerCase()==='li'){
 						$li_node = $(this);
-//						click_text = $li_node.children('p').text();
 						click_text = $li_node.data(TOKENINPUT_ITEM_SETTINGS_KEY).name;
 					}
 					else if($(this).get(0).nodeName.toLowerCase()==='p'){
 						$li_node = $(this).parent('li');
-//						click_text = $(this).text();
 						click_text = $li_node.data(TOKENINPUT_ITEM_SETTINGS_KEY).name;
 					}
 					else if($(this).get(0).nodeName.toLowerCase()==='span'){
 						$li_node = $(this).parent('li');
-//						click_text = $li_node.children('p').text();
 						click_text = $li_node.data(TOKENINPUT_ITEM_SETTINGS_KEY).name;
 					}
 
@@ -2397,9 +2018,6 @@
 					var tokenInputItem;
 					var options = {};
 
-//					if($li_node){
-//						console.log($li_node.hasClass(current_settings.cssTokenClass));
-//					}
 					if($li_node){
 						if($li_node.hasClass(current_settings.cssTokenClass)){
 							tokenInputItems = getTokenInputItems();
@@ -2416,19 +2034,14 @@
 						$li_node.addClass(tokeninput_classes['selectedToken']);
 					}
 
-//					var tokenInputItem = getTokenInputItemFromName(click_text);
 					if(tokenInputItem){
 						tokeninput_target = null;
 						tokeninput_target_results = null;
-//						var options = {
-//							hasJA: hasJA(tokenInputItem.name)
-//						};
 						if(tokenInputItems) options.tokenInputItems = tokenInputItems;
 						if(tokenInputItemNodes) options.tokenInputItemNodes = tokenInputItemNodes;
 						runSearch(tokenInputItem.id,options);
 					}
 					else{
-//						console.warn(click_text,tokeninput_array);
 					}
 					return false;
 				});
@@ -2446,9 +2059,10 @@
 			if(execLoadAllObjFlag) return;
 			execLoadAllObjFlag=true;
 
+			if(!current_settings.use_webgl) return;
+
 			if(isObject(window.category2obj)){
 				var paths = [];
-//				Object.keys(category2obj).forEach(function(category){
 				current_settings.use_segments.forEach(function(category){
 					if(isObject(category2obj['category'][category])){
 						Object.keys(category2obj['category'][category]).forEach(function(objid){
@@ -2470,8 +2084,6 @@
 					}
 				});
 
-//				console.log(fma2obj);
-//				console.log(paths.length);
 				if(paths.length){
 
 					if(window.threeBitsRenderer){
@@ -2489,16 +2101,12 @@
 							$domElement.hide();
 						}
 						__threeBitsRenderer.loadObj(paths);
-//						console.log('__threeBitsRenderer.loadObj(paths);');
 					}
 					else{
 					}
 				}
 			}
 		}
-//		loadAllObj();
-
-
 
 		$.PopupRelationHPO = function(query,options){
 			var tokenInputItems = getOriginalTokenInputItems();
