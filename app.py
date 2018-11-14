@@ -1478,8 +1478,8 @@ def tokeninput_genes():
         ## SQLのLIKEを使うときのTips
         ### http://d.hatena.ne.jp/heavenshell/20111027/1319712031
         OBJ_MYSQL = MySQLdb.connect(unix_socket=db_sock, host="localhost", db=db_name, user=db_user, passwd=db_pw, charset="utf8")
-        # IndexFormSearchテーブルからクエリにマッチするレコードを取得
-        sql_IndexFormSearch = u"select distinct uid, uid_value from IndexFormSearch where uid_value like %s order by uid_value"
+        # IndexFormSearchOrphanetOMIMテーブルからクエリにマッチするレコードを取得
+        sql_IndexFormSearch = u"select distinct uid, uid_value from IndexFormSearchOrphanetOMIM where uid_value like %s order by uid_value"
         cursor_IndexFormSearch = OBJ_MYSQL.cursor()
         cursor_IndexFormSearch.execute(sql_IndexFormSearch, ("%" + tokeninput +"%",))
         values = cursor_IndexFormSearch.fetchall()
