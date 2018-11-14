@@ -22,6 +22,9 @@ from utils.show_phenotype_context_page import show_phenotype_context_page
 # API for MME
 from utils.api_mme import make_JSON_MME, make_JSON_IRUD
 
+# API for Orphanet
+from utils.api_orphanet import make_JSON_annotate
+
 
 app = Flask(__name__)
 
@@ -1751,6 +1754,24 @@ def REST_API_JSON_MME_POST():
 @app.route('/mme', methods=['GET'])
 def REST_API_JSON_MME_GET():
     return render_template('pubcasefinder_api_en.html')
+
+
+#####
+# POST: API for Orphanet
+#       annotate HPO term in a text
+#       /annotate/hpo
+#####
+@app.route('/annotate/hpo', methods=['POST'])
+def REST_API_ANNOTATE_HPO_POST():
+    pattern_content_type_json = r'application\/json*'
+    if not re.search(pattern_content_type_json , request.headers['Content-Type']):
+        print(request.headers['Content-Type'])
+        return jsonify(res='Error: Content-Type'), 400
+
+    # utils/api_annotate.py
+    dict_results = make_JSON_annotate(request.json, "HPO")
+
+    return jsonify(dict_results)
 
 
 #####
