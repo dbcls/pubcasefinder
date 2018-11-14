@@ -67,7 +67,7 @@ def show_search_page(phenotypes, genes, page, size):
     if genes != "":
         for gene in genes.split(","):
             OBJ_MYSQL = MySQLdb.connect(unix_socket=db_sock, host="localhost", db=db_name, user=db_user, passwd=db_pw, charset="utf8")
-            sql_IndexFormSearch = u"select uid_value from IndexFormSearch where uid=%s"
+            sql_IndexFormSearch = u"select uid_value from IndexFormSearchOrphanetOMIM where uid=%s"
             cursor_IndexFormSearch = OBJ_MYSQL.cursor()
             cursor_IndexFormSearch.execute(sql_IndexFormSearch, (gene,))
             values = cursor_IndexFormSearch.fetchall()
