@@ -79,6 +79,7 @@ def annotate_hpo(str_text):
     start = ""
     end = ""
     term = ""
+    dict_hpoid_start_end = {}
         
     for line in file_annotate:
         line = line.strip()
@@ -106,12 +107,13 @@ def annotate_hpo(str_text):
             hpo_id = list_list_line_N1[2].replace("http://purl.obolibrary.org/obo/", "")
             hpo_id = hpo_id.replace("_", ":")
             
-            if hpo_id in dict_hp_under_hp0000118:
+            if hpo_id in dict_hp_under_hp0000118 and hpo_id + " " + start + " " + end not in dict_hpoid_start_end:
                 dict_each_annotation['HPO ID'] = hpo_id
                 dict_each_annotation['TERM']   = term
                 dict_each_annotation['START']  = start
                 dict_each_annotation['END']    = end
                 list_results.append(dict_each_annotation)
+                dict_hpoid_start_end[hpo_id + " " + start + " " + end] = 1
                     
     # ファイルをクローズする
     file_annotate.close()
