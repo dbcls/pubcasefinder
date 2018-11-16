@@ -8,6 +8,7 @@ import MySQLdb
 import subprocess
 import tempfile
 import logging
+import pronto
 
 
 app = Flask(__name__)
@@ -38,6 +39,16 @@ def make_JSON_annotate(dict_json, str_onto):
 # annotate text with HPO
 #####
 def annotate_hpo(str_text):
+
+    # 最新のHPOを読み込み、HP:0000118以下のHPO termsを全て取得する
+    dict_hp_under_hp0000118 = {}
+    ont = pronto.Ontology('/opt/services/case/data/PubCases/ontologies/HP/hp_20181009.obo')
+    list_hp_under_hp0000118 = ont['HP:0000118'].rchildren()
+    app.logger.error(type(list_hp_under_hp0000118[1]))
+    app.logger.error(list_hp_under_hp0000118[1].id)
+    for hp_term in list_hp_under_hp0000118:
+        dict_hp_under_hp0000118[hp_term.id] = 1
+
     dict_results = {}
     filename = ""
 
@@ -94,11 +105,13 @@ def annotate_hpo(str_text):
             dict_each_annotation = {}
             hpo_id = list_list_line_N1[2].replace("http://purl.obolibrary.org/obo/", "")
             hpo_id = hpo_id.replace("_", ":")
-            dict_each_annotation['HPO ID'] = hpo_id
-            dict_each_annotation['TERM']   = term
-            dict_each_annotation['START']  = start
-            dict_each_annotation['END']    = end
-            list_results.append(dict_each_annotation)
+            
+            if hpo_id in dict_hp_under_hp0000118:
+                dict_each_annotation['HPO ID'] = hpo_id
+                dict_each_annotation['TERM']   = term
+                dict_each_annotation['START']  = start
+                dict_each_annotation['END']    = end
+                list_results.append(dict_each_annotation)
                     
     # ファイルをクローズする
     file_annotate.close()
