@@ -8,6 +8,16 @@
  *
  */
 ;(function ($) {
+  var language = (window.navigator.languages && window.navigator.languages[0]) ||
+        window.navigator.language ||
+        window.navigator.userLanguage ||
+        window.navigator.browserLanguage;
+  var hintText = "Type in patient's signs and symptoms"
+  if(language == "ja" || language == "ja-jp" || language == "ja-JP"){
+      hintText = "患者の兆候または症状を入力"
+  }
+  console.log(language);
+
   var DEFAULT_SETTINGS = {
     // Search settings
     method: "GET",
@@ -26,7 +36,7 @@
 
     // Display settings
     //hintText: "Type in a search term",
-    hintText: "Type in a search term",
+    hintText: hintText,
     noResultsText: "No results",
     searchingText: "Searching...",
     deleteText: "&#215;",

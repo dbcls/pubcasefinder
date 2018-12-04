@@ -17,25 +17,26 @@
 		      <td width="100%">
 			<textarea class="form-control" rows="2" id="tokeninput_hpo" name="str_phenotypes"></textarea>
 		      </td>
-		      <td>&nbsp;</td>
+		      <!--td>&nbsp;</td>
 		      <td>
 			{% if get_locale() == "ja" or get_locale() == "ja_JP" %}
 			<button data-toggle="tooltip" title="{{ _('index_Q_tooltip') }}" class="btn btn-default" type="button" onClick="window.open().location.href='/static/pdf/PubCaseFinder_manual_ja.pdf'"><font size="4">?</font></button>
 			{% else %}
 			<button data-toggle="tooltip" title="{{ _('index_Q_tooltip') }}" class="btn btn-default" type="button" onClick="window.open().location.href='/static/pdf/Summary_PubCaseFinder.pdf'"><font size="4">?</font></button>
 			{% endif %}
-		      </td>
+		      </td-->
 		    </tr>
 		  </table>
 		</td>
 	      </tr>
-	      <tr><td><br></td></tr>
+	      <tr><td><br><br></td></tr>
 	      <tr align="middle">
 		<td>
 		  <table>
 		    <tr>
 		      <td>
-			<button id="tokeninput_hpo_clear" class="btn btn-default"<>{{ _('index_button_clear') }}</button>
+			<button id="phenotouch" class="btn btn-default">{{ _('index_button_phenotouch') }}</button>
+			<button id="tokeninput_hpo_clear" class="btn btn-default">{{ _('index_button_clear') }}</button>
 			<button type="submit" class="btn btn-primary">{{ _('index_button_search') }}</button>
                       </td>
                     </tr>
@@ -231,6 +232,12 @@
           $("#tokeninput_hpo").tokenInput("clear");
           return false;
         });
+      });
+      $("#phenotouch").click(function (e){
+        $.PopupRelationHPOWithWebGL();
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
       });
     </script>
     <!-- END: jquery-tokeninput -->

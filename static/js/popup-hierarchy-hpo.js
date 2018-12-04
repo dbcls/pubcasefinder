@@ -62,6 +62,9 @@
 		cssWebGLContentClass: CSS_PREFIX+'webgl-content',
 //		cssWebGLSpeechBalloonBaseClass: CSS_PREFIX+'webgl-speechballoon-base',
 //		cssWebGLSpeechBalloonContentClass: CSS_PREFIX+'webgl-speechballoon-content',
+
+		cssFMATreeListContentClass: CSS_PREFIX+'fmatreelist-content',
+
 		cssFMAListContentClass: CSS_PREFIX+'fmalist-content',
 		cssFMAListContentSelectClass: CSS_PREFIX+'fmalist-content-select',
 		cssFMAListContentHoverClass: CSS_PREFIX+'fmalist-content-hover',
@@ -106,9 +109,11 @@
 
 				phenotouch : 'PhenoTouch',
 				webgltitle : '身体各部位を選択',
+				webgloperationhelp : '移動：ドラッグ<br>回転：Shift + ドラッグ<br>拡大縮小：スクロール',
+				fmatreelisttitle : '選択部位の名称',
 				fmalisttitle : 'Select proper parts you inducated.',
 //				hpolisttitle : 'Add phenotype related to selected parts.',
-				hpolisttitle : '',
+				hpolisttitle : '「__FMANAME__（__FMAID__）」に関連した兆候・症状',
 
 				bone : 'Bone',
 				muscle : 'Muscle',
@@ -122,7 +127,9 @@
 				color : 'Color',
 				hide : 'Hide',
 				hpoid : 'ID',
-				hponame : 'Name'
+				hponame : 'Name',
+
+				tooltip_title : 'ここをクリック'
 			},
 			'en' : {
 				superclass : 'Superclass',
@@ -147,9 +154,11 @@
 
 				phenotouch : 'PhenoTouch',
 				webgltitle : 'Touch body parts',
+				webgloperationhelp : 'Move: Drag<br>Rotate: Shift + drag<br>Scale: Scroll',
+				fmatreelisttitle : 'Touched body parts',
 				fmalisttitle : 'Select proper parts you inducated.',
 //				hpolisttitle : 'Add phenotype related to selected parts.',
-				hpolisttitle : '',
+				hpolisttitle : 'Signs and symptoms related to __FMANAME__ (__FMAID__)',
 
 				bone : 'Bone',
 				muscle : 'Muscle',
@@ -163,7 +172,9 @@
 				color : 'Color',
 				hide : 'Hide',
 				hpoid : 'ID',
-				hponame : 'Name'
+				hponame : 'Name',
+
+				tooltip_title : 'Click Here'
 			}
 		},
 		okcancelButtonsAlign : 'right',
@@ -178,8 +189,12 @@
 		,id_regexp : new RegExp("^(HP:[0-9]+)(.*)")
 		,obj_ext : '.obj'
 //		,obj_ext : '.ogz'
-		,obj_url : '/phenotouch/objs/',
-		use_webgl : false
+		,obj_url : '/phenotouch/objs/'
+		,use_webgl : false
+		,active_webgl : false
+		,use_tooltip : true
+		,tooltip_type : 'fixed'	//fixed or name
+		,fmatree_type : 'class'	//class or part
 	};
 
 	var TOKENINPUT_SETTINGS_KEY = 'settings';
@@ -284,6 +299,7 @@
 					if(hasJA(temp.name)) temp.id += '_ja';
 					$(input).tokenInput('add',temp);
 				});
+				$.PopupRelationHPOtooltip();
 			}
 		}
 		function getOriginalTokenInputItemFromName(hpo_name){
@@ -614,6 +630,7 @@
 				if(window.__threeBitsRenderer && !__threeBitsRenderer.isLoadingObj()){
 				}
 
+//				current_settings.active_webgl = true;
 			}
 			return;
 		}
@@ -701,6 +718,15 @@
 			return $.magnificPopup.instance.contentContainer ? $.magnificPopup.instance.contentContainer.find(current_settings.nodeName+'.'+current_settings.cssInlineContentBaseClass) : $();
 		}
 
+		var pickFMAIDs = {};
+
+		function setContentsLanguageName($node,key,value){
+			var data_language_key = '__'+key+'__';
+			$node.attr({'data-language-key':data_language_key});
+			current_settings.language.en[data_language_key] = value['name'];
+			current_settings.language.ja[data_language_key] = value['name_ja'] ? value['name_ja'] : value['name'];
+		}
+
 		var __last_results = null;
 		function showResults(results) {
 			if(results){
@@ -717,7 +743,12 @@
 
 			if(!tokeninput_target){
 				tokeninput_target_results = $.extend(true, {},results);
-				tokeninput_target = $.extend(true, {},results[current_settings.keySelfclass][0]);
+				if(isArray(results[current_settings.keySelfclass])){
+					tokeninput_target = $.extend(true, {},results[current_settings.keySelfclass][0]);
+				}
+				else{
+					tokeninput_target = {};
+				}
 			}
 
 			var $inlineContentBase = getContentBaseElement();
@@ -809,7 +840,7 @@
 						changeStateAddOrReplace();
 						$li.trigger('click');
 					});
-
+					$.PopupRelationHPOtooltip();
 					return results;
 				};
 
@@ -821,6 +852,7 @@
 					onAdd: function(token){
 						getTokenInputElement().trigger('add.tokenInput',[token]);
 						getTokenInputElement().trigger('add.tokenInput2',[token]);
+						$.PopupRelationHPOtooltip();
 					},
 					onFreeTaggingAdd: function(token){
 					},
@@ -831,6 +863,23 @@
 						}
 						changeStateAddOrReplace();
 						getTokenInputElement().trigger('delete.tokenInput2',[token]);
+
+						//tooltipのノードが残る為、強制的削除する
+//						$.PopupRelationHPOtooltip();
+						if(current_settings.use_tooltip){
+							var title;
+							if(current_settings.tooltip_type === 'fixed'){
+								title = current_settings.language[getCurrentLanguage()]['tooltip_title'];
+							}
+							else{
+								title = token.name;
+							}
+							var tooltip_selector = 'ul.'+tokeninput_classes['tokenList']+'>div.tooltip';
+							$(tooltip_selector).each(function(){
+								if($(this).text()===title) $(this).remove();
+							});
+						}
+
 					},
 					onReady: function(){
 						var $ul = $(current_settings.nodeName+'.'+current_settings.cssSelectedPhenotypeClass+ ' ul.'+tokeninput_classes['tokenList']).addClass(current_settings.cssTokenListClass);
@@ -910,10 +959,21 @@
 			$language_select.prev('button').html($language_select.find('option[name='+getCurrentLanguage()+']').prop('selected', true).text()+'&nbsp;▼');
 
 			$('*[data-language-key]').each(function(){
-				var key = $(this).attr('data-language-key');
-				$(this).text(language[key]);
+				var $this = $(this);
+				var key = $this.attr('data-language-key');
+				$this.text(language[key]);
 			});
 
+			$('*[data-language-tooltip-key]').each(function(){
+				var $this = $(this);
+				var key = $this.attr('data-language-tooltip-key');
+				if(isEmpty(language[key])){
+					$this.attr({'data-original-title':key});
+				}
+				else{
+					$this.attr({'data-original-title':language[key]});
+				}
+			}).tooltip();
 
 			/////////////////////////////////////////////////////////////////////////
 			// class contents
@@ -1058,8 +1118,22 @@
 
 					var $webgl_content_title = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssTopBarClass).css({'display':'table','border-collapse':'collapse','width':'100%'}).appendTo($webgl_content_base);
 					var $webgl_content_title_tr = $('<'+current_settings.nodeName+'>').css({'display':'table-row'}).appendTo($webgl_content_title);
-					var $webgl_content_title_td1 = $('<'+current_settings.nodeName+'>').css({'display':'table-cell','text-align':'left','padding-left':'0.5em'}).attr({'data-language-key':'webgltitle'}).text(language['webgltitle']).appendTo($webgl_content_title_tr);
+					var $webgl_content_title_td1 = $('<'+current_settings.nodeName+'>').css({'display':'table-cell','text-align':'left','padding-left':'0.5em'})/*.attr({'data-language-key':'webgltitle'}).text(language['webgltitle'])*/.appendTo($webgl_content_title_tr);
 					var $webgl_content_title_td2 = $('<'+current_settings.nodeName+'>').css({'display':'table-cell','text-align':'right','width':'20px'}).appendTo($webgl_content_title_tr);
+
+					$('<span>')
+						.attr({'data-language-key':'webgltitle'})
+						.css({'cursor':'default'})
+						.text(language['webgltitle'])
+						.appendTo($webgl_content_title_td1);
+
+					$('<span>')
+						.attr({'data-language-tooltip-key':'webgloperationhelp'})
+						.attr({'data-toggle':'tooltip', 'data-html':'true', 'data-original-title': language['webgloperationhelp']})
+						.css({'display':'inline-block', 'padding':'3px 5px', 'margin-left':'0.5em', 'font-weight':'bold', 'font-size':'13px', 'line-height':'1em', 'border-radius':'8px', 'cursor':'default', 'background-color':'black'})
+						.text('?')
+						.appendTo($webgl_content_title_td1)
+						.tooltip();
 
 					$('<button>')
 						.addClass('btn btn-default')
@@ -1072,6 +1146,8 @@
 								$inlineContentBase.find(current_settings.nodeName+'.'+current_settings.cssTableClass+'.'+current_settings.cssClassContentBaseClass).show();
 								$inlineContentBase.find(current_settings.nodeName+'.'+current_settings.cssTableClass+'.'+current_settings.cssWebGLContentBaseClass).hide();
 								$inlineContentBase.find(current_settings.nodeName+'.'+current_settings.cssWebGLSwitchContentClass).show();
+
+//								current_settings.active_webgl = false;
 							}
 						})
 						.appendTo($webgl_content_title_td2);
@@ -1199,7 +1275,6 @@
 						$domElement.css({'z-index':'1'}).appendTo($webgl_content)
 						.on('pick', function(e,ren,intersects){
 							var fma_ids = {};
-							var fma_colors = {};
 							var fma2pickobj = {};
 
 							var name_key = 'name';
@@ -1207,127 +1282,84 @@
 
 							if(isArray(intersects) && intersects.length && isObject(window.category2obj)){
 
-								var checked_category = {};
 								var $checked_category = $webgl_chechkbox_group.find('input[type=checkbox]:checked');
+/*
+								var checked_category = {};
 								$checked_category.each(function(){
 									var category = $(this).val();
 									checked_category[category] = null;
 								});
-
+*/
 
 
 								var exists_parts = false;
 
 								intersects.forEach(function(intersect){
 									if(exists_parts) return false;
-									if(isObject(intersect) && intersect.object && isString(intersect.object[Ag.Def.OBJ_ID_DATA_FIELD_ID]) && intersect.object[Ag.Def.OBJ_ID_DATA_FIELD_ID].length){
+									if(!(isObject(intersect) && intersect.object && isString(intersect.object[Ag.Def.OBJ_ID_DATA_FIELD_ID]) && intersect.object[Ag.Def.OBJ_ID_DATA_FIELD_ID].length)) return;
 
-										var art_id = intersect.object[Ag.Def.OBJ_ID_DATA_FIELD_ID];
+									var art_id = intersect.object[Ag.Def.OBJ_ID_DATA_FIELD_ID];
+//									console.log('art_id',art_id);
 
-										$checked_category.each(function(){
-											var category = $(this).val();
+									$checked_category.each(function(){
+										var category = $(this).val();
 
-											if(exists_parts) return false;
-											if(isObject(category2obj['category'][category][art_id])){
+										if(exists_parts) return false;
 
-												var color = category2obj['category'][category][art_id]['color'];
+										if(!isObject(category2obj['category'][category][art_id])) return true;
+										if(!isString(category2obj['category'][category][art_id]['FMA'])) return false;
 
-												if(isString(category2obj['category'][category][art_id]['FMA'])){
-													var fma_id = category2obj['category'][category][art_id]['FMA'];
+										var fma_id = category2obj['category'][category][art_id]['FMA'];
+										if(!isObject(category2obj['FMA'][fma_id])) return false;
 
+										if(isEmpty(fma2pickobj[fma_id])) fma2pickobj[fma_id] = {};
+										if(!isEmpty(fma2pickobj[fma_id][art_id])) return false;
 
-														if(exists_parts) return false;
+										exists_parts = true;
 
-														exists_parts = true;
+										fma_ids[fma_id] = category2obj['FMA'][fma_id];
+/*
+										var disp_fma_id = fma_id;
+										if(fma_id.match(/^(FMA)([0-9]+.*)$/)){
+											disp_fma_id = RegExp.$1+':'+RegExp.$2;
+										}
+										var fma_name = isString(fma_ids[fma_id][name_key]) ? fma_ids[fma_id][name_key] : fma_ids[fma_id]['name'];
 
-														fma_ids[fma_id] = category2obj['FMA'][fma_id];
-														fma_colors[fma_id] = color;
-
-														var disp_fma_id = fma_id;
-														if(fma_id.match(/^(FMA)([0-9]+.*)$/)){
-															disp_fma_id = RegExp.$1+':'+RegExp.$2;
-														}
-														var fma_name = isString(fma_ids[fma_id][name_key]) ? fma_ids[fma_id][name_key] : fma_ids[fma_id]['name'];
-
-														if(isEmpty(fma2pickobj[fma_id])) fma2pickobj[fma_id] = {};
-														if(isEmpty(fma2pickobj[fma_id][art_id])){
-															fma2pickobj[fma_id][art_id] = {
-																fma_id: disp_fma_id,
-																fma_name: fma_name,
-																distance: intersect.distance,
-																point: {
-																	x: intersect.point.x,
-																	y: intersect.point.y,
-																	z: intersect.point.z
-																}
-															};
-
-															//該当するFMAに対応するOBJを選択状態する為
-															if(exists_parts){
-																if(isArray(fma_ids[fma_id]['other_art_ids'])){
-																	fma_ids[fma_id]['other_art_ids'].forEach(function(other_art_id){
-																		fma2pickobj[fma_id][other_art_id] = {
-																			fma_id: disp_fma_id,
-																			fma_name: fma_name
-																		};
-																	});
-																}
-																if(isObject(fma_ids[fma_id]['art_ids'])){
-																	$checked_category.each(function(){
-																		var checked_category = $(this).val();
-																		if(isArray(fma_ids[fma_id]['art_ids'][checked_category])){
-																			fma_ids[fma_id]['art_ids'][checked_category].forEach(function(other_art_id){
-																				if(other_art_id == art_id) return;
-																				fma2pickobj[fma_id][other_art_id] = {
-																					fma_id: disp_fma_id,
-																					fma_name: fma_name
-																				};
-																			});
-																		}
-																	});
-																}
-															}
-														}
+										if(exists_parts && isObject(fma_ids[fma_id]['art_ids'])){
+											$checked_category.each(function(){
+												var checked_category = $(this).val();
+												if(isArray(fma_ids[fma_id]['art_ids'][checked_category])){
+													fma_ids[fma_id]['art_ids'][checked_category].forEach(function(temp_art_id){
+														fma2pickobj[fma_id][temp_art_id] = {
+															fma_id: disp_fma_id,
+															fma_name: fma_name
+														};
+													});
 												}
-											}
-										});
-									}
+											});
+										}
+*/
+
+									});
 								});
 							}
 							else{
 							}
 
-							var $fmalist_content_base = $(current_settings.nodeName+'.'+current_settings.cssFMAListContentClass);
-							$fmalist_content_base.hide();
-							var $fmalist_title = $fmalist_content_base.find(current_settings.nodeName+'.'+current_settings.cssTopBarClass);
-							var $fmalist_content = $fmalist_content_base.find(current_settings.nodeName+'.'+current_settings.cssContentClass);
-							$fmalist_content.css({'height':($fmalist_content_base.innerHeight()-$fmalist_title.height())+'px','overflow':'auto','padding':'0'});
-							$fmalist_content.empty();
+							var _pick = function(fma_ids){
+								if(fma_ids == undefined) fma_ids = pickFMAIDs;
+//								console.log(fma_ids);
 
-							var $hpolist_content_base = $(current_settings.nodeName+'.'+current_settings.cssHPOListContentClass);
-							var $hpolist_title = $hpolist_content_base.find(current_settings.nodeName+'.'+current_settings.cssTopBarClass).text('');
-							var $hpolist_content = $hpolist_content_base.find(current_settings.nodeName+'.'+current_settings.cssContentClass);
+								if(isString(fma_ids)){
+									var fma_id = fma_ids;
+									fma_ids = {};
+									fma_ids[fma_id] = category2obj['FMA'][fma_id];
+								}
+								fma_ids = fma_ids || {};
 
-							var height = $webgl_content_base.innerHeight();
-							$hpolist_content.css({'max-height':(height-$hpolist_title.height())+'px','overflow':'auto','padding':'10px'});
-							$hpolist_content.empty();
+								pickFMAIDs = $.extend(true, {}, pickFMAIDs, fma_ids || {});
 
-							if(true || Object.keys(fma_ids).length){
-								var table_css = {};//{'width':'100%','font-size':'0.85em'};
-								var head_css = {};//{'background-color':'#DDDDDD','cursor':'default'};
-								var th_css = {};//{'padding':'0 2px','border':'1px solid #F0F0F0'};
-								var td_left_css = {};//$.extend({},th_css,{'text-align':'left','vertical-align':'top'});
-								var td_center_css = $.extend(true, {},td_left_css,{'padding':'0','text-align':'center'});
-								var td_right_css = $.extend(true, {},td_left_css,{'padding':'0','text-align':'right'});
-
-								var $fmalist_content_table = $('<table>').css(table_css).appendTo($fmalist_content);
-								var $tr = $('<tr>').appendTo($fmalist_content_table).css(head_css);
-								var $th = $('<th>').text(language['fmaid']).appendTo($tr).css(th_css);
-								var $th = $('<th>').text(language['fmaname']).appendTo($tr).css(th_css);
-								var $th = $('<th>').text(language['#ofphenotypes']).appendTo($tr).css(th_css);
-
-								var $hpolist_content_table = $('<table>').css(table_css).appendTo($hpolist_content);
-								var $tr = $('<tr>').appendTo($hpolist_content_table).css(head_css);
+								var fma2pickobj = {};
 
 								var fma_sort = function(a,b){
 									var name_a = isString(fma_ids[a][name_key]) ? fma_ids[a][name_key] : fma_ids[a]['name'];
@@ -1338,139 +1370,384 @@
 									return 0;
 								};
 
+								var $checked_category = $webgl_chechkbox_group.find('input[type=checkbox]:checked');
+
 								Object.keys(fma_ids).sort(fma_sort).forEach(function(fma_id,index,array){
+
 									var disp_fma_id = fma_id;
 									if(fma_id.match(/^(FMA)([0-9]+.*)$/)){
 										disp_fma_id = RegExp.$1+':'+RegExp.$2;
 									}
 									var fma_name = isString(fma_ids[fma_id][name_key]) ? fma_ids[fma_id][name_key] : fma_ids[fma_id]['name'];
-									var $tr = $('<tr>').attr({'data-fmaid':fma_id}).data({'disp_fma_id':disp_fma_id,'fma_id':fma_id,'fma_name':fma_name,'pick_objid': fma2pickobj[fma_id]||{} }).data(OBJECT_KEY, fma2obj[fma_id]).appendTo($fmalist_content_table)
-									.hover(
-										function(){
-											var $this_tr = $(this);
-											$this_tr.addClass(current_settings.cssFMAListContentHoverClass);
-										},
-										function(){
-											var $this_tr = $(this);
-											$this_tr.removeClass(current_settings.cssFMAListContentHoverClass);
-										}
-									)
-									.click(function(){
-										var language = current_settings.language[getCurrentLanguage()];
 
-										var $this_tr = $(this);
-										$fmalist_content_table.find('tr.'+current_settings.cssFMAListContentSelectClass).removeClass(current_settings.cssFMAListContentSelectClass);
-										$this_tr.addClass(current_settings.cssFMAListContentSelectClass);
-
-										var disp_fma_id = $this_tr.data('disp_fma_id');
-										var fma_id = $this_tr.data('fma_id');
-
-										var name_key = 'name';
-										if(runSearchOptions.hasJA) name_key += '_ja';
-
-										var fma = category2obj['FMA'][fma_id];
-
-										var fma_name = fma[name_key] ? fma[name_key] : fma['name']; //$this_tr.data('fma_name');
-										$hpolist_title.html(disp_fma_id+'&nbsp;'+fma_name);
-
-
-										$hpolist_content.empty();
-										var $hpolist_content_table = $('<table>').css(table_css).appendTo($hpolist_content);
-
-										var hpo_sort = function(a,b){
-											var hpo_ids = isObject(category2obj['HPO']) ? category2obj['HPO'] : fma_ids[fma_id]['HPO'];
-
-											var hpo_name_a = isString(hpo_ids[a][name_key]) ? hpo_ids[a][name_key] : hpo_ids[a]['name'];
-											var hpo_name_b = isString(hpo_ids[b][name_key]) ? hpo_ids[b][name_key] : hpo_ids[b]['name'];
-
-											if(hpo_name_a<hpo_name_b) return -1;
-											if(hpo_name_a>hpo_name_b) return  1;
-											return 0;
-										};
-
-										var hpo_ids = isObject(fma_ids[fma_id]['HPO']) ? Object.keys(fma_ids[fma_id]['HPO']) : fma_ids[fma_id]['HPO'];
-
-										hpo_ids.sort(hpo_sort).forEach(function(hpo_id){
-											var hpo_ids = isObject(category2obj['HPO']) ? category2obj['HPO'] : fma_ids[fma_id]['HPO'];
-
-											var hpo_name = isString(hpo_ids[hpo_id][name_key]) ? hpo_ids[hpo_id][name_key] : hpo_ids[hpo_id]['name'];
-
-											var $tr = $('<tr>').data({'hpo_id':hpo_id}).appendTo($hpolist_content_table);
-
-											var $td = $('<td>').css(td_center_css).css({'white-space':'nowrap'}).appendTo($tr);
-											$('<button>')
-												.addClass('btn btn-primary')
-												.addClass(current_settings.cssButtonAddClass)
-												.data(OBJECT_KEY,{self: $.extend(true, {id:hpo_id}, hpo_ids[hpo_id]), exec:'add'})/*.css({'margin':'0','padding':'0 2px','font-size':'inherit'})*/
-												.attr({'data-language-key':'add'})
-												.text(language['add'])
-												.appendTo($td)
-												.on('click',executionAddOrReplace);
-
-											$('<button>')
-												.addClass('btn btn-primary')
-												.addClass(current_settings.cssButtonReplaceClass)
-												.data(OBJECT_KEY,{self: $.extend(true, {id:hpo_id}, hpo_ids[hpo_id]), exec:'replace'})/*.css({'margin':'0','padding':'0 2px','font-size':'inherit'})*/
-												.attr({'data-language-key':'replace'})
-												.text(language['replace'])
-												.appendTo($td)
-												.on('click',executionAddOrReplace);
-
-
-											var $td = $('<td>').css(td_right_css).appendTo($tr);
-											$('<span>').addClass(current_settings.cssLinkNumberClass).text(hpo_ids[hpo_id]['count']).appendTo($td);
-
-											var $td = $('<td>')/*.text(hpo_name)*/.appendTo($tr).css(td_left_css);
-
-											var $a = $('<a>')
-											.addClass(current_settings.cssLinkClass)
-											.attr({'href':'#'})
-											.data(OBJECT_KEY, {id:hpo_id})
-											.click(function(){
-												var data = $(this).data(OBJECT_KEY);
-
-												if(false){
-													if(isString(options.classname) && options.classname === CSS_PREFIX+settings.keySubclass){
-														$(current_settings.nodeName+'.'+current_settings.cssTableClass).css({'animation':'popup-hierarchy-hpo-keyframe-subclass-translate 500ms ease-out 0s normal both'});
-													}
-													else if(isString(options.classname) && options.classname === CSS_PREFIX+current_settings.keySuperclass){
-														$(current_settings.nodeName+'.'+current_settings.cssTableClass).css({'animation':'popup-hierarchy-hpo-keyframe-superclass-translate 500ms ease-out 0s normal both'});
-													}
-													setTimeout(function(){
-														runSearch(data.id);
-													},500);
-												}else{
-													if(click_timeoutID){
-														clearTimeout(click_timeoutID);
-													}
-													click_timeoutID = setTimeout(function(){
-														click_timeoutID = null;
-														runSearch(data.id);
-													},100);
-												}
-												return false;
-											})
-											.appendTo($td);
-
-											$('<span>').text(hpo_name).appendTo($a);
-
+									if(isObject(fma_ids[fma_id]['art_ids'])){
+										$checked_category.each(function(){
+											var checked_category = $(this).val();
+											if(isArray(fma_ids[fma_id]['art_ids'][checked_category])){
+												fma_ids[fma_id]['art_ids'][checked_category].forEach(function(temp_art_id){
+													fma2pickobj[fma_id] = fma2pickobj[fma_id] || {};
+													fma2pickobj[fma_id][temp_art_id] = {
+														fma_id: disp_fma_id,
+														fma_name: fma_name
+													};
+												});
+											}
 										});
-										changeStateAddOrReplace();
-									});
-									var $td = $('<td>').text(disp_fma_id).appendTo($tr).css(td_left_css);
-									var $td = $('<td>').text(fma_name).appendTo($tr).css(td_left_css);
-									var $td = $('<td>').text(fma_ids[fma_id]['#HPO']).appendTo($tr).css(td_center_css);
-
-									if(index==0){
-										setTimeout(function(){
-											$tr.click();
-										},100);
 									}
-
 								});
 
-							}
-							_click_callback(false);
+
+								var height = $webgl_content_base.innerHeight();
+
+								var $fmatreelist_content_base = $(current_settings.nodeName+'.'+current_settings.cssFMATreeListContentClass);
+								var $fmatreelist_title = $fmatreelist_content_base.find(current_settings.nodeName+'.'+current_settings.cssTopBarClass);
+								var $fmatreelist_content = $fmatreelist_content_base.find(current_settings.nodeName+'.'+current_settings.cssContentClass);
+								$fmatreelist_content.empty();
+								$fmatreelist_content.css({'max-height':((height/2-20)-$fmatreelist_title.height())+'px','overflow':'auto','padding':'10px'});
+
+								var $fmalist_content_base = $(current_settings.nodeName+'.'+current_settings.cssFMAListContentClass);
+								$fmalist_content_base.hide();
+								var $fmalist_title = $fmalist_content_base.find(current_settings.nodeName+'.'+current_settings.cssTopBarClass);
+								var $fmalist_content = $fmalist_content_base.find(current_settings.nodeName+'.'+current_settings.cssContentClass);
+								$fmalist_content.css({'height':($fmalist_content_base.innerHeight()-$fmalist_title.height())+'px','overflow':'auto','padding':'0'});
+								$fmalist_content.empty();
+
+								var $hpolist_content_base = $(current_settings.nodeName+'.'+current_settings.cssHPOListContentClass);
+								var $hpolist_title = $hpolist_content_base.find(current_settings.nodeName+'.'+current_settings.cssTopBarClass).empty();
+								var $hpolist_content = $hpolist_content_base.find(current_settings.nodeName+'.'+current_settings.cssContentClass);
+
+								if($fmalist_content_base.is(':visible') || $fmatreelist_content_base.is(':visible')) $hpolist_content_base.css({'margin-top':'20px'});
+
+//								$hpolist_content.css({'max-height':(height-$hpolist_title.height())+'px','overflow':'auto','padding':'10px'});
+								$hpolist_content.css({'max-height':((height/2-20)-$hpolist_title.height())+'px','overflow':'auto','padding':'10px'});
+
+								$hpolist_content.empty();
+
+//								if(true || Object.keys(fma_ids).length){
+
+								$fmatreelist_content_base.css({'visibility':'hidden'});
+								$hpolist_content_base.css({'visibility':'hidden'});
+
+								if(Object.keys(fma_ids).length){
+
+//									$fmatreelist_content_base.css({'visibility':'visible'});
+//									$hpolist_content_base.css({'visibility':'visible'});
+
+
+									var table_css = {};//{'width':'100%','font-size':'0.85em'};
+									var head_css = {};//{'background-color':'#DDDDDD','cursor':'default'};
+									var th_css = {};//{'padding':'0 2px','border':'1px solid #F0F0F0'};
+									var td_left_css = {};//$.extend({},th_css,{'text-align':'left','vertical-align':'top'});
+									var td_center_css = $.extend(true, {},td_left_css,{'padding':'0','text-align':'center'});
+									var td_right_css = $.extend(true, {},td_left_css,{'padding':'0','text-align':'right'});
+
+									var $fmalist_content_table = $('<table>').css(table_css).appendTo($fmalist_content);
+									var $tr = $('<tr>').appendTo($fmalist_content_table).css(head_css);
+									var $th = $('<th>').text(language['fmaid']).appendTo($tr).css(th_css);
+									var $th = $('<th>').text(language['fmaname']).appendTo($tr).css(th_css);
+									var $th = $('<th>').text(language['#ofphenotypes']).appendTo($tr).css(th_css);
+
+									var $hpolist_content_table = $('<table>').css(table_css).appendTo($hpolist_content);
+									var $tr = $('<tr>').appendTo($hpolist_content_table).css(head_css);
+
+									Object.keys(fma_ids).sort(fma_sort).forEach(function(fma_id,index,array){
+										var disp_fma_id = fma_id;
+										if(fma_id.match(/^(FMA)([0-9]+.*)$/)){
+											disp_fma_id = RegExp.$1+':'+RegExp.$2;
+										}
+										var fma_name = isString(fma_ids[fma_id][name_key]) ? fma_ids[fma_id][name_key] : fma_ids[fma_id]['name'];
+										var $tr = $('<tr>').attr({'data-fmaid':fma_id}).data({'disp_fma_id':disp_fma_id,'fma_id':fma_id,'fma_name':fma_name,'pick_objid': fma2pickobj[fma_id]||{} }).data(OBJECT_KEY, fma2obj[fma_id]).appendTo($fmalist_content_table)
+										.hover(
+											function(){
+												var $this_tr = $(this);
+												$this_tr.addClass(current_settings.cssFMAListContentHoverClass);
+											},
+											function(){
+												var $this_tr = $(this);
+												$this_tr.removeClass(current_settings.cssFMAListContentHoverClass);
+											}
+										)
+										.click(function(){
+											var language = current_settings.language[getCurrentLanguage()];
+
+											var $this_tr = $(this);
+											$fmalist_content_table.find('tr.'+current_settings.cssFMAListContentSelectClass).removeClass(current_settings.cssFMAListContentSelectClass);
+											$this_tr.addClass(current_settings.cssFMAListContentSelectClass);
+
+											var disp_fma_id = $this_tr.data('disp_fma_id');
+											var fma_id = $this_tr.data('fma_id');
+
+											var name_key = 'name';
+											if(runSearchOptions.hasJA) name_key += '_ja';
+
+											var fma = category2obj['FMA'][fma_id];
+
+											var fma_name = fma[name_key] ? fma[name_key] : fma['name']; //$this_tr.data('fma_name');
+//											$hpolist_title.html(disp_fma_id+'&nbsp;'+fma_name);
+
+											var $hpolist_title_span = $('<span>').appendTo($hpolist_title);
+
+											var hpolist_title_ja = current_settings.language['ja']['hpolisttitle'].replace('__FMANAME__', fma['name_ja'] ? fma['name_ja'] : fma['name']).replace('__FMAID__', disp_fma_id);
+											var hpolist_title_en = current_settings.language['en']['hpolisttitle'].replace('__FMANAME__', fma['name']).replace('__FMAID__', disp_fma_id);
+											if(runSearchOptions.hasJA){
+												$hpolist_title_span.text(hpolist_title_ja);
+											}
+											else{
+												$hpolist_title_span.text(hpolist_title_en);
+											}
+											setContentsLanguageName($hpolist_title_span, 'hpolisttitle_'+fma_id, {name:hpolist_title_en,name_ja:hpolist_title_ja});
+
+
+											$hpolist_content.empty();
+											var $hpolist_content_table = $('<table>').css(table_css).appendTo($hpolist_content);
+
+											var hpo_sort = function(a,b){
+												var hpo_ids = isObject(category2obj['HPO']) ? category2obj['HPO'] : fma_ids[fma_id]['HPO'];
+												if(isObject(hpo_ids[a]) && isObject(hpo_ids[b])){
+													var hpo_name_a = isString(hpo_ids[a][name_key]) ? hpo_ids[a][name_key] : hpo_ids[a]['name'];
+													var hpo_name_b = isString(hpo_ids[b][name_key]) ? hpo_ids[b][name_key] : hpo_ids[b]['name'];
+
+													if(hpo_name_a<hpo_name_b) return -1;
+													if(hpo_name_a>hpo_name_b) return  1;
+												}
+												else{
+													if(!isObject(hpo_ids[a])) console.warn('Unknown object ' + a);
+													if(!isObject(hpo_ids[b])) console.warn('Unknown object ' + b);
+												}
+												return 0;
+											};
+
+
+//											hpo_ids.sort(hpo_sort).forEach(function(hpo_id){
+											var create_hpo_list = function(hpo_id){
+//												console.log(hpo_id);
+												var hpo_ids = isObject(category2obj['HPO']) ? category2obj['HPO'] : fma_ids[fma_id]['HPO'];
+
+												var hpo_name = isString(hpo_ids[hpo_id][name_key]) ? hpo_ids[hpo_id][name_key] : hpo_ids[hpo_id]['name'];
+
+												var $tr = $('<tr>').data({'hpo_id':hpo_id}).appendTo($hpolist_content_table);
+
+												var $td = $('<td>').css(td_center_css).css({'white-space':'nowrap'}).appendTo($tr);
+												$('<button>')
+													.addClass('btn btn-primary')
+													.addClass(current_settings.cssButtonAddClass)
+													.data(OBJECT_KEY,{self: $.extend(true, {id:hpo_id}, hpo_ids[hpo_id]), exec:'add'})/*.css({'margin':'0','padding':'0 2px','font-size':'inherit'})*/
+													.attr({'data-language-key':'add'})
+													.text(language['add'])
+													.appendTo($td)
+													.on('click',executionAddOrReplace);
+
+												$('<button>')
+													.addClass('btn btn-primary')
+													.addClass(current_settings.cssButtonReplaceClass)
+													.data(OBJECT_KEY,{self: $.extend(true, {id:hpo_id}, hpo_ids[hpo_id]), exec:'replace'})/*.css({'margin':'0','padding':'0 2px','font-size':'inherit'})*/
+													.attr({'data-language-key':'replace'})
+													.text(language['replace'])
+													.appendTo($td)
+													.on('click',executionAddOrReplace);
+
+
+												var $td = $('<td>').css(td_right_css).appendTo($tr);
+												$('<span>').addClass(current_settings.cssLinkNumberClass).text(hpo_ids[hpo_id]['count']).appendTo($td);
+
+												var $td = $('<td>')/*.text(hpo_name)*/.appendTo($tr).css(td_left_css);
+
+												var $a = $('<a>')
+												.addClass(current_settings.cssLinkClass)
+												.attr({'href':'#'})
+												.data(OBJECT_KEY, {id:hpo_id})
+												.click(function(){
+													var data = $(this).data(OBJECT_KEY);
+
+													if(false){
+														if(isString(options.classname) && options.classname === CSS_PREFIX+settings.keySubclass){
+															$(current_settings.nodeName+'.'+current_settings.cssTableClass).css({'animation':'popup-hierarchy-hpo-keyframe-subclass-translate 500ms ease-out 0s normal both'});
+														}
+														else if(isString(options.classname) && options.classname === CSS_PREFIX+current_settings.keySuperclass){
+															$(current_settings.nodeName+'.'+current_settings.cssTableClass).css({'animation':'popup-hierarchy-hpo-keyframe-superclass-translate 500ms ease-out 0s normal both'});
+														}
+														setTimeout(function(){
+															runSearch(data.id);
+														},500);
+													}else{
+														if(click_timeoutID){
+															clearTimeout(click_timeoutID);
+														}
+														click_timeoutID = setTimeout(function(){
+															click_timeoutID = null;
+															runSearch(data.id);
+														},100);
+													}
+													return false;
+												})
+												.appendTo($td);
+
+												var $span = $('<span>').text(hpo_name).appendTo($a);
+
+												setContentsLanguageName($span, hpo_id, hpo_ids[hpo_id]);
+
+//											});
+											};
+
+//											var hpo_ids = isObject(fma_ids[fma_id]['HPO']) ? Object.keys(fma_ids[fma_id]['HPO']) : (isArray(fma_ids[fma_id]['HPO']) ? fma_ids[fma_id]['HPO'] : []);
+//											var hpo_ids = (isObject(fma_ids[fma_id]['HPO_sub']) ? Object.keys(fma_ids[fma_id]['HPO_sub']) : (isArray(fma_ids[fma_id]['HPO_sub']) ? fma_ids[fma_id]['HPO_sub'] : [])).sort(hpo_sort);
+											(isObject(fma_ids[fma_id]['HPO']) ? Object.keys(fma_ids[fma_id]['HPO']) : (isArray(fma_ids[fma_id]['HPO']) ? fma_ids[fma_id]['HPO'] : [])).sort(hpo_sort).forEach(create_hpo_list);
+
+											if(current_settings.fmatree_type === 'both'){
+												(isObject(fma_ids[fma_id]['HPO_sub']) ? Object.keys(fma_ids[fma_id]['HPO_sub']) : (isArray(fma_ids[fma_id]['HPO_sub']) ? fma_ids[fma_id]['HPO_sub'] : [])).sort(hpo_sort).forEach(create_hpo_list);
+											}
+											else if(current_settings.fmatree_type === 'class'){
+												(isObject(fma_ids[fma_id]['HPO_subclass']) ? Object.keys(fma_ids[fma_id]['HPO_subclass']) : (isArray(fma_ids[fma_id]['HPO_subclass']) ? fma_ids[fma_id]['HPO_subclass'] : [])).sort(hpo_sort).forEach(create_hpo_list);
+											}
+											else if(current_settings.fmatree_type === 'part'){
+												(isObject(fma_ids[fma_id]['HPO_subpart']) ? Object.keys(fma_ids[fma_id]['HPO_subpart']) : (isArray(fma_ids[fma_id]['HPO_subpart']) ? fma_ids[fma_id]['HPO_subpart'] : [])).sort(hpo_sort).forEach(create_hpo_list);
+											}
+
+											changeStateAddOrReplace();
+
+
+
+											//FMA Tree List
+											var $superclass_ul = $('<ul>').addClass('tree super').appendTo($fmatreelist_content);
+											var supert_keys;
+											if(current_settings.fmatree_type === 'class'){
+												supert_keys = ['class'];
+											}
+											else if(current_settings.fmatree_type === 'part'){
+												supert_keys = ['part'];
+											}
+											else{
+												supert_keys = ['class','part'];
+											}
+
+											supert_keys.forEach(function(supert_key){
+												if(isArray(fma['super'+supert_key]) && fma['super'+supert_key].length){
+													fma['super'+supert_key].forEach(function(super_fma_id,index,array){
+														var super_fma = category2obj['FMA'][super_fma_id];
+														var super_fma_name = super_fma[name_key] ? super_fma[name_key] : super_fma['name']; //$this_tr.data('fma_name');
+
+														var $superclass_li = $('<li>').addClass('tree').addClass('number_after super'+supert_key).appendTo($superclass_ul);
+
+														var sub_count = 0;
+														supert_keys.forEach(function(sub_key){
+															sub_count += (isArray(super_fma['sub'+sub_key]) && super_fma['sub'+sub_key].length) ? super_fma['sub'+sub_key].length : 0;
+														});
+														$('<span>').addClass(current_settings.cssLinkNumberClass).addClass('super'+supert_key).text(sub_count).appendTo($('<span>').addClass('number before').appendTo($superclass_li));
+
+														var $superclass_a = $('<a>').addClass('link').attr({'href':'#'}).data('FMAID',super_fma_id).appendTo($superclass_li);
+														var $superclass_span = $('<span>').text(super_fma_name).appendTo($superclass_a);
+														setContentsLanguageName($superclass_span, super_fma_id, super_fma);
+
+														$('<span>').addClass(current_settings.cssLinkNumberClass).addClass('super'+supert_key).text(sub_count).appendTo($('<span>').addClass('number after').appendTo($superclass_li));
+													});
+												}
+											});
+
+											var $itself_li = $('<li>').addClass('tree itself number_after').appendTo($superclass_ul);
+											$('<span>').appendTo($itself_li);
+
+											var sub_count = 0;
+											supert_keys.forEach(function(sub_key){
+												sub_count += (isArray(fma['sub'+sub_key]) && fma['sub'+sub_key].length) ? fma['sub'+sub_key].length : 0;
+											});
+											$('<span>').addClass(current_settings.cssLinkNumberClass).addClass('itself').text(sub_count).appendTo($('<span>').addClass('number before').appendTo($itself_li));
+
+											var $itself_span = $('<span>').addClass('term itself').appendTo($itself_li);
+											var $itself_strong = $('<strong>').text(fma_name).appendTo($itself_span);
+											setContentsLanguageName($itself_strong, fma_id, fma);
+
+											$('<span>').addClass(current_settings.cssLinkNumberClass).addClass('itself').text(sub_count).appendTo($('<span>').addClass('number after').appendTo($itself_li));
+
+
+											supert_keys.forEach(function(supert_key){
+
+												if((isArray(fma['sub'+supert_key]) && fma['sub'+supert_key].length)){
+													var $subclass_ul = $('<ul>').addClass('tree sub').appendTo($itself_li);
+													if(isArray(fma['sub'+supert_key]) && fma['sub'+supert_key].length){
+														fma['sub'+supert_key].forEach(function(sub_fma_id,index,array){
+															var sub_fma = category2obj['FMA'][sub_fma_id];
+															var sub_fma_name = sub_fma[name_key] ? sub_fma[name_key] : sub_fma['name']; //$this_tr.data('fma_name');
+
+															var $subclass_li = $('<li>').addClass('tree').addClass('number_after sub'+supert_key).appendTo($subclass_ul);
+
+															var sub_count = 0;
+															supert_keys.forEach(function(sub_key){
+																sub_count += (isArray(sub_fma['sub'+sub_key]) && sub_fma['sub'+sub_key].length) ? sub_fma['sub'+sub_key].length : 0;
+															});
+															$('<span>').addClass(current_settings.cssLinkNumberClass).addClass('sub'+supert_key).text(sub_count).appendTo($('<span>').addClass('number before').appendTo($subclass_li));
+
+															var $subclass_a = $('<a>').addClass('link').attr({'href':'#'}).data('FMAID',sub_fma_id).appendTo($subclass_li);
+															var $subclass_span = $('<span>').text(sub_fma_name).appendTo($subclass_a);
+															setContentsLanguageName($subclass_span, sub_fma_id, sub_fma);
+
+															$('<span>').addClass(current_settings.cssLinkNumberClass).addClass('sub'+supert_key).text(sub_count).appendTo($('<span>').addClass('number after').appendTo($subclass_li));
+														});
+													}
+												}
+											});
+											$superclass_ul.find('li.tree>a')
+												.hover(
+													function(){
+														var $this_tr = $(this);
+														$this_tr.addClass(current_settings.cssFMAListContentHoverClass);
+													},
+													function(){
+														var $this_tr = $(this);
+														$this_tr.removeClass(current_settings.cssFMAListContentHoverClass);
+													}
+												)
+												.click(function(e){
+													var $a = $(this);
+													var fma_id = $a.data('FMAID');
+//													console.log(fma_id);
+
+													var $progressElem = $fmatreelist_content_base.find(current_settings.nodeName+'.'+current_settings.cssProgressClass);
+													if($progressElem.length==0) $progressElem = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssProgressClass).appendTo($fmatreelist_content_base);
+													$progressElem.text('Please wait...');
+
+													$progressElem = $hpolist_content_base.find(current_settings.nodeName+'.'+current_settings.cssProgressClass);
+													if($progressElem.length==0) $progressElem = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssProgressClass).appendTo($hpolist_content_base);
+													$progressElem.text('Please wait...');
+
+
+
+													setTimeout(function(){
+														_pick(fma_id);
+													},0);
+													return false;
+												});
+
+
+											$fmatreelist_content_base.find(current_settings.nodeName+'.'+current_settings.cssProgressClass).remove();
+											$hpolist_content_base.find(current_settings.nodeName+'.'+current_settings.cssProgressClass).remove();
+
+
+											var height = $webgl_content_base.innerHeight();
+											var fmatreelist_content_max_height = (height/2-20)-$fmatreelist_title.outerHeight(true);
+											if(fmatreelist_content_max_height>0) $fmatreelist_content.css({'max-height':fmatreelist_content_max_height+'px'});
+											var hpolist_content_max_height = height-$fmatreelist_content_base.outerHeight(true)-$hpolist_title.outerHeight(true)-20-3;
+											if(hpolist_content_max_height>0) $hpolist_content.css({'max-height':hpolist_content_max_height+'px'});
+
+										});
+										var $td = $('<td>').text(disp_fma_id).appendTo($tr).css(td_left_css);
+										var $td = $('<td>').text(fma_name).appendTo($tr).css(td_left_css);
+										var $td = $('<td>').text(fma_ids[fma_id]['#HPO']).appendTo($tr).css(td_center_css);
+
+										if(index==0){
+											setTimeout(function(){
+												$tr.click();
+											},100);
+										}
+
+									});
+
+									$fmatreelist_content_base.css({'visibility':'visible'});
+									$hpolist_content_base.css({'visibility':'visible'});
+
+								}
+								_click_callback(false);
+							};
+							_pick(fma_ids);
 
 						})
 						.on('rotate', function(e,ren,value){
@@ -1532,6 +1809,7 @@
 								},100);
 
 								if(__isFirstThreeBitsRenderer && $webgl_content_base_table.is(':visible')){
+//									console.log('__threeBitsRenderer.focus');
 									__threeBitsRenderer.focus(__isFirstThreeBitsRenderer);
 									__threeBitsRenderer._calcCameraPos();
 									__threeBitsRenderer._render();
@@ -1571,13 +1849,27 @@
 					$table = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssTableClass).appendTo($td);
 					$table.css({'border-spacing':'0'});
 
+					//FMA Tree List
+					var $tr = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssTrClass).appendTo($table);
+					var $td = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssTdClass).appendTo($tr);
+					var $fmatreelist_content_base = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssBaseClass).addClass(current_settings.cssFMATreeListContentClass).appendTo($td);
+
+					var $fmatreelist_title = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssTopBarClass).attr({'data-language-key':'fmatreelisttitle'}).text(language['fmatreelisttitle']).appendTo($fmatreelist_content_base);
+					$fmatreelist_title.css({'text-align':'left','padding-left':'0.5em','min-height':'27px'});
+
+					var $fmatreelist_content = $('<'+current_settings.nodeName+'>').css({'min-height':'27px'}).addClass(current_settings.cssContentClass).appendTo($fmatreelist_content_base);
+					var $fmatreelist_content_table = $('<table>').appendTo($fmatreelist_content);
+
+
 					//FMA List
 					var $tr = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssTrClass).appendTo($table);
 					var $td = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssTdClass).appendTo($tr);
+//					if($fmatreelist_content_base.is(':visible')) $td.css({'padding-top':'20px'});
 					var $fmalist_content_base = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssBaseClass).addClass(current_settings.cssFMAListContentClass).appendTo($td);
+					if($fmatreelist_content_base.is(':visible')) $fmalist_content_base.css({'margin-top':'20px'});
 					$fmalist_content_base.hide();
 
-					var $fmalist_title = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssTopBarClass).text(language['fmalisttitle']).appendTo($fmalist_content_base);
+					var $fmalist_title = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssTopBarClass).attr({'data-language-key':'fmalisttitle'}).text(language['fmalisttitle']).appendTo($fmalist_content_base);
 					$fmalist_title.css({'text-align':'left','padding-left':'0.5em'});
 					var $fmalist_content = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssContentClass).appendTo($fmalist_content_base);
 
@@ -1591,11 +1883,13 @@
 					//HPO List
 					var $tr = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssTrClass).appendTo($table);
 					var $td = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssTdClass).appendTo($tr);
-					if($fmalist_content_base.is(':visible')) $td.css({'padding-top':'20px'});
+//					if($fmalist_content_base.is(':visible') || $fmatreelist_content_base.is(':visible')) $td.css({'padding-top':'20px'});
 
 					var $hpolist_content_base = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssBaseClass).addClass(current_settings.cssHPOListContentClass).appendTo($td);
-					var $hpolist_title = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssTopBarClass).css({'min-height':'27px'}).text(language['hpolisttitle']).appendTo($hpolist_content_base);
-					$hpolist_title.css({'text-align':'left','padding-left':'0.5em'});
+					if($fmalist_content_base.is(':visible') || $fmatreelist_content_base.is(':visible') || true) $hpolist_content_base.css({'margin-top':'20px'});
+
+					var $hpolist_title = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssTopBarClass).appendTo($hpolist_content_base);
+					$hpolist_title.css({'text-align':'left','padding-left':'0.5em','min-height':'27px'});
 					var $hpolist_content = $('<'+current_settings.nodeName+'>').css({'min-height':'27px'}).addClass(current_settings.cssContentClass).appendTo($hpolist_content_base);
 
 					var $hpolist_content_table = $('<table>').appendTo($hpolist_content);
@@ -1626,8 +1920,12 @@
 									__threeBitsRenderer._render();
 								}
 
-								if($fmalist_content_base.is(':visible')){
-									var height = $webgl_content_base.innerHeight() / 2 - 10;
+/*
+								if($fmalist_content_base.is(':visible') || $fmatreelist_content_base.is(':visible')){
+									var num = 1;
+									if($fmalist_content_base.is(':visible')) num++;
+									if($fmatreelist_content_base.is(':visible')) num++;
+									var height = $webgl_content_base.innerHeight() / num - 10;
 
 									$fmalist_content.css({'height':($fmalist_content_base.innerHeight()-$fmalist_title.height())+'px','overflow':'auto','padding':'0'});
 									$hpolist_content.css({'max-height':($hpolist_content_base.innerHeight()-$hpolist_title.height())+'px','overflow':'auto','padding':'10px'});
@@ -1636,12 +1934,23 @@
 									var height = $webgl_content_base.innerHeight();
 									$hpolist_content.css({'max-height':(height-$hpolist_title.height())+'px','overflow':'auto','padding':'10px'});
 								}
+*/
+
+								var height = $webgl_content_base.innerHeight();
+								var fmatreelist_content_max_height = (height/2-20)-$fmatreelist_title.outerHeight(true);
+								if(fmatreelist_content_max_height>0) $fmatreelist_content.css({'max-height':fmatreelist_content_max_height+'px'});
+								var hpolist_content_max_height = height-$fmatreelist_content_base.outerHeight(true)-$hpolist_title.outerHeight(true)-20-3;
+								if(hpolist_content_max_height>0) $hpolist_content.css({'max-height':hpolist_content_max_height+'px'});
+
 							}
 						}catch(e){
 							console.error(e);
 						}
 					});
 					$webgl_content_base_table.hide();
+
+					$fmatreelist_content_base.css({'visibility':'hidden'});
+					$hpolist_content_base.css({'visibility':'hidden'});
 				}
 
 				getTokenInputElement()
@@ -1659,7 +1968,6 @@
 						},0);
 					}
 				});
-
 			}
 			else{
 				$('tr.'+current_settings.cssFMAListContentSelectClass).triggerHandler('click');
@@ -1696,7 +2004,7 @@
 					if($a.length){
 						$a.addClass(current_settings.cssLinkFocusClass);
 						$a.get(0).focus();
-					        setTimeout(function(){ $a.get(0).focus(); },30); //←追加行
+						setTimeout(function(){ $a.get(0).focus(); },10); //←追加行
 						$(document.body).on('keydown', eventKeydown);
 					}
 					else{
@@ -1708,6 +2016,33 @@
 				$(window).resize();
 
 			}
+
+			if(current_settings.use_webgl && current_settings.active_webgl){
+				current_settings.active_webgl = false;
+
+				$inlineContent.find(current_settings.nodeName+'.'+current_settings.cssWebGLSwitchContentClass).click();
+
+//				if(isBoolean(current_settings.__active_webgl)) return;
+//				current_settings.__active_webgl = true;
+
+				var $domElement = $(__threeBitsRenderer.domElement());
+
+				var initLoad = function(e,ren,successful,loadedParams){
+					__threeBitsRenderer.focus(true);
+					__threeBitsRenderer._calcCameraPos();
+					__isFirstThreeBitsRenderer = false;
+				};
+
+				var initProgress = function(e,ren,message, currentNum, totalNum){
+					if(!isNumeric(currentNum) || !isNumeric(totalNum)) return;
+					if(currentNum !== totalNum) return;
+					$domElement.off('progress', initProgress);
+					$domElement.one('load', initLoad);
+				};
+				$domElement.on('progress', initProgress);
+				__threeBitsRenderer.fireEvent('progress',__threeBitsRenderer,'Please wait...');
+			}
+
 		}
 
 		function eventKeydown(e){
@@ -1872,6 +2207,10 @@
 		function runSearch(query,options) {
 
 			loadAllObj();
+//			if(current_settings.use_webgl && current_settings.active_webgl){
+//				showResults({});
+//				return;
+//			}
 
 			if(isObject(options) && isObject(runSearchOptions)){
 				if(options.tokenInputItems && runSearchOptions.tokenInputItems) delete runSearchOptions.tokenInputItems;
@@ -1993,11 +2332,13 @@
 		var tokeninput_array = null;
 		var tokeninput_target_results = null;
 
+		var tokeninput_selector = null;
+
 		if(isObject(tokeninput_settings) && tokeninput_settings.classes) {
 			if(isObject(tokeninput_classes) && isString(tokeninput_classes['tokenList']) && isString(tokeninput_classes['token'])){
-				var selector = 'ul.'+tokeninput_classes['tokenList']+'>li.'+tokeninput_classes['token'];//+'>p';
+				tokeninput_selector = 'ul.'+tokeninput_classes['tokenList']+'>li.'+tokeninput_classes['token'];//+'>p';
 
-				$(document).on('click',selector,function(e){
+				$(document).on('click', tokeninput_selector, function(e){
 					var click_text = '';
 					var $li_node;
 					if($(this).get(0).nodeName.toLowerCase()==='li'){
@@ -2025,6 +2366,9 @@
 							tokenInputItem = getTokenInputItemFromName(click_text);
 						}
 						else{
+							current_settings = $.extend(true,{}, current_settings, {use_webgl: DEFAULT_SETTINGS.use_webgl});
+							$(input).data(SETTINGS_KEY, current_settings);
+
 							tokenInputItems = getOriginalTokenInputItems();
 							tokenInputItemNodes = getOriginalTokenInputItemNodes();
 							tokenInputItem = getOriginalTokenInputItemFromName(click_text);
@@ -2108,7 +2452,12 @@
 			}
 		}
 
-		$.PopupRelationHPO = function(query,options){
+		$.PopupRelationHPO = function(query, options, settings){
+			if($.isPlainObject(settings)){
+				current_settings = $.extend(true,{}, current_settings, settings || {});
+				$(input).data(SETTINGS_KEY, current_settings);
+			}
+
 			var tokenInputItems = getOriginalTokenInputItems();
 			var tokenInputItemNodes = getOriginalTokenInputItemNodes();
 
@@ -2122,7 +2471,91 @@
 			if(isEmpty(query)) query = current_settings.defaultTokenId;// 'HP:0000118';
 
 			runSearch(query,o);
+		};
+
+		$.PopupRelationHPOWithWebGL = function(query, options, settings){
+			$.PopupRelationHPO(query, options, $.extend(true,{}, settings || {},{use_webgl:true,active_webgl:true}));
+		};
+
+
+		$.PopupRelationHPOtooltip = function(){
+			if(!current_settings.use_tooltip) return;
+
+			if(isString(tokeninput_selector) && tokeninput_selector.length){
+				$(tokeninput_selector).each(function(){
+					var $li_node = $(this);
+					var data = $li_node.data(TOKENINPUT_ITEM_SETTINGS_KEY);
+					if(isObject(data) && isString(data.id) && isString(data.name)){
+//						console.log(data);
+						var title;
+						if(current_settings.tooltip_type === 'fixed'){
+							title = current_settings.language[getCurrentLanguage()]['tooltip_title'];
+							$li_node.attr({'data-language-tooltip-key':'tooltip_title'})
+						}
+						else{
+							title = data.name;
+							$li_node.attr({'data-language-tooltip-key':data.name})
+						}
+						$li_node
+						.attr({'data-toggle':'tooltip', 'data-original-title': title});
+					}
+				});
+				try{
+					$(tokeninput_selector+'[data-toggle="tooltip"]').tooltip();
+				}catch(e){
+					console.error(e);
+				}
+			}
+		};
+
+		if(current_settings.use_tooltip && isObject(tokeninput_settings)) {
+			var orgOnAdd = tokeninput_settings.onAdd;
+			var orgOnDelete = tokeninput_settings.onDelete;
+			tokeninput_settings.onAdd = function(token){
+				$.PopupRelationHPOtooltip();
+				if($.isFunction(orgOnAdd)) orgOnAdd.call($(input),token);
+			};
+			tokeninput_settings.onDelete = function(token){
+//				$.PopupRelationHPOtooltip();
+				//tooltipのノードが残る為、強制的削除する
+				var title;
+				if(current_settings.tooltip_type === 'fixed'){
+					title = current_settings.language[getCurrentLanguage()]['tooltip_title'];
+				}
+				else{
+					title = token.name;
+				}
+				var tooltip_selector = 'ul.'+tokeninput_classes['tokenList']+'>div.tooltip';
+				$(tooltip_selector).each(function(){
+					if($(this).text()===title) $(this).remove();
+				});
+				if($.isFunction(orgOnDelete)) orgOnDelete.call($(input),token);
+			};
+			$(input).data(TOKENINPUT_SETTINGS_KEY, tokeninput_settings);
+
+
+
+/*
+			if(isObject(tokeninput_settings) && tokeninput_settings.classes) {
+				var tokeninput_input_selector = 'ul.'+tokeninput_classes['tokenList']+'>li.'+tokeninput_classes['inputToken']+'>input[type="text"]';
+				$(document).on('keydown', tokeninput_input_selector, function(e){
+					if(e.keyCode===13 && $(this).val() === ''){
+					}
+
+
+//					e.stopPropagation();
+					console.log(e);
+
+					e.stopPropagation();
+//					e.preventDefault();
+				});
+			}
+*/
+
 		}
+
+		if(isObject(window.category2obj_subtypes) && isObject(window.category2obj_subtypes[current_settings.fmatree_type])) window.category2obj = window.category2obj_subtypes[current_settings.fmatree_type];
+
 	};
 
 }(jQuery));

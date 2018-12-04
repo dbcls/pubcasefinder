@@ -33,6 +33,9 @@ msgstr "Input patient's <b>signs</b> and <b>symptoms</b>"
 msgid "index_button_search"
 msgstr "Get diagnosis"
 
+msgid "index_button_phenotouch"
+msgstr "Phenotype input assistant"
+
 msgid "index_button_clear"
 msgstr "Clear"
 

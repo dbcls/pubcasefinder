@@ -809,7 +809,7 @@ function threeBitsRenderer(config) {
 		$(self.__renderer.domElement).click(function(e){
 //			return false;
 		}).mousedown(function(e){
-			console.log('mousedown',(e.shiftKey || !self.__config.usePan));
+//			console.log('mousedown',(e.shiftKey || !self.__config.usePan));
 			mouseDownVec2 = new THREE.Vector2(e.offsetX, e.offsetY);
 			if(e.shiftKey || !self.__config.usePan){
 				mouseDownDeg = self._calcRotateDeg();
@@ -871,7 +871,7 @@ function threeBitsRenderer(config) {
 		self._view = d3.select(self.__renderer.domElement);
 		self.__zoom = d3.behavior.zoom().scaleExtent([self.__config.minZoom, self.__config.maxZoom])
 		self.__zoom.on('zoom', function(e){
-			console.log('zoom',(d3.event.sourceEvent.shiftKey || !self.__config.usePan));
+//			console.log('zoom',(d3.event.sourceEvent.shiftKey || !self.__config.usePan));
 			if(d3.event.sourceEvent.shiftKey || !self.__config.usePan){
 				return false;
 			}else{
@@ -1566,7 +1566,7 @@ threeBitsRenderer.prototype.loadObj = function(params, options){
 					msg = Ext.String.format('{0} obj files: Loading {1}/{2}',self.__tempObjParamsTotal,0,self.__tempObjParamsTotal);
 				}
 				Ext.get(self.__domElement).mask(msg);
-				self.fireEvent('progress', self, msg);
+				self.fireEvent('progress', self, msg, 0, self.__tempObjParamsTotal);
 			}
 //			console.log('progress');
 		}
@@ -1638,7 +1638,7 @@ threeBitsRenderer.prototype._loadObjPromise = function(param){
 							msg = Ext.String.format('{0} obj files: Loading {1}/{2}',self.__tempObjParamsTotal,self.__tempObjParamsCount,self.__tempObjParamsTotal);
 						}
 						Ext.get(self.__domElement).mask(msg);
-						self.fireEvent('progress', self, msg);
+						self.fireEvent('progress', self, msg, self.__tempObjParamsCount, self.__tempObjParamsTotal);
 //						console.log('progress');
 //						return;
 //						reject();
@@ -1702,7 +1702,7 @@ threeBitsRenderer.prototype._loadObj = function(){
 					msg = Ext.String.format('{0} obj files: Loading {1}/{2}',self.__tempObjParamsTotal,self.__tempObjParamsCount,self.__tempObjParamsTotal);
 				}
 				Ext.get(self.__domElement).mask(msg);
-				self.fireEvent('progress', self, msg);
+				self.fireEvent('progress', self, msg, self.__tempObjParamsCount, self.__tempObjParamsTotal);
 	//			console.log('progress');
 			}
 		}

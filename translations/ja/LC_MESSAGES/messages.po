@@ -30,6 +30,9 @@ msgstr "患者の徴候・症状を入力"
 msgid "index_textbox_title"
 msgstr "患者の <b>徴候</b>・<b>症状</b> を入力"
 
+msgid "index_button_phenotouch"
+msgstr "症状入力支援"
+
 msgid "index_button_search"
 msgstr "疾患を検索"
 

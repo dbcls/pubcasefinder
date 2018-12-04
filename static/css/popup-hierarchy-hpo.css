@@ -70,6 +70,7 @@
 	border-radius: 10px;
 	width: 100%;
 /*	color: #000000;*/
+	position: relative;
 }
 
 
@@ -133,7 +134,7 @@
 	border-radius: 8px;
 /*	background-color: #5fbc4a;*/
 	background-color: #aab3b7;
-	padding-bottom: 4px;
+/*	padding-bottom: 4px;*/
 /*	margin: 0 8px;*/
 	margin: 0 4px;
 	cursor: default;
@@ -326,12 +327,140 @@ ul.token-input-list-facebook {
 li.token-input-token-facebook {
 /*	font-size: inherit !important;*/
 	font-size: 14px !important;
+	cursor: pointer;
 }
 
 ul.popup-hierarchy-hpo-token-list {
 /*	min-height: 30px;*/
 /*	min-height: 39px !important;*/
 }
+
+.popup-hierarchy-hpo-fmatreelist-content ul.tree {
+	padding: 0;
+	margin: 0;
+	list-style: none;
+	position: relative;
+	text-align: left;
+}
+.popup-hierarchy-hpo-fmatreelist-content ul.tree li.itself {
+	margin: 0;
+/*	padding: 0 0 0 1em;*/
+	padding: 0 0 0 2.8em;
+/*	line-height: 2em;*/
+	position: relative;
+}
+.popup-hierarchy-hpo-fmatreelist-content ul.tree li.tree {
+	line-height: 27.2px;
+}
+
+.popup-hierarchy-hpo-fmatreelist-content ul.tree li.itself.number_before {
+	padding: 0 0 0 2.8em;
+}
+.popup-hierarchy-hpo-fmatreelist-content ul.tree li.itself.number_after {
+	padding: 0 0 0 1em;
+}
+
+.popup-hierarchy-hpo-fmatreelist-content ul.tree li.itself> span:first-child {
+	border-left: 1px solid;
+/*	padding: 5px 0 0 10px;*/
+	padding: 5px 0 0 0;
+}
+.popup-hierarchy-hpo-fmatreelist-content ul.tree li.tree.number_before ul.tree {
+	margin-left: 3em;
+}
+.popup-hierarchy-hpo-fmatreelist-content ul.tree li.tree.number_after ul.tree {
+	margin-left: 1.5em;
+}
+
+.popup-hierarchy-hpo-fmatreelist-content ul.tree li.tree ul.tree:before {
+	content: "";
+	display: block;
+	width: 0;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	border-left: 1px solid
+}
+.popup-hierarchy-hpo-fmatreelist-content ul.tree li.tree ul.tree li.tree {
+	margin: 0;
+/*	line-height: 2em;*/
+	position: relative;
+}
+.popup-hierarchy-hpo-fmatreelist-content ul.tree li.tree.number_before ul.tree li.tree {
+	padding: 0 0 0 10px;
+}
+.popup-hierarchy-hpo-fmatreelist-content ul.tree li.tree.number_after ul.tree li.tree {
+	padding: 0 0 0 1em;
+}
+.popup-hierarchy-hpo-fmatreelist-content ul.tree li.tree.number_after ul.tree li.tree:last-child {
+	height: 16px;
+	margin-bottom: 7px;
+}
+
+.popup-hierarchy-hpo-fmatreelist-content ul.tree li.tree ul.tree li.tree:before {
+	content: "";
+	display: block;
+	width: 10px;
+	height: 2px;
+	border-top: 1px solid;
+	margin-top: -1px;
+	position: absolute;
+	top: 1em;
+	left: 0;
+}
+.popup-hierarchy-hpo-fmatreelist-content a.link {
+	white-space: normal;
+	color: #4472C4;
+	/* display: inline-block; */
+	/* display: table-cell; */
+	/* text-decoration: underline; */
+	border: transparent 1px dotted;
+	border-radius: 8px;
+	/* padding: 0 4px; */
+	padding: 0;
+	transition: 0s;
+}
+.popup-hierarchy-hpo-fmatreelist-content a.link>span:first-child {
+	text-decoration: underline;
+}
+
+.popup-hierarchy-hpo-fmatreelist-content li.number_after span.term.itself {
+	margin-left: 0.5em;
+}
+
+
+.popup-hierarchy-hpo-fmatreelist-content span.number {
+	display: inline-block;
+	width: 38px;
+	text-align: right;
+}
+.popup-hierarchy-hpo-fmatreelist-content li.number_after span.number.before {
+	display: none;
+}
+.popup-hierarchy-hpo-fmatreelist-content li.number_before span.number.after {
+	display: none;
+}
+
+.popup-hierarchy-hpo-fmatreelist-content span.badge {
+	border-radius: 2px;
+	background-color: #5fbc4a;
+	padding-bottom: 4px;
+	margin: 0 0 5px 10px;
+	cursor: default;
+
+	display: inline-block;
+	min-width: 10px;
+	padding: 3px 7px;
+	font-size: 12px;
+	font-weight: bold;
+	color: #fff;
+	line-height: 1;
+	vertical-align: middle;
+	white-space: nowrap;
+	text-align: center;
+}
+
 
 .popup-hierarchy-hpo-fmalist-content .popup-hierarchy-hpo-content table,
 .popup-hierarchy-hpo-hpolist-content .popup-hierarchy-hpo-content table {
