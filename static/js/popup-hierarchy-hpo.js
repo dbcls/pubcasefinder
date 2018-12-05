@@ -109,7 +109,7 @@
 
 				phenotouch : 'PhenoTouch',
 				webgltitle : '身体各部位を選択',
-				webgloperationhelp : '移動：ドラッグ<br>回転：Shift + ドラッグ<br>拡大縮小：スクロール',
+				webgloperationhelp : '選択：クリック<br>移動：ドラッグ<br>回転：Shift + ドラッグ<br>拡大縮小：スクロール',
 				fmatreelisttitle : '選択部位の名称',
 				fmalisttitle : 'Select proper parts you inducated.',
 //				hpolisttitle : 'Add phenotype related to selected parts.',
@@ -154,7 +154,7 @@
 
 				phenotouch : 'PhenoTouch',
 				webgltitle : 'Touch body parts',
-				webgloperationhelp : 'Move: Drag<br>Rotate: Shift + drag<br>Scale: Scroll',
+				webgloperationhelp : 'Select: Click<br>Move: Drag<br>Rotate: Shift + Drag<br>Zoom: Scroll',
 				fmatreelisttitle : 'Touched body parts',
 				fmalisttitle : 'Select proper parts you inducated.',
 //				hpolisttitle : 'Add phenotype related to selected parts.',
@@ -1129,7 +1129,7 @@
 
 					$('<span>')
 						.attr({'data-language-tooltip-key':'webgloperationhelp'})
-						.attr({'data-toggle':'tooltip', 'data-html':'true', 'data-original-title': language['webgloperationhelp']})
+						.attr({'data-toggle':'tooltip', 'data-html':'true',  'data-original-title': language['webgloperationhelp']})
 						.css({'display':'inline-block', 'padding':'3px 5px', 'margin-left':'0.5em', 'font-weight':'bold', 'font-size':'13px', 'line-height':'1em', 'border-radius':'8px', 'cursor':'default', 'background-color':'black'})
 						.text('?')
 						.appendTo($webgl_content_title_td1)

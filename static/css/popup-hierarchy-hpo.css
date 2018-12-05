@@ -626,3 +626,7 @@ select.popup-hierarchy-hpo-language-change {
 .popup-hierarchy-hpo-webgl-home-content:hover {
 	opacity: 1;
 }
+
+.tooltip-inner {
+	text-align: left;
+}
