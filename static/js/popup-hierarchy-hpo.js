@@ -2203,7 +2203,8 @@
 			}
 		}
 
-		var runSearchOptions = {hasJA:false};
+//		var runSearchOptions = {hasJA:false};
+		var runSearchOptions = {hasJA:window.navigator.language.indexOf('ja')===0};
 		function runSearch(query,options) {
 
 			loadAllObj();
