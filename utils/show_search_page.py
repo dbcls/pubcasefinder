@@ -33,20 +33,15 @@ def show_search_page(phenotypes, genes, page, size):
 
     limit = int(size)
 
-    # 日本語HP IDに対応（HP:xxxxx_ja）
-    list_phenotypes_remove_ja = []
-    for phenotype in phenotypes.split(","):
-        list_phenotypes_remove_ja.append(phenotype.replace('_ja', ''))
-    phenotypes_remove_ja = ','.join(list_phenotypes_remove_ja)
-
-    # 類似疾患検索
-    #list_dict_similar_disease = search_similar_disease(phenotypes, genes)
-    list_dict_similar_disease = search_similar_disease(phenotypes_remove_ja, genes)
+    # 正しくないHPO IDやGene IDをクエリからのぞいたクエリを収納
+    list_query_phenotype_remove_error = []
+    list_query_gene_remove_error = []
         
     # クエリ表示用に取得したphenotypesをJSON形式に変換
     list_dict_phenotype = []
     list_dict_gene = []
 
+    # クエリの全てのHPO IDがデータベースに含まれるか確認し、データを収納
     if phenotypes != "":
         for phenotype in phenotypes.split(","):
             OBJ_MYSQL = MySQLdb.connect(unix_socket=db_sock, host="localhost", db=db_name, user=db_user, passwd=db_pw, charset="utf8")
@@ -59,11 +54,14 @@ def show_search_page(phenotypes, genes, page, size):
             onto_id_term = values[0][0] if values else ''
             OBJ_MYSQL.close()
 
-            dict_phenotype = {}
-            dict_phenotype['id'] = phenotype
-            dict_phenotype['name'] = onto_id_term
-            list_dict_phenotype.append(dict_phenotype)
+            if onto_id_term != "":
+                dict_phenotype = {}
+                dict_phenotype['id'] = phenotype
+                dict_phenotype['name'] = onto_id_term
+                list_dict_phenotype.append(dict_phenotype)
+                list_query_phenotype_remove_error.append(phenotype)
 
+    # クエリの全てのGene IDがデータベースに含まれるか確認し、データを収納
     if genes != "":
         for gene in genes.split(","):
             OBJ_MYSQL = MySQLdb.connect(unix_socket=db_sock, host="localhost", db=db_name, user=db_user, passwd=db_pw, charset="utf8")
@@ -75,10 +73,24 @@ def show_search_page(phenotypes, genes, page, size):
             uid_value = values[0][0] if values else ''
             OBJ_MYSQL.close()
 
-            dict_gene = {}
-            dict_gene['id'] = gene
-            dict_gene['name'] = uid_value
-            list_dict_gene.append(dict_gene)
+            if uid_value != "":
+                dict_gene = {}
+                dict_gene['id'] = gene
+                dict_gene['name'] = uid_value
+                list_dict_gene.append(dict_gene)
+                list_query_gene_remove_error.append(gene)
+
+    #####
+    # 類似疾患検索
+    ## 日本語HP IDに対応（HP:xxxxx_ja）
+    phenotypes_remove_error = ','.join(list_query_phenotype_remove_error)
+    genes_remove_error = ','.join(list_query_gene_remove_error)
+    list_phenotypes_remove_ja = []
+    for phenotype in phenotypes_remove_error.split(","):
+        list_phenotypes_remove_ja.append(phenotype.replace('_ja', ''))
+    phenotypes_remove_ja = ','.join(list_phenotypes_remove_ja)
+    ## 検索
+    list_dict_similar_disease = search_similar_disease(phenotypes_remove_ja, genes_remove_error)
 
     # total件数を取得
     total_hit = len(list_dict_similar_disease)
