@@ -60,23 +60,42 @@ def show_search_omim_page(phenotypes, genes, page, size):
                 list_dict_phenotype.append(dict_phenotype)
                 list_query_phenotype_remove_error.append(phenotype)
 
+    # クエリの全てのGene IDがデータベースに含まれるか確認し、データを収納
     if genes != "":
         for gene in genes.split(","):
-            OBJ_MYSQL = MySQLdb.connect(unix_socket=db_sock, host="localhost", db=db_name, user=db_user, passwd=db_pw, charset="utf8")
-            sql_IndexFormSearch = u"select uid_value from IndexFormSearchOrphanetOMIM where uid=%s"
-            cursor_IndexFormSearch = OBJ_MYSQL.cursor()
-            cursor_IndexFormSearch.execute(sql_IndexFormSearch, (gene,))
-            values = cursor_IndexFormSearch.fetchall()
-            cursor_IndexFormSearch.close()
-            uid_value = values[0][0] if values else ''
-            OBJ_MYSQL.close()
 
-            if uid_value != "":            
-                dict_gene = {}
-                dict_gene['id'] = gene
-                dict_gene['name'] = uid_value
-                list_dict_gene.append(dict_gene)
-                list_query_gene_remove_error.append(gene)
+            # Gene Symbolの場合はEntrez Gene IDを抽出
+            entrez_id = ""
+            pattern_entrez_id = 'HGNC'
+            pattern_entrez_id_compiled = re.compile(pattern_entrez_id)
+            if pattern_entrez_id_compiled.match(gene):
+                OBJ_MYSQL = MySQLdb.connect(unix_socket=db_sock, host="localhost", db=db_name, user=db_user, passwd=db_pw, charset="utf8")
+                sql_GeneName2ID = u"select EntrezID from GeneName2ID where GeneName=%s"
+                cursor_GeneName2ID = OBJ_MYSQL.cursor()
+                gene_remove_prefix_HGNC = gene.replace('HGNC:', '')
+                cursor_GeneName2ID.execute(sql_GeneName2ID, (gene_remove_prefix_HGNC,))
+                values = cursor_GeneName2ID.fetchall()
+                cursor_GeneName2ID.close()
+                entrez_id = values[0][0] if values else ''
+                OBJ_MYSQL.close()
+                if entrez_id != "":
+                    gene = unicode("ENT:" + str(entrez_id))
+
+            if gene != "":
+                OBJ_MYSQL = MySQLdb.connect(unix_socket=db_sock, host="localhost", db=db_name, user=db_user, passwd=db_pw, charset="utf8")
+                sql_IndexFormSearch = u"select uid_value from IndexFormSearchOrphanetOMIM where uid=%s"
+                cursor_IndexFormSearch = OBJ_MYSQL.cursor()
+                cursor_IndexFormSearch.execute(sql_IndexFormSearch, (gene,))
+                values = cursor_IndexFormSearch.fetchall()
+                cursor_IndexFormSearch.close()
+                uid_value = values[0][0] if values else ''
+                OBJ_MYSQL.close()
+                if uid_value != "":            
+                    dict_gene = {}
+                    dict_gene['id'] = gene
+                    dict_gene['name'] = uid_value
+                    list_dict_gene.append(dict_gene)
+                    list_query_gene_remove_error.append(gene)
 
     #####
     # 類似疾患検索
