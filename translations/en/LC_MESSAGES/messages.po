@@ -132,6 +132,24 @@ msgstr "Find case reports"
 msgid "search_label_search_image_google"
 msgstr "Find images (Google)"
 
+msgid "search_button_share"
+msgstr "Share"
+
+msgid "search_share_modal_title"
+msgstr "Share Results"
+
+msgid "search_share_modal_label_link"
+msgstr "Link"
+
+msgid "search_share_modal_button_copy"
+msgstr "Copy the link"
+
+msgid "search_share_modal_button_mail"
+msgstr "Send the link via e-mail"
+
+msgid "search_share_modal_button_close"
+msgstr "Close"
+
 msgid "disease_label_DiseaseDefinition"
 msgstr "Disease Definition"
 

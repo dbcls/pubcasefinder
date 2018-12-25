@@ -135,6 +135,24 @@ msgstr "症例報告検索"
 msgid "search_label_search_image_google"
 msgstr "画像検索 (Google)"
 
+msgid "search_button_share"
+msgstr "共有"
+
+msgid "search_share_modal_title"
+msgstr "検索結果を共有"
+
+msgid "search_share_modal_label_link"
+msgstr "共有リンク"
+
+msgid "search_share_modal_button_copy"
+msgstr "共有リンクをコピー"
+
+msgid "search_share_modal_button_mail"
+msgstr "共有リンクをメール"
+
+msgid "search_share_modal_button_close"
+msgstr "閉じる"
+
 msgid "disease_label_DiseaseDefinition"
 msgstr "疾患定義"
 

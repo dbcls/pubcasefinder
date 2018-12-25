@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
 
-
     <!-- START: main contents -->
     <div id="fh5co-project">
       <div class="container">
@@ -53,6 +52,45 @@
 	    <tr>
 	      <td>
 		<input type="button" class="btn btn-info" value="{{ _('search_button_download_summary') }}" onClick='location.href="{{ url_for_download_summary(str_phenotypes, str_genes, '1', '10') }}"'>
+
+		<!-- input type="button" class="btn btn-info" value="PhenoTipsに結果を登録" onClick="window.open('https://demo.gene42.com/bin/PhenoTips/OpenPatientRecord?eid={{ str_eid }}&mode=edit&create=true&phenotype={{ str_phenotypes_phenotips }}')" -->
+
+		<!-- 共有のためのモーダルを表示用ボタン -->
+		<button type="button" class="btn btn-info" data-toggle="modal" data-target=".modal-share">{{ _('search_button_share') }}</button>
+
+		<!-- 共有のためのモーダル・ダイアログ -->
+		<!-- div class="modal fade" id="modal-share" -->
+		<div class="modal fade modal-share" tabindex="-1" role="dialog" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal"><span>×</span></button>
+			<h4 class="modal-title">{{ _('search_share_modal_title') }}</h4>
+		      </div>
+		      <div class="modal-body">
+			<table width="100%">
+			  <tr>
+			    <td>
+			      {{ _('search_share_modal_label_link') }}: <br>
+			      <input style="width:500px;" type="text" id="share_link" value="https://pubcasefinder.dbcls.jp/search_disease/phenotype:{{ str_phenotypes }}/gene:{{ str_genes}}/page:1,1/size:10,10" readonly>
+			    </td>
+			  </tr>
+			  <tr><td>&nbsp;</td></tr>
+			  <tr>
+			    <!-- buttonでsubmitさせない https://qiita.com/kazu56/items/b2e9c15942e04a6ffda9  -->
+			    <td align="left" valign="bottom">
+			      <button type="button" class="btn btn-info" onclick="copyToClipboard()">{{ _('search_share_modal_button_copy') }}</button>
+			      <button type="button" class="btn btn-info" onclick="location.href='mailto:?body=https://pubcasefinder.dbcls.jp/search_disease/phenotype:{{ str_phenotypes }}/gene:{{ str_genes}}/page:1,1/size:10,10'">{{ _('search_share_modal_button_mail') }}</button>
+			    </td>
+			  </tr>
+			</table>
+		      </div>
+		      <div class="modal-footer">
+			<button type="button" class="btn btn-default" data-dismiss="modal">{{ _('search_share_modal_button_close') }}</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
 	      </td>
 	      <td align="right">
 		<button type="submit" class="btn btn-primary">{{ _('index_button_search') }}</button>
@@ -62,6 +100,8 @@
 	  </table>
 	  <br>
 	  <br>
+
+
 
 
 
@@ -527,22 +567,10 @@
 
 
 
-
-	    </div>
-
-
-
-
-
 	</div>
 	</div>
 	</div>
-
-
-
-
-
-
+	</div>
 
 
 
@@ -625,6 +653,52 @@
       }
     </script>
     <!-- END: javascript changesize -->
+
+    <!-- START: javascript changesize -->
+    <script type="text/javascript">
+    $(function(){
+        //ボタンクリックで発火
+        $(document).on('click', '#btn-phenotips', function(){
+            alert( "Hello" );
+            //Ajaxでform入力内容送信
+            $.ajax( {
+                type: "POST",
+                url: "https://demo.gene42.com/rest/patients",
+                dataType: "json",
+                data : {{ json_phenotips }},
+                timeout:10000,
+                username: 'ToyofumiFujiwara',
+                password: 'CkVLupXMbGwpxyvLBBrdFfRg',
+                //beforeSend: function(xhr) {
+                //    alert('before');
+                //    xhr.setRequestHeader ("Authorization", "Basic " + btoa($('#phenotips_username').val() + ":" + $('#phenotips_password').val()));
+                //},
+            // success
+            }).done(function( response ){
+                alert( "success" );
+            // fail
+            }).fail(function( data ){
+                alert( "fail" );
+            });
+        });
+    })
+    </script>
+    <!-- END: javascript changesize -->
+
+    <!-- START: Copy link -->
+    <script>
+        function copyToClipboard() {
+            // コピー対象をJavaScript上で変数として定義する
+            var copyTarget = document.getElementById("share_link");
+            // コピー対象のテキストを選択する
+            copyTarget.select();
+            // 選択しているテキストをクリップボードにコピーする
+            document.execCommand("Copy");
+        }
+    </script>
+    <!-- END: Copy link -->
+
+
 
 {% endblock %}
 
