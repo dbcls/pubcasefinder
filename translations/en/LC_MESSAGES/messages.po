@@ -132,6 +132,9 @@ msgstr "Find case reports"
 msgid "search_label_search_image_google"
 msgstr "Find images (Google)"
 
+msgid "search_label_genetic_testing"
+msgstr "Genetic testing"
+
 msgid "search_button_share"
 msgstr "Share"
 

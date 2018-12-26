@@ -135,6 +135,9 @@ msgstr "症例報告検索"
 msgid "search_label_search_image_google"
 msgstr "画像検索 (Google)"
 
+msgid "search_label_genetic_testing"
+msgstr "遺伝学的検査"
+
 msgid "search_button_share"
 msgstr "共有"
 

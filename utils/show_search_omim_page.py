@@ -209,8 +209,8 @@ def search_similar_disease(str_phenotypes, str_genes):
         link         = value[2]
         source       = value[3]
 
-        if source != "OMIM" and source != "ICD-10":
-            continue
+        #if source != "OMIM" and source != "ICD-10":
+        #    continue
 
         if onto_id_omim in dict_DiseaseLinkOMIM:
             dict_reference_source = {}
