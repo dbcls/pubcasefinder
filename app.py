@@ -6,11 +6,13 @@ import re
 import MySQLdb
 import json
 import sys
+import datetime
 from werkzeug import secure_filename
 from io import StringIO, BytesIO
 import csv
 # https://blog.capilano-fw.com/?p=398
 from flask_babel import gettext,Babel
+from flask_cors import CORS
 
 # Seach core
 from utils.pagination import Pagination
@@ -18,6 +20,7 @@ from utils.show_search_page import show_search_page
 from utils.show_search_omim_page import show_search_omim_page
 from utils.show_disease_casereport_page import show_disease_casereport_page
 from utils.show_phenotype_context_page import show_phenotype_context_page
+from utils.check_input import process_input_phenotype, process_input_gene
 
 # API for MME
 from utils.api_mme import make_JSON_MME, make_JSON_IRUD
@@ -27,6 +30,8 @@ from utils.api_orphanet import make_JSON_annotate
 
 
 app = Flask(__name__)
+CORS(app)
+
 
 # https://github.com/shibacow/flask_babel_sample/blob/master/srv.py
 babel = Babel(app)
@@ -210,15 +215,34 @@ def REST_API_search_phenotypes_genes(phenotypes, genes, page, size):
         elif len(list_sizes) == 1:
             size_orphanet = list_sizes[0]
 
-        list_dict_phenotype,list_dict_gene,list_dict_similar_disease_pagination, pagination, total_hit = show_search_page(phenotypes, genes, int(page_orphanet), size_orphanet)
-        list_dict_phenotype_omim,list_dict_gene_omim,list_dict_similar_disease_pagination_omim, pagination_omim, total_hit_omim = show_search_omim_page(phenotypes, genes, int(page_omim), size_omim)
+        # process query : phenotypes
+        list_dict_phenotype, phenotypes_remove_error, phenotypes_remove_error_ja = process_input_phenotype(phenotypes)
+
+        # process query : genes
+        list_dict_gene, genes_remove_error, list_query_gene_error = process_input_gene(genes)
+        num_list_query_gene_error = len(list_query_gene_error)
+
+        # search
+        #list_dict_phenotype,list_dict_gene,list_dict_similar_disease_pagination, pagination, total_hit = show_search_page(phenotypes, genes, int(page_orphanet), size_orphanet)
+        #list_dict_phenotype_omim,list_dict_gene_omim,list_dict_similar_disease_pagination_omim, pagination_omim, total_hit_omim = show_search_omim_page(phenotypes, genes, int(page_omim), size_omim)
+        list_dict_similar_disease_pagination, pagination, total_hit = show_search_page(phenotypes_remove_error_ja, genes_remove_error, int(page_orphanet), size_orphanet)
+        list_dict_similar_disease_pagination_omim, pagination_omim, total_hit_omim = show_search_omim_page(phenotypes_remove_error_ja, genes_remove_error, int(page_omim), size_omim)
+        
+        # PhenoTips登録用のデータを作成
+        #phenotypes_phenotips = phenotypes.replace('_ja', '')
+        eid = str(datetime.datetime.today())
+
         return render_template('search.html',
-                               str_phenotypes=phenotypes,
-                               str_genes=genes,
+                               str_eid=eid,
+                               str_phenotypes=phenotypes_remove_error,
+                               str_phenotypes_remove_ja=phenotypes_remove_error_ja,
+                               str_genes=genes_remove_error,
+                               str_list_query_gene_error = ', '.join(list_query_gene_error),
+                               num_list_query_gene_error = num_list_query_gene_error,
                                json_phenotypes=json.dumps(list_dict_phenotype),
-                               json_phenotypes_omim=json.dumps(list_dict_phenotype_omim),
+                               #json_phenotypes_omim=json.dumps(list_dict_phenotype_omim),
                                json_genes=json.dumps(list_dict_gene),
-                               json_genes_omim=json.dumps(list_dict_gene_omim),
+                               #json_genes_omim=json.dumps(list_dict_gene_omim),
                                list_dict_similar_disease=list_dict_similar_disease_pagination,
                                list_dict_similar_disease_omim=list_dict_similar_disease_pagination_omim,
                                pagination=pagination,
@@ -263,16 +287,34 @@ def REST_API_search_phenotypes(phenotypes, page, size):
         elif len(list_sizes) == 1:
             size_orphanet = int(list_sizes[0])
 
+        # process query : phenotypes
+        list_dict_phenotype, phenotypes_remove_error, phenotypes_remove_error_ja = process_input_phenotype(phenotypes)
 
-        list_dict_phenotype,list_dict_gene,list_dict_similar_disease_pagination, pagination, total_hit = show_search_page(phenotypes, genes, page_orphanet, size_orphanet)
-        list_dict_phenotype_omim,list_dict_gene_omim,list_dict_similar_disease_pagination_omim, pagination_omim, total_hit_omim = show_search_omim_page(phenotypes, genes, page_omim, size_omim)
+        # process query : genes
+        list_dict_gene, genes_remove_error, list_query_gene_error = process_input_gene(genes)
+        num_list_query_gene_error = len(list_query_gene_error)
+
+        # search
+        #list_dict_phenotype,list_dict_gene,list_dict_similar_disease_pagination, pagination, total_hit = show_search_page(phenotypes, genes, page_orphanet, size_orphanet)
+        #list_dict_phenotype_omim,list_dict_gene_omim,list_dict_similar_disease_pagination_omim, pagination_omim, total_hit_omim = show_search_omim_page(phenotypes, genes, page_omim, size_omim)
+        list_dict_similar_disease_pagination, pagination, total_hit = show_search_page(phenotypes_remove_error_ja, genes_remove_error, int(page_orphanet), size_orphanet)
+        list_dict_similar_disease_pagination_omim, pagination_omim, total_hit_omim = show_search_omim_page(phenotypes_remove_error_ja, genes_remove_error, int(page_omim), size_omim)
+
+        # PhenoTips登録用のデータを作成
+        #phenotypes_phenotips = phenotypes.replace('_ja', '')
+        eid = str(datetime.datetime.today())
+
         return render_template('search.html',
-                               str_phenotypes=phenotypes,
-                               str_genes=genes,
+                               str_eid=eid,
+                               str_phenotypes=phenotypes_remove_error,
+                               str_phenotypes_remove_ja=phenotypes_remove_error_ja,
+                               str_genes=genes_remove_error,
+                               str_list_query_gene_error = ', '.join(list_query_gene_error),
+                               num_list_query_gene_error = num_list_query_gene_error,
                                json_phenotypes=json.dumps(list_dict_phenotype),
-                               json_phenotypes_omim=json.dumps(list_dict_phenotype_omim),
+                               #json_phenotypes_omim=json.dumps(list_dict_phenotype_omim),
                                json_genes=json.dumps(list_dict_gene),
-                               json_genes_omim=json.dumps(list_dict_gene_omim),
+                               #json_genes_omim=json.dumps(list_dict_gene_omim),
                                list_dict_similar_disease=list_dict_similar_disease_pagination,
                                list_dict_similar_disease_omim=list_dict_similar_disease_pagination_omim,
                                pagination=pagination,
@@ -317,15 +359,33 @@ def REST_API_search_genes(genes, page, size):
         elif len(list_sizes) == 1:
             size_orphanet = list_sizes[0]
 
-        list_dict_phenotype,list_dict_gene,list_dict_similar_disease_pagination, pagination, total_hit = show_search_page(phenotypes, genes, int(page_orphanet), size_orphanet)
-        list_dict_phenotype_omim,list_dict_gene_omim,list_dict_similar_disease_pagination_omim, pagination_omim, total_hit_omim = show_search_omim_page(phenotypes, genes, int(page_omim), size_omim)
+        # process query : phenotypes
+        list_dict_phenotype, phenotypes_remove_error, phenotypes_remove_error_ja = process_input_phenotype(phenotypes)
+
+        # process query : genes
+        list_dict_gene, genes_remove_error, list_query_gene_error = process_input_gene(genes)
+        num_list_query_gene_error = len(list_query_gene_error)
+
+        #list_dict_phenotype,list_dict_gene,list_dict_similar_disease_pagination, pagination, total_hit = show_search_page(phenotypes, genes, int(page_orphanet), size_orphanet)
+        #list_dict_phenotype_omim,list_dict_gene_omim,list_dict_similar_disease_pagination_omim, pagination_omim, total_hit_omim = show_search_omim_page(phenotypes, genes, int(page_omim), size_omim)
+        list_dict_similar_disease_pagination, pagination, total_hit = show_search_page(phenotypes_remove_error_ja, genes_remove_error, int(page_orphanet), size_orphanet)
+        list_dict_similar_disease_pagination_omim, pagination_omim, total_hit_omim = show_search_omim_page(phenotypes_remove_error_ja, genes_remove_error, int(page_omim), size_omim)
+
+        # PhenoTips登録用のデータを作成
+        #phenotypes_phenotips = phenotypes.replace('_ja', '')
+        eid = str(datetime.datetime.today())
+
         return render_template('search.html',
-                               str_phenotypes=phenotypes,
-                               str_genes=genes,
+                               str_eid=eid,
+                               str_phenotypes=phenotypes_remove_error,
+                               str_phenotypes_remove_ja=phenotypes_remove_error_ja,
+                               str_genes=genes_remove_error,
+                               str_list_query_gene_error = ', '.join(list_query_gene_error),
+                               num_list_query_gene_error = num_list_query_gene_error,
                                json_phenotypes=json.dumps(list_dict_phenotype),
-                               json_phenotypes_omim=json.dumps(list_dict_phenotype_omim),
+                               #json_phenotypes_omim=json.dumps(list_dict_phenotype_omim),
                                json_genes=json.dumps(list_dict_gene),
-                               json_genes_omim=json.dumps(list_dict_gene_omim),
+                               #json_genes_omim=json.dumps(list_dict_gene_omim),
                                list_dict_similar_disease=list_dict_similar_disease_pagination,
                                list_dict_similar_disease_omim=list_dict_similar_disease_pagination_omim,
                                pagination=pagination,
@@ -371,15 +431,33 @@ def REST_API_search_none(page, size):
         elif len(list_sizes) == 1:
             size_orphanet = list_sizes[0]
 
-        list_dict_phenotype,list_dict_gene,list_dict_similar_disease_pagination, pagination, total_hit = show_search_page(phenotypes, genes, int(page_orphanet), size_orphanet)
-        list_dict_phenotype_omim,list_dict_gene_omim,list_dict_similar_disease_pagination_omim, pagination_omim, total_hit_omim = show_search_omim_page(phenotypes, genes, int(page_omim), size_omim)
+        # process query : phenotypes
+        list_dict_phenotype, phenotypes_remove_error, phenotypes_remove_error_ja = process_input_phenotype(phenotypes)
+
+        # process query : genes
+        list_dict_gene, genes_remove_error, list_query_gene_error = process_input_gene(genes)
+        num_list_query_gene_error = len(list_query_gene_error)
+
+        #list_dict_phenotype,list_dict_gene,list_dict_similar_disease_pagination, pagination, total_hit = show_search_page(phenotypes, genes, int(page_orphanet), size_orphanet)
+        #list_dict_phenotype_omim,list_dict_gene_omim,list_dict_similar_disease_pagination_omim, pagination_omim, total_hit_omim = show_search_omim_page(phenotypes, genes, int(page_omim), size_omim)
+        list_dict_similar_disease_pagination, pagination, total_hit = show_search_page(phenotypes_remove_error_ja, genes_remove_error, int(page_orphanet), size_orphanet)
+        list_dict_similar_disease_pagination_omim, pagination_omim, total_hit_omim = show_search_omim_page(phenotypes_remove_error_ja, genes_remove_error, int(page_omim), size_omim)
+
+        # PhenoTips登録用のデータを作成
+        #phenotypes_phenotips = phenotypes.replace('_ja', '')
+        eid = str(datetime.datetime.today())
+
         return render_template('search.html',
-                               str_phenotypes=phenotypes,
-                               str_genes=genes,
+                               str_eid=eid,
+                               str_phenotypes=phenotypes_remove_error,
+                               str_phenotypes_remove_ja=phenotypes_remove_error_ja,
+                               str_genes=genes_remove_error,
+                               str_list_query_gene_error = ', '.join(list_query_gene_error),
+                               num_list_query_gene_error = num_list_query_gene_error,
                                json_phenotypes=json.dumps(list_dict_phenotype),
-                               json_phenotypes_omim=json.dumps(list_dict_phenotype_omim),
+                               #json_phenotypes_omim=json.dumps(list_dict_phenotype_omim),
                                json_genes=json.dumps(list_dict_gene),
-                               json_genes_omim=json.dumps(list_dict_gene_omim),
+                               #json_genes_omim=json.dumps(list_dict_gene_omim),
                                list_dict_similar_disease=list_dict_similar_disease_pagination,
                                list_dict_similar_disease_omim=list_dict_similar_disease_pagination_omim,
                                pagination=pagination,
@@ -711,7 +789,9 @@ def REST_API_show_phenotype_context(disease, phenotype, page, size):
 @app.route('/download_results_search_disease/phenotype:<string:phenotypes>/gene:<string:genes>/page:<int:page>/size:<string:size>', methods=['GET'])
 def REST_API_download_results_search_phenotypes_genes(phenotypes, genes, page, size):
     if request.method == 'GET':
-        list_dict_phenotype,list_dict_gene,list_dict_similar_disease_pagination, pagination, total_hit = show_search_page(phenotypes, genes, page, '1000000')
+        phenotypes_remove_ja = phenotypes.replace('_ja', '')
+        #list_dict_phenotype,list_dict_gene,list_dict_similar_disease_pagination, pagination, total_hit = show_search_page(phenotypes, genes, page, '1000000')
+        list_dict_similar_disease_pagination, pagination, total_hit = show_search_page(phenotypes_remove_ja, genes, page, '1000000')
 
         # Python 3系 https://stackoverflow.com/questions/13120127/how-can-i-use-io-stringio-with-the-csv-module/13120279
         #f = StringIO()
@@ -759,7 +839,9 @@ def REST_API_download_results_search_phenotypes_genes(phenotypes, genes, page, s
 def REST_API_download_results_search_phenotypes(phenotypes, page, size):
     genes = ""
     if request.method == 'GET':
-        list_dict_phenotype,list_dict_gene,list_dict_similar_disease_pagination, pagination, total_hit = show_search_page(phenotypes, genes, page, '1000000')
+        phenotypes_remove_ja = phenotypes.replace('_ja', '')
+        #list_dict_phenotype,list_dict_gene,list_dict_similar_disease_pagination, pagination, total_hit = show_search_page(phenotypes, genes, page, '1000000')
+        list_dict_similar_disease_pagination, pagination, total_hit = show_search_page(phenotypes_remove_ja, genes, page, '1000000')
 
         # Python 3系 https://stackoverflow.com/questions/13120127/how-can-i-use-io-stringio-with-the-csv-module/13120279
         #f = StringIO()
@@ -807,7 +889,9 @@ def REST_API_download_results_search_phenotypes(phenotypes, page, size):
 def REST_API_download_results_search_genes(genes, page, size):
     phenotypes = ""
     if request.method == 'GET':
-        list_dict_phenotype,list_dict_gene,list_dict_similar_disease_pagination, pagination, total_hit = show_search_page(phenotypes, genes, page, '1000000')
+        phenotypes_remove_ja = phenotypes.replace('_ja', '')
+        #list_dict_phenotype,list_dict_gene,list_dict_similar_disease_pagination, pagination, total_hit = show_search_page(phenotypes, genes, page, '1000000')
+        list_dict_similar_disease_pagination, pagination, total_hit = show_search_page(phenotypes_remove_ja, genes, page, '1000000')
 
         # Python 3系 https://stackoverflow.com/questions/13120127/how-can-i-use-io-stringio-with-the-csv-module/13120279
         #f = StringIO()
@@ -856,7 +940,9 @@ def REST_API_download_results_search_none(page, size):
     phenotypes = ""
     genes = ""
     if request.method == 'GET':
-        list_dict_phenotype,list_dict_gene,list_dict_similar_disease_pagination, pagination, total_hit = show_search_page(phenotypes, genes, page, '1000000')
+        phenotypes_remove_ja = phenotypes.replace('_ja', '')
+        #list_dict_phenotype,list_dict_gene,list_dict_similar_disease_pagination, pagination, total_hit = show_search_page(phenotypes, genes, page, '1000000')
+        list_dict_similar_disease_pagination, pagination, total_hit = show_search_page(phenotypes_remove_ja, genes, page, '1000000')
 
         # Python 3系 https://stackoverflow.com/questions/13120127/how-can-i-use-io-stringio-with-the-csv-module/13120279
         #f = StringIO()
@@ -906,7 +992,9 @@ def REST_API_download_results_search_none(page, size):
 @app.route('/download_results_search_omim_disease/phenotype:<string:phenotypes>/gene:<string:genes>/page:<int:page>/size:<string:size>', methods=['GET'])
 def REST_API_download_results_search_omim_phenotypes_genes(phenotypes, genes, page, size):
     if request.method == 'GET':
-        list_dict_phenotype,list_dict_gene,list_dict_similar_disease_pagination, pagination, total_hit = show_search_omim_page(phenotypes, genes, page, '1000000')
+        phenotypes_remove_ja = phenotypes.replace('_ja', '')
+        #list_dict_phenotype,list_dict_gene,list_dict_similar_disease_pagination, pagination, total_hit = show_search_omim_page(phenotypes, genes, page, '1000000')
+        list_dict_similar_disease_pagination, pagination, total_hit = show_search_omim_page(phenotypes_remove_ja, genes, page, '1000000')
 
         # Python 3系 https://stackoverflow.com/questions/13120127/how-can-i-use-io-stringio-with-the-csv-module/13120279
         #f = StringIO()
@@ -954,7 +1042,9 @@ def REST_API_download_results_search_omim_phenotypes_genes(phenotypes, genes, pa
 def REST_API_download_results_search_omim_phenotypes(phenotypes, page, size):
     genes = ""
     if request.method == 'GET':
-        list_dict_phenotype,list_dict_gene,list_dict_similar_disease_pagination, pagination, total_hit = show_search_omim_page(phenotypes, genes, page, '1000000')
+        phenotypes_remove_ja = phenotypes.replace('_ja', '')
+        #list_dict_phenotype,list_dict_gene,list_dict_similar_disease_pagination, pagination, total_hit = show_search_omim_page(phenotypes, genes, page, '1000000')
+        list_dict_similar_disease_pagination, pagination, total_hit = show_search_omim_page(phenotypes_remove_ja, genes, page, '1000000')
 
         # Python 3系 https://stackoverflow.com/questions/13120127/how-can-i-use-io-stringio-with-the-csv-module/13120279
         #f = StringIO()
@@ -1002,7 +1092,9 @@ def REST_API_download_results_search_omim_phenotypes(phenotypes, page, size):
 def REST_API_download_results_search_omim_genes(genes, page, size):
     phenotypes = ""
     if request.method == 'GET':
-        list_dict_phenotype,list_dict_gene,list_dict_similar_disease_pagination, pagination, total_hit = show_search_omim_page(phenotypes, genes, page, '1000000')
+        phenotypes_remove_ja = phenotypes.replace('_ja', '')
+        #list_dict_phenotype,list_dict_gene,list_dict_similar_disease_pagination, pagination, total_hit = show_search_omim_page(phenotypes, genes, page, '1000000')
+        list_dict_similar_disease_pagination, pagination, total_hit = show_search_omim_page(phenotypes_remove_ja, genes, page, '1000000')
 
         # Python 3系 https://stackoverflow.com/questions/13120127/how-can-i-use-io-stringio-with-the-csv-module/13120279
         #f = StringIO()
@@ -1051,7 +1143,9 @@ def REST_API_download_results_search_omim_none(page, size):
     phenotypes = ""
     genes = ""
     if request.method == 'GET':
-        list_dict_phenotype,list_dict_gene,list_dict_similar_disease_pagination, pagination, total_hit = show_search_omim_page(phenotypes, genes, page, '1000000')
+        phenotypes_remove_ja = phenotypes.replace('_ja', '')
+        #list_dict_phenotype,list_dict_gene,list_dict_similar_disease_pagination, pagination, total_hit = show_search_omim_page(phenotypes, genes, page, '1000000')
+        list_dict_similar_disease_pagination, pagination, total_hit = show_search_omim_page(phenotypes_remove_ja, genes, page, '1000000')
 
         # Python 3系 https://stackoverflow.com/questions/13120127/how-can-i-use-io-stringio-with-the-csv-module/13120279
         #f = StringIO()
@@ -1101,9 +1195,12 @@ def REST_API_download_results_search_omim_none(page, size):
 @app.route('/download_summary/phenotype:<string:phenotypes>/gene:<string:genes>/page:<int:page>/size:<string:size>', methods=['GET'])
 def REST_API_download_summary_phenotypes_genes(phenotypes, genes, page, size):
     if request.method == 'GET':
-        list_dict_phenotype,list_dict_gene,list_dict_similar_disease_pagination, pagination, total_hit = show_search_page(phenotypes, genes, page, '10')
-        list_dict_phenotype_omim,list_dict_gene_omim,list_dict_similar_disease_pagination_omim, pagination_omim, total_hit_omim = show_search_omim_page(phenotypes, genes, page, '10')
-
+        phenotypes_remove_ja = phenotypes.replace('_ja', '')
+        #list_dict_phenotype,list_dict_gene,list_dict_similar_disease_pagination, pagination, total_hit = show_search_page(phenotypes, genes, page, '10')
+        #list_dict_phenotype_omim,list_dict_gene_omim,list_dict_similar_disease_pagination_omim, pagination_omim, total_hit_omim = show_search_omim_page(phenotypes, genes, page, '10')
+        list_dict_similar_disease_pagination, pagination, total_hit = show_search_page(phenotypes_remove_ja, genes, page, '10')
+        list_dict_similar_disease_pagination_omim, pagination_omim, total_hit_omim = show_search_omim_page(phenotypes_remove_ja, genes, page, '10')
+        
         # Python 3系 https://stackoverflow.com/questions/13120127/how-can-i-use-io-stringio-with-the-csv-module/13120279
         #f = StringIO()
         # Python 2系
@@ -1182,8 +1279,11 @@ def REST_API_download_summary_phenotypes_genes(phenotypes, genes, page, size):
 def REST_API_download_summary_phenotypes(phenotypes, page, size):
     genes = ""
     if request.method == 'GET':
-        list_dict_phenotype,list_dict_gene,list_dict_similar_disease_pagination, pagination, total_hit = show_search_page(phenotypes, genes, page, '10')
-        list_dict_phenotype_omim,list_dict_gene_omim,list_dict_similar_disease_pagination_omim, pagination_omim, total_hit_omim = show_search_omim_page(phenotypes, genes, page, '10')
+        phenotypes_remove_ja = phenotypes.replace('_ja', '')
+        #list_dict_phenotype,list_dict_gene,list_dict_similar_disease_pagination, pagination, total_hit = show_search_page(phenotypes, genes, page, '10')
+        #list_dict_phenotype_omim,list_dict_gene_omim,list_dict_similar_disease_pagination_omim, pagination_omim, total_hit_omim = show_search_omim_page(phenotypes, genes, page, '10')
+        list_dict_similar_disease_pagination, pagination, total_hit = show_search_page(phenotypes_remove_ja, genes, page, '10')
+        list_dict_similar_disease_pagination_omim, pagination_omim, total_hit_omim = show_search_omim_page(phenotypes_remove_ja, genes, page, '10')
 
         # Python 3系 https://stackoverflow.com/questions/13120127/how-can-i-use-io-stringio-with-the-csv-module/13120279
         #f = StringIO()
@@ -1263,8 +1363,11 @@ def REST_API_download_summary_phenotypes(phenotypes, page, size):
 def REST_API_download_summary_genes(genes, page, size):
     phenotypes = ""
     if request.method == 'GET':
-        list_dict_phenotype,list_dict_gene,list_dict_similar_disease_pagination, pagination, total_hit = show_search_page(phenotypes, genes, page, '10')
-        list_dict_phenotype_omim,list_dict_gene_omim,list_dict_similar_disease_pagination_omim, pagination_omim, total_hit_omim = show_search_omim_page(phenotypes, genes, page, '10')
+        phenotypes_remove_ja = phenotypes.replace('_ja', '')
+        #list_dict_phenotype,list_dict_gene,list_dict_similar_disease_pagination, pagination, total_hit = show_search_page(phenotypes, genes, page, '10')
+        #list_dict_phenotype_omim,list_dict_gene_omim,list_dict_similar_disease_pagination_omim, pagination_omim, total_hit_omim = show_search_omim_page(phenotypes, genes, page, '10')
+        list_dict_similar_disease_pagination, pagination, total_hit = show_search_page(phenotypes_remove_ja, genes, page, '10')
+        list_dict_similar_disease_pagination_omim, pagination_omim, total_hit_omim = show_search_omim_page(phenotypes_remove_ja, genes, page, '10')
 
         # Python 3系 https://stackoverflow.com/questions/13120127/how-can-i-use-io-stringio-with-the-csv-module/13120279
         #f = StringIO()
@@ -1345,8 +1448,11 @@ def REST_API_download_summary_none(genes, page, size):
     phenotypes = ""
     genes = ""
     if request.method == 'GET':
-        list_dict_phenotype,list_dict_gene,list_dict_similar_disease_pagination, pagination, total_hit = show_search_page(phenotypes, genes, page, '10')
-        list_dict_phenotype_omim,list_dict_gene_omim,list_dict_similar_disease_pagination_omim, pagination_omim, total_hit_omim = show_search_omim_page(phenotypes, genes, page, '10')
+        phenotypes_remove_ja = phenotypes.replace('_ja', '')
+        #list_dict_phenotype,list_dict_gene,list_dict_similar_disease_pagination, pagination, total_hit = show_search_page(phenotypes, genes, page, '10')
+        #list_dict_phenotype_omim,list_dict_gene_omim,list_dict_similar_disease_pagination_omim, pagination_omim, total_hit_omim = show_search_omim_page(phenotypes, genes, page, '10')
+        list_dict_similar_disease_pagination, pagination, total_hit = show_search_page(phenotypes_remove_ja, genes, page, '10')
+        list_dict_similar_disease_pagination_omim, pagination_omim, total_hit_omim = show_search_omim_page(phenotypes_remove_ja, genes, page, '10')
 
         # Python 3系 https://stackoverflow.com/questions/13120127/how-can-i-use-io-stringio-with-the-csv-module/13120279
         #f = StringIO()

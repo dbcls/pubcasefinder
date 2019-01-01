@@ -5,6 +5,19 @@
     <div id="fh5co-project">
       <div class="container">
 
+	<!-- START: Check Error Query Genes -->
+	{% if num_list_query_gene_error == 1 %}
+	<script>
+	  alert("The gene name provided, " + "[ {{ str_list_query_gene_error }} ]" + ", is not associated with a disease in our database.")
+	</script>
+        {% endif %}
+	{% if num_list_query_gene_error > 1 %}
+	<script>
+	  alert("The gene names provided, " + "[ {{ str_list_query_gene_error }} ]" + ", are not associated with a disease in our database.")
+	</script>
+        {% endif %}
+	<!-- END: Check Error Query Genes -->
+
 	<!-- START: FORM -->
 	<form name="search" action="/search_disease" method="post" class="form-group" enctype="multipart/form-data">
 	  <!-- START: Query Phenotype(s) -->
@@ -716,8 +729,8 @@
                 dataType: "json",
                 data : {{ json_phenotips }},
                 timeout:10000,
-                username: 'ToyofumiFujiwara',
-                password: 'CkVLupXMbGwpxyvLBBrdFfRg',
+                username: '',
+                password: '',
                 //beforeSend: function(xhr) {
                 //    alert('before');
                 //    xhr.setRequestHeader ("Authorization", "Basic " + btoa($('#phenotips_username').val() + ":" + $('#phenotips_password').val()));

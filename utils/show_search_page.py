@@ -29,86 +29,86 @@ db_pw   = app.config['DBPW']
 
 ####
 # 類似疾患検索画面を表示
-def show_search_page(phenotypes, genes, page, size):
+def show_search_page(phenotypes_remove_error_ja, genes_remove_error, page, size):
 
     limit = int(size)
 
     # 正しくないHPO IDやGene IDをクエリからのぞいたクエリを収納
-    list_query_phenotype_remove_error = []
-    list_query_gene_remove_error = []
+    #list_query_phenotype_remove_error = []
+    #list_query_gene_remove_error = []
         
     # クエリ表示用に取得したphenotypesをJSON形式に変換
-    list_dict_phenotype = []
-    list_dict_gene = []
+    #list_dict_phenotype = []
+    #list_dict_gene = []
 
     # クエリの全てのHPO IDがデータベースに含まれるか確認し、データを収納
-    if phenotypes != "":
-        for phenotype in phenotypes.split(","):
-            OBJ_MYSQL = MySQLdb.connect(unix_socket=db_sock, host="localhost", db=db_name, user=db_user, passwd=db_pw, charset="utf8")
-            #sql_OntoTerm = u"select OntoIDTerm from OntoTermHP where OntoType='label' and OntoID=%s"
-            sql_OntoTerm = u"select uid_value from IndexFormHP where uid=%s"
-            cursor_OntoTerm = OBJ_MYSQL.cursor()
-            cursor_OntoTerm.execute(sql_OntoTerm, (phenotype,))
-            values = cursor_OntoTerm.fetchall()
-            cursor_OntoTerm.close()
-            onto_id_term = values[0][0] if values else ''
-            OBJ_MYSQL.close()
+    #if phenotypes != "":
+    #    for phenotype in phenotypes.split(","):
+    #        OBJ_MYSQL = MySQLdb.connect(unix_socket=db_sock, host="localhost", db=db_name, user=db_user, passwd=db_pw, charset="utf8")
+    #        #sql_OntoTerm = u"select OntoIDTerm from OntoTermHP where OntoType='label' and OntoID=%s"
+    #        sql_OntoTerm = u"select uid_value from IndexFormHP where uid=%s"
+    #        cursor_OntoTerm = OBJ_MYSQL.cursor()
+    #        cursor_OntoTerm.execute(sql_OntoTerm, (phenotype,))
+    #        values = cursor_OntoTerm.fetchall()
+    #        cursor_OntoTerm.close()
+    #        onto_id_term = values[0][0] if values else ''
+    #        OBJ_MYSQL.close()
 
-            if onto_id_term != "":
-                dict_phenotype = {}
-                dict_phenotype['id'] = phenotype
-                dict_phenotype['name'] = onto_id_term
-                list_dict_phenotype.append(dict_phenotype)
-                list_query_phenotype_remove_error.append(phenotype)
+    #        if onto_id_term != "":
+    #            dict_phenotype = {}
+    #            dict_phenotype['id'] = phenotype
+    #            dict_phenotype['name'] = onto_id_term
+    #            list_dict_phenotype.append(dict_phenotype)
+    #            list_query_phenotype_remove_error.append(phenotype)
 
     # クエリの全てのGene IDがデータベースに含まれるか確認し、データを収納
-    if genes != "":
-        for gene in genes.split(","):
+    #if genes != "":
+    #    for gene in genes.split(","):
 
             # Gene Symbolの場合はEntrez Gene IDを抽出
-            entrez_id = ""
-            pattern_entrez_id = 'HGNC'
-            pattern_entrez_id_compiled = re.compile(pattern_entrez_id)
-            if pattern_entrez_id_compiled.match(gene):
-                OBJ_MYSQL = MySQLdb.connect(unix_socket=db_sock, host="localhost", db=db_name, user=db_user, passwd=db_pw, charset="utf8")
-                sql_GeneName2ID = u"select EntrezID from GeneName2ID where GeneName=%s"
-                cursor_GeneName2ID = OBJ_MYSQL.cursor()
-                gene_remove_prefix_HGNC = gene.replace('HGNC:', '')
-                cursor_GeneName2ID.execute(sql_GeneName2ID, (gene_remove_prefix_HGNC,))
-                values = cursor_GeneName2ID.fetchall()
-                cursor_GeneName2ID.close()
-                entrez_id = values[0][0] if values else ''
-                OBJ_MYSQL.close()
-                if entrez_id != "":
-                    gene = unicode("ENT:" + str(entrez_id))
+    #        entrez_id = ""
+    #        pattern_entrez_id = 'HGNC'
+    #        pattern_entrez_id_compiled = re.compile(pattern_entrez_id)
+    #        if pattern_entrez_id_compiled.match(gene):
+    #            OBJ_MYSQL = MySQLdb.connect(unix_socket=db_sock, host="localhost", db=db_name, user=db_user, passwd=db_pw, charset="utf8")
+    #            sql_GeneName2ID = u"select EntrezID from GeneName2ID where GeneName=%s"
+    #            cursor_GeneName2ID = OBJ_MYSQL.cursor()
+    #            gene_remove_prefix_HGNC = gene.replace('HGNC:', '')
+    #            cursor_GeneName2ID.execute(sql_GeneName2ID, (gene_remove_prefix_HGNC,))
+    #            values = cursor_GeneName2ID.fetchall()
+    #            cursor_GeneName2ID.close()
+    #            entrez_id = values[0][0] if values else ''
+    #            OBJ_MYSQL.close()
+    #            if entrez_id != "":
+    #                gene = unicode("ENT:" + str(entrez_id))
 
-            if gene != "":
-                OBJ_MYSQL = MySQLdb.connect(unix_socket=db_sock, host="localhost", db=db_name, user=db_user, passwd=db_pw, charset="utf8")
-                sql_IndexFormSearch = u"select uid_value from IndexFormSearchOrphanetOMIM where uid=%s"
-                cursor_IndexFormSearch = OBJ_MYSQL.cursor()
-                cursor_IndexFormSearch.execute(sql_IndexFormSearch, (gene,))
-                values = cursor_IndexFormSearch.fetchall()
-                cursor_IndexFormSearch.close()
-                uid_value = values[0][0] if values else ''
-                OBJ_MYSQL.close()
-                if uid_value != "":
-                    dict_gene = {}
-                    dict_gene['id'] = gene
-                    dict_gene['name'] = uid_value
-                    list_dict_gene.append(dict_gene)
-                    list_query_gene_remove_error.append(gene)
+    #        if gene != "":
+    #            OBJ_MYSQL = MySQLdb.connect(unix_socket=db_sock, host="localhost", db=db_name, user=db_user, passwd=db_pw, charset="utf8")
+    #            sql_IndexFormSearch = u"select uid_value from IndexFormSearchOrphanetOMIM where uid=%s"
+    #            cursor_IndexFormSearch = OBJ_MYSQL.cursor()
+    #            cursor_IndexFormSearch.execute(sql_IndexFormSearch, (gene,))
+    #            values = cursor_IndexFormSearch.fetchall()
+    #            cursor_IndexFormSearch.close()
+    #            uid_value = values[0][0] if values else ''
+    #            OBJ_MYSQL.close()
+    #            if uid_value != "":
+    #                dict_gene = {}
+    #                dict_gene['id'] = gene
+    #                dict_gene['name'] = uid_value
+    #                list_dict_gene.append(dict_gene)
+    #                list_query_gene_remove_error.append(gene)
 
+    ## 日本語HP IDに対応（HP:xxxxx_ja）
+    #phenotypes_remove_error = ','.join(list_query_phenotype_remove_error)
+    #genes_remove_error = ','.join(list_query_gene_remove_error)
+    #list_phenotypes_remove_ja = []
+    #for phenotype in phenotypes_remove_error.split(","):
+    #    list_phenotypes_remove_ja.append(phenotype.replace('_ja', ''))
+    #phenotypes_remove_ja = ','.join(list_phenotypes_remove_ja)
+    
     #####
     # 類似疾患検索
-    ## 日本語HP IDに対応（HP:xxxxx_ja）
-    phenotypes_remove_error = ','.join(list_query_phenotype_remove_error)
-    genes_remove_error = ','.join(list_query_gene_remove_error)
-    list_phenotypes_remove_ja = []
-    for phenotype in phenotypes_remove_error.split(","):
-        list_phenotypes_remove_ja.append(phenotype.replace('_ja', ''))
-    phenotypes_remove_ja = ','.join(list_phenotypes_remove_ja)
-    ## 検索
-    list_dict_similar_disease = search_similar_disease(phenotypes_remove_ja, genes_remove_error)
+    list_dict_similar_disease = search_similar_disease(phenotypes_remove_error_ja, genes_remove_error)
 
     # total件数を取得
     total_hit = len(list_dict_similar_disease)
@@ -133,7 +133,8 @@ def show_search_page(phenotypes, genes, page, size):
         dict_similar_disease['total_num_case_reports'] = total_num_case_reports
     OBJ_MYSQL.close()
 
-    return list_dict_phenotype, list_dict_gene, list_dict_similar_disease_pagination, pagination, total_hit
+    #return list_dict_phenotype, list_dict_gene, list_dict_similar_disease_pagination, pagination, total_hit
+    return list_dict_similar_disease_pagination, pagination, total_hit
 
 
 #####

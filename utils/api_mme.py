@@ -142,7 +142,8 @@ def make_search_results_MME(phenotypes, genes, size_disease, size_casereport, di
     flg_casereport = 0
 
     # caluculate phenotypic similarity between a patient and rare diseases.
-    list_dict_phenotype,list_dict_gene,list_dict_similar_disease_pagination, pagination, total_hit = show_search_page(phenotypes, genes, '1', size_disease)
+    #list_dict_phenotype,list_dict_gene,list_dict_similar_disease_pagination, pagination, total_hit = show_search_page(phenotypes, genes, '1', size_disease)
+    list_dict_similar_disease_pagination, pagination, total_hit = show_search_page(phenotypes, genes, '1', size_disease)
 
     list_results = []
     for dict_similar_disease_pagination in list_dict_similar_disease_pagination:
@@ -220,7 +221,8 @@ def make_JSON_IRUD(phenotypes, genes, size_disease, size_casereport):
     flg_casereport = 0
 
     # caluculate phenotypic similarity between a patient and rare diseases.
-    list_dict_phenotype,list_dict_gene,list_dict_similar_disease_pagination, pagination, total_hit = show_search_page(phenotypes, genes, '1', size_disease)
+    #list_dict_phenotype,list_dict_gene,list_dict_similar_disease_pagination, pagination, total_hit = show_search_page(phenotypes, genes, '1', size_disease)
+    list_dict_similar_disease_pagination, pagination, total_hit = show_search_page(phenotypes, genes, '1', size_disease)
 
     list_results = []
     for dict_similar_disease_pagination in list_dict_similar_disease_pagination:
