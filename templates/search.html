@@ -282,7 +282,17 @@
 		      {% set prev_id = "" %}
 		      {% for dict_orpha_number_symbol_synonym in dict_similar_disease['orpha_number_symbol_synonym'] %}
 		        {% if prev_id != dict_orpha_number_symbol_synonym['entrez_id'] %}
-		          <a href="https://www.ncbi.nlm.nih.gov/clinvar/?term={{ dict_orpha_number_symbol_synonym['symbol'] }}%5Bgene%5D" target="_blank"><span class="label label-default"><font size="3">{{ dict_orpha_number_symbol_synonym['symbol'] }}</font></span></a>
+		          <span class="btn-group">
+			    <button class="label label-default" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			      <font size="3" color="white">{{ dict_orpha_number_symbol_synonym['symbol'] }}</font>
+			    </button>
+			    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+			      <a class="dropdown-item" href="https://www.ncbi.nlm.nih.gov/clinvar/?term={{ dict_orpha_number_symbol_synonym['symbol'] }}%5Bgene%5D" target="_blank"><font size="3" color="#0431B4"><u>ClinVar</u></font></a><br>
+			      <a class="dropdown-item" href="https://www.ncbi.nlm.nih.gov/CBBresearch/Lu/Demo/LitVar/#!?query={{ dict_orpha_number_symbol_synonym['symbol'] }}" target="_blank"><font size="3" color="#0431B4"><u>LitVar</u></font></a><br>
+			      <a class="dropdown-item" href="http://www.hgmd.cf.ac.uk/ac/gene.php?gene={{ dict_orpha_number_symbol_synonym['symbol'] }}" target="_blank"><font size="3" color="#0431B4"><u>HGMD</u></font></a>
+			    </div>
+		          </span>
+		          <!--a href="https://www.ncbi.nlm.nih.gov/clinvar/?term={{ dict_orpha_number_symbol_synonym['symbol'] }}%5Bgene%5D" target="_blank"><span class="label label-default"><font size="3">{{ dict_orpha_number_symbol_synonym['symbol'] }}</font></span></a-->
 		          {% set prev_id = dict_orpha_number_symbol_synonym['entrez_id'] %}
 			{% endif %}
 		      {% endfor %}
@@ -558,7 +568,17 @@
 		      {% set prev_id = "" %}
 		      {% for dict_omim_symbol_synonym in dict_similar_disease_omim['omim_symbol_synonym'] %}
 		        {% if prev_id != dict_omim_symbol_synonym['entrez_id'] %}
-		          <a href="https://www.ncbi.nlm.nih.gov/clinvar/?term={{ dict_omim_symbol_synonym['symbol'] }}%5Bgene%5D" target="_blank"><span class="label label-default"><font size="3">{{ dict_omim_symbol_synonym['symbol'] }}</font></span></a>
+		          <span class="btn-group">
+			    <button class="label label-default" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			      <font size="3" color="white">{{ dict_omim_symbol_synonym['symbol'] }}</font>
+			    </button>
+			    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+			      <a class="dropdown-item" href="https://www.ncbi.nlm.nih.gov/clinvar/?term={{ dict_omim_symbol_synonym['symbol'] }}%5Bgene%5D" target="_blank"><font size="3" color="#0431B4"><u>ClinVar</u></font></a><br>
+			      <a class="dropdown-item" href="https://www.ncbi.nlm.nih.gov/CBBresearch/Lu/Demo/LitVar/#!?query={{ dict_omim_symbol_synonym['symbol'] }}" target="_blank"><font size="3" color="#0431B4"><u>LitVar</u></font></a><br>
+			      <a class="dropdown-item" href="http://www.hgmd.cf.ac.uk/ac/gene.php?gene={{ dict_omim_symbol_synonym['symbol'] }}" target="_blank"><font size="3" color="#0431B4"><u>HGMD</u></font></a>
+			    </div>
+		          </span>
+		          <!--a href="https://www.ncbi.nlm.nih.gov/clinvar/?term={{ dict_omim_symbol_synonym['symbol'] }}%5Bgene%5D" target="_blank"><span class="label label-default"><font size="3">{{ dict_omim_symbol_synonym['symbol'] }}</font></span></a-->
 		          {% set prev_id = dict_omim_symbol_synonym['entrez_id'] %}
 			{% endif %}
 		      {% endfor %}
@@ -573,18 +593,19 @@
 		      </p>
 		      <a href="http://www.google.com/search?q={{ dict_similar_disease_omim['onto_term_omim'] }}&tbm=isch" target="_blank"><u><font color="#0431B4">{{ _('search_label_search_image_google') }}</font></u></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		      <a href="https://www.omim.org/entry/{{ dict_similar_disease_omim['onto_id_omim'] | replace('OMIM:', '') }}" target="_blank"><u><font color="#0431B4">OMIM</font></u></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		      {{ _('search_label_genetic_testing') }}
 		      {% set flg_UMLS_ini = 0 %}
+		      {% set flg_UMLS_num = 0 %}
 		      {% for dict_reference_source in dict_similar_disease_omim['reference_source'] %}
 			{% if dict_reference_source['source'] == "UMLS" %}
+		          {% set flg_UMLS_num = flg_UMLS_num + 1 %}
 		          {% if flg_UMLS_ini == 0 %}
-		            ( <a href="https://www.ncbi.nlm.nih.gov/gtr/all/tests/?term={{ dict_reference_source['reference'] }}" target="_blank"><u><font color="#0431B4">{{ dict_reference_source['reference'] }}</font></u></a>
+		            {{ _('search_label_genetic_testing') }}( <a href="https://www.ncbi.nlm.nih.gov/gtr/all/tests/?term={{ dict_reference_source['reference'] }}" target="_blank"><u><font color="#0431B4">{{ dict_reference_source['reference'] }}</font></u></a>
 		            {% set flg_UMLS_ini = 1 %}
 		          {% else %}
 		            ,&nbsp;<a href="https://www.ncbi.nlm.nih.gov/gtr/all/tests/?term={{ dict_reference_source['reference'] }}" target="_blank"><u><font color="#0431B4">{{ dict_reference_source['reference'] }}</font></u></a>
 		          {% endif %}
 			{% endif %}
-			{% if loop.index == dict_similar_disease_omim['reference_source']|length %}
+			{% if loop.index == dict_similar_disease_omim['reference_source']|length and flg_UMLS_ini == 1 and flg_UMLS_num > 0 %}
 		          )
 			{% endif %}
 	              {% endfor %}
