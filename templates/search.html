@@ -106,8 +106,9 @@
 		</div>
 	      </td>
 	      <td align="right">
-		<button type="submit" class="btn btn-primary">{{ _('index_button_search') }}</button>
+		<button id="phenotouch" class="btn btn-default">{{ _('index_button_phenotouch') }}</button>
 		<button id="tokeninput_hpo_genes_clear" class="btn btn-default">{{ _('index_button_clear') }}</button>
+		<button type="submit" class="btn btn-primary">{{ _('index_button_search') }}</button>
 	      </td>
 	    </tr>
 	  </table>
@@ -703,6 +704,12 @@
           document.getElementById("filename_gene_list").value="";
           return false;
         });
+      });
+      $("#phenotouch").click(function (e){
+        $.PopupRelationHPOWithWebGL();
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
       });
     </script>
     <!-- END: jquery-tokeninput -->
