@@ -157,24 +157,41 @@ def search_similar_disease(str_phenotypes, str_genes):
     for value in values:
         dict_OntoTerm_omim[value[0]] = value[1]
 
-    ## OMIMテーブルからOMIMの全termを取得
-    ## OMIMテーブルから各疾患ごとのアノテーションHPO数を取得
-    ## OMIMテーブルから各疾患ごとのアノテーションHPOの合計ICを取得
-    dict_disease_definition = {}
-    dict_AnnotationHPONum   = {}
-    dict_AnnotationHPOSumIC = {}
-    sql_OMIM = u"select distinct OntoID, OntoTerm, DiseaseDefinition, AnnotationHPONum, AnnotationHPOSumIC from OMIM"
+    # OMIMテーブルから情報取得
+    ## 疾患名（英語）
+    ## 疾患名（日本語）
+    ## 疾患名類義語（英語）
+    ## 疾患名類義語（日本語）
+    ## 疾患定義
+    ## 各疾患ごとのアノテーションHPO数
+    ## 各疾患ごとのアノテーションHPOの合計IC
+    dict_onto_term_ja         = {}
+    dict_onto_term_synonym    = {}
+    dict_onto_term_synonym_ja = {}
+    dict_disease_definition   = {}
+    dict_AnnotationHPONum     = {}
+    dict_AnnotationHPOSumIC   = {}
+    sql_OMIM = u"select distinct OntoID, OntoTerm, OntoTermJa, Synonym, SynonymJa, DiseaseDefinition, AnnotationHPONum, AnnotationHPOSumIC from OMIM"
     cursor_OMIM = OBJ_MYSQL.cursor()
     cursor_OMIM.execute(sql_OMIM)
     values = cursor_OMIM.fetchall()
     cursor_OMIM.close()
     for value in values:
-        dict_OntoTerm_omim[value[0]] = value[1]
-        if value[2] is not None:
-            disease_definition = (value[2]).encode('utf-8')
-            dict_disease_definition[value[0]] = disease_definition
-        dict_AnnotationHPONum[value[0]] = value[3]
-        dict_AnnotationHPOSumIC[value[0]] = value[4]
+        onto_id              = value[0]
+        onto_term            = value[1]
+        onto_term_ja         = value[2]
+        onto_term_synonym    = value[3]
+        onto_term_synonym_ja = value[4]
+        disease_definition   = (value[5]).encode('utf-8') if value[5] is not None else ""
+        AnnotationHPONum     = value[6]
+        AnnotationHPOSumIC   = value[7]
+        dict_OntoTerm_omim[onto_id]        = onto_term
+        dict_onto_term_ja[onto_id]         = onto_term_ja
+        dict_onto_term_synonym[onto_id]    = onto_term_synonym
+        dict_onto_term_synonym_ja[onto_id] = onto_term_synonym_ja
+        dict_disease_definition[onto_id]   = disease_definition
+        dict_AnnotationHPONum[onto_id]     = AnnotationHPONum
+        dict_AnnotationHPOSumIC[onto_id]   = AnnotationHPOSumIC
         
     # OntoTermHPテーブルまたはOntoTermHPInformationテーブルからHPの全termを取得
     ## localeがenの場合はOntoTermHPから英語のHPO termを取得
@@ -319,7 +336,10 @@ def search_similar_disease(str_phenotypes, str_genes):
                 # GeneYenta: 分母
                 dict_similar_diseases[onto_id_omim]['sum_ic_denominator'] += 0
 
-            dict_similar_diseases[onto_id_omim]['onto_term_omim'] = dict_OntoTerm_omim[onto_id_omim] if onto_id_omim in dict_OntoTerm_omim else ""
+            dict_similar_diseases[onto_id_omim]['onto_term_omim']                    = dict_OntoTerm_omim[onto_id_omim] if onto_id_omim in dict_OntoTerm_omim else ""
+            dict_similar_diseases[onto_id_omim]['onto_term_omim_ja']                 = dict_onto_term_ja[onto_id_omim] if onto_id_omim in dict_onto_term_ja else ""
+            dict_similar_diseases[onto_id_omim]['onto_term_omim_synonym']            = dict_onto_term_synonym[onto_id_omim] if onto_id_omim in dict_onto_term_synonym else ""
+            dict_similar_diseases[onto_id_omim]['onto_term_omim_synonym_ja']         = dict_onto_term_synonym_ja[onto_id_omim] if onto_id_omim in dict_onto_term_synonym_ja else ""
             dict_similar_diseases[onto_id_omim]['onto_term_omim_disease_definition'] = dict_disease_definition[onto_id_omim] if onto_id_omim in dict_disease_definition else ""
 
     # DiseaseGeneOMIMテーブルから各疾患に関連するGenes/Variantsを取得
@@ -404,8 +424,11 @@ def search_similar_disease(str_phenotypes, str_genes):
         if dict_similar_diseases[onto_id_omim]['sum_ic_denominator'] != 0:
             dict_similar_disease['match_score']           = float(dict_similar_diseases[onto_id_omim]['sum_ic'] / dict_similar_diseases[onto_id_omim]['sum_ic_denominator'])
         else:
-            dict_similar_disease['match_score']           = 0
-        dict_similar_disease['onto_term_omim']            = dict_similar_diseases[onto_id_omim]['onto_term_omim']
+            dict_similar_disease['match_score'] = 0
+        dict_similar_disease['onto_term_omim']                    = dict_similar_diseases[onto_id_omim]['onto_term_omim']
+        dict_similar_disease['onto_term_omim_ja']                 = dict_similar_diseases[onto_id_omim]['onto_term_omim_ja']
+        dict_similar_disease['onto_term_omim_synonym']            = dict_similar_diseases[onto_id_omim]['onto_term_omim_synonym']
+        dict_similar_disease['onto_term_omim_synonym_ja']         = dict_similar_diseases[onto_id_omim]['onto_term_omim_synonym_ja']
         dict_similar_disease['onto_term_omim_disease_definition'] = dict_similar_diseases[onto_id_omim]['onto_term_omim_disease_definition']
         dict_similar_disease['onto_id_hp_index']          = ",".join(dict_similar_diseases[onto_id_omim]['onto_id_hp_index'])
         dict_similar_disease['onto_id_hp_disease']        = ",".join(dict_similar_diseases[onto_id_omim]['onto_id_hp_disease'])

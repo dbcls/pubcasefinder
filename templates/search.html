@@ -246,7 +246,7 @@
 	      <thead>
 		<tr>
 		  <th style="width:100px;" class="text-left">{{ _('search_label_rank') }}<br>{{ _('search_label_similarity') }}</th>
-		  <th style="width:200px;" class="text-left">{{ _('search_label_DiseaseName') }}<br>{{ _('search_label_DiseaseID') }}</th>
+		  <th style="width:200px;" class="text-left">{{ _('search_label_DiseaseName') }}</th>
 		  <th>
 		    <div align="right">
 		      <span class="label label-primary"><font size="3"><b>{{ _('search_label_MatchedPhenotype') }}</b></font></span>&nbsp;
@@ -264,7 +264,7 @@
 		    <td rowspan="3" width="10">{{ dict_similar_disease['rank'] }}<br>({{ (dict_similar_disease['match_score']*100)|round(1) }}%)</td>
 		    <!-- Disease Name -->
 		    <td rowspan="3">
-		      <a href="{{ url_for_disease_casereport_page(dict_similar_disease['onto_id_ordo'], str_phenotypes, '', '1', '10') }}" target="_blank">{{ dict_similar_disease['onto_term_ordo'] }}<br>({{dict_similar_disease['onto_id_ordo']}})</a>
+		      <a href="{{ url_for_disease_casereport_page(dict_similar_disease['onto_id_ordo'], str_phenotypes, '', '1', '10') }}" target="_blank">{{ dict_similar_disease['onto_term_ordo'] }}</a>
 		    </td>
 		    <!-- Matched Phenotypes -->
 		    <td>
@@ -357,9 +357,9 @@
 			  <a href="https://translate.google.co.jp/?hl=ja#en/ja/{{ dict_similar_disease['onto_term_ordo_disease_definition'] | replace('/', '%2F') }}" target="_blank"><font color="#0431B4">&nbsp;&gt;&gt;&nbsp;{{ _('search_label_translate_google') }}</font></a>
 		        {% endif %}
 		      </p>
+		      <a href="http://www.orpha.net/consor/cgi-bin/OC_Exp.php?Expert={{ dict_similar_disease['onto_id_ordo'] | replace('ORDO:', '') }}" target="_blank"><u><font color="#0431B4">{{ dict_similar_disease['onto_id_ordo'] | replace('ORDO:', 'Orphanet:') }}</font></u></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		      <a href="http://www.google.com/search?q={{ dict_similar_disease['onto_term_ordo'] }}&tbm=isch" target="_blank"><u><font color="#0431B4">{{ _('search_label_search_image_google') }}</font></u></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		      <a href="{{ url_for_disease_casereport_page(dict_similar_disease['onto_id_ordo'], str_phenotypes, '', '1', '10') }}" target="_blank"><u><font color="#0431B4">{{ _('search_label_related_casereport') }}</font></u></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		      <a href="http://www.orpha.net/consor/cgi-bin/OC_Exp.php?Expert={{ dict_similar_disease['onto_id_ordo'] | replace('ORDO:', '') }}" target="_blank"><u><font color="#0431B4">Orphanet</font></u></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		      {% set flg_UMLS_ini = 0 %}
 		      {% set flg_UMLS_num = 0 %}
 		      {% for dict_reference_source in dict_similar_disease['reference_source'] %}
@@ -530,7 +530,7 @@
 	      <thead>
 		<tr>
 		  <th style="width:100px;" class="text-left">{{ _('search_label_rank') }}<br>{{ _('search_label_similarity') }}</th>
-		  <th style="width:200px;" class="text-left">{{ _('search_label_DiseaseName') }}<br>{{ _('search_label_DiseaseID') }}</th>
+		  <th style="width:200px;" class="text-left">{{ _('search_label_DiseaseName') }}</th>
 		  <th>
 		    <div align="right">
 		      <span class="label label-primary"><font size="3"><b>{{ _('search_label_MatchedPhenotype') }}</b></font></span>&nbsp;
@@ -549,7 +549,11 @@
 		    <!-- Disease Name -->
 		    <td rowspan="3">
 		      <!--a href="{{ url_for_disease_casereport_page(dict_similar_disease_omim['onto_id_omim'], str_phenotypes, '', '1', '10') }}" target="_blank">{{ dict_similar_disease_omim['onto_term_omim'] }}<br>({{dict_similar_disease_omim['onto_id_omim']}})</a-->
-		      <a href="https://www.omim.org/entry/{{ dict_similar_disease_omim['onto_id_omim'] | replace('OMIM:', '') }}" target="_blank">{{ dict_similar_disease_omim['onto_term_omim'] }}<br>({{dict_similar_disease_omim['onto_id_omim']}})</a>
+		      <a href="https://www.omim.org/entry/{{ dict_similar_disease_omim['onto_id_omim'] | replace('OMIM:', '') }}" target="_blank">{{ dict_similar_disease_omim['onto_term_omim'] }}
+		        {% if (get_locale() == "ja" or get_locale() == "ja_JP") and dict_similar_disease_omim['onto_term_omim_ja'] != "" %}
+			  <br>----<br>{{ dict_similar_disease_omim['onto_term_omim_ja'] }}
+		        {% endif %}
+		      </a>
 		    </td>
 		    <!-- Matched Phenotypes -->
 		    <td>
@@ -592,8 +596,8 @@
 			  <a href="https://translate.google.co.jp/?hl=ja#en/ja/{{ dict_similar_disease_omim['onto_term_omim_disease_definition'] | replace('/', '%2F') }}" target="_blank"><font color="#0431B4">&nbsp;&gt;&gt;&nbsp;{{ _('search_label_translate_google') }}</font></a>
 		        {% endif %}
 		      </p>
+		      <a href="https://www.omim.org/entry/{{ dict_similar_disease_omim['onto_id_omim'] | replace('OMIM:', '') }}" target="_blank"><u><font color="#0431B4">{{dict_similar_disease_omim['onto_id_omim']}}</font></u></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		      <a href="http://www.google.com/search?q={{ dict_similar_disease_omim['onto_term_omim'] }}&tbm=isch" target="_blank"><u><font color="#0431B4">{{ _('search_label_search_image_google') }}</font></u></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		      <a href="https://www.omim.org/entry/{{ dict_similar_disease_omim['onto_id_omim'] | replace('OMIM:', '') }}" target="_blank"><u><font color="#0431B4">OMIM</font></u></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		      {% set flg_UMLS_ini = 0 %}
 		      {% set flg_UMLS_num = 0 %}
 		      {% for dict_reference_source in dict_similar_disease_omim['reference_source'] %}
