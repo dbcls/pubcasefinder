@@ -158,7 +158,6 @@ def search_similar_disease(str_phenotypes, str_genes):
         dict_OntoTerm_omim[value[0]] = value[1]
 
     # OMIMテーブルから情報取得
-    ## 疾患名（英語）
     ## 疾患名（日本語）
     ## 疾患名類義語（英語）
     ## 疾患名類義語（日本語）
@@ -271,6 +270,8 @@ def search_similar_disease(str_phenotypes, str_genes):
     cursor.close()
 
 
+    ####
+    ## データを収納
     list_dict_similar_disease = []
     dict_similar_diseases = {}
     for value in values:
