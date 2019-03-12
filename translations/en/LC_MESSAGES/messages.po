@@ -209,3 +209,75 @@ msgstr "Causative gene(s) retrieved from Orphanet"
 
 msgid "disease_TabGene_label_name"
 msgstr "Gene Name"
+
+msgid "Autosomal_dominant_inheritance"
+msgstr "Autosomal dominant inheritance"
+
+msgid "Autosomal_recessive_inheritance"
+msgstr "Autosomal recessive inheritance"
+
+msgid "X-linked_inheritance"
+msgstr "X-linked inheritance"
+
+msgid "X-linked_recessive_inheritance"
+msgstr "X-linked recessive inheritance"
+
+msgid "X-linked_dominant_inheritance"
+msgstr "X-linked dominant inheritance"
+
+msgid "Heterogeneous"
+msgstr "Heterogeneous"
+
+msgid "Multifactorial_inheritance"
+msgstr "Multifactorial inheritance"
+
+msgid "Mitochondrial_inheritance"
+msgstr "Mitochondrial inheritance"
+
+msgid "Somatic_mutation"
+msgstr "Somatic mutation"
+
+msgid "Somatic_mosaicism"
+msgstr "Somatic mosaicism"
+
+msgid "Autosomal_dominant_somatic_cell_mutation"
+msgstr "Autosomal dominant somatic cell mutation"
+
+msgid "Y-linked_inheritance"
+msgstr "Y-linked inheritance"
+
+msgid "Autosomal_dominant_contiguous_gene_syndrome"
+msgstr "Autosomal dominant contiguous gene syndrome"
+
+msgid "Contiguous_gene_syndrome"
+msgstr "Contiguous gene syndrome"
+
+msgid "Sex-limited_autosomal_dominant"
+msgstr "Sex-limited autosomal dominant"
+
+msgid "Familial_predisposition"
+msgstr "Familial predisposition"
+
+msgid "Male-limited_autosomal_dominant"
+msgstr "Male-limited autosomal dominant"
+
+msgid "Genetic_anticipation"
+msgstr "Genetic anticipation"
+
+msgid "Genetic_anticipation_with_paternal_anticipation_bias"
+msgstr "Genetic anticipation with paternal anticipation bias"
+
+msgid "Sporadic"
+msgstr "Sporadic"
+
+msgid "Polygenic_inheritance"
+msgstr "Polygenic inheritance"
+
+msgid "Digenic_inheritanec"
+msgstr "Digenic inheritanec"
+
+msgid "Autosomal_dominant_inheritance_with_maternal_imprinting"
+msgstr "Autosomal dominant inheritance with maternal imprintin"
+
+msgid "Autosomal_dominant_germline_de_novo_mutation"
+msgstr "Autosomal dominant germline de novo mutation"

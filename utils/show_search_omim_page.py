@@ -168,9 +168,10 @@ def search_similar_disease(str_phenotypes, str_genes):
     dict_onto_term_synonym    = {}
     dict_onto_term_synonym_ja = {}
     dict_disease_definition   = {}
+    dict_inheritance          = {}
     dict_AnnotationHPONum     = {}
     dict_AnnotationHPOSumIC   = {}
-    sql_OMIM = u"select distinct OntoID, OntoTerm, OntoTermJa, Synonym, SynonymJa, DiseaseDefinition, AnnotationHPONum, AnnotationHPOSumIC from OMIM"
+    sql_OMIM = u"select distinct OntoID, OntoTerm, OntoTermJa, Synonym, SynonymJa, DiseaseDefinition, InheritanceTypeOf, AnnotationHPONum, AnnotationHPOSumIC from OMIM"
     cursor_OMIM = OBJ_MYSQL.cursor()
     cursor_OMIM.execute(sql_OMIM)
     values = cursor_OMIM.fetchall()
@@ -182,13 +183,15 @@ def search_similar_disease(str_phenotypes, str_genes):
         onto_term_synonym    = value[3]
         onto_term_synonym_ja = value[4]
         disease_definition   = (value[5]).encode('utf-8') if value[5] is not None else ""
-        AnnotationHPONum     = value[6]
-        AnnotationHPOSumIC   = value[7]
+        inheritance          = value[6]
+        AnnotationHPONum     = value[7]
+        AnnotationHPOSumIC   = value[8]
         dict_OntoTerm_omim[onto_id]        = onto_term
         dict_onto_term_ja[onto_id]         = onto_term_ja
         dict_onto_term_synonym[onto_id]    = onto_term_synonym
         dict_onto_term_synonym_ja[onto_id] = onto_term_synonym_ja
         dict_disease_definition[onto_id]   = disease_definition
+        dict_inheritance[onto_id]          = inheritance
         dict_AnnotationHPONum[onto_id]     = AnnotationHPONum
         dict_AnnotationHPOSumIC[onto_id]   = AnnotationHPOSumIC
         
@@ -342,6 +345,7 @@ def search_similar_disease(str_phenotypes, str_genes):
             dict_similar_diseases[onto_id_omim]['onto_term_omim_synonym']            = dict_onto_term_synonym[onto_id_omim] if onto_id_omim in dict_onto_term_synonym else ""
             dict_similar_diseases[onto_id_omim]['onto_term_omim_synonym_ja']         = dict_onto_term_synonym_ja[onto_id_omim] if onto_id_omim in dict_onto_term_synonym_ja else ""
             dict_similar_diseases[onto_id_omim]['onto_term_omim_disease_definition'] = dict_disease_definition[onto_id_omim] if onto_id_omim in dict_disease_definition else ""
+            dict_similar_diseases[onto_id_omim]['onto_term_omim_inheritance']        = dict_inheritance[onto_id_omim] if onto_id_omim in dict_inheritance else ""
 
     # DiseaseGeneOMIMテーブルから各疾患に関連するGenes/Variantsを取得
     dict_disease_gene = {}
@@ -431,6 +435,7 @@ def search_similar_disease(str_phenotypes, str_genes):
         dict_similar_disease['onto_term_omim_synonym']            = dict_similar_diseases[onto_id_omim]['onto_term_omim_synonym']
         dict_similar_disease['onto_term_omim_synonym_ja']         = dict_similar_diseases[onto_id_omim]['onto_term_omim_synonym_ja']
         dict_similar_disease['onto_term_omim_disease_definition'] = dict_similar_diseases[onto_id_omim]['onto_term_omim_disease_definition']
+        dict_similar_disease['onto_term_omim_inheritance']        = dict_similar_diseases[onto_id_omim]['onto_term_omim_inheritance']
         dict_similar_disease['onto_id_hp_index']          = ",".join(dict_similar_diseases[onto_id_omim]['onto_id_hp_index'])
         dict_similar_disease['onto_id_hp_disease']        = ",".join(dict_similar_diseases[onto_id_omim]['onto_id_hp_disease'])
         dict_similar_disease['onto_id_term_hp_disease']   = sorted(dict_similar_diseases[onto_id_omim]['onto_id_term_hp_disease'], key=lambda x: x['onto_term_hp_disease'])

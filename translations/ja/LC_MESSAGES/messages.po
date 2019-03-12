@@ -212,3 +212,75 @@ msgstr "疾患原因遺伝子リスト（Orphanetデータベースから取得�
 
 msgid "disease_TabGene_label_name"
 msgstr "遺伝子名"
+
+msgid "Autosomal_dominant_inheritance"
+msgstr "常染色体優性遺伝"
+
+msgid "Autosomal_recessive_inheritance"
+msgstr "常染色体劣性遺伝"
+
+msgid "X-linked_inheritance"
+msgstr "X連鎖遺伝"
+
+msgid "X-linked_recessive_inheritance"
+msgstr "X連鎖劣性遺伝"
+
+msgid "X-linked_dominant_inheritance"
+msgstr "X連鎖優性遺伝"
+
+msgid "Heterogeneous"
+msgstr "Heterogeneous"
+
+msgid "Multifactorial_inheritance"
+msgstr "多因子性遺伝"
+
+msgid "Mitochondrial_inheritance"
+msgstr "ミトコンドリア遺伝"
+
+msgid "Somatic_mutation"
+msgstr "体細胞突然変"
+
+msgid "Somatic_mosaicism"
+msgstr "体細胞モザイク"
+
+msgid "Autosomal_dominant_somatic_cell_mutation"
+msgstr "常染色体優性の体細胞突然変異"
+
+msgid "Y-linked_inheritance"
+msgstr "Yリンク型遺伝"
+
+msgid "Autosomal_dominant_contiguous_gene_syndrome"
+msgstr "常染色体優性連続遺伝子症候群"
+
+msgid "Contiguous_gene_syndrome"
+msgstr "連続遺伝子症候群"
+
+msgid "Sex-limited_autosomal_dominant"
+msgstr "性別限定常染色体優性"
+
+msgid "Familial_predisposition"
+msgstr "家族性素因"
+
+msgid "Male-limited_autosomal_dominant"
+msgstr "男性限定常染色体優性"
+
+msgid "Genetic_anticipation"
+msgstr "表現促進"
+
+msgid "Genetic_anticipation_with_paternal_anticipation_bias"
+msgstr "Genetic anticipation with paternal anticipation bias"
+
+msgid "Sporadic"
+msgstr "孤発性"
+
+msgid "Polygenic_inheritance"
+msgstr "ポリジーン遺伝"
+
+msgid "Digenic_inheritanec"
+msgstr "Digenic遺伝"
+
+msgid "Autosomal_dominant_inheritance_with_maternal_imprinting"
+msgstr "母体刷り込みを伴う常染色体優性遺伝"
+
+msgid "Autosomal_dominant_germline_de_novo_mutation"
+msgstr "常染色体優性生殖細胞突然変異"
