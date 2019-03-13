@@ -357,11 +357,6 @@
 		  <!-- Disease Information -->
 		  <tr>
 		    <td>
-                      <p style="margin-bottom:0.6em;"><font color="black">{{ dict_similar_disease['onto_term_ordo_disease_definition'] | safe }}</font>
-		        {% if (get_locale() == "ja" or get_locale() == "ja_JP") and dict_similar_disease['onto_term_ordo_disease_definition'] != "" %}
-			  <a href="https://translate.google.co.jp/?hl=ja#en/ja/{{ dict_similar_disease['onto_term_ordo_disease_definition'] | replace('/', '%2F') }}" target="_blank"><font color="#0431B4">&nbsp;&gt;&gt;&nbsp;{{ _('search_label_translate_google') }}</font></a>
-		        {% endif %}
-		      </p>
 		      <!-- Inheritance -->
 		      <p style="margin-bottom:0.6em;">
 			<!-- HP:0000006|Autosomal dominant inheritance -->
@@ -467,9 +462,20 @@
 
 		      </p>
 
-		      <!-- Out Resources -->
+		      <!-- Disease Definition -->
+                      <p style="margin-bottom:0.6em;"><font color="black">{{ dict_similar_disease['onto_term_ordo_disease_definition'] | safe }}</font>
+		        {% if (get_locale() == "ja" or get_locale() == "ja_JP") and dict_similar_disease['onto_term_ordo_disease_definition'] != "" %}
+			  <a href="https://translate.google.co.jp/?hl=ja#en/ja/{{ dict_similar_disease['onto_term_ordo_disease_definition'] | replace('/', '%2F') }}" target="_blank"><font color="#0431B4">&nbsp;&gt;&gt;&nbsp;{{ _('search_label_translate_google') }}</font></a>
+		        {% endif %}
+		      </p>
+
+		      <!-- External Resources -->
+		      <p style="margin-bottom:0.1em;line-height:1.8em;">
+		      <!-- link of Orphanet -->
 		      <a href="http://www.orpha.net/consor/cgi-bin/OC_Exp.php?Expert={{ dict_similar_disease['onto_id_ordo'] | replace('ORDO:', '') }}" target="_blank"><u><font color="#0431B4">{{ dict_similar_disease['onto_id_ordo'] | replace('ORDO:', 'Orphanet:') }}</font></u></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		      <!-- link of Google -->
 		      <a href="http://www.google.com/search?q={{ dict_similar_disease['onto_term_ordo'] }}&tbm=isch" target="_blank"><u><font color="#0431B4">{{ _('search_label_search_image_google') }}</font></u></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		      <!-- link of Case Reports -->
 		      <a href="{{ url_for_disease_casereport_page(dict_similar_disease['onto_id_ordo'], str_phenotypes, '', '1', '10') }}" target="_blank"><u><font color="#0431B4">{{ _('search_label_related_casereport') }}</font></u></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		      <!-- link of UR-DBMS -->
 		      {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
@@ -479,6 +485,12 @@
 			  {% endif %}
 	                {% endfor %}
 		      {% endif %}
+		      <!-- link of Gene Reviews -->
+		      {% for dict_reference_source in dict_similar_disease['reference_source'] %}
+		        {% if dict_reference_source['source'] == "GeneReviews" %}
+		          <a href="{{ dict_reference_source['link'] }}" target="_blank"><u><font color="#0431B4">Gene Reviews</font></u></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			{% endif %}
+	              {% endfor %}
 		      <!-- link of GTR -->
 		      {% set flg_UMLS_ini = 0 %}
 		      {% set flg_UMLS_num = 0 %}
@@ -496,6 +508,7 @@
 		          )
 			{% endif %}
 	              {% endfor %}
+                      </p>
 		    </td>
 		  </tr>
 		{% endfor %}
@@ -706,12 +719,6 @@
 		  <!-- Disease Information -->
 		  <tr>
 		    <td>
-		      <!-- Disease Definition -->
-                      <p style="margin-bottom:0.6em;"><font color="black">{{ dict_similar_disease_omim['onto_term_omim_disease_definition'] | safe }}</font>
-		        {% if (get_locale() == "ja" or get_locale() == "ja_JP") and dict_similar_disease_omim['onto_term_omim_disease_definition'] != "" %}
-			  <a href="https://translate.google.co.jp/?hl=ja#en/ja/{{ dict_similar_disease_omim['onto_term_omim_disease_definition'] | replace('/', '%2F') }}" target="_blank"><font color="#0431B4">&nbsp;&gt;&gt;&nbsp;{{ _('search_label_translate_google') }}</font></a>
-		        {% endif %}
-		      </p>
 		      <!-- Inheritance -->
 		      <p style="margin-bottom:0.6em;">
 			<!-- HP:0000006|Autosomal dominant inheritance -->
@@ -815,9 +822,15 @@
 
 		      {% endfor %}
 
-		      <br>
+		      </p>
+		      <!-- Disease Definition -->
+                      <p style="margin-bottom:0.6em;"><font color="black">{{ dict_similar_disease_omim['onto_term_omim_disease_definition'] | safe }}</font>
+		        {% if (get_locale() == "ja" or get_locale() == "ja_JP") and dict_similar_disease_omim['onto_term_omim_disease_definition'] != "" %}
+			  <a href="https://translate.google.co.jp/?hl=ja#en/ja/{{ dict_similar_disease_omim['onto_term_omim_disease_definition'] | replace('/', '%2F') }}" target="_blank"><font color="#0431B4">&nbsp;&gt;&gt;&nbsp;{{ _('search_label_translate_google') }}</font></a>
+		        {% endif %}
 		      </p>
 		      <!-- External Resources -->
+		      <p style="margin-bottom:0.1em;line-height:1.8em;">
 		      <!-- links of OMIM and Googles -->
 		      <a href="https://www.omim.org/entry/{{ dict_similar_disease_omim['onto_id_omim'] | replace('OMIM:', '') }}" target="_blank"><u><font color="#0431B4">{{dict_similar_disease_omim['onto_id_omim']}}</font></u></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		      <a href="http://www.google.com/search?q={{ dict_similar_disease_omim['onto_term_omim'] }}&tbm=isch" target="_blank"><u><font color="#0431B4">{{ _('search_label_search_image_google') }}</font></u></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -829,6 +842,12 @@
 			  {% endif %}
 	                {% endfor %}
 		      {% endif %}
+		      <!-- link of Gene Reviews -->
+		      {% for dict_reference_source in dict_similar_disease_omim['reference_source'] %}
+		        {% if dict_reference_source['source'] == "GeneReviews" %}
+		          <a href="{{ dict_reference_source['link'] }}" target="_blank"><u><font color="#0431B4">Gene Reviews</font></u></a><br>
+			{% endif %}
+	              {% endfor %}
 		      <!-- link of GTR -->
 		      {% set flg_UMLS_ini = 0 %}
 		      {% set flg_UMLS_num = 0 %}
@@ -847,6 +866,7 @@
 			{% endif %}
 	              {% endfor %}
 		      <!--a href="{{ url_for_disease_casereport_page(dict_similar_disease_omim['onto_id_omim'], str_phenotypes, '', '1', '10') }}" target="_blank"><u><font color="#0431B4">{{ _('search_label_related_casereport') }}</font></u></a-->
+		      </p>
 		    </td>
 		  </tr>
 		{% endfor %}
