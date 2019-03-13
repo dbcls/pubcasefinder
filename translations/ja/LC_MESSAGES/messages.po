@@ -114,6 +114,9 @@ msgstr "対応する徴候・症状"
 msgid "search_label_CausativeGene"
 msgstr "疾患原因遺伝子"
 
+msgid "search_label_Inheritance"
+msgstr "遺伝形式"
+
 msgid "search_label_rank"
 msgstr "順位"
 

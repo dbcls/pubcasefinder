@@ -250,7 +250,8 @@
 		  <th>
 		    <div align="right">
 		      <span class="label label-primary"><font size="3"><b>{{ _('search_label_MatchedPhenotype') }}</b></font></span>&nbsp;
-		      <span class="label label-default"><font size="3"><b>{{ _('search_label_CausativeGene') }}</b></font></span><br>
+		      <span class="label label-default"><font size="3"><b>{{ _('search_label_CausativeGene') }}</b></font></span>&nbsp;
+		      <span class="label label-success"><font size="3"><b>{{ _('search_label_Inheritance') }}</b></font></span><br>
 		    </div>
 		  </th>
 		</tr>
@@ -361,6 +362,112 @@
 			  <a href="https://translate.google.co.jp/?hl=ja#en/ja/{{ dict_similar_disease['onto_term_ordo_disease_definition'] | replace('/', '%2F') }}" target="_blank"><font color="#0431B4">&nbsp;&gt;&gt;&nbsp;{{ _('search_label_translate_google') }}</font></a>
 		        {% endif %}
 		      </p>
+		      <!-- Inheritance -->
+		      <p style="margin-bottom:0.6em;">
+			<!-- HP:0000006|Autosomal dominant inheritance -->
+			<!-- HP:0000007|Autosomal recessive inheritance -->
+			<!-- HP:0001417|X-linked inheritance -->
+			<!-- HP:0001419|X-linked recessive inheritance -->
+			<!-- HP:0001423|X-linked dominant inheritance -->
+			<!-- HP:0001425|Heterogeneous -->
+			<!-- HP:0001426|Multifactorial inheritance -->
+			<!-- HP:0001427|Mitochondrial inheritance -->
+			<!-- HP:0001428|Somatic mutation -->
+			<!-- HP:0001442|Somatic mosaicism -->
+			<!-- HP:0001444|Autosomal dominant somatic cell mutation -->
+			<!-- HP:0001450|Y-linked inheritance -->
+			<!-- HP:0001452|Autosomal dominant contiguous gene syndrome -->
+			<!-- HP:0001466|Contiguous gene syndrome -->
+			<!-- HP:0001470|Sex-limited autosomal dominant -->
+			<!-- HP:0001472|Familial predisposition -->
+			<!-- HP:0001475|Male-limited autosomal dominant -->
+			<!-- HP:0003743|Genetic anticipation -->
+			<!-- HP:0003744|Genetic anticipation with paternal anticipation bias -->
+			<!-- HP:0003745|Sporadic -->
+			<!-- HP:0010982|Polygenic inheritance -->
+			<!-- HP:0010984|Digenic inheritanec -->
+			<!-- HP:0012275|Autosomal dominant inheritance with maternal imprinting -->
+			<!-- HP:0025352|Autosomal dominant germline de novo mutation -->
+		      {% set list_inheritance = dict_similar_disease['onto_term_ordo_inheritance'].split(' | ') %}
+		      {% for inheritance in list_inheritance %}
+		        {% if inheritance == "HP:0000006" %}
+			  <span class="label label-success"><font size="3"><a target="_blank" style="color:white;" href="https://hpo.jax.org/app/browse/term/HP:0000006">{{ _('Autosomal_dominant_inheritance') }}</a></font></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			{% endif %}
+		        {% if inheritance == "HP:0000007" %}
+			  <span class="label label-success"><font size="3"><a target="_blank" style="color:white;" href="https://hpo.jax.org/app/browse/term/HP:0000007">{{ _('Autosomal_recessive_inheritance') }}</a></font></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			{% endif %}
+		        {% if inheritance == "HP:0001417" %}
+			  <span class="label label-success"><font size="3"><a target="_blank" style="color:white;" href="https://hpo.jax.org/app/browse/term/HP:0001417">{{ _('X-linked_inheritance') }}</a></font></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			{% endif %}
+		        {% if inheritance == "HP:0001419" %}
+			  <span class="label label-success"><font size="3"><a target="_blank" style="color:white;" href="https://hpo.jax.org/app/browse/term/HP:0001419">{{ _('X-linked_recessive_inheritance') }}</a></font></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			{% endif %}
+		        {% if inheritance == "HP:0001423" %}
+			  <span class="label label-success"><font size="3"><a target="_blank" style="color:white;" href="https://hpo.jax.org/app/browse/term/HP:0001423">{{ _('X-linked_dominant_inheritance') }}</a></font></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			{% endif %}
+		        {% if inheritance == "HP:0001425" %}
+			  <span class="label label-success"><font size="3"><a target="_blank" style="color:white;" href="https://hpo.jax.org/app/browse/term/HP:0001425">{{ _('Heterogeneous') }}</a></font></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			{% endif %}
+		        {% if inheritance == "HP:0001426" %}
+			  <span class="label label-success"><font size="3"><a target="_blank" style="color:white;" href="https://hpo.jax.org/app/browse/term/HP:0001426">{{ _('Multifactorial_inheritance') }}</a></font></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			{% endif %}
+		        {% if inheritance == "HP:0001427" %}
+			  <span class="label label-success"><font size="3"><a target="_blank" style="color:white;" href="https://hpo.jax.org/app/browse/term/HP:0001427">{{ _('Mitochondrial_inheritance') }}</a></font></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			{% endif %}
+		        {% if inheritance == "HP:0001428" %}
+			  <span class="label label-success"><font size="3"><a target="_blank" style="color:white;" href="https://hpo.jax.org/app/browse/term/HP:0001428">{{ _('Somatic_mutation') }}</a></font></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			{% endif %}
+		        {% if inheritance == "HP:0001442" %}
+			  <span class="label label-success"><font size="3"><a target="_blank" style="color:white;" href="https://hpo.jax.org/app/browse/term/HP:0001442">{{ _('Somatic_mosaicism') }}</a></font></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			{% endif %}
+		        {% if inheritance == "HP:0001444" %}
+			  <span class="label label-success"><font size="3"><a target="_blank" style="color:white;" href="https://hpo.jax.org/app/browse/term/HP:0001444">{{ _('Autosomal_dominant_somatic_cell_mutation') }}</a></font></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			{% endif %}
+		        {% if inheritance == "HP:0001450" %}
+			  <span class="label label-success"><font size="3"><a target="_blank" style="color:white;" href="https://hpo.jax.org/app/browse/term/HP:0001450">{{ _('Y-linked_inheritance') }}</a></font></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			{% endif %}
+		        {% if inheritance == "HP:0001452" %}
+			  <span class="label label-success"><font size="3"><a target="_blank" style="color:white;" href="https://hpo.jax.org/app/browse/term/HP:0001452">{{ _('Autosomal_dominant_contiguous_gene_syndrome') }}</a></font></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			{% endif %}
+		        {% if inheritance == "HP:0001466" %}
+			  <span class="label label-success"><font size="3"><a target="_blank" style="color:white;" href="https://hpo.jax.org/app/browse/term/HP:0001466">{{ _('Contiguous_gene_syndrome') }}</a></font></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			{% endif %}
+		        {% if inheritance == "HP:0001470" %}
+			  <span class="label label-success"><font size="3"><a target="_blank" style="color:white;" href="https://hpo.jax.org/app/browse/term/HP:0001470">{{ _('Sex-limited_autosomal_dominant') }}</a></font></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			{% endif %}
+		        {% if inheritance == "HP:0001472" %}
+			  <span class="label label-success"><font size="3"><a target="_blank" style="color:white;" href="https://hpo.jax.org/app/browse/term/HP:0001472">{{ _('Familial_predisposition') }}</a></font></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			{% endif %}
+		        {% if inheritance == "HP:0001475" %}
+			  <span class="label label-success"><font size="3"><a target="_blank" style="color:white;" href="https://hpo.jax.org/app/browse/term/HP:0001475">{{ _('Male-limited_autosomal_dominant') }}</a></font></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			{% endif %}
+		        {% if inheritance == "HP:0003743" %}
+			  <span class="label label-success"><font size="3"><a target="_blank" style="color:white;" href="https://hpo.jax.org/app/browse/term/HP:0003743">{{ _('Genetic_anticipation') }}</a></font></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			{% endif %}
+		        {% if inheritance == "HP:0003744" %}
+			  <span class="label label-success"><font size="3"><a target="_blank" style="color:white;" href="https://hpo.jax.org/app/browse/term/HP:0003744">{{ _('Genetic_anticipation_with_paternal_anticipation_bias') }}</a></font></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			{% endif %}
+		        {% if inheritance == "HP:0003745" %}
+			  <span class="label label-success"><font size="3"><a target="_blank" style="color:white;" href="https://hpo.jax.org/app/browse/term/HP:0003745">{{ _('Sporadic') }}</a></font></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			{% endif %}
+		        {% if inheritance == "HP:0010982" %}
+			  <span class="label label-success"><font size="3"><a target="_blank" style="color:white;" href="https://hpo.jax.org/app/browse/term/HP:0010982">{{ _('Polygenic_inheritance') }}</a></font></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			{% endif %}
+		        {% if inheritance == "HP:0010984" %}
+			  <span class="label label-success"><font size="3"><a target="_blank" style="color:white;" href="https://hpo.jax.org/app/browse/term/HP:0010984">{{ _('Digenic_inheritanec') }}</a></font></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			{% endif %}
+		        {% if inheritance == "HP:0012275" %}
+			  <span class="label label-success"><font size="3"><a target="_blank" style="color:white;" href="https://hpo.jax.org/app/browse/term/HP:0012275">{{ _('Autosomal_dominant_inheritance_with_maternal_imprinting') }}</a></font></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			{% endif %}
+		        {% if inheritance == "HP:0025352" %}
+			  <span class="label label-success"><font size="3"><a target="_blank" style="color:white;" href="https://hpo.jax.org/app/browse/term/HP:0025352">{{ _('Autosomal_dominant_germline_de_novo_mutation') }}</a></font></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			{% endif %}
+
+		      {% endfor %}
+
+		      </p>
+
+		      <!-- Out Resources -->
 		      <a href="http://www.orpha.net/consor/cgi-bin/OC_Exp.php?Expert={{ dict_similar_disease['onto_id_ordo'] | replace('ORDO:', '') }}" target="_blank"><u><font color="#0431B4">{{ dict_similar_disease['onto_id_ordo'] | replace('ORDO:', 'Orphanet:') }}</font></u></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		      <a href="http://www.google.com/search?q={{ dict_similar_disease['onto_term_ordo'] }}&tbm=isch" target="_blank"><u><font color="#0431B4">{{ _('search_label_search_image_google') }}</font></u></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		      <a href="{{ url_for_disease_casereport_page(dict_similar_disease['onto_id_ordo'], str_phenotypes, '', '1', '10') }}" target="_blank"><u><font color="#0431B4">{{ _('search_label_related_casereport') }}</font></u></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -426,14 +533,7 @@
           </tr>
         </table>
         <!-- END: Pagination lower_part -->
-
-
-
 	</div>
-
-
-
-
 
 
         <!-- Start: OMIM tab -->
@@ -547,7 +647,8 @@
 		  <th>
 		    <div align="right">
 		      <span class="label label-primary"><font size="3"><b>{{ _('search_label_MatchedPhenotype') }}</b></font></span>&nbsp;
-		      <span class="label label-default"><font size="3"><b>{{ _('search_label_CausativeGene') }}</b></font></span><br>
+		      <span class="label label-default"><font size="3"><b>{{ _('search_label_CausativeGene') }}</b></font></span>&nbsp;
+		      <span class="label label-success"><font size="3"><b>{{ _('search_label_Inheritance') }}</b></font></span><br>
 		    </div>
 		  </th>
 		</tr>
@@ -611,10 +712,6 @@
 			  <a href="https://translate.google.co.jp/?hl=ja#en/ja/{{ dict_similar_disease_omim['onto_term_omim_disease_definition'] | replace('/', '%2F') }}" target="_blank"><font color="#0431B4">&nbsp;&gt;&gt;&nbsp;{{ _('search_label_translate_google') }}</font></a>
 		        {% endif %}
 		      </p>
-<!--		    </td>
-		  </tr>
-		  <tr>
-		    <td>-->
 		      <!-- Inheritance -->
 		      <p style="margin-bottom:0.6em;">
 			<!-- HP:0000006|Autosomal dominant inheritance -->
@@ -720,10 +817,6 @@
 
 		      <br>
 		      </p>
-<!--		    </td>
-		  </tr>
-		  <tr>
-		    <td> -->
 		      <!-- External Resources -->
 		      <!-- links of OMIM and Googles -->
 		      <a href="https://www.omim.org/entry/{{ dict_similar_disease_omim['onto_id_omim'] | replace('OMIM:', '') }}" target="_blank"><u><font color="#0431B4">{{dict_similar_disease_omim['onto_id_omim']}}</font></u></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

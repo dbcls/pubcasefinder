@@ -114,6 +114,9 @@ msgstr "<b>Matched Phenotype</b>"
 msgid "search_label_CausativeGene"
 msgstr "<b>Causative Gene</b>"
 
+msgid "search_label_Inheritance"
+msgstr "<b>Modes of Inheritance</b>"
+
 msgid "search_label_rank"
 msgstr "Rank"
 
