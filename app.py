@@ -196,6 +196,7 @@ def REST_API_search_phenotypes_genes(phenotypes, genes, page, size):
         size_orphanet = "10"
         size_omim     = "10"
         active_tab    = "orphanet"
+        #active_tab    = "omim"
         
         list_pages = page.split(",")
         if len(list_pages) == 2:
@@ -268,6 +269,7 @@ def REST_API_search_phenotypes(phenotypes, page, size):
         size_orphanet = 10
         size_omim     = 10
         active_tab    = "orphanet"
+        #active_tab    = "omim"
 
         list_pages = page.split(",")
         if len(list_pages) == 2:
@@ -340,6 +342,7 @@ def REST_API_search_genes(genes, page, size):
         size_orphanet = "10"
         size_omim     = "10"
         active_tab    = "orphanet"
+        #active_tab    = "omim"
 
         list_pages = page.split(",")
         if len(list_pages) == 2:
@@ -412,6 +415,7 @@ def REST_API_search_none(page, size):
         size_orphanet = "10"
         size_omim     = "10"
         active_tab    = "orphanet"
+        #active_tab    = "omim"
 
         list_pages = page.split(",")
         if len(list_pages) == 2:
@@ -482,7 +486,8 @@ def search_POST():
         #size_orphanet = request.form['changesize_selector_orphanet']
         #size_omim = request.form['changesize_selector_omim']
         #size = size_orphanet + ',' + size_omim
-        size = '10,10'
+        #size = '10,10'
+        size = '10,10,omim'
 
         # requestオブジェクトからクエリのphenotypesを取得
         phenotypes = request.form['str_phenotypes']

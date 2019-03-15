@@ -85,7 +85,7 @@
 			  <tr>
 			    <td>
 			      {{ _('search_share_modal_label_link') }}: <br>
-			      <input style="width:500px;" type="text" id="share_link" value="https://pubcasefinder.dbcls.jp/search_disease/phenotype:{{ str_phenotypes }}/gene:{{ str_genes}}/page:1,1/size:10,10" readonly>
+			      <input style="width:500px;" type="text" id="share_link" value="https://pubcasefinder.dbcls.jp/search_disease/phenotype:{{ str_phenotypes }}/gene:{{ str_genes}}/page:1,1/size:10,10,omim" readonly>
 			    </td>
 			  </tr>
 			  <tr><td>&nbsp;</td></tr>
@@ -93,7 +93,7 @@
 			    <!-- buttonでsubmitさせない https://qiita.com/kazu56/items/b2e9c15942e04a6ffda9  -->
 			    <td align="left" valign="bottom">
 			      <button type="button" class="btn btn-info" onclick="copyToClipboard()">{{ _('search_share_modal_button_copy') }}</button>
-			      <button type="button" class="btn btn-info" onclick="location.href='mailto:?body=https://pubcasefinder.dbcls.jp/search_disease/phenotype:{{ str_phenotypes }}/gene:{{ str_genes}}/page:1,1/size:10,10'">{{ _('search_share_modal_button_mail') }}</button>
+			      <button type="button" class="btn btn-info" onclick="location.href='mailto:?body=https://pubcasefinder.dbcls.jp/search_disease/phenotype:{{ str_phenotypes }}/gene:{{ str_genes}}/page:1,1/size:10,10,omim'">{{ _('search_share_modal_button_mail') }}</button>
 			    </td>
 			  </tr>
 			</table>
@@ -124,11 +124,11 @@
         <div class="panel-heading">
           <ul class="nav nav-tabs">
 	    {% if active_tab == "orphanet" %}
-            <li class="active"><a href="#tab1default" data-toggle="tab"><div width="100" align="center">{{ _('search_tab_Orphanet') }}&nbsp;&nbsp;{{ '{:,.0f}'.format(total_hit) }} {{ _('search_label_disease') }}</div></a></li>
             <li><a href="#tab2default" data-toggle="tab"><div width="100" align="center">{{ _('search_tab_OMIM') }}&nbsp;&nbsp;{{ '{:,.0f}'.format(total_hit_omim) }} {{ _('search_label_disease') }}</div></a></li>
+            <li class="active"><a href="#tab1default" data-toggle="tab"><div width="100" align="center">{{ _('search_tab_Orphanet') }}&nbsp;&nbsp;{{ '{:,.0f}'.format(total_hit) }} {{ _('search_label_disease') }}</div></a></li>
 	    {% else %}
-            <li><a href="#tab1default" data-toggle="tab"><div width="100" align="center">{{ _('search_tab_Orphanet') }}&nbsp;&nbsp;{{ '{:,.0f}'.format(total_hit) }} {{ _('search_label_disease') }}</div></a></li>
             <li class="active"><a href="#tab2default" data-toggle="tab"><div width="100" align="center">{{ _('search_tab_OMIM') }}&nbsp;&nbsp;{{ '{:,.0f}'.format(total_hit_omim) }} {{ _('search_label_disease') }}</div></a></li>
+            <li><a href="#tab1default" data-toggle="tab"><div width="100" align="center">{{ _('search_tab_Orphanet') }}&nbsp;&nbsp;{{ '{:,.0f}'.format(total_hit) }} {{ _('search_label_disease') }}</div></a></li>
 	    {% endif %}
           </ul>
         </div>
@@ -136,14 +136,13 @@
         <div class="panel-body">
           <div class="tab-content">
 
+
         <!-- Start: Orphanet tab -->
 	{% if active_tab == "orphanet" %}
         <div class="tab-pane fade in active" id="tab1default">
 	{% else %}
         <div class="tab-pane fade" id="tab1default">
 	{% endif %}
-
-
 
 
 	  <div clas="row">
