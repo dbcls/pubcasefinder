@@ -799,9 +799,9 @@ def REST_API_download_results_search_phenotypes_genes(phenotypes, genes, page, s
         list_dict_similar_disease_pagination, pagination, total_hit = show_search_page(phenotypes_remove_ja, genes, page, '1000000')
 
         # Python 3系 https://stackoverflow.com/questions/13120127/how-can-i-use-io-stringio-with-the-csv-module/13120279
-        #f = StringIO()
+        f = StringIO()
         # Python 2系
-        f = BytesIO()
+        #f = BytesIO()
         writer = csv.writer(f, delimiter="\t", quotechar='"', quoting=csv.QUOTE_MINIMAL, lineterminator="\n")
         ## out header
         writer.writerow(['# Query(Phenotypes): ' + phenotypes])
@@ -825,7 +825,7 @@ def REST_API_download_results_search_phenotypes_genes(phenotypes, genes, page, s
                     list_causative_gene.append(dict_orpha_number_symbol_synonym['symbol'])
                     prev_id_entrez = dict_orpha_number_symbol_synonym['entrez_id']
 
-            writer.writerow([rank, round(dict_similar_disease['match_score'],4), dict_similar_disease['onto_id_ordo'], dict_similar_disease['onto_term_ordo'].encode('utf-8'), u','.join(list_matched_phenotype).encode('utf-8'), u','.join(list_causative_gene).encode('utf-8')])
+            writer.writerow([rank, round(dict_similar_disease['match_score'],4), dict_similar_disease['onto_id_ordo'], dict_similar_disease['onto_term_ordo'], u','.join(list_matched_phenotype), u','.join(list_causative_gene)])
             rank += 1
 
         res = make_response()
@@ -849,9 +849,9 @@ def REST_API_download_results_search_phenotypes(phenotypes, page, size):
         list_dict_similar_disease_pagination, pagination, total_hit = show_search_page(phenotypes_remove_ja, genes, page, '1000000')
 
         # Python 3系 https://stackoverflow.com/questions/13120127/how-can-i-use-io-stringio-with-the-csv-module/13120279
-        #f = StringIO()
+        f = StringIO()
         # Python 2系
-        f = BytesIO()
+        #f = BytesIO()
         writer = csv.writer(f, delimiter="\t", quotechar='"', quoting=csv.QUOTE_MINIMAL, lineterminator="\n")
         ## out header
         writer.writerow(['# Query(Phenotypes): ' + phenotypes])
@@ -875,7 +875,7 @@ def REST_API_download_results_search_phenotypes(phenotypes, page, size):
                     list_causative_gene.append(dict_orpha_number_symbol_synonym['symbol'])
                     prev_id_entrez = dict_orpha_number_symbol_synonym['entrez_id']
 
-            writer.writerow([rank, round(dict_similar_disease['match_score'],4), dict_similar_disease['onto_id_ordo'], dict_similar_disease['onto_term_ordo'].encode('utf-8'), u','.join(list_matched_phenotype).encode('utf-8'), u','.join(list_causative_gene).encode('utf-8')])
+            writer.writerow([rank, round(dict_similar_disease['match_score'],4), dict_similar_disease['onto_id_ordo'], dict_similar_disease['onto_term_ordo'], u','.join(list_matched_phenotype), u','.join(list_causative_gene)])
             rank += 1
 
         res = make_response()
@@ -899,9 +899,9 @@ def REST_API_download_results_search_genes(genes, page, size):
         list_dict_similar_disease_pagination, pagination, total_hit = show_search_page(phenotypes_remove_ja, genes, page, '1000000')
 
         # Python 3系 https://stackoverflow.com/questions/13120127/how-can-i-use-io-stringio-with-the-csv-module/13120279
-        #f = StringIO()
+        f = StringIO()
         # Python 2系
-        f = BytesIO()
+        #f = BytesIO()
         writer = csv.writer(f, delimiter="\t", quotechar='"', quoting=csv.QUOTE_MINIMAL, lineterminator="\n")
         ## out header
         writer.writerow(['# Query(Phenotypes): ' + phenotypes])
@@ -925,7 +925,7 @@ def REST_API_download_results_search_genes(genes, page, size):
                     list_causative_gene.append(dict_orpha_number_symbol_synonym['symbol'])
                     prev_id_entrez = dict_orpha_number_symbol_synonym['entrez_id']
 
-            writer.writerow([rank, round(dict_similar_disease['match_score'],4), dict_similar_disease['onto_id_ordo'], dict_similar_disease['onto_term_ordo'].encode('utf-8'), u','.join(list_matched_phenotype).encode('utf-8'), u','.join(list_causative_gene).encode('utf-8')])
+            writer.writerow([rank, round(dict_similar_disease['match_score'],4), dict_similar_disease['onto_id_ordo'], dict_similar_disease['onto_term_ordo'], u','.join(list_matched_phenotype), u','.join(list_causative_gene)])
             rank += 1
 
         res = make_response()
@@ -950,9 +950,9 @@ def REST_API_download_results_search_none(page, size):
         list_dict_similar_disease_pagination, pagination, total_hit = show_search_page(phenotypes_remove_ja, genes, page, '1000000')
 
         # Python 3系 https://stackoverflow.com/questions/13120127/how-can-i-use-io-stringio-with-the-csv-module/13120279
-        #f = StringIO()
+        f = StringIO()
         # Python 2系
-        f = BytesIO()
+        #f = BytesIO()
         writer = csv.writer(f, delimiter="\t", quotechar='"', quoting=csv.QUOTE_MINIMAL, lineterminator="\n")
         ## out header
         writer.writerow(['# Query(Phenotypes): ' + phenotypes])
@@ -976,7 +976,7 @@ def REST_API_download_results_search_none(page, size):
                     list_causative_gene.append(dict_orpha_number_symbol_synonym['symbol'])
                     prev_id_entrez = dict_orpha_number_symbol_synonym['entrez_id']
 
-            writer.writerow([rank, round(dict_similar_disease['match_score'],4), dict_similar_disease['onto_id_ordo'], dict_similar_disease['onto_term_ordo'].encode('utf-8'), u','.join(list_matched_phenotype).encode('utf-8'), u','.join(list_causative_gene).encode('utf-8')])
+            writer.writerow([rank, round(dict_similar_disease['match_score'],4), dict_similar_disease['onto_id_ordo'], dict_similar_disease['onto_term_ordo'], u','.join(list_matched_phenotype), u','.join(list_causative_gene)])
             rank += 1
 
         res = make_response()
@@ -1002,9 +1002,9 @@ def REST_API_download_results_search_omim_phenotypes_genes(phenotypes, genes, pa
         list_dict_similar_disease_pagination, pagination, total_hit = show_search_omim_page(phenotypes_remove_ja, genes, page, '1000000')
 
         # Python 3系 https://stackoverflow.com/questions/13120127/how-can-i-use-io-stringio-with-the-csv-module/13120279
-        #f = StringIO()
+        f = StringIO()
         # Python 2系
-        f = BytesIO()
+        #f = BytesIO()
         writer = csv.writer(f, delimiter="\t", quotechar='"', quoting=csv.QUOTE_MINIMAL, lineterminator="\n")
         ## out header
         writer.writerow(['# Query(Phenotypes): ' + phenotypes])
@@ -1028,7 +1028,7 @@ def REST_API_download_results_search_omim_phenotypes_genes(phenotypes, genes, pa
                     list_causative_gene.append(dict_omim_symbol_synonym['symbol'])
                     prev_id_entrez = dict_omim_symbol_synonym['entrez_id']
 
-            writer.writerow([rank, round(dict_similar_disease['match_score'],4), dict_similar_disease['onto_id_omim'], dict_similar_disease['onto_term_omim'].encode('utf-8'), u','.join(list_matched_phenotype).encode('utf-8'), u','.join(list_causative_gene).encode('utf-8')])
+            writer.writerow([rank, round(dict_similar_disease['match_score'],4), dict_similar_disease['onto_id_omim'], dict_similar_disease['onto_term_omim'], u','.join(list_matched_phenotype), u','.join(list_causative_gene)])
             rank += 1
 
         res = make_response()
@@ -1052,9 +1052,9 @@ def REST_API_download_results_search_omim_phenotypes(phenotypes, page, size):
         list_dict_similar_disease_pagination, pagination, total_hit = show_search_omim_page(phenotypes_remove_ja, genes, page, '1000000')
 
         # Python 3系 https://stackoverflow.com/questions/13120127/how-can-i-use-io-stringio-with-the-csv-module/13120279
-        #f = StringIO()
+        f = StringIO()
         # Python 2系
-        f = BytesIO()
+        #f = BytesIO()
         writer = csv.writer(f, delimiter="\t", quotechar='"', quoting=csv.QUOTE_MINIMAL, lineterminator="\n")
         ## out header
         writer.writerow(['# Query(Phenotypes): ' + phenotypes])
@@ -1078,7 +1078,7 @@ def REST_API_download_results_search_omim_phenotypes(phenotypes, page, size):
                     list_causative_gene.append(dict_omim_symbol_synonym['symbol'])
                     prev_id_entrez = dict_omim_symbol_synonym['entrez_id']
 
-            writer.writerow([rank, round(dict_similar_disease['match_score'],4), dict_similar_disease['onto_id_omim'], dict_similar_disease['onto_term_omim'].encode('utf-8'), u','.join(list_matched_phenotype).encode('utf-8'), u','.join(list_causative_gene).encode('utf-8')])
+            writer.writerow([rank, round(dict_similar_disease['match_score'],4), dict_similar_disease['onto_id_omim'], dict_similar_disease['onto_term_omim'], u','.join(list_matched_phenotype), u','.join(list_causative_gene)])
             rank += 1
 
         res = make_response()
@@ -1102,9 +1102,9 @@ def REST_API_download_results_search_omim_genes(genes, page, size):
         list_dict_similar_disease_pagination, pagination, total_hit = show_search_omim_page(phenotypes_remove_ja, genes, page, '1000000')
 
         # Python 3系 https://stackoverflow.com/questions/13120127/how-can-i-use-io-stringio-with-the-csv-module/13120279
-        #f = StringIO()
+        f = StringIO()
         # Python 2系
-        f = BytesIO()
+        #f = BytesIO()
         writer = csv.writer(f, delimiter="\t", quotechar='"', quoting=csv.QUOTE_MINIMAL, lineterminator="\n")
         ## out header
         writer.writerow(['# Query(Phenotypes): ' + phenotypes])
@@ -1128,7 +1128,7 @@ def REST_API_download_results_search_omim_genes(genes, page, size):
                     list_causative_gene.append(dict_omim_symbol_synonym['symbol'])
                     prev_id_entrez = dict_omim_symbol_synonym['entrez_id']
 
-            writer.writerow([rank, round(dict_similar_disease['match_score'],4), dict_similar_disease['onto_id_omim'], dict_similar_disease['onto_term_omim'].encode('utf-8'), u','.join(list_matched_phenotype).encode('utf-8'), u','.join(list_causative_gene).encode('utf-8')])
+            writer.writerow([rank, round(dict_similar_disease['match_score'],4), dict_similar_disease['onto_id_omim'], dict_similar_disease['onto_term_omim'], u','.join(list_matched_phenotype), u','.join(list_causative_gene)])
             rank += 1
 
         res = make_response()
@@ -1153,9 +1153,9 @@ def REST_API_download_results_search_omim_none(page, size):
         list_dict_similar_disease_pagination, pagination, total_hit = show_search_omim_page(phenotypes_remove_ja, genes, page, '1000000')
 
         # Python 3系 https://stackoverflow.com/questions/13120127/how-can-i-use-io-stringio-with-the-csv-module/13120279
-        #f = StringIO()
+        f = StringIO()
         # Python 2系
-        f = BytesIO()
+        #f = BytesIO()
         writer = csv.writer(f, delimiter="\t", quotechar='"', quoting=csv.QUOTE_MINIMAL, lineterminator="\n")
         ## out header
         writer.writerow(['# Query(Phenotypes): ' + phenotypes])
@@ -1179,7 +1179,7 @@ def REST_API_download_results_search_omim_none(page, size):
                     list_causative_gene.append(dict_omim_symbol_synonym['symbol'])
                     prev_id_entrez = dict_omim_symbol_synonym['entrez_id']
 
-            writer.writerow([rank, round(dict_similar_disease['match_score'],4), dict_similar_disease['onto_id_omim'], dict_similar_disease['onto_term_omim'].encode('utf-8'), u','.join(list_matched_phenotype).encode('utf-8'), u','.join(list_causative_gene).encode('utf-8')])
+            writer.writerow([rank, round(dict_similar_disease['match_score'],4), dict_similar_disease['onto_id_omim'], dict_similar_disease['onto_term_omim'], u','.join(list_matched_phenotype), u','.join(list_causative_gene)])
             rank += 1
 
         res = make_response()
@@ -1207,9 +1207,9 @@ def REST_API_download_summary_phenotypes_genes(phenotypes, genes, page, size):
         list_dict_similar_disease_pagination_omim, pagination_omim, total_hit_omim = show_search_omim_page(phenotypes_remove_ja, genes, page, '10')
         
         # Python 3系 https://stackoverflow.com/questions/13120127/how-can-i-use-io-stringio-with-the-csv-module/13120279
-        #f = StringIO()
+        f = StringIO()
         # Python 2系
-        f = BytesIO()
+        #f = BytesIO()
         writer = csv.writer(f, delimiter="\t", quotechar='"', quoting=csv.QUOTE_MINIMAL, lineterminator="\n")
         ## out header
         list_phenotypes_remove_ja = []
@@ -1242,7 +1242,7 @@ def REST_API_download_summary_phenotypes_genes(phenotypes, genes, page, size):
                     list_causative_gene.append(dict_omim_symbol_synonym['symbol'])
                     prev_id_entrez = dict_omim_symbol_synonym['entrez_id']
 
-            writer.writerow([rank, round(dict_similar_disease['match_score'],4), dict_similar_disease['onto_id_ordo'], dict_similar_disease['onto_term_ordo'].encode('utf-8'), u','.join(list_matched_phenotype).encode('utf-8'), u','.join(list_causative_gene).encode('utf-8')])
+            writer.writerow([rank, round(dict_similar_disease['match_score'],4), dict_similar_disease['onto_id_ordo'], dict_similar_disease['onto_term_ordo'], u','.join(list_matched_phenotype), u','.join(list_causative_gene)])
             rank += 1
 
         # OMIMの結果を出力
@@ -1265,7 +1265,7 @@ def REST_API_download_summary_phenotypes_genes(phenotypes, genes, page, size):
                     list_causative_gene.append(dict_omim_symbol_synonym['symbol'])
                     prev_id_entrez = dict_omim_symbol_synonym['entrez_id']
 
-            writer.writerow([rank, round(dict_similar_disease['match_score'],4), dict_similar_disease['onto_id_omim'], dict_similar_disease['onto_term_omim'].encode('utf-8'), u','.join(list_matched_phenotype).encode('utf-8'), u','.join(list_causative_gene).encode('utf-8')])
+            writer.writerow([rank, round(dict_similar_disease['match_score'],4), dict_similar_disease['onto_id_omim'], dict_similar_disease['onto_term_omim'], u','.join(list_matched_phenotype), u','.join(list_causative_gene)])
             rank += 1
 
         res = make_response()
@@ -1291,9 +1291,9 @@ def REST_API_download_summary_phenotypes(phenotypes, page, size):
         list_dict_similar_disease_pagination_omim, pagination_omim, total_hit_omim = show_search_omim_page(phenotypes_remove_ja, genes, page, '10')
 
         # Python 3系 https://stackoverflow.com/questions/13120127/how-can-i-use-io-stringio-with-the-csv-module/13120279
-        #f = StringIO()
+        f = StringIO()
         # Python 2系
-        f = BytesIO()
+        #f = BytesIO()
         writer = csv.writer(f, delimiter="\t", quotechar='"', quoting=csv.QUOTE_MINIMAL, lineterminator="\n")
         ## out header
         list_phenotypes_remove_ja = []
@@ -1326,7 +1326,8 @@ def REST_API_download_summary_phenotypes(phenotypes, page, size):
                     list_causative_gene.append(dict_omim_symbol_synonym['symbol'])
                     prev_id_entrez = dict_omim_symbol_synonym['entrez_id']
 
-            writer.writerow([rank, round(dict_similar_disease['match_score'],4), dict_similar_disease['onto_id_ordo'], dict_similar_disease['onto_term_ordo'].encode('utf-8'), u','.join(list_matched_phenotype).encode('utf-8'), u','.join(list_causative_gene).encode('utf-8')])
+            #writer.writerow([rank, round(dict_similar_disease['match_score'],4), dict_similar_disease['onto_id_ordo'], dict_similar_disease['onto_term_ordo'].encode('utf-8'), u','.join(list_matched_phenotype).encode('utf-8'), u','.join(list_causative_gene).encode('utf-8')])
+            writer.writerow([rank, round(dict_similar_disease['match_score'],4), dict_similar_disease['onto_id_ordo'], dict_similar_disease['onto_term_ordo'], u','.join(list_matched_phenotype), u','.join(list_causative_gene)])
             rank += 1
 
         # OMIMの結果を出力
@@ -1349,7 +1350,7 @@ def REST_API_download_summary_phenotypes(phenotypes, page, size):
                     list_causative_gene.append(dict_omim_symbol_synonym['symbol'])
                     prev_id_entrez = dict_omim_symbol_synonym['entrez_id']
 
-            writer.writerow([rank, round(dict_similar_disease['match_score'],4), dict_similar_disease['onto_id_omim'], dict_similar_disease['onto_term_omim'].encode('utf-8'), u','.join(list_matched_phenotype).encode('utf-8'), u','.join(list_causative_gene).encode('utf-8')])
+            writer.writerow([rank, round(dict_similar_disease['match_score'],4), dict_similar_disease['onto_id_omim'], dict_similar_disease['onto_term_omim'], u','.join(list_matched_phenotype), u','.join(list_causative_gene)])
             rank += 1
 
         res = make_response()
@@ -1375,9 +1376,9 @@ def REST_API_download_summary_genes(genes, page, size):
         list_dict_similar_disease_pagination_omim, pagination_omim, total_hit_omim = show_search_omim_page(phenotypes_remove_ja, genes, page, '10')
 
         # Python 3系 https://stackoverflow.com/questions/13120127/how-can-i-use-io-stringio-with-the-csv-module/13120279
-        #f = StringIO()
+        f = StringIO()
         # Python 2系
-        f = BytesIO()
+        #f = BytesIO()
         writer = csv.writer(f, delimiter="\t", quotechar='"', quoting=csv.QUOTE_MINIMAL, lineterminator="\n")
         ## out header
         list_phenotypes_remove_ja = []
@@ -1410,7 +1411,7 @@ def REST_API_download_summary_genes(genes, page, size):
                     list_causative_gene.append(dict_omim_symbol_synonym['symbol'])
                     prev_id_entrez = dict_omim_symbol_synonym['entrez_id']
 
-            writer.writerow([rank, round(dict_similar_disease['match_score'],4), dict_similar_disease['onto_id_ordo'], dict_similar_disease['onto_term_ordo'].encode('utf-8'), u','.join(list_matched_phenotype).encode('utf-8'), u','.join(list_causative_gene).encode('utf-8')])
+            writer.writerow([rank, round(dict_similar_disease['match_score'],4), dict_similar_disease['onto_id_ordo'], dict_similar_disease['onto_term_ordo'], u','.join(list_matched_phenotype), u','.join(list_causative_gene)])
             rank += 1
 
         # OMIMの結果を出力
@@ -1433,7 +1434,7 @@ def REST_API_download_summary_genes(genes, page, size):
                     list_causative_gene.append(dict_omim_symbol_synonym['symbol'])
                     prev_id_entrez = dict_omim_symbol_synonym['entrez_id']
 
-            writer.writerow([rank, round(dict_similar_disease['match_score'],4), dict_similar_disease['onto_id_omim'], dict_similar_disease['onto_term_omim'].encode('utf-8'), u','.join(list_matched_phenotype).encode('utf-8'), u','.join(list_causative_gene).encode('utf-8')])
+            writer.writerow([rank, round(dict_similar_disease['match_score'],4), dict_similar_disease['onto_id_omim'], dict_similar_disease['onto_term_omim'], u','.join(list_matched_phenotype), u','.join(list_causative_gene)])
             rank += 1
 
         res = make_response()
@@ -1460,9 +1461,9 @@ def REST_API_download_summary_none(genes, page, size):
         list_dict_similar_disease_pagination_omim, pagination_omim, total_hit_omim = show_search_omim_page(phenotypes_remove_ja, genes, page, '10')
 
         # Python 3系 https://stackoverflow.com/questions/13120127/how-can-i-use-io-stringio-with-the-csv-module/13120279
-        #f = StringIO()
+        f = StringIO()
         # Python 2系
-        f = BytesIO()
+        #f = BytesIO()
         writer = csv.writer(f, delimiter="\t", quotechar='"', quoting=csv.QUOTE_MINIMAL, lineterminator="\n")
         ## out header
         list_phenotypes_remove_ja = []
@@ -1495,7 +1496,7 @@ def REST_API_download_summary_none(genes, page, size):
                     list_causative_gene.append(dict_omim_symbol_synonym['symbol'])
                     prev_id_entrez = dict_omim_symbol_synonym['entrez_id']
 
-            writer.writerow([rank, round(dict_similar_disease['match_score'],4), dict_similar_disease['onto_id_ordo'], dict_similar_disease['onto_term_ordo'].encode('utf-8'), u','.join(list_matched_phenotype).encode('utf-8'), u','.join(list_causative_gene).encode('utf-8')])
+            writer.writerow([rank, round(dict_similar_disease['match_score'],4), dict_similar_disease['onto_id_ordo'], dict_similar_disease['onto_term_ordo'], u','.join(list_matched_phenotype), u','.join(list_causative_gene)])
             rank += 1
 
         # OMIMの結果を出力
@@ -1518,7 +1519,7 @@ def REST_API_download_summary_none(genes, page, size):
                     list_causative_gene.append(dict_omim_symbol_synonym['symbol'])
                     prev_id_entrez = dict_omim_symbol_synonym['entrez_id']
 
-            writer.writerow([rank, round(dict_similar_disease['match_score'],4), dict_similar_disease['onto_id_omim'], dict_similar_disease['onto_term_omim'].encode('utf-8'), u','.join(list_matched_phenotype).encode('utf-8'), u','.join(list_causative_gene).encode('utf-8')])
+            writer.writerow([rank, round(dict_similar_disease['match_score'],4), dict_similar_disease['onto_id_omim'], dict_similar_disease['onto_term_omim'], u','.join(list_matched_phenotype), u','.join(list_causative_gene)])
             rank += 1
 
         res = make_response()
