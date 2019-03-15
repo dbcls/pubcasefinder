@@ -40,37 +40,37 @@ msgid "index_button_clear"
 msgstr "Clear"
 
 msgid "index_Sample"
-msgstr "Telangiectasia, Intellectual disability, Seizures, Chorea, Headache"
+msgstr "Micrognathia, Hypoplasia of the ulna, Short finger, Cleft upper lip, Cleft eyelid"
 
 msgid "index_Sample_1_id"
-msgstr "HP:0001009"
+msgstr "HP:0000347"
 
 msgid "index_Sample_1_name"
-msgstr "HP:0001009 Telangiectasia"
+msgstr "HP:0000347 Micrognathia"
 
 msgid "index_Sample_2_id"
-msgstr "HP:0001249"
+msgstr "HP:0003022"
 
 msgid "index_Sample_2_name"
-msgstr "HP:0001249 Intellectual disability"
+msgstr "HP:0003022 Hypoplasia of the ulna"
 
 msgid "index_Sample_3_id"
-msgstr "HP:0001250"
+msgstr "HP:0009381"
 
 msgid "index_Sample_3_name"
-msgstr "HP:0001250 Seizures"
+msgstr "HP:0009381 Short finger"
 
 msgid "index_Sample_4_id"
-msgstr "HP:0002072"
+msgstr "HP:0000204"
 
 msgid "index_Sample_4_name"
-msgstr "HP:0002072 Chorea"
+msgstr "HP:0000204 Cleft upper lip"
 
 msgid "index_Sample_5_id"
-msgstr "HP:0002315"
+msgstr "HP:0000625"
 
 msgid "index_Sample_5_name"
-msgstr "HP:0002315 Headache"
+msgstr "HP:0000625 Cleft eyelid"
 
 msgid "index_label_intro_title"
 msgstr "PubCaseFinder is a diagnosis support system for <b>rare diseases.</b>"

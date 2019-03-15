@@ -40,37 +40,37 @@ msgid "index_button_clear"
 msgstr "クリア"
 
 msgid "index_Sample"
-msgstr "<font size="4">毛細血管拡張、知的障害、発作、舞踏病、頭痛</font>"
+msgstr "<font size="4">小顎、尺骨低形成、短い指、上口唇裂、眼瞼裂</font>"
 
 msgid "index_Sample_1_id"
-msgstr "HP:0001009_ja"
+msgstr "HP:0000347_ja"
 
 msgid "index_Sample_1_name"
-msgstr "HP:0001009 毛細血管拡張"
+msgstr "HP:0000347 小顎"
 
 msgid "index_Sample_2_id"
-msgstr "HP:0001249_ja"
+msgstr "HP:0003022_ja"
 
 msgid "index_Sample_2_name"
-msgstr "HP:0001249 知的障害"
+msgstr "HP:0003022 尺骨低形成"
 
 msgid "index_Sample_3_id"
-msgstr "HP:0001250_ja"
+msgstr "HP:0009381_ja"
 
 msgid "index_Sample_3_name"
-msgstr "HP:0001250 発作"
+msgstr "HP:0009381 短い指"
 
 msgid "index_Sample_4_id"
-msgstr "HP:0002072_ja"
+msgstr "HP:0000204_ja"
 
 msgid "index_Sample_4_name"
-msgstr "HP:0002072 舞踏病"
+msgstr "HP:0000204 上口唇裂"
 
 msgid "index_Sample_5_id"
-msgstr "HP:0002315_ja"
+msgstr "HP:0000625_ja"
 
 msgid "index_Sample_5_name"
-msgstr "HP:0002315 頭痛"
+msgstr "HP:0000625 眼瞼裂"
 
 msgid "index_label_intro_title"
 msgstr "<b>希少疾患・症例を効率良く検索できる希少疾患診断支援システム</b>"
