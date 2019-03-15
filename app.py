@@ -1676,7 +1676,7 @@ def popup_hierarchy_hpo():
         dict_json = {}
 
         # OntoTermHPInformationテーブルから情報取得
-	sql_information = u"select OntoName, OntoSynonym, OntoDefinition, OntoParentNum, OntoChildNum, OntoNameJa from OntoTermHPInformation where OntoVersion='20170630' and OntoID=%s"
+        sql_information = u"select OntoName, OntoSynonym, OntoDefinition, OntoParentNum, OntoChildNum, OntoNameJa from OntoTermHPInformation where OntoVersion='20170630' and OntoID=%s"
         sql_informations_fmt = u"select OntoID, OntoName, OntoSynonym, OntoDefinition, OntoChildNum, OntoNameJa from OntoTermHPInformation where OntoVersion='20170630' and OntoID in (%s)"
 
         sql_hierarchy_parent = u"select OntoParentID from OntoTermHPHierarchy where OntoVersion='20170630' and OntoID=%s"

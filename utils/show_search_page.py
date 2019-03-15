@@ -184,7 +184,8 @@ def search_similar_disease(str_phenotypes, str_genes):
         onto_term_ja         = value[2]
         onto_term_synonym    = value[3]
         onto_term_synonym_ja = value[4]
-        disease_definition   = (value[5]).encode('utf-8') if value[5] is not None else ""
+        #disease_definition   = (value[5]).encode('utf-8') if value[5] is not None else ""
+        disease_definition   = value[5] if value[5] is not None else ""
         inheritance          = value[6]
         AnnotationHPONum     = value[7]
         AnnotationHPOSumIC   = value[8]
