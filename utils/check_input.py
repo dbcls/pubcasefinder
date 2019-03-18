@@ -102,7 +102,8 @@ def process_input_gene(str_genes):
                 entrez_id = values[0][0] if values else ''
                 OBJ_MYSQL.close()
                 if entrez_id != "":
-                    gene = unicode("ENT:" + str(entrez_id))
+                    #gene = unicode("ENT:" + str(entrez_id))
+                    gene = str("ENT:" + str(entrez_id))
                 else:
                     list_query_gene_error.append(gene)
                     gene = ""
