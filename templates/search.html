@@ -272,11 +272,11 @@
 		    </td>
 		    <!-- Matched Phenotypes -->
 		    <td>
-		      {% set prev_id = "" %}
+		      {% set dict_prev_id = {} %}
 		      {% for dict_onto_id_term_hp_disease in dict_similar_disease['onto_id_term_hp_disease'] %}
-		        {% if prev_id != dict_onto_id_term_hp_disease['onto_id_hp_disease'] %}
+		        {% if not dict_onto_id_term_hp_disease['onto_id_hp_disease'] in dict_prev_id %}
 		          <span class="label label-primary"><font size="3"><a target="_blank" style="color:white;" href="{{ url_for_show_phenotype_context_page( dict_similar_disease['onto_id_ordo'], dict_onto_id_term_hp_disease['onto_id_hp_disease'], '1', '20' ) }}">{{ dict_onto_id_term_hp_disease['onto_term_hp_disease'] }}</a></font></span>
-		          {% set prev_id = dict_onto_id_term_hp_disease['onto_id_hp_disease'] %}
+			  {%- if dict_prev_id.update({dict_onto_id_term_hp_disease['onto_id_hp_disease']:True}) %}{%- endif %} 
 		        {% endif %}
                       {% endfor %}
 		    </td>
@@ -670,12 +670,11 @@
 		    </td>
 		    <!-- Matched Phenotypes -->
 		    <td>
-		      {% set prev_id = "" %}
+		      {% set dict_prev_id = {} %}
 		      {% for dict_onto_id_term_hp_disease in dict_similar_disease_omim['onto_id_term_hp_disease'] %}
-		        {% if prev_id != dict_onto_id_term_hp_disease['onto_id_hp_disease'] %}
-		          <!--span class="label label-primary"><font size="3"><a target="_blank" style="color:white;" href="{{ url_for_show_phenotype_context_page( dict_similar_disease_omim['onto_id_omim'], dict_onto_id_term_hp_disease['onto_id_hp_disease'], '1', '20' ) }}">{{ dict_onto_id_term_hp_disease['onto_term_hp_disease'] }}</a></font></span-->
+		        {% if not dict_onto_id_term_hp_disease['onto_id_hp_disease'] in dict_prev_id %}
 		          <span class="label label-primary"><font size="3"><a target="_blank" style="color:white;" href="https://hpo.jax.org/app/browse/term/{{ dict_onto_id_term_hp_disease['onto_id_hp_disease'] }}">{{ dict_onto_id_term_hp_disease['onto_term_hp_disease'] }}</a></font></span>
-		          {% set prev_id = dict_onto_id_term_hp_disease['onto_id_hp_disease'] %}
+			  {%- if dict_prev_id.update({dict_onto_id_term_hp_disease['onto_id_hp_disease']:True}) %}{%- endif %}
 		        {% endif %}
                       {% endfor %}
 		    </td>
