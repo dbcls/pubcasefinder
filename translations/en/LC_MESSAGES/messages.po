@@ -94,7 +94,13 @@ msgid "search_tab_OMIM"
 msgstr "<b>Genetic Diseases ( OMIM )</b>"
 
 msgid "search_button_download_summary"
-msgstr "Download Summary of Results"
+msgstr "Download summary of results"
+
+msgid "search_button_download_Orphanet"
+msgstr "Download results of rare diseases ( Orphanet )"
+
+msgid "search_button_download_OMIM"
+msgstr "Download results of genetic diseases ( OMIM )"
 
 msgid "search_button_download"
 msgstr "Download Results"
@@ -138,11 +144,17 @@ msgstr "Find images (Google)"
 msgid "search_label_genetic_testing"
 msgstr "Genetic testing"
 
-msgid "search_button_share"
-msgstr "Share"
+msgid "search_button_share_download"
+msgstr "Share & Download"
 
 msgid "search_share_modal_title"
-msgstr "Share Results"
+msgstr "Share & Download Results"
+
+msgid "search_share_modal_label_share"
+msgstr "Share"
+
+msgid "search_share_modal_label_download"
+msgstr "Download"
 
 msgid "search_share_modal_label_link"
 msgstr "Link"

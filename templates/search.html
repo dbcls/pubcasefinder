@@ -64,46 +64,81 @@
 	  <table width="100%">
 	    <tr>
 	      <td>
-		<input type="button" class="btn btn-info" value="{{ _('search_button_download_summary') }}" onClick='location.href="{{ url_for_download_summary(str_phenotypes, str_genes, '1', '10') }}"'>
-
+		<!-- input type="button" class="btn btn-info" value="{{ _('search_button_download_summary') }}" onClick='location.href="{{ url_for_download_summary(str_phenotypes, str_genes, '1', '10') }}"' -->
 		<!-- input type="button" class="btn btn-info" value="PhenoTipsに結果を登録" onClick="window.open('https://demo.gene42.com/bin/PhenoTips/OpenPatientRecord?eid={{ str_eid }}&mode=edit&create=true&phenotype={{ str_phenotypes_phenotips }}')" -->
 
 		<!-- 共有のためのモーダルを表示用ボタン -->
-		<button type="button" class="btn btn-info" data-toggle="modal" data-target=".modal-share">{{ _('search_button_share') }}</button>
+		<button type="button" class="btn btn-info" data-toggle="modal" data-target=".modal-share">{{ _('search_button_share_download') }}</button>
 
-		<!-- 共有のためのモーダル・ダイアログ -->
-		<!-- div class="modal fade" id="modal-share" -->
+		<!-- START: 共有のためのモーダル・ダイアログ -->
 		<div class="modal fade modal-share" tabindex="-1" role="dialog" aria-hidden="true">
 		  <div class="modal-dialog">
 		    <div class="modal-content">
 		      <div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal"><span>×</span></button>
-			<h4 class="modal-title">{{ _('search_share_modal_title') }}</h4>
+			<h3 class="modal-title">{{ _('search_share_modal_title') }}</h3>
 		      </div>
+		      <!-- START: Share -->
+
 		      <div class="modal-body">
 			<table width="100%">
+			  <tr><td bgcolor="#223a70">
+			      <h4 class="modal-title"><font color="white"><b>&nbsp;&nbsp;{{ _('search_share_modal_label_share') }}</b></font></h4>
+			  </td></tr>
 			  <tr>
 			    <td>
-			      {{ _('search_share_modal_label_link') }}: <br>
-			      <input style="width:500px;" type="text" id="share_link" value="https://pubcasefinder.dbcls.jp/search_disease/phenotype:{{ str_phenotypes }}/gene:{{ str_genes}}/page:1,1/size:10,10,omim" readonly>
+			      <br>&nbsp;&nbsp;{{ _('search_share_modal_label_link') }}: <br>
+			      &nbsp;&nbsp;<input style="width:500px;" type="text" id="share_link" value="https://pubcasefinder.dbcls.jp/search_disease/phenotype:{{ str_phenotypes }}/gene:{{ str_genes}}/page:1,1/size:10,10,omim" readonly>
 			    </td>
 			  </tr>
 			  <tr><td>&nbsp;</td></tr>
 			  <tr>
 			    <!-- buttonでsubmitさせない https://qiita.com/kazu56/items/b2e9c15942e04a6ffda9  -->
 			    <td align="left" valign="bottom">
-			      <button type="button" class="btn btn-info" onclick="copyToClipboard()">{{ _('search_share_modal_button_copy') }}</button>
+			      &nbsp;&nbsp;<button type="button" class="btn btn-info" onclick="copyToClipboard()">{{ _('search_share_modal_button_copy') }}</button>
 			      <button type="button" class="btn btn-info" onclick="location.href='mailto:?body=https://pubcasefinder.dbcls.jp/search_disease/phenotype:{{ str_phenotypes }}/gene:{{ str_genes}}/page:1,1/size:10,10,omim'">{{ _('search_share_modal_button_mail') }}</button>
 			    </td>
 			  </tr>
 			</table>
 		      </div>
+		      <br>
+		      <!-- END: Share -->
+		      <!-- END: Download -->
+		      <div class="modal-body">
+			<table width="100%">
+			  <tr><td bgcolor="#223a70">
+			      <h4 class="modal-title"><font color="white"><b>&nbsp;&nbsp;{{ _('search_share_modal_label_download') }}</b></font></h4>
+			  </td></tr>
+			  <tr>
+			    <td>
+			      <br>&nbsp;&nbsp;{{ _('search_button_download_summary') }}:
+			      &nbsp;&nbsp;<input type="button" class="btn btn-info" value="TEXT format" onClick='location.href="{{ url_for_download_summary(str_phenotypes, str_genes, '1', '10') }}"'>
+			    </td>
+			  </tr>
+			  <tr><td>&nbsp;</td></tr>
+			  <tr>
+			    <td>
+			      &nbsp;&nbsp;{{ _('search_button_download_OMIM') }}:
+			      &nbsp;&nbsp;<input type="button" class="btn btn-info" value="TEXT format" onClick='location.href="{{ url_for_download_results_search_omim_page(str_phenotypes, str_genes, '1', '10') }}"'>
+			    </td>
+			  </tr>
+			  <tr><td>&nbsp;</td></tr>
+			  <tr>
+			    <td>
+			      &nbsp;&nbsp;{{ _('search_button_download_Orphanet') }}:
+			      &nbsp;&nbsp;<input type="button" class="btn btn-info" value="TEXT format" onClick='location.href="{{ url_for_download_results_search_page(str_phenotypes, str_genes, '1', '10') }}"'>
+			    </td>
+			  </tr>
+			</table>
+		      </div>
+		      <!-- END: Download -->
 		      <div class="modal-footer">
 			<button type="button" class="btn btn-default" data-dismiss="modal">{{ _('search_share_modal_button_close') }}</button>
 		      </div>
 		    </div>
 		  </div>
 		</div>
+		<!-- END: 共有のためのモーダル・ダイアログ -->
 	      </td>
 	      <td align="right">
 		<button id="phenotouch" class="btn btn-default">{{ _('index_button_phenotouch') }}</button>
@@ -234,13 +269,16 @@
 
 
 	<!-- START: Show download button -->
+	<!--
         <div align="right">
 	  <input type="button" class="btn btn-info" value="{{ _('search_button_download') }}" onClick='location.href="{{ url_for_download_results_search_page(str_phenotypes, str_genes, '1', '10') }}"'>
 	</div>
+	-->
 	<!-- END: Show download button -->
 
 
         <!-- START: Show result table -->
+	<br>
 	    <table class="table table-striped">
 	      <thead>
 		<tr>
@@ -631,14 +669,16 @@
         <!-- END: FORM -->
 
         <!-- START: Download button -->
+	<!--
         <div align="right">
 	  <input type="button" class="btn btn-info" value="{{ _('search_button_download') }}" onClick='location.href="{{ url_for_download_results_search_omim_page(str_phenotypes, str_genes, '1', '10') }}"'>
         </div>
-	<table class="table table-striped">
+	-->
         <!-- END: Download button -->
 
         <!-- START: Show result table -->
-
+	<br>
+	<table class="table table-striped">
 	      <thead>
 		<tr>
 		  <th style="width:100px;" class="text-left">{{ _('search_label_rank') }}<br>{{ _('search_label_similarity') }}</th>

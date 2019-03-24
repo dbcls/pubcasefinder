@@ -99,6 +99,12 @@ msgstr "合計"
 msgid "search_button_download_summary"
 msgstr "結果の要約をダウンロード"
 
+msgid "search_button_download_Orphanet"
+msgstr "希少疾患 ( Orphanet ) の結果をダウンロード"
+
+msgid "search_button_download_OMIM"
+msgstr "遺伝性疾患 ( OMIM ) の結果をダウンロード"
+
 msgid "search_button_download"
 msgstr "結果をダウンロード"
 
@@ -141,11 +147,17 @@ msgstr "画像検索 (Google)"
 msgid "search_label_genetic_testing"
 msgstr "遺伝学的検査"
 
-msgid "search_button_share"
-msgstr "共有"
+msgid "search_button_share_download"
+msgstr "共有・ダウンロード"
 
 msgid "search_share_modal_title"
-msgstr "検索結果を共有"
+msgstr "検索結果を共有・ダウンロード"
+
+msgid "search_share_modal_label_share"
+msgstr "共有"
+
+msgid "search_share_modal_label_download"
+msgstr "ダウンロード"
 
 msgid "search_share_modal_label_link"
 msgstr "共有リンク"
