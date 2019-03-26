@@ -88,10 +88,12 @@ def process_input_gene(str_genes):
         for gene in str_genes.split(","):
 
             # Gene Symbolの場合はEntrez Gene IDを抽出
+            gene_symbol = ""
             entrez_id = ""
             pattern_entrez_id = 'HGNC'
             pattern_entrez_id_compiled = re.compile(pattern_entrez_id)
             if pattern_entrez_id_compiled.match(gene):
+                gene_symbol = gene
                 OBJ_MYSQL = MySQLdb.connect(unix_socket=db_sock, host="localhost", db=db_name, user=db_user, passwd=db_pw, charset="utf8")
                 sql_GeneName2ID = u"select EntrezID from GeneName2ID where GeneName=%s"
                 cursor_GeneName2ID = OBJ_MYSQL.cursor()
@@ -125,7 +127,11 @@ def process_input_gene(str_genes):
                     list_dict_gene.append(dict_gene)
                     list_query_gene_remove_error.append(gene)
                 else:
-                    list_query_gene_error.append(gene)
+                    #list_query_gene_error.append(gene)
+                    if gene_symbol == "":
+                        list_query_gene_error.append(gene)
+                    else:
+                        list_query_gene_error.append(gene_symbol)
 
     # エラーを取り除いたgeneクエリ
     str_genes_remove_error = ','.join(list_query_gene_remove_error)
