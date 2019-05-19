@@ -296,32 +296,38 @@
 	      <tbody>
 		<!-- http://tnakamura.hatenablog.com/entry/20110608/jinja2_for_loop_index -->
                 {% for dict_similar_disease in list_dict_similar_disease %}
+
 		  <tr>
 		    <!-- Rank -->
 		    <!-- Similarity -->
-		    <td rowspan="3" width="10">{{ dict_similar_disease['rank'] }}<br>({{ (dict_similar_disease['match_score']*100)|round(1) }}%)</td>
+		    <td width="10">
+		      <p style="margin-top:0.6em;margin-bottom:0.6em;">
+			{{ dict_similar_disease['rank'] }}<br>({{ (dict_similar_disease['match_score']*100)|round(1) }}%)
+		      </p>
+		    </td>
 		    <!-- Disease Name -->
-		    <td rowspan="3">
-		      <a href="{{ url_for_disease_casereport_page(dict_similar_disease['onto_id_ordo'], str_phenotypes, '', '1', '10') }}" target="_blank">{{ dict_similar_disease['onto_term_ordo'] }}
-		        {% if (get_locale() == "ja" or get_locale() == "ja_JP") and dict_similar_disease['onto_term_ordo_ja'] != "" %}
-			  <br>----<br>{{ dict_similar_disease['onto_term_ordo_ja'] }}
-		        {% endif %}
-		      </a>
+		    <td>
+		      <p style="margin-top:0.6em;margin-bottom:0.6em;">
+			<a href="{{ url_for_disease_casereport_page(dict_similar_disease['onto_id_ordo'], str_phenotypes, '', '1', '10') }}" target="_blank">{{ dict_similar_disease['onto_term_ordo'] }}
+		          {% if (get_locale() == "ja" or get_locale() == "ja_JP") and dict_similar_disease['onto_term_ordo_ja'] != "" %}
+			    <br>----<br>{{ dict_similar_disease['onto_term_ordo_ja'] }}
+		          {% endif %}
+			</a>
+		      </p>
 		    </td>
+		    <td>
 		    <!-- Matched Phenotypes -->
-		    <td>
-		      {% set dict_prev_id = {} %}
-		      {% for dict_onto_id_term_hp_disease in dict_similar_disease['onto_id_term_hp_disease'] %}
-		        {% if not dict_onto_id_term_hp_disease['onto_id_hp_disease'] in dict_prev_id %}
-		          <span class="label label-primary"><font size="3"><a target="_blank" style="color:white;" href="{{ url_for_show_phenotype_context_page( dict_similar_disease['onto_id_ordo'], dict_onto_id_term_hp_disease['onto_id_hp_disease'], '1', '20' ) }}">{{ dict_onto_id_term_hp_disease['onto_term_hp_disease'] }}</a></font></span>
-			  {%- if dict_prev_id.update({dict_onto_id_term_hp_disease['onto_id_hp_disease']:True}) %}{%- endif %} 
-		        {% endif %}
-                      {% endfor %}
-		    </td>
-		  </tr>
-		  <tr>
+		      <p style="margin-top:0.6em;margin-bottom:0.6em;">
+		        <p style="margin-bottom:0.6em;">
+			  {% set dict_prev_id = {} %}
+			  {% for dict_onto_id_term_hp_disease in dict_similar_disease['onto_id_term_hp_disease'] %}
+		            {% if not dict_onto_id_term_hp_disease['onto_id_hp_disease'] in dict_prev_id %}
+		              <span class="label label-primary"><font size="3"><a target="_blank" style="color:white;" href="{{ url_for_show_phenotype_context_page( dict_similar_disease['onto_id_ordo'], dict_onto_id_term_hp_disease['onto_id_hp_disease'], '1', '20' ) }}">{{ dict_onto_id_term_hp_disease['onto_term_hp_disease'] }}</a></font></span>
+			      {%- if dict_prev_id.update({dict_onto_id_term_hp_disease['onto_id_hp_disease']:True}) %}{%- endif %} 
+		            {% endif %}
+			  {% endfor %}
+			</p>
 		    <!-- Causative Genes -->
-		    <td>
 		      {% set prev_id = "" %}
 		      {% for dict_orpha_number_symbol_synonym in dict_similar_disease['orpha_number_symbol_synonym'] %}
 		        {% if prev_id != dict_orpha_number_symbol_synonym['entrez_id'] %}
@@ -339,63 +345,9 @@
 		          {% set prev_id = dict_orpha_number_symbol_synonym['entrez_id'] %}
 			{% endif %}
 		      {% endfor %}
-		    </td>
-		  </tr>
-
-
-
-		  <!--
-		  <tr>
-		    <td>
-		      < External References >
-		      {% set flg_ICD10_ini = 0 %}
-		      {% set flg_UMLS_ini = 0 %}
-		      {% set flg_OMIM_ini = 0 %}
-		      {% for dict_reference_source in dict_similar_disease['reference_source'] %}
-		        < ICD-10 >
-			{% if dict_reference_source['source'] == "ICD-10" %}
-		          {% if flg_ICD10_ini == 0 %}
-		            ICD-10 ( <a href="{{ dict_reference_source['link'] }}" target="_blank"><u><font color="#0431B4">{{ dict_reference_source['reference'] }}</font></u></a>
-		            {% set flg_ICD10_ini = 1 %}
-		          {% else %}
-		            ,&nbsp;<a href="{{ dict_reference_source['link'] }}" target="_blank"><u><font color="#0431B4">{{ dict_reference_source['reference'] }}</font></u></a>
-		          {% endif %}
-			{% endif %}
-			{% if dict_reference_source['source'] == "UMLS" %}
-		          < UMLS >
-		          {% if flg_UMLS_ini == 0 %}
-		            UMLS ( <a href="{{ dict_reference_source['link'] }}" target="_blank"><u><font color="#0431B4">{{ dict_reference_source['reference'] }}</font></u></a>
-		            {% set flg_UMLS_ini = 1 %}
-		          {% else %}
-		            ,&nbsp;<a href="{{ dict_reference_source['link'] }}" target="_blank"><u><font color="#0431B4">{{ dict_reference_source['reference'] }}</font></u></a>
-		          {% endif %}
-			{% endif %}
-			< OMIM >
-			{% if dict_reference_source['source'] == "OMIM" %}
-		          {% if flg_OMIM_ini == 0 %}
-		            {% if flg_ICD10_ini == 1 %}
-		              )&nbsp;&nbsp;&nbsp;
-		            {% endif %}
-		            OMIM ( <a href="{{ dict_reference_source['link'] }}" target="_blank"><u><font color="#0431B4">{{ dict_reference_source['reference'] }}</font></u></a>
-		            {% set flg_OMIM_ini = 1 %}
-		          {% else %}
-		            ,&nbsp;<a href="{{ dict_reference_source['link'] }}" target="_blank"><u><font color="#0431B4">{{ dict_reference_source['reference'] }}</font></u></a>
-		          {% endif %}
-			{% endif %}
-			{% if loop.index == dict_similar_disease['reference_source']|length %}
-		          )
-			{% endif %}
-	              {% endfor %}
-		    </td>
-		  </tr>
-		  -->
-
-
 		  <!-- Disease Information -->
-		  <tr>
-		    <td>
 		      <!-- Inheritance -->
-		      <p style="margin-bottom:0.6em;">
+		      <p style="margin-top:0.6em;margin-bottom:0.6em;">
 			<!-- HP:0000006|Autosomal dominant inheritance -->
 			<!-- HP:0000007|Autosomal recessive inheritance -->
 			<!-- HP:0001417|X-linked inheritance -->
@@ -505,7 +457,7 @@
 		      </p>
 
 		      <!-- External Resources -->
-		      <p style="margin-bottom:0.1em;line-height:1.8em;">
+		      <!-- p style="margin-bottom:0.1em;line-height:1.8em;" -->
 		      <!-- link of Orphanet -->
 		      <a href="http://www.orpha.net/consor/cgi-bin/OC_Exp.php?Expert={{ dict_similar_disease['onto_id_ordo'] | replace('ORDO:', '') }}" target="_blank"><u><font color="#0431B4">{{ dict_similar_disease['onto_id_ordo'] | replace('ORDO:', 'Orphanet:') }}</font></u></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		      <!-- link of Google -->
@@ -534,6 +486,7 @@
 		          <a href="https://www.ncbi.nlm.nih.gov/gtr/all/tests/?term={{ dict_reference_source['reference'] }}" target="_blank"><u><font color="#0431B4">GTR:{{ dict_reference_source['reference'] }}</font></u></a>
 			{% endif %}
 	              {% endfor %}
+                      <!--/p-->
                       </p>
 		    </td>
 		  </tr>
@@ -700,18 +653,26 @@
 		  <tr>
 		    <!-- Rank -->
 		    <!-- Similarity -->
-		    <td rowspan="3" width="10">{{ dict_similar_disease_omim['rank'] }}<br>({{ (dict_similar_disease_omim['match_score']*100)|round(1) }}%)</td>
+		    <td width="10">
+		      <p style="margin-top:0.6em;margin-bottom:0.6em;">
+			{{ dict_similar_disease_omim['rank'] }}<br>({{ (dict_similar_disease_omim['match_score']*100)|round(1) }}%)
+		      </p>
+		    </td>
 		    <!-- Disease Name -->
-		    <td rowspan="3">
-		      <!--a href="{{ url_for_disease_casereport_page(dict_similar_disease_omim['onto_id_omim'], str_phenotypes, '', '1', '10') }}" target="_blank">{{ dict_similar_disease_omim['onto_term_omim'] }}<br>({{dict_similar_disease_omim['onto_id_omim']}})</a-->
-		      <a href="https://www.omim.org/entry/{{ dict_similar_disease_omim['onto_id_omim'] | replace('OMIM:', '') }}" target="_blank">{{ dict_similar_disease_omim['onto_term_omim'] }}
-		        {% if (get_locale() == "ja" or get_locale() == "ja_JP") and dict_similar_disease_omim['onto_term_omim_ja'] != "" %}
-			  <br>----<br>{{ dict_similar_disease_omim['onto_term_omim_ja'] }}
-		        {% endif %}
+		    <td>
+		      <p style="margin-top:0.6em;margin-bottom:0.6em;">
+			<!--a href="{{ url_for_disease_casereport_page(dict_similar_disease_omim['onto_id_omim'], str_phenotypes, '', '1', '10') }}" target="_blank">{{ dict_similar_disease_omim['onto_term_omim'] }}<br>({{dict_similar_disease_omim['onto_id_omim']}})</a-->
+			<a href="https://www.omim.org/entry/{{ dict_similar_disease_omim['onto_id_omim'] | replace('OMIM:', '') }}" target="_blank">{{ dict_similar_disease_omim['onto_term_omim'] }}
+		          {% if (get_locale() == "ja" or get_locale() == "ja_JP") and dict_similar_disease_omim['onto_term_omim_ja'] != "" %}
+			    <br>----<br>{{ dict_similar_disease_omim['onto_term_omim_ja'] }}
+		          {% endif %}
+			</p>
 		      </a>
 		    </td>
-		    <!-- Matched Phenotypes -->
 		    <td>
+		    <!-- Matched Phenotypes -->
+		      <p style="margin-top:0.6em;margin-bottom:0.6em;">
+		      <p style="margin-bottom:0.6em;">
 		      {% set dict_prev_id = {} %}
 		      {% for dict_onto_id_term_hp_disease in dict_similar_disease_omim['onto_id_term_hp_disease'] %}
 		        {% if not dict_onto_id_term_hp_disease['onto_id_hp_disease'] in dict_prev_id %}
@@ -719,11 +680,8 @@
 			  {%- if dict_prev_id.update({dict_onto_id_term_hp_disease['onto_id_hp_disease']:True}) %}{%- endif %}
 		        {% endif %}
                       {% endfor %}
-		    </td>
-		  </tr>
-		  <tr>
+                      </p>
 		    <!-- Causative Genes -->
-		    <td>
 		      {% set prev_id = "" %}
 		      {% for dict_omim_symbol_synonym in dict_similar_disease_omim['omim_symbol_synonym'] %}
 		        {% if prev_id != dict_omim_symbol_synonym['entrez_id'] %}
@@ -741,13 +699,9 @@
 		          {% set prev_id = dict_omim_symbol_synonym['entrez_id'] %}
 			{% endif %}
 		      {% endfor %}
-		    </td>
-		  </tr>
 		  <!-- Disease Information -->
-		  <tr>
-		    <td>
 		      <!-- Inheritance -->
-		      <p style="margin-bottom:0.6em;">
+		      <p style="margin-top:0.6em;margin-bottom:0.6em;">
 			<!-- HP:0000006|Autosomal dominant inheritance -->
 			<!-- HP:0000007|Autosomal recessive inheritance -->
 			<!-- HP:0001417|X-linked inheritance -->
@@ -855,7 +809,7 @@
 		        {% endif %}
 		      </p>
 		      <!-- External Resources -->
-		      <p style="margin-bottom:0.1em;line-height:1.8em;">
+		      <!--p style="margin-bottom:0.1em;line-height:1.8em;"-->
 		      <!-- links of OMIM and Googles -->
 		      <a href="https://www.omim.org/entry/{{ dict_similar_disease_omim['onto_id_omim'] | replace('OMIM:', '') }}" target="_blank"><u><font color="#0431B4">{{dict_similar_disease_omim['onto_id_omim']}}</font></u></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		      <a href="http://www.google.com/search?q={{ dict_similar_disease_omim['onto_term_omim'] }}&tbm=isch" target="_blank"><u><font color="#0431B4">{{ _('search_label_search_image_google') }}</font></u></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -903,6 +857,7 @@
 	              {% endfor %}
 -->
 		      <!--a href="{{ url_for_disease_casereport_page(dict_similar_disease_omim['onto_id_omim'], str_phenotypes, '', '1', '10') }}" target="_blank"><u><font color="#0431B4">{{ _('search_label_related_casereport') }}</font></u></a-->
+		      <!--/p-->
 		      </p>
 		    </td>
 		  </tr>
