@@ -173,11 +173,11 @@
 		      <tr>
 			<!-- Matched Phenotypes -->
 			<td>
-			  {% set prev_id = "" %}
+                          {% set dict_prev_id = {} %}
 			  {% for dict_casereport_bestmatch_onto_id_term_hp in dict_similar_casereport['list_dict_casereport_bestmatch_onto_id_term_hp'] %}
-		            {% if prev_id != dict_casereport_bestmatch_onto_id_term_hp['onto_id_hp'] %}
+                            {% if not dict_casereport_bestmatch_onto_id_term_hp['onto_id_hp'] in dict_prev_id %}
 		            <span class="label label-primary"><font size="3"><a target="_blank" style="color:white;" href="{{ url_for_show_phenotype_context_page( str_disease, dict_casereport_bestmatch_onto_id_term_hp['onto_id_hp'], '1', '20' ) }}">{{ dict_casereport_bestmatch_onto_id_term_hp['onto_term_hp'] }}</a></font></span>
-		            {% set prev_id = dict_casereport_bestmatch_onto_id_term_hp['onto_id_hp'] %}
+                            {%- if dict_prev_id.update({dict_casereport_bestmatch_onto_id_term_hp['onto_id_hp']:True}) %}{%- endif %} 
 		            {% endif %}
 			  {% endfor %}
 			</td>

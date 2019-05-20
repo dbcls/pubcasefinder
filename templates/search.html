@@ -823,6 +823,17 @@
 	                {% endfor %}
 		      {% endif %}
 		      -->
+		      <!-- link of KEGG_DISEASE -->
+                      {% set dict_flg_kegg = {} %}
+		      {% for dict_reference_source in dict_similar_disease_omim['reference_source'] %}
+			{% if dict_reference_source['source'] == "KEGG_DISEASE" %}
+		            <a href="{{ dict_reference_source['link'] }}+-ja" target="_blank"><u><font color="#0431B4">KEGG:{{ dict_reference_source['reference'] }}</font></u></a>
+                            {%- if dict_flg_kegg.update({"1":True}) %}{%- endif %}
+			{% endif %}
+	              {% endfor %}
+                      {% if "1" in dict_flg_kegg %}
+		        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		      {% endif %}
 		      <!-- link of Gene Reviews -->
 		      {% for dict_reference_source in dict_similar_disease_omim['reference_source'] %}
 		        {% if dict_reference_source['source'] == "GeneReviews" %}
@@ -830,8 +841,6 @@
 			{% endif %}
 	              {% endfor %}
 		      <!-- link of GTR -->
-
-
 		      {% for dict_reference_source in dict_similar_disease_omim['reference_source'] %}
 			{% if dict_reference_source['source'] == "UMLS" %}
 		            <a href="https://www.ncbi.nlm.nih.gov/gtr/all/tests/?term={{ dict_reference_source['reference'] }}" target="_blank"><u><font color="#0431B4">GTR:{{ dict_reference_source['reference'] }}</font></u></a>
