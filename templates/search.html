@@ -496,11 +496,13 @@
 			{% endif %}
 	              {% endfor %}
 		      <!-- link of GTR -->
-		      {% for dict_reference_source in dict_similar_disease['reference_source'] %}
-			{% if dict_reference_source['source'] == "UMLS" %}
-		          <a href="https://www.ncbi.nlm.nih.gov/gtr/all/tests/?term={{ dict_reference_source['reference'] }}" target="_blank"><u><font color="#0431B4">GTR:{{ dict_reference_source['reference'] }}</font></u></a>
-			{% endif %}
-	              {% endfor %}
+		      {% if not get_locale() == "ja" and not get_locale() == "ja_JP" %}
+		        {% for dict_reference_source in dict_similar_disease['reference_source'] %}
+			  {% if dict_reference_source['source'] == "UMLS" %}
+		            <a href="https://www.ncbi.nlm.nih.gov/gtr/all/tests/?term={{ dict_reference_source['reference'] }}" target="_blank"><u><font color="#0431B4">GTR:{{ dict_reference_source['reference'] }}</font></u></a>
+			  {% endif %}
+	                {% endfor %}
+		      {% endif %}
                       <!--/p-->
                       </p>
 		    </td>
@@ -860,11 +862,13 @@
 			{% endif %}
 	              {% endfor %}
 		      <!-- link of GTR -->
-		      {% for dict_reference_source in dict_similar_disease_omim['reference_source'] %}
-			{% if dict_reference_source['source'] == "UMLS" %}
+		      {% if not get_locale() == "ja" and not get_locale() == "ja_JP" %}
+		        {% for dict_reference_source in dict_similar_disease_omim['reference_source'] %}
+			  {% if dict_reference_source['source'] == "UMLS" %}
 		            <a href="https://www.ncbi.nlm.nih.gov/gtr/all/tests/?term={{ dict_reference_source['reference'] }}" target="_blank"><u><font color="#0431B4">GTR:{{ dict_reference_source['reference'] }}</font></u></a>
-			{% endif %}
-	              {% endfor %}
+			  {% endif %}
+	                {% endfor %}
+		      {% endif %}
 		      <!--a href="{{ url_for_disease_casereport_page(dict_similar_disease_omim['onto_id_omim'], str_phenotypes, '', '1', '10') }}" target="_blank"><u><font color="#0431B4">{{ _('search_label_related_casereport') }}</font></u></a-->
 		      <!--/p-->
 		      </p>
