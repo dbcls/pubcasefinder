@@ -474,6 +474,21 @@
 	                {% endfor %}
 		      {% endif %}
 		      -->
+		      <!-- link of KEGG_DISEASE -->
+                      {% set dict_flg_kegg = {} %}
+		      {% for dict_reference_source in dict_similar_disease['reference_source'] %}
+			{% if dict_reference_source['source'] == "KEGG_DISEASE" %}
+		          {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+		            <a href="{{ dict_reference_source['link'] }}+-ja" target="_blank"><u><font color="#0431B4">KEGG:{{ dict_reference_source['reference'] }}</font></u></a>
+			  {% else %}
+		            <a href="{{ dict_reference_source['link'] }}" target="_blank"><u><font color="#0431B4">KEGG:{{ dict_reference_source['reference'] }}</font></u></a>
+			  {% endif %}
+                          {%- if dict_flg_kegg.update({"1":True}) %}{%- endif %}
+			{% endif %}
+	              {% endfor %}
+                      {% if "1" in dict_flg_kegg %}
+		        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		      {% endif %}
 		      <!-- link of Gene Reviews -->
 		      {% for dict_reference_source in dict_similar_disease['reference_source'] %}
 		        {% if dict_reference_source['source'] == "GeneReviews" %}
@@ -827,8 +842,12 @@
                       {% set dict_flg_kegg = {} %}
 		      {% for dict_reference_source in dict_similar_disease_omim['reference_source'] %}
 			{% if dict_reference_source['source'] == "KEGG_DISEASE" %}
+		          {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
 		            <a href="{{ dict_reference_source['link'] }}+-ja" target="_blank"><u><font color="#0431B4">KEGG:{{ dict_reference_source['reference'] }}</font></u></a>
-                            {%- if dict_flg_kegg.update({"1":True}) %}{%- endif %}
+			  {% else %}
+		            <a href="{{ dict_reference_source['link'] }}" target="_blank"><u><font color="#0431B4">KEGG:{{ dict_reference_source['reference'] }}</font></u></a>
+			  {% endif %}
+                          {%- if dict_flg_kegg.update({"1":True}) %}{%- endif %}
 			{% endif %}
 	              {% endfor %}
                       {% if "1" in dict_flg_kegg %}
@@ -846,25 +865,6 @@
 		            <a href="https://www.ncbi.nlm.nih.gov/gtr/all/tests/?term={{ dict_reference_source['reference'] }}" target="_blank"><u><font color="#0431B4">GTR:{{ dict_reference_source['reference'] }}</font></u></a>
 			{% endif %}
 	              {% endfor %}
-
-<!--
-		      {% set flg_UMLS_ini = 0 %}
-		      {% set flg_UMLS_num = 0 %}
-		      {% for dict_reference_source in dict_similar_disease_omim['reference_source'] %}
-			{% if dict_reference_source['source'] == "UMLS" %}
-		          {% set flg_UMLS_num = flg_UMLS_num + 1 %}
-		          {% if flg_UMLS_ini == 0 %}
-		            {{ _('search_label_genetic_testing') }}( <a href="https://www.ncbi.nlm.nih.gov/gtr/all/tests/?term={{ dict_reference_source['reference'] }}" target="_blank"><u><font color="#0431B4">{{ dict_reference_source['reference'] }}</font></u></a>
-		            {% set flg_UMLS_ini = 1 %}
-		          {% else %}
-		            ,&nbsp;<a href="https://www.ncbi.nlm.nih.gov/gtr/all/tests/?term={{ dict_reference_source['reference'] }}" target="_blank"><u><font color="#0431B4">{{ dict_reference_source['reference'] }}</font></u></a>
-		          {% endif %}
-			{% endif %}
-			{% if loop.index == dict_similar_disease_omim['reference_source']|length and flg_UMLS_ini == 1 and flg_UMLS_num > 0 %}
-		          )
-			{% endif %}
-	              {% endfor %}
--->
 		      <!--a href="{{ url_for_disease_casereport_page(dict_similar_disease_omim['onto_id_omim'], str_phenotypes, '', '1', '10') }}" target="_blank"><u><font color="#0431B4">{{ _('search_label_related_casereport') }}</font></u></a-->
 		      <!--/p-->
 		      </p>
