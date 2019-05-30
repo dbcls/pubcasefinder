@@ -504,7 +504,7 @@ def search_POST():
             file = request.files['file_hpo_list']
             if file:
             #if file and validateFileSize(file):
-                phenotypes_file = file.stream.read()
+                phenotypes_file = str(file.stream.read())
                 phenotypes_file = phenotypes_file.replace('\n',',')
                 phenotypes_file = phenotypes_file.replace('\r',',')
                 phenotypes_file = re.sub(r',+', ',', phenotypes_file)
@@ -541,7 +541,7 @@ def search_POST():
             file = request.files['file_gene_list']
             if file:
             #if file and validateFileSize(file):
-                genes_file = file.stream.read()
+                genes_file = str(file.stream.read())
                 genes_file = genes_file.replace('\n',',')
                 genes_file = genes_file.replace('\r',',')
                 genes_file = re.sub(r',+', ',', genes_file)
