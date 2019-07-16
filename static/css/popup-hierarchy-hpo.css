@@ -630,3 +630,14 @@ select.popup-hierarchy-hpo-language-change {
 .tooltip-inner {
 	text-align: left;
 }
+
+.btn-copy {
+	background: #8671BF;
+	color: #fff;
+	padding: 4px 20px !important;
+	border-width: 0px;
+}
+.btn-copy:hover, .btn-copy:focus, .btn-copy:active {
+	background: #9584BF !important;
+	color: #fff;
+}

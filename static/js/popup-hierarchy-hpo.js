@@ -51,6 +51,7 @@
 		cssButtonDisabledClass: CSS_PREFIX+'button-disabled',
 		cssButtonAddClass: CSS_PREFIX+'button-add',
 		cssButtonReplaceClass: CSS_PREFIX+'button-replace',
+		cssButtonCopyClass: CSS_PREFIX+'button-copy',
 
 		cssButtonBaseClass: CSS_PREFIX+'buttons-base',
 		cssButtonsClass: CSS_PREFIX+'buttons',
@@ -58,6 +59,7 @@
 		cssContentTrClass: CSS_PREFIX+'content-tr',
 		cssContentThClass: CSS_PREFIX+'content-th',
 		cssContentTdClass: CSS_PREFIX+'content-td',
+		cssContentCopyClass: CSS_PREFIX+'content-copy',
 
 		cssWebGLContentClass: CSS_PREFIX+'webgl-content',
 //		cssWebGLSpeechBalloonBaseClass: CSS_PREFIX+'webgl-speechballoon-base',
@@ -93,6 +95,7 @@
 				selectedphenotype: '患者の徴候および症状',
 				replace : '置換',
 				add : '追加',
+				copy : 'コピー',
 				jpn : 'JPN',
 				eng : 'ENG',
 				revert : '元に戻す',
@@ -129,7 +132,8 @@
 				hpoid : 'ID',
 				hponame : 'Name',
 
-				tooltip_title : 'ここをクリック'
+				tooltip_title : 'ここをクリック',
+				tooltip_copy : '<div style="white-space:nowrap;text-align:center;">クリップボードに<br>HPO Id、症状（日）、症状（英）<br>をコピーします</div>'
 			},
 			'en' : {
 				superclass : 'Superclass',
@@ -138,6 +142,7 @@
 				selectedphenotype: 'patient\’s signs and symptoms',
 				replace : 'Replace',
 				add : 'Add',
+				copy : 'Copy',
 				jpn : 'JPN',
 				eng : 'ENG',
 				revert : 'revert',
@@ -174,7 +179,8 @@
 				hpoid : 'ID',
 				hponame : 'Name',
 
-				tooltip_title : 'Click Here'
+				tooltip_title : 'Click Here',
+				tooltip_copy : 'Copy HPO Id and Name to the clipboard'
 			}
 		},
 		okcancelButtonsAlign : 'right',
@@ -195,6 +201,8 @@
 		,use_tooltip : true
 		,tooltip_type : 'fixed'	//fixed or name
 		,fmatree_type : 'class'	//class or part
+		,copy_items: ['id','name','English']
+		,copy_delimiter: ','
 	};
 
 	var TOKENINPUT_SETTINGS_KEY = 'settings';
@@ -1018,7 +1026,48 @@
 				};
 
 				var $buttons = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssButtonsClass).appendTo($base);
-				addExecuteButtons(data,target_arr.length!==0).appendTo($buttons);
+				var $button_base = addExecuteButtons(data,target_arr.length!==0).appendTo($buttons);
+
+				var $separator = $('<div>')
+					.css({
+						'margin': '0px 3px 0px 0px',
+						'height': '14px',
+						'border-style': 'solid',
+						'border-width': '0px 1px',
+						'border-left-color': '#aca899',
+						'border-right-color': 'white',
+						'display': 'inline-block',
+						'font-size': '1px',
+						'overflow': 'hidden',
+						'cursor': 'default',
+						'width': '0px',
+						'line-height': '0px'
+					})
+					.appendTo($button_base);
+
+				var $copy_button = $('<button>')
+					.addClass('btn btn-copy')
+					.addClass(current_settings.cssButtonCopyClass)
+					.attr({
+						'data-language-key':'copy',
+						'data-language-tooltip-key':'tooltip_copy',
+						'data-toggle':'tooltip',
+						'data-html':'true',
+						'data-original-title': language['tooltip_copy']
+					})
+					.text(language['copy'])
+					.appendTo($button_base)
+					.on('click',function(e){
+						var $textarea = $('textarea.'+current_settings.cssContentCopyClass);
+						$textarea.show().get(0).select();
+						document.execCommand('copy');
+						$textarea.hide();
+					})
+					.tooltip();
+				if($.isPlainObject( window['tmripple']) && $.isFunction(window['tmripple'].init)){
+					$copy_button.attr({'data-animation':'ripple'});
+					tmripple.init();
+				}
 
 				var $content = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssContentClass).appendTo($base);
 				var $contentTable = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssContentTableClass).appendTo($content);
@@ -1044,8 +1093,9 @@
 						var $title_td2 = $('<'+current_settings.nodeName+'>').css({'display':'table-cell','text-align':'right','width':'20px'}).appendTo($title_tr);
 					}
 
+					var copy_values = [];
 					$.each(['id','name','English','definition','synonym'], function(){
-						var key = this;
+						var key = this.toString();
 						var value = result[key];
 						if(runSearchOptions.hasJA){
 							if(isString(result[key+'_ja'])) value = result[key+'_ja'];
@@ -1080,7 +1130,20 @@
 						else{
 							$value_td.text(value);
 						}
+
+						if(current_settings.copy_items.indexOf(key)>=0){
+							$value_td.addClass(current_settings.cssContentCopyClass);
+							if(runSearchOptions.hasJA && key==='name'){
+								if(isString(result[key+'_ja']) && result[key+'_ja']!==result[key]) copy_values.push(value);
+							}
+							else{
+								copy_values.push(value);
+							}
+						}
 					});
+					if(copy_values.length){
+						$('<textarea>').addClass(current_settings.cssContentCopyClass).css({display:'none'}).text(copy_values.join(current_settings.copy_delimiter)).appendTo($content);
+					}
 				});
 			}
 
@@ -2203,7 +2266,6 @@
 			}
 		}
 
-//		var runSearchOptions = {hasJA:false};
 		var runSearchOptions = {hasJA:window.navigator.language.indexOf('ja')===0};
 		function runSearch(query,options) {
 
