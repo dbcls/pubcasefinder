@@ -85,7 +85,7 @@ msgid "search_label_upload_hpo"
 msgstr "+ Upload File (HPO ID)"
 
 msgid "search_label_upload_gene"
-msgstr "+ Upload File (Entrez Gene ID)"
+msgstr "+ Upload File (Gene Symbol or Entrez Gene ID or Ensembl Gene ID)"
 
 msgid "search_tab_Orphanet"
 msgstr "<b>Rare Diseases ( Orphanet )</b>"
