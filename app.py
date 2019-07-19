@@ -505,11 +505,13 @@ def search_POST():
             if file:
             #if file and validateFileSize(file):
                 phenotypes_file = str(file.stream.read())
-                phenotypes_file = phenotypes_file.replace('\n',',')
-                phenotypes_file = phenotypes_file.replace('\r',',')
+                phenotypes_file = phenotypes_file.replace('\\n',',')
+                phenotypes_file = phenotypes_file.replace('\\r',',')
                 phenotypes_file = re.sub(r',+', ',', phenotypes_file)
                 phenotypes_file = re.sub(r'^,+', '', phenotypes_file)
                 phenotypes_file = re.sub(r',+$', '', phenotypes_file)
+                phenotypes_file = re.sub(r'^b\'', '', phenotypes_file)
+                phenotypes_file = re.sub(r'\'$', '', phenotypes_file)
 
                 ## 入力チェック
                 list_phenotypes_file = phenotypes_file.split(',')
@@ -541,23 +543,56 @@ def search_POST():
             file = request.files['file_gene_list']
             if file:
             #if file and validateFileSize(file):
-                genes_file = str(file.stream.read())
-                genes_file = genes_file.replace('\n',',')
-                genes_file = genes_file.replace('\r',',')
-                genes_file = re.sub(r',+', ',', genes_file)
-                genes_file = re.sub(r'^,+', '', genes_file)
-                genes_file = re.sub(r',+$', '', genes_file)
-                genes_file = "ENT:" + genes_file.replace(',',',ENT:')
+                OBJ_MYSQL = MySQLdb.connect(unix_socket=db_sock, host="localhost", db=db_name, user=db_user, passwd=db_pw, charset="utf8")
 
-                ## 入力チェック
-                list_genes_file = genes_file.split(',')
+                gene_file = str(file.stream.read())
+                gene_file = gene_file.replace('\\n',',')
+                gene_file = gene_file.replace('\\r',',')
+                gene_file = re.sub(r',+', ',', gene_file)
+                gene_file = re.sub(r'^,+', '', gene_file)
+                gene_file = re.sub(r',+$', '', gene_file)
+                gene_file = re.sub(r'^b\'', '', gene_file)
+                gene_file = re.sub(r'\'$', '', gene_file)
+                #gene_file = "ENT:" + gene_file.replace(',',',ENT:')
+
+                ## Entrez Gene ID, Ensembl Gene, Gene Symbol に場合分け
+                list_genes_file = gene_file.split(',')
                 list_genes_file_removed = []
                 for gene in list_genes_file:
+                    ## pattern : Entrez Gene ID
+                    pattern_Entrez = r"^\d+$"
+                    ## pattern : Ensembl Gene ID
+                    pattern_Ensembl = r"^ENSG\d+$"
+
+                    if re.search(pattern_Entrez, gene):
+                        list_genes_file_removed.append("ENT:" + gene)
+                    elif re.search(pattern_Ensembl, gene):
+                        sql_EntrezID2EnsemblID = u"select EntrezGeneID from EntrezID2EnsemblID where EnsemblGeneID=%s"
+                        cursor_EntrezID2EnsemblID = OBJ_MYSQL.cursor()
+                        cursor_EntrezID2EnsemblID.execute(sql_EntrezID2EnsemblID, (gene,))
+                        values = cursor_EntrezID2EnsemblID.fetchall()
+                        cursor_EntrezID2EnsemblID.close()
+                        for value in values:
+                            EntrezGeneID = value[0]
+                            list_genes_file_removed.append("ENT:" + str(EntrezGeneID))
+                    else:
+                        sql_GeneName2ID = u"select EntrezID from GeneName2ID where GeneName=%s"
+                        cursor_GeneName2ID = OBJ_MYSQL.cursor()
+                        cursor_GeneName2ID.execute(sql_GeneName2ID, (gene,))
+                        values = cursor_GeneName2ID.fetchall()
+                        cursor_GeneName2ID.close()
+                        for value in values:
+                            EntrezGeneID = value[0]
+                            list_genes_file_removed.append("ENT:" + str(EntrezGeneID))
+                        #app.logger.debug(gene)
+
                     ## ENT:\d+ に沿わないエントリーは削除
-                    pattern = r"^ENT\:\d+$"
-                    match = re.search(pattern, gene)
-                    if match:
-                        list_genes_file_removed.append(gene)
+                    #pattern = r"^ENT\:\d+$"
+                    #match = re.search(pattern, gene)
+                    #if match:
+                    #    list_genes_file_removed.append(gene)
+                    #else:
+                    #    app.logger.debug(gene)
 
                 ## テキストボックスの遺伝子リストとファイル内の遺伝子リストを結合
                 list_genes.extend(list_genes_file_removed)
