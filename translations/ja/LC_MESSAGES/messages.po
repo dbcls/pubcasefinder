@@ -72,6 +72,66 @@ msgstr "HP:0000625_ja"
 msgid "index_Sample_5_name"
 msgstr "HP:0000625 眼瞼裂"
 
+msgid "index_usage_title_sub"
+msgstr "「PubCaseFinder」は鑑別診断・遺伝学的検査に役立つ"
+
+msgid "index_usage_title"
+msgstr "稀少・遺伝性疾患検索システム"
+
+msgid "index_usage_1_title"
+msgstr "鑑別診断に活用"
+
+msgid "index_usage_1_desc"
+msgstr "入力した症状と関連性の高い順に，遺伝性疾患7,000件と稀少疾患4,000件をランキング形式で提示します．"
+
+msgid "index_usage_2_title"
+msgstr "症例報告を探す"
+
+msgid "index_usage_2_desc"
+msgstr "30万件の英語症例報告を疾患<br>ごとに検索できます．今後，日本語症例報告にも対応する予定です．"
+
+msgid "index_usage_3_title"
+msgstr "N of 1 Problem"
+
+msgid "index_usage_3_desc"
+msgstr "インターネット上で公開されている25,000件の未診断症例を検索でき，未知バリアントの評価に有効です．"
+
+msgid "index_usage_4_title"
+msgstr "簡単な症状入力"
+
+msgid "index_usage_4_desc"
+msgstr "膨大な症状セット（13,000件）の中から，適切な症状を探すための便利な検索機能を提供します．"
+
+msgid "index_usage_5_title"
+msgstr "多言語対応"
+
+msgid "index_usage_5_desc"
+msgstr "患者の兆候・症状を日本語でも英語でも入力できます．今後，より多くの言語に対応する予定です．"
+
+msgid "index_photo_title_sub"
+msgstr "稀少・遺伝性疾患のチーム医療を推進する"
+
+msgid "index_photo_title"
+msgstr "医療者のための検索システム"
+
+msgid "index_photo_how"
+msgstr "使用方法"
+
+msgid "index_stat_genetic"
+msgstr "遺伝性疾患"
+
+msgid "index_stat_rare"
+msgstr "稀少疾患"
+
+msgid "index_stat_cs"
+msgstr "症例報告"
+
+msgid "index_stat_udp"
+msgstr "未診断症例"
+
+msgid "index_stat_list"
+msgstr "一覧"
+
 msgid "index_label_intro_title"
 msgstr "<b>希少疾患・症例を効率良く検索できる希少疾患診断支援システム</b>"
 

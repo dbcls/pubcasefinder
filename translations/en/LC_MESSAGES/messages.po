@@ -72,6 +72,66 @@ msgstr "HP:0000625"
 msgid "index_Sample_5_name"
 msgstr "HP:0000625 Cleft eyelid"
 
+msgid "index_usage_title_sub"
+msgstr "PubCaseFinder is useful for differential diagnosis and genetic testing."
+
+msgid "index_usage_title"
+msgstr "Rare and Genetic Disease Search System"
+
+msgid "index_usage_1_title"
+msgstr "Differential Diagnosis"
+
+msgid "index_usage_1_desc"
+msgstr "A ranked list of diseases is produced to be used by physicians as a part of the diagnostic workup."
+
+msgid "index_usage_2_title"
+msgstr "Finding Case Reports"
+
+msgid "index_usage_2_desc"
+msgstr "300,000 published case rerpots included in PubMed are searchable for each disease."
+
+msgid "index_usage_3_title"
+msgstr "N of 1 Problem"
+
+msgid "index_usage_3_desc"
+msgstr "25,000 cases suspected rare or hereditary diseases published on the Internet are searchable."
+
+msgid "index_usage_4_title"
+msgstr "Easy Phenotyping"
+
+msgid "index_usage_4_desc"
+msgstr "Useful search functions to select appropriate phenotypes from 13,000 HPO terms are available."
+
+msgid "index_usage_5_title"
+msgstr "Multilingualization"
+
+msgid "index_usage_5_desc"
+msgstr "Currently, it supports English and Japanese. More languages will be supported in the future."
+
+msgid "index_photo_title_sub"
+msgstr "Rare and Genetic Disease Search System Used For"
+
+msgid "index_photo_title"
+msgstr "Medical Professionals"
+
+msgid "index_photo_how"
+msgstr "How Does It Work?"
+
+msgid "index_stat_genetic"
+msgstr "Genetic Diseases"
+
+msgid "index_stat_rare"
+msgstr "Rare Diseases"
+
+msgid "index_stat_cs"
+msgstr "Case Reports"
+
+msgid "index_stat_udp"
+msgstr "Undiagnosed Cases"
+
+msgid "index_stat_list"
+msgstr "List"
+
 msgid "index_label_intro_title"
 msgstr "PubCaseFinder is a diagnosis support system for <b>rare diseases.</b>"
 

@@ -264,3 +264,17 @@
 
 
 }());
+
+
+
+//8/22：追加情報：モーダルが閉じられたときにiframeでビデオの再生を停止する
+$("#modal_photo").on('hidden.bs.modal', function (e) {
+    $("#modal_photo iframe").attr("src", $("#modal_photo iframe").attr("src"));
+});
+
+$("#modal_usage_1").on('hidden.bs.modal', function (e) {
+    $("#modal_usage_1 iframe").attr("src", $("#modal_usage_1 iframe").attr("src"));
+});
+
+
+

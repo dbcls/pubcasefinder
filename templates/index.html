@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
 
-
     <!-- START: FORM -->
     <div id="fh5co-project">
       <div class="container">
@@ -17,14 +16,6 @@
 		      <td width="100%">
 			<textarea class="form-control" rows="2" id="tokeninput_hpo" name="str_phenotypes"></textarea>
 		      </td>
-		      <!--td>&nbsp;</td>
-		      <td>
-			{% if get_locale() == "ja" or get_locale() == "ja_JP" %}
-			<button data-toggle="tooltip" title="{{ _('index_Q_tooltip') }}" class="btn btn-default" type="button" onClick="window.open().location.href='/static/pdf/PubCaseFinder_manual_ja.pdf'"><font size="4">?</font></button>
-			{% else %}
-			<button data-toggle="tooltip" title="{{ _('index_Q_tooltip') }}" class="btn btn-default" type="button" onClick="window.open().location.href='/static/pdf/Summary_PubCaseFinder.pdf'"><font size="4">?</font></button>
-			{% endif %}
-		      </td-->
 		    </tr>
 		  </table>
 		</td>
@@ -35,9 +26,9 @@
 		  <table>
 		    <tr>
 		      <td>
-			<button id="phenotouch" class="btn btn-default">{{ _('index_button_phenotouch') }}</button>
+			<button id="phenotouch" class="btn btn-default"><span class="icon-icon-symptoms"></span>{{ _('index_button_phenotouch') }}</button>
 			<button id="tokeninput_hpo_clear" class="btn btn-default">{{ _('index_button_clear') }}</button>
-			<button type="submit" class="btn btn-primary">{{ _('index_button_search') }}</button>
+			<button type="submit" class="btn btn-primary"><span class="icon-icon-search"></span>{{ _('index_button_search') }}</button>
                       </td>
                     </tr>
                   </table>
@@ -56,99 +47,157 @@
 	  <input type="hidden" name="changesize_selector_orphanet" value="10">
 	  <input type="hidden" name="changesize_selector_omim" value="10">
 	</form>
-	<br><br><br>
+	<br><!--br><br-->
       </div>
     </div>
     <!-- END: FORM -->
 
 
     <!-- START: Description -->
-    <div id="fh5co-services" class="fh5co-bg-section border-bottom">
+    <div id="fh5co-counter">
       <div class="container">
-	<div class="row">
-	  <div align="center"><h1><font color="#337ab7">{{ _('index_label_intro_title') }}</font></h1></div>
-	  <!--
-	  <div class="col-md-3 col-sm-6 ">
-	    <div align="center"><h1><b><font color="#337ab7">About</font></b></h1></div>
-	    <p>PubCaseFinder is a diagnosis assistant system for rare diseases based on phenotypic similarity.</p>
+	<div class="row animate-box" data-animate-effect="fadeInUp">
+	  <div class="col-md-12 col-sm-6 text-center" align="center" style="letter-spacing: 0.3em; line-height: 3em;"><font color="black">{{ _('index_usage_title_sub') }}</font></div>
+	  <div class="col-md-12 col-sm-6 text-center" align="center" style="letter-spacing: 0.3em; line-height: 2em;"><h1><font color="#0f2350"><b>{{ _('index_usage_title') }}</b></font></h1></div>
+	</div>
+	<br><br>
+        <div class="row">
+	  <div class="col-md-4 col-sm-6 ">
+	    <div class="row">
+	      <div class="col-md-1 col-sm-6 "></div>
+	      <div class="col-md-10 col-sm-6 ">
+		<section class="sample4">
+		  <img src="/static/images/top/usage_1.png" height="270">
+		  <!--a href="" data-toggle="modal" data-target="#modal_usage_1">
+		    <figure>
+		      <img src="/static/images/top/usage_1.png" height="270">
+                      <div class="container">
+                        <div class="row mb-5">
+                          <div class="col-2">
+                            <figcaption>
+                              <h3 class="title"><b><span class="icon-icon-movie"></span>&nbsp;DEMO</b></h3>
+                              <p><font size="4">{{ _('index_usage_1_title') }}</font></p>
+                            </figcaption>
+                          </div>
+                        </div>
+                      </div>
+		    </figure>
+		  </a-->
+		</section>
+		<br>
+		<div align="center" style="letter-spacing: 0.1em; "><h3><b><font color="#337ab7">{{ _('index_usage_1_title') }}</font></b></h3></div>
+		<div align="center" style="letter-spacing: 0.1em; line-height: 2em;"><font color="black"><p algin="center">{{ _('index_usage_1_desc') }}</p></font></div>
+	      </div>
+	      <div class="col-md-1 col-sm-6 "></div>
+	    </div>
 	  </div>
-	  <div class="col-md-3 col-sm-6 ">
-	    <div align="center"><h1><b><font color="#337ab7">Feature</font></b></h1></div>
-	    <p>PubCaseFinder utilizes disease-phenotype associations extracted from over one million case reports.</p>
+	  <div class="col-md-4 col-sm-6 ">
+	    <div class="row">
+	      <div class="col-md-1 col-sm-6 "></div>
+	      <div class="col-md-10 col-sm-6 ">
+		<section class="sample4">
+		  <img src="/static/images/top/usage_3.png" height="270">
+		  <!--a href="" data-toggle="modal" data-target="#modal_usage_1">
+		    <figure>
+		      <img src="/static/images/top/usage_3.png" height="270">
+                      <div class="container">
+                        <div class="row mb-5">
+                          <div class="col-2">
+                            <figcaption>
+                              <h3 class="title"><b><span class="icon-icon-movie"></span>&nbsp;DEMO</b></h3>
+                              <p><font size="4">{{ _('index_usage_3_title') }}</font></p>
+                            </figcaption>
+                          </div>
+                        </div>
+                      </div>
+		    </figure>
+		  </a-->
+		</section>
+		<br>
+		<div align="center" style="letter-spacing: 0.1em; "><h3><b><font color="#337ab7">{{ _('index_usage_3_title') }}</font></b></h3></div>
+		<div align="center" style="letter-spacing: 0.1em; line-height: 2em;"><font color="black"><p algin="center">{{ _('index_usage_3_desc') }}<br><font color="red"><b>COMING SOON</b></font></p></font></div>
+	      </div>
+	      <div class="col-md-1 col-sm-6 "></div>
+	    </div>
 	  </div>
-	  <div class="col-md-3 col-sm-6 ">
-	    <div align="center"><h1><b><font color="#337ab7">Merit</font></b></h1></div>
-	    <p>PubCaseFinder helps you find case reports which are similar to your input phenotypes.</p>
+	  <div class="col-md-4 col-sm-6 ">
+	    <div class="row">
+	      <div class="col-md-1 col-sm-6 "></div>
+	      <div class="col-md-10 col-sm-6 ">
+		<section class="sample4">
+		  <img src="/static/images/top/usage_2.png" height="270">
+		  <!--a href="" data-toggle="modal" data-target="#modal_usage_1">
+		    <figure>
+		      <img src="/static/images/top/usage_2.png" height="270">
+                      <div class="container">
+                        <div class="row mb-5">
+                          <div class="col-2">
+                            <figcaption>
+                              <h3 class="title"><b><span class="icon-icon-movie"></span>&nbsp;DEMO</b></h3>
+                              <p><font size="4">{{ _('index_usage_2_title') }}</font></p>
+                            </figcaption>
+                          </div>
+                        </div>
+                      </div>
+		    </figure>
+		  </a-->
+		</section>
+		<br>
+		<div align="center" style="letter-spacing: 0.1em; "><h3><b><font color="#337ab7">{{ _('index_usage_2_title') }}</font></b></h3></div>
+		<div align="center" style="letter-spacing: 0.1em; line-height: 2em;"><font color="black"><p algin="center">{{ _('index_usage_2_desc') }}</p></font></div>
+	      </div>
+	      <div class="col-md-1 col-sm-6 "></div>
+	    </div>
 	  </div>
-	  <div class="col-md-3 col-sm-6 ">
-	    <div align="center"><h1><b><font color="#337ab7">Database</font></b></h1></div>
-	    <p>Phenotype-associations for 4,066 rare diseases are <a href="http://togodb.org/db/disease_phenotype_associations_20170720">HERE</a>.</p>
+	</div>
+	<br>
+        <div class="row">
+	  <div class="col-md-1 col-sm-6 "></div>
+	  <div class="col-md-10 col-sm-6 ">
+	    <div class="row">
+	      <div class="col-md-1 col-sm-6 "></div>
+	      <div class="col-md-4 col-sm-6 ">
+		<section class="sample4">
+		  <img src="/static/images/top/usage_4.png" height="270">
+		  <!--a href="" data-toggle="modal" data-target="#modal_usage_1">
+		    <figure>
+		      <img src="/static/images/top/usage_4.png" height="270">
+                      <div class="container">
+                        <div class="row mb-5">
+                          <div class="col-2">
+                            <figcaption>
+                              <h3 class="title"><b><span class="icon-icon-movie"></span>&nbsp;DEMO</b></h3>
+                              <p><font size="4">{{ _('index_usage_4_title') }}</font></p>
+                            </figcaption>
+                          </div>
+                        </div>
+                      </div>
+		    </figure>
+		  </a-->
+		</section>
+		<br>
+		<div align="center" style="letter-spacing: 0.1em; "><h3><b><font color="#337ab7">{{ _('index_usage_4_title') }}</font></b></h3></div>
+		<div align="center" style="letter-spacing: 0.1em; line-height: 2em;"><font color="black"><p algin="center">{{ _('index_usage_4_desc') }}</p></font></div>
+	      </div>
+	      <div class="col-md-2 col-sm-6 "></div>
+	      <div class="col-md-4 col-sm-6 ">
+		<div align="center"><img src="/static/images/top/usage_5.png" height="270"></div>
+		<br>
+		<div align="center" style="letter-spacing: 0.1em; "><h3><b><font color="#337ab7">{{ _('index_usage_5_title') }}</font></b></h3></div>
+		<div align="center" style="letter-spacing: 0.1em; line-height: 2em;"><font color="black"><p algin="center">{{ _('index_usage_5_desc') }}</p></font></div>
+	      </div>
+	      <div class="col-md-1 col-sm-6 "></div>
+	    </div>
 	  </div>
-	  -->
-          <div align="center">
-	    <!--
-            &nbsp;<br>
-            &nbsp;<br>
-            &nbsp;<br>
-	    -->
-            <video width="100%" src="/static/images/PubCaseFinder_demo_720.mp4" webkit-playsinline playsinline muted autoplay controls="true">
-              <!-- source type="video/mp4" -->
-            </video>
-          </div>
+	  <div class="col-md-1 col-sm-6 "></div>
 	</div>
       </div>
     </div>
     <!-- END: Description -->
 
 
-    <!-- START: Statistics -->
-    <div id="fh5co-counter">
-      <div class="container">
-	<div class="row animate-box" data-animate-effect="fadeInUp">
-	  <div class="col-md-8 col-md-offset-2 text-left fh5co-heading">
-	    <h2>Statistics</h2>
-	  </div>
-	</div>
-	<div class="row">
-	  <div class="col-md-3 col-sm-6 animate-box" data-animate-effect="fadeInLeft">
-	    <span class="icon">
-	      <i class="ti-face-smile"></i>
-	    </span>
-	    <span class="counter"><span class="js-counter" data-from="0" data-to="4066" data-speed="1500" data-refresh-interval="50">1</span></span>
-	    <span class="counter-label">Rare Diseases</span><br>
-	    <a href="http://togodb.org/db/rare_diseases_20170720">&gt;&gt; List</a>
-	  </div>
-	  <div class="col-md-3 col-sm-6 animate-box" data-animate-effect="fadeInLeft">
-	    <span class="icon">
-	      <i class="ti-briefcase"></i>
-	    </span>
-	    <span class="counter"><span class=" js-counter" data-from="0" data-to="121576" data-speed="1500" data-refresh-interval="50">1</span></span>
-	    <span class="counter-label">Disease-Phenotype Associations</span><br>
-	    <a href="http://togodb.org/db/disease_phenotype_associations_20170720">&gt;&gt; List</a>
-	  </div>
-	  <div class="col-md-3 col-sm-6 animate-box" data-animate-effect="fadeInLeft">
-	    <span class="icon">
-	      <i class="ti-time"></i>
-	    </span>
-	    <span class="counter"><span class="js-counter" data-from="0" data-to="4002" data-speed="1500" data-refresh-interval="50">1</span></span>
-	    <span class="counter-label">Disease-Gene Associations</span><br>
-	    <a href="http://togodb.org/db/disease_gene_associations_20170720">&gt;&gt; List</a>
-	  </div>
-	  <div class="col-md-3 col-sm-6 animate-box" data-animate-effect="fadeInLeft">
-	    <span class="icon">
-	      <i class="ti-download"></i>
-	    </span>
-	    <span class="counter"><span class="js-counter" data-from="0" data-to="1" data-speed="1500" data-refresh-interval="50">1</span>M+</span>
-	    <span class="counter-label">Case Reports</span><br>
-	    <a href="https://www.ncbi.nlm.nih.gov/pubmed/?term=%22case+reports%22%5BPublication+Type%5D+OR+%22case+reports%22%5Bti%5D+OR+%22case+report%22%5Bti%5D">&gt;&gt; PubMed</a>
-	  </div>
-	</div>
-      </div>
-    </div>
-    <!-- END: Statistics -->
-
-
     <!-- START: Original Data Sources -->
+    <!--
     <div id="fh5co-started">
       <div class="container">
 	<div class="row animate-box">
@@ -168,32 +217,193 @@
 	</div>
       </div>
     </div>
+    -->
     <!-- END: Original Data Sources -->
 
-
-    <!-- START: Citing PubCaseFinder -->
     <br><br>
-    <div id="fh5co-footer" role="contentinfo">
-      <div class="container">
-	<div class="row animate-box" data-animate-effect="fadeInUp">
-	  <!--div class="col-md-8 col-md-offset-2 text-left fh5co-heading"-->
-	  <div class="col-md-8 col-md-offset-2 text-center fh5co-heading">
-	    <h2>Citation</h2>
+
+    <!-- START: Photo -->
+    <div id="fh5co-services" class="fh5co-bg-section border-bottom">
+      <div class="container description-container">
+	<div class="row description-wrapper">
+	  <div class="left-wrapper">
+	    <div align="left" style="letter-spacing: 0.2em; line-height: 2em; "><font color="black" size="4">{{ _('index_photo_title_sub') }}</font></div>
+	    <div align="left" style="letter-spacing: 0.2em; "><h1><font color="#2A3356"><b>{{ _('index_photo_title') }}</b></font></h1></div>
+	    <!--button id="phenotouch" class="btn btn-default"><span class="icon-icon-movie"></span>&nbsp;{{ _('index_photo_how') }}</button-->
+
+            <!-- 8.13:追加:モーダルを開くボタン・リンク -->
+            <div class="container">
+              <div class="row mb-5">
+		<div class="col-2">
+                  <button id="phenotouch" class="btn btn-default" data-toggle="modal" data-target="#modal_photo"><span class="icon-icon-movie"></span>&nbsp;{{ _('index_photo_how') }}</button>
+		</div>
+              </div>
+	    </div>
+	    <!-- モーダルボタン終わり-->
+
 	  </div>
-	</div>
-	<!--div class="col-md-10 col-sm-6 "-->
-	<div class="col-md-10 col-md-offset-1 text-left fh5co-heading">
-	  <p align="left"><font size="4"><b>{{ _('index_label_citation') }}</b></font>
-	  <p>Toyofumi Fujiwara, Yasunori Yamamoto, Jin-Dong Kim, Orion Buske, and Toshihisa Takagi., <br>PubCaseFinder: A Case-Report-Based, Phenotype-Driven Differential-Diagnosis System for Rare Diseases, <br><I>The American Journal of Human Genetics</I> 103.3 (2018): 389-399. &nbsp;&nbsp;&nbsp;&nbsp;
-	    <a href="https://www.ncbi.nlm.nih.gov/pubmed/30173820" target="_blank">[PubMed Entry]</a>&nbsp;&nbsp;
-	    <a href="https://www.cell.com/ajhg/fulltext/S0002-9297(18)30269-6?code=ajhg-site" target="_blank">[Full Text]</a>
-	  </p>
+	  <div class="img-movie"><img src="static/images/img-movie.png"></div>
 	</div>
       </div>
     </div>
-    <br><br>
-    <!-- END: Citing PubCaseFinder -->
+    <!-- END: Photo -->
 
+    <br><br>
+
+    <!-- START: Statistics -->
+    <div id="fh5co-counter">
+      <div class="container">
+	<div class="row animate-box" data-animate-effect="fadeInUp">
+	  <div class="col-md-8 col-md-offset-2 text-center fh5co-heading" style="letter-spacing: 0.3em; line-height: 2em;">
+	    <h2><font color="#0f2350">Statistics</font></h2>
+	  </div>
+	</div>
+	<div class="row">
+	  <div class="col-md-3 col-sm-6 animate-box" data-animate-effect="fadeInLeft">
+	    <span class="icon">
+	      <i class="ti-face-smile"></i>
+	    </span>
+	    <span class="counter"><span class="js-counter" data-from="0" data-to="6970" data-speed="1500" data-refresh-interval="50">1</span></span>
+	    <div align="center" style="letter-spacing: 0.2em; "><font color="black">{{ _('index_stat_genetic') }}</font></div>
+	    <!--a href="http://togodb.org/db/rare_diseases_20170720">&gt;&gt; {{ _('index_stat_list') }}</a-->
+	  </div>
+	  <div class="col-md-3 col-sm-6 animate-box" data-animate-effect="fadeInLeft">
+	    <span class="icon">
+	      <i class="ti-face-smile"></i>
+	    </span>
+	    <span class="counter"><span class="js-counter" data-from="0" data-to="4066" data-speed="1500" data-refresh-interval="50">1</span></span>
+	    <div align="center" style="letter-spacing: 0.2em; "><font color="black">{{ _('index_stat_rare') }}</font></div>
+	    <!--a href="http://togodb.org/db/rare_diseases_20170720">&gt;&gt; {{ _('index_stat_list') }}</a-->
+	  </div>
+	  <div class="col-md-3 col-sm-6 animate-box" data-animate-effect="fadeInLeft">
+	    <span class="icon">
+	      <i class="ti-face-smile"></i>
+	    </span>
+	    <span class="counter"><span class="js-counter" data-from="0" data-to="25000" data-speed="1500" data-refresh-interval="50">1</span></span>
+	    <div align="center" style="letter-spacing: 0.2em; "><font color="black">{{ _('index_stat_udp') }}</font></div>
+	    <!--a href="http://togodb.org/db/rare_diseases_20170720">&gt;&gt; {{ _('index_stat_list') }}</a-->
+	    <font color="red"><b>COMING SOON</b></font>
+	  </div>
+	  <div class="col-md-3 col-sm-6 animate-box" data-animate-effect="fadeInLeft">
+	    <span class="icon">
+	      <i class="ti-download"></i>
+	    </span>
+	    <span class="counter"><span class="js-counter" data-from="0" data-to="2" data-speed="1500" data-refresh-interval="50">2</span>M+</span>
+	    <div align="center" style="letter-spacing: 0.2em; "><font color="black">{{ _('index_stat_cs') }}</font></div>
+	    <a href="https://www.ncbi.nlm.nih.gov/pubmed/?term=%22case+reports%22%5BPublication+Type%5D+OR+%22case+reports%22%5Bti%5D+OR+%22case+report%22%5Bti%5D">&gt;&gt; PubMed</a>
+	  </div>
+	</div>
+	<!-- END: Statistics -->
+
+	<!-- START: Citing PubCaseFinder -->
+        <br><br><br><br><br>
+	<div class="row animate-box" data-animate-effect="fadeInUp">
+	  <div class="col-md-8 col-md-offset-2 text-center fh5co-heading" style="letter-spacing: 0.3em; line-height: 2em;">
+	    <h2><font color="#0f2350">Citation</font></h2>
+	  </div>
+	</div>
+	<div class="row">
+	  <div class="col-md-2 col-sm-6 "></div>
+	  <div class="col-md-8 col-sm-6 text-center fh5co-heading" style="letter-spacing: 0.1em; line-height: 2em;">
+	    <font size="4" color="black"><b>{{ _('index_label_citation') }}</b></font>
+	    <p><font color="black">Toyofumi Fujiwara, Yasunori Yamamoto, Jin-Dong Kim, Orion Buske, and Toshihisa Takagi., PubCaseFinder: A Case-Report-Based, Phenotype-Driven Differential-Diagnosis System for Rare Diseases, <I>The American Journal of Human Genetics</I> 103.3 (2018): 389-399.</font><br>
+	      <a href="https://www.ncbi.nlm.nih.gov/pubmed/30173820" target="_blank">[PubMed Entry]</a>&nbsp;&nbsp;
+	      <a href="https://www.cell.com/ajhg/fulltext/S0002-9297(18)30269-6?code=ajhg-site" target="_blank">[Full Text]</a>
+	    </p>
+	  </div>
+	  <div class="col-md-2 col-sm-6 "></div>
+	</div>
+	<!-- END: Citing PubCaseFinder -->
+
+	<br><br><br>
+
+	<!-- START: Logos -->
+	<div class="row">
+	  <div class="col-md-6 col-sm-6 ">
+	    <div class="row">
+	      <div class="col-md-3 col-sm-6 "></div>
+	      <div class="row animate-box" data-animate-effect="fadeInUp">
+		<div class="col-md-8 col-md-offset-2 text-center fh5co-heading" style="letter-spacing: 0.3em; line-height: 2em; ">
+		  <h3><font color="#0f2350" size="6"><br>Special Thanks</font></h3>
+		</div>
+	      </div>
+	      <div class="col-md-3 col-sm-6 "></div>
+	    </div>
+
+	    <div class="row">
+	      <div class="col-md-6 col-sm-6 ">
+		<div align="center"><a href="https://hpo.jax.org/app/" target="_blank"><img src="/static/images/top/logo/hpo.png" height="55"></a></div>
+	      </div>
+	      <div class="col-md-5 col-sm-6 ">
+		<div align="center"><a href="https://github.com/monarch-initiative/mondo" target="_blank"><img src="/static/images/top/logo/mondo.png" height="60"></a></div>
+	      </div>
+	      <div class="col-md-1 col-sm-6 "></div>
+	    </div>
+	    <br><br>
+	    <div class="row">
+	      <div class="col-md-6 col-sm-6 ">
+		<div align="center"><a href="https://www.ncbi.nlm.nih.gov/CBBresearch/Lu/Demo/PubTator/" target="_blank"><img src="/static/images/top/logo/pubtator.png" width="180"></a></div>
+	      </div>
+	      <div class="col-md-5 col-sm-6 ">
+		<div align="center"><a href="http://www.orphadata.org/cgi-bin/index.php" target="_blank"><img src="/static/images/top/logo/orphadata.png" width="180"></a></div>
+	      </div>
+	      <div class="col-md-1 col-sm-6 "></div>
+	    </div>
+	    <br><br>
+	    <div class="row">
+	      <div class="col-md-12 col-sm-6 " style="margin-top: 0.5rem">
+		<div align="center"><a href="https://monarchinitiative.org" target="_blank"><img src="/static/images/top/logo/monarch.png" height="45"></a></div>
+	      </div>
+	    </div>
+	  </div>
+
+	  <div class="col-md-6 col-sm-6 " style="border-left: 1px solid #bbb;">
+	    <div class="row">
+	      <div class="col-md-2 col-sm-6 "></div>
+	      <div class="row animate-box" data-animate-effect="fadeInUp">
+		<div class="col-md-8 col-md-offset-2 text-center fh5co-heading" style="letter-spacing: 0.3em; line-height: 2em;">
+		  <h3><font color="#0f2350" size="6">Memberships &<br>Collaborators</font></h3>
+		</div>
+	      </div>
+	      <div class="col-md-2 col-sm-6 "></div>
+	    </div>
+	    <div class="row">
+	      <div class="col-md-1 col-sm-6 "></div>
+	      <div class="col-md-5 col-sm-6 ">
+		<div align="center"><a href="http://ga4gh.org" target="_blank"><img src="/static/images/top/logo/ga4gh.png" height="50"></a></div>
+	      </div>
+	      <div class="col-md-6 col-sm-6 ">
+		<a href="https://biosciencedbc.jp/en/" target="_blank"><img src="/static/images/top/logo/nbdc.png" height="45"></a>
+	      </div>
+	    </div>
+	    <br>
+	    <div class="row">
+	      <div class="col-md-1 col-sm-6 "></div>
+	      <div class="col-md-5 col-sm-6 ">
+		<a href="http://www.matchmakerexchange.org" target="_blank"><img src="/static/images/top/logo/mme.png" height="100"></a>
+	      </div>
+	      <div class="col-md-6 col-sm-6 mx-auto " style="margin-top: 1.2rem">
+		<div align="center"><a href="https://gene42.com" target="_blank"><img src="/static/images/top/logo/gene42.jpg" height="70"></a></div>
+	      </div>
+	    </div>
+	    <br>
+	    <div class="row">
+	      <div class="col-md-1 col-sm-6 "></div>
+	      <div class="col-md-5 col-sm-6 ">
+		<div align="center"><a href="https://www.phenomecentral.org" target="_blank"><img src="/static/images/top/logo/phenomecentral.png" height="80"></a></div>
+	      </div>
+	      <div class="col-md-6 col-sm-6 ">
+		<div align="center"><a href="http://patientarchive.org" target="_blank"><img src="/static/images/top/logo/patientarchive.jpg" height="80"></a></div>
+	      </div>
+	    </div>
+
+	  </div>
+	</div>
+	<!-- END: Logos -->
+      </div>
+    </div>
+
+    <br><br>
 
     <!-- START: Import JavaScript -->	
     <!-- jQuery -->
