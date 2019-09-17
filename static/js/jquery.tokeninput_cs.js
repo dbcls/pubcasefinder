@@ -155,7 +155,7 @@
 
           return this.each(function () {
               $(this).data("settings", settings);
-              $(this).data("tokenInputObject", new $.TokenList(this, url_or_data_or_function, settings));
+              $(this).data("tokenInputObject", new $.TokenList_cs(this, url_or_data_or_function, settings));
           });
       },
       clear: function() {
@@ -205,7 +205,7 @@
   };
 
   // TokenList class for each input
-  $.TokenList = function (input, url_or_data, settings) {
+  $.TokenList_cs = function (input, url_or_data, settings) {
       //
       // Initialization
       //
@@ -252,7 +252,7 @@
       var token_count = 0;
 
       // Basic cache to save on db hits
-      var cache = new $.TokenList.Cache();
+      var cache = new $.TokenList_cs.Cache();
 
       // Keep track of the timeout, old vals
       var timeout;
@@ -1089,7 +1089,7 @@
   };
 
   // Really basic cache for the results
-  $.TokenList.Cache = function (options) {
+  $.TokenList_cs.Cache = function (options) {
     var settings, data = {}, size = 0, flush;
 
     settings = $.extend({ max_size: 500 }, options);

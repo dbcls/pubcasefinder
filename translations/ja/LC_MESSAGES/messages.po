@@ -46,31 +46,31 @@ msgid "index_Sample_1_id"
 msgstr "HP:0000347_ja"
 
 msgid "index_Sample_1_name"
-msgstr "HP:0000347 小顎"
+msgstr "小顎"
 
 msgid "index_Sample_2_id"
 msgstr "HP:0003022_ja"
 
 msgid "index_Sample_2_name"
-msgstr "HP:0003022 尺骨低形成"
+msgstr "尺骨低形成"
 
 msgid "index_Sample_3_id"
 msgstr "HP:0009381_ja"
 
 msgid "index_Sample_3_name"
-msgstr "HP:0009381 短い指"
+msgstr "短い指"
 
 msgid "index_Sample_4_id"
 msgstr "HP:0000204_ja"
 
 msgid "index_Sample_4_name"
-msgstr "HP:0000204 上口唇裂"
+msgstr "上口唇裂"
 
 msgid "index_Sample_5_id"
 msgstr "HP:0000625_ja"
 
 msgid "index_Sample_5_name"
-msgstr "HP:0000625 眼瞼裂"
+msgstr "眼瞼裂"
 
 msgid "index_usage_title_sub"
 msgstr "「PubCaseFinder」は鑑別診断・遺伝学的検査に役立つ"

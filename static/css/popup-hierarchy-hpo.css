@@ -1,3 +1,23 @@
+@font-face {
+	font-family: 'Glyphicons Halflings';
+	src: url('../fonts/bootstrap/glyphicons-halflings-regular.eot');
+	src: url('../fonts/bootstrap/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('../fonts/bootstrap/glyphicons-halflings-regular.woff2') format('woff2'), url('../fonts/bootstrap/glyphicons-halflings-regular.woff') format('woff'), url('../fonts/bootstrap/glyphicons-halflings-regular.ttf') format('truetype'), url('../fonts/bootstrap/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
+}
+.glyphicon {
+	position: relative;
+	top: 1px;
+	display: inline-block;
+	font-family: 'Glyphicons Halflings';
+	font-style: normal;
+	font-weight: normal;
+	line-height: 1;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+.glyphicon-info-sign:before {
+	content: "\e086";
+}
+
 /*popup-hierarchy-hpo-base popup-hierarchy-hpo-selectedphenotype */
 @keyframes popup-hierarchy-hpo-keyframe-superclass-translate {
 	from {
@@ -305,11 +325,20 @@
 	text-align: left;
 	vertical-align: top;
 	font-weight: bold;
+	white-space: nowrap;
+	width: 1%;
 }
 .popup-hierarchy-hpo-content-td {
 	display:table-cell;
 	text-align: left;
 	vertical-align: top;
+}
+.popup-hierarchy-hpo-content-td-colon {
+	display:table-cell;
+	text-align: center;
+	vertical-align: top;
+	white-space: nowrap;
+	width: 1%;
 }
 
 .popup-hierarchy-hpo-loading {
@@ -320,15 +349,126 @@
 	height: 100%;
 }
 
-ul.token-input-list-facebook {
+ul.hpo-token-input-list.token-input-list-facebook {
 /*	font-size: inherit !important;*/
 	font-size: 14px !important;
 }
-li.token-input-token-facebook {
+ul.hpo-token-input-list.token-input-list-facebook li input {
+	font-size: 18px !important;
+	line-height: 40px;
+}
+ul.hpo-token-input-list.token-input-list-facebook li.token-input-token-facebook {
 /*	font-size: inherit !important;*/
 	font-size: 14px !important;
 	cursor: pointer;
+
+	font-family:"游ゴシック Medium",YuGothic,YuGothicM,"Hiragino Kaku Gothic ProN","Hiragino Kaku Gothic Pro",メイリオ,Meiryo,sans-serif;
+	padding: 0.5em;
+	text-decoration: none;
+	border: solid 1px #337AB7;
+	background-color:#F4FAFF;
+	color:#000;
+	border-radius: 3px;
+	transition: .4s;
+/*	position:absolute;*/
+	display:flex;
 }
+ul.hpo-token-input-list.token-input-list-facebook li.token-input-token-facebook:hover {
+	background-color: #337AB7;
+	color: white;
+}
+ul.hpo-token-input-list.token-input-list-facebook li.token-input-token-facebook.token-input-selected-token-facebook {
+	background-color: #5670a6;
+	border: 1px solid #3b5998;
+	color: #fff;
+}
+
+ul.hpo-token-input-list.token-input-list-facebook li.token-input-token-facebook p {
+	display: block  !important;
+	line-height: 15px;
+	margin-left: 5px;
+	margin-right: 5px;
+	text-align: left;
+}
+ul.hpo-token-input-list.token-input-list-facebook li.token-input-token-facebook .token-input-token-word-facebook.token-input-token-icon-facebook {
+	display: block  !important;
+	border-radius: 50%;
+	height: 20px;
+	width: 20px;
+	background-color:#D5EBFF;
+	margin: auto;
+}
+
+ul.hpo-token-input-list.token-input-list-facebook li.token-input-token-facebook .token-input-token-word-facebook.token-input-token-icon-facebook .arrow{
+	display: block !important;
+	width: 8px;
+	height: 8px;
+	border: 2px solid;
+	border-color: #337AB7 #337AB7 transparent transparent;
+	transform: rotate(45deg);
+	margin-top: 6px;
+	margin-left: 4px;
+}
+
+ul.hpo-token-input-list.token-input-list-facebook li.token-input-token-facebook span.token-input-token-word-facebook.token-input-token-id-facebook {
+	display: block  !important;
+	font-size: 10px;
+}
+ul.hpo-token-input-list.token-input-list-facebook li.token-input-token-facebook span.token-input-token-word-facebook.token-input-token-name-facebook {
+	display: block  !important;
+	font-size:18px;
+}
+ul.hpo-token-input-list.token-input-list-facebook li.token-input-token-facebook span.token-input-delete-token-facebook {
+	display: inline-block;
+	height: 15px;
+	width: 15px;
+	position: relative;
+	margin: auto;
+	font-size: 16px;
+	line-height: 16px;
+}
+
+span.token-input-token-word-facebook {
+	color: inherit !important;
+/*	margin-left: inherit !important;*/
+	margin-left: 0px !important;
+	font-weight: inherit !important;
+	cursor: inherit !important;
+}
+
+li.token-input-token-results-facebook {
+	font-size:16px;
+}
+
+li.token-input-token-results-facebook span.token-input-token-word-facebook.token-input-token-information-facebook {
+	top: 4px;
+	font-size:20px;
+}
+li.token-input-token-results-facebook span.token-input-token-word-facebook.token-input-token-id-facebook {
+	font-size:14px;
+}
+li.token-input-token-results-facebook span.token-input-token-word-facebook.token-input-token-name-facebook {
+/*	font-weight: bold !important;*/
+}
+li.token-input-token-results-facebook span.token-input-token-word-facebook.token-input-token-name-facebook {
+	color: #3777B5 !important;
+}
+li.token-input-token-results-facebook.token-input-selected-dropdown-item-facebook span.token-input-token-word-facebook.token-input-token-name-facebook {
+/*	color: inherit !important;	/* マウスオーバー時の色をとりあえず、デフォルトにしておく */
+	color: #D0E8FF !important;
+}
+
+li.token-input-token-results-facebook span.token-input-token-word-facebook.token-input-token-information-facebook {
+/*	cursor: pointer !important;*/
+}
+li.token-input-token-results-facebook span.token-input-token-word-facebook.token-input-token-synonym-facebook {
+/*	color: #3777B5 !important;*/
+}
+
+
+
+
+
 
 ul.popup-hierarchy-hpo-token-list {
 /*	min-height: 30px;*/
@@ -631,6 +771,48 @@ select.popup-hierarchy-hpo-language-change {
 	text-align: left;
 }
 
+.popup-hierarchy-hpo-results-tooltip {
+}
+.popup-hierarchy-hpo-results-tooltip-title {
+	display: none;
+	color: #fff;
+	background-color: #bfbfbf;
+	font-weight: bold;
+	padding: 4px;
+}
+
+.popup-hierarchy-hpo-results-tooltip .popup-hierarchy-hpo-content-table {
+	background-color: #ffffff;
+	color: #4B5270;
+	border: 0px solid #2A3356;
+	border-radius: 6px;
+	padding: 10px;
+/*	box-shadow: 0px 0px 5px 5px rgba(42,51,86,0.5);*/
+	box-shadow: 0 24px 38px 3px rgba(0,0,0,0.14),
+              0 9px 46px 8px rgba(0,0,0,0.12),
+              0 11px 15px -7px rgba(0,0,0,0.2);
+	width: 100%;
+}
+
+.popup-hierarchy-hpo-results-tooltip .popup-hierarchy-hpo-content-table .popup-hierarchy-hpo-content-td
+{
+	color: #848484;
+}
+.popup-hierarchy-hpo-results-tooltip .popup-hierarchy-hpo-content-table .popup-hierarchy-hpo-content-td-id,
+.popup-hierarchy-hpo-results-tooltip .popup-hierarchy-hpo-content-table .popup-hierarchy-hpo-content-td-name,
+.popup-hierarchy-hpo-results-tooltip .popup-hierarchy-hpo-content-table .popup-hierarchy-hpo-content-td-english
+{
+/*
+	color: #707070;
+	font-weight: bold;
+*/
+}
+.popup-hierarchy-hpo-results-tooltip .popup-hierarchy-hpo-content-table .popup-hierarchy-hpo-content-td-name,
+.popup-hierarchy-hpo-results-tooltip .popup-hierarchy-hpo-content-table .popup-hierarchy-hpo-content-td-english
+{
+	color: #3777B5;
+}
+
 .btn-copy {
 	background: #8671BF;
 	color: #fff;
@@ -640,4 +822,53 @@ select.popup-hierarchy-hpo-language-change {
 .btn-copy:hover, .btn-copy:focus, .btn-copy:active {
 	background: #9584BF !important;
 	color: #fff;
+}
+
+#match_rate {
+	text-align: center;
+	display: none;
+}
+
+.popup-hierarchy-hpo-number-of-hits
+{
+	color: #707070;
+	font-weight: bold;
+	padding: 4px;
+}
+
+/*スクロールバー全体*/
+::-webkit-scrollbar {
+	width: 10px;
+}
+
+::-webkit-scrollbar-track {
+	border-radius: 10px;
+	box-shadow: inset 0 0 6px rgba(0, 0, 0, .1);
+}
+
+::-webkit-scrollbar-thumb {
+	background-color: rgba(0, 0, 50, .5);
+	border-radius: 10px;
+	box-shadow:0 0 0 1px rgba(255, 255, 255, .3);
+}
+/*
+div.token-input-dropdown-facebook {
+	overflow-y: scroll !important;
+}
+*/
+
+.rater {
+	display: inline-block;
+	font-size: 30px;
+	color: #FFD119;
+	font-weight: bold;
+}
+
+.rate-base-layer
+{
+	color: #FFD119;
+}
+.rate-hover-layer
+{
+	color: #FFD119;
 }

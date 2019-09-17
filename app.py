@@ -7,6 +7,8 @@ import MySQLdb
 import json
 import sys
 import datetime
+import copy
+import mojimoji
 from werkzeug import secure_filename
 from io import StringIO, BytesIO
 import csv
@@ -1582,25 +1584,58 @@ def tokeninput_hpo():
     if request.method == 'GET':
 
         # requestから値を取得
-        tokeninput = request.args.get("q")
+        #tokeninput = request.args.get("q")
+        tokeninputs = request.args.get("q").replace(u'　', u' ').split()
+        sql_params = []
+        in_tokeninputs = []
+        for v in tokeninputs:
+            sql_params.append("%"+v+"%")
+            in_tokeninputs.append(mojimoji.zen_to_han(v, kana=False).lower())
+        for v in tokeninputs:
+            sql_params.append("%"+v+"%")
 
         # OntoTermテーブルからHPのtermを検索
         ## SQLのLIKEを使うときのTips
         ### http://d.hatena.ne.jp/heavenshell/20111027/1319712031
         OBJ_MYSQL = MySQLdb.connect(unix_socket=db_sock, host="localhost", db=db_name, user=db_user, passwd=db_pw, charset="utf8")
         # ICテーブルに存在する各termの頻度で、表示するtermをソート
-        sql_OntoTerm = u"select distinct a.uid, a.uid_value, b.FreqSelf from IndexFormHP as a left join IC as b on replace(a.uid, '_ja', '')=b.OntoID where a.uid_value like %s order by b.FreqSelf desc, value"
+        #sql_OntoTerm = u"select distinct a.uid, a.uid_value, b.FreqSelf from IndexFormHP as a left join IC as b on replace(a.uid, '_ja', '')=b.OntoID where a.uid_value like %s order by b.FreqSelf desc, value"
+        sql_OntoTerm = u"select distinct a.uid, a.value, c.OntoSynonym, b.FreqSelf from IndexFormHP as a left join IC as b on replace(a.uid, '_ja', '')=b.OntoID LEFT JOIN OntoTermHPInformation AS c ON a.uid=c.OntoID where {0} OR (LENGTH(a.value)=CHARACTER_LENGTH(a.value) AND a.uid IN (SELECT OntoID FROM OntoTermHPSynonym WHERE OntoVersion='20170630' AND {1})) order by b.FreqSelf desc, value".format(' AND '.join(map(lambda x: "a.uid_value collate utf8_unicode_ci like %s", tokeninputs)),' AND '.join(map(lambda x: "OntoSynonym collate utf8_unicode_ci like %s", tokeninputs)))
         cursor_OntoTerm = OBJ_MYSQL.cursor()
-        cursor_OntoTerm.execute(sql_OntoTerm, ("%" + tokeninput +"%",))
+        cursor_OntoTerm.execute(sql_OntoTerm, tuple(sql_params))
         values = cursor_OntoTerm.fetchall()
         cursor_OntoTerm.close()
-
         for value in values:
             dict_json = {}
-            onto_id = value[0]
-            onto_id_term = value[1]
-            dict_json['id'] = onto_id
-            dict_json['name'] = onto_id_term
+            onto_id = mojimoji.zen_to_han(value[0], kana=False).lower()
+            onto_id_term = mojimoji.zen_to_han(value[1], kana=False).lower()
+            onto_id_synonym = []
+
+            for in_tokeninput in in_tokeninputs:
+                if type(onto_id) is str and len(onto_id) and in_tokeninput not in onto_id:
+                    onto_id = None
+                if type(onto_id_term) is str and len(onto_id_term) and in_tokeninput not in onto_id_term:
+                    onto_id_term = None
+                if onto_id is None and onto_id_term is None:
+                    break
+
+            if onto_id is None and onto_id_term is None and type(value[2]) is str and len(value[2]):
+                list_synonym = value[2].split('|')
+                for synonym in list_synonym:
+                    temp_synonym = mojimoji.zen_to_han(synonym, kana=False).lower()
+                    for in_tokeninput in in_tokeninputs:
+                        if type(temp_synonym) is str and len(temp_synonym) and in_tokeninput not in temp_synonym:
+                            temp_synonym = None
+                            break
+                    if temp_synonym is not None:
+                        onto_id_synonym.append(synonym)
+
+            dict_json['id'] = value[0]
+            dict_json['name'] = value[1]
+            if len(onto_id_synonym)>0:
+                dict_json['synonym'] = onto_id_synonym
+            else:
+                dict_json['synonym'] = None
             list_json.append(dict_json)
 
     OBJ_MYSQL.close()
@@ -1712,8 +1747,8 @@ def popup_hierarchy_hpo():
         dict_json = {}
 
         # OntoTermHPInformationテーブルから情報取得
-        sql_information = u"select OntoName, OntoSynonym, OntoDefinition, OntoParentNum, OntoChildNum, OntoNameJa from OntoTermHPInformation where OntoVersion='20170630' and OntoID=%s"
-        sql_informations_fmt = u"select OntoID, OntoName, OntoSynonym, OntoDefinition, OntoChildNum, OntoNameJa from OntoTermHPInformation where OntoVersion='20170630' and OntoID in (%s)"
+        sql_information = u"select OntoName, OntoSynonym, OntoDefinition, OntoComment, OntoParentNum, OntoChildNum, OntoNameJa from OntoTermHPInformation where OntoVersion='20170630' and OntoID=%s"
+        sql_informations_fmt = u"select OntoID, OntoName, OntoSynonym, OntoDefinition, OntoComment, OntoChildNum, OntoNameJa from OntoTermHPInformation where OntoVersion='20170630' and OntoID in (%s)"
 
         sql_hierarchy_parent = u"select OntoParentID from OntoTermHPHierarchy where OntoVersion='20170630' and OntoID=%s"
         sql_hierarchy_child  = u"select OntoID from OntoTermHPHierarchy where OntoVersion='20170630' and OntoParentID=%s"
@@ -1729,14 +1764,16 @@ def popup_hierarchy_hpo():
             onto_name       = value_information[0]
             onto_synonym    = value_information[1]
             onto_definition = value_information[2]
-            onto_parent_num = value_information[3]
-            onto_child_num  = value_information[4]
-            onto_name_ja    = value_information[5]
+            onto_comment    = value_information[3]
+            onto_parent_num = value_information[4]
+            onto_child_num  = value_information[5]
+            onto_name_ja    = value_information[6]
             dict_self_class['id']         = onto_id
             dict_self_class['name']       = onto_name
             dict_self_class['name_ja']    = onto_name_ja if onto_name_ja != "" else onto_name
             dict_self_class['synonym']    = onto_synonym
             dict_self_class['definition'] = onto_definition
+            dict_self_class['comment']    = onto_comment
 
             list_parent_child_onto_id = []
             # OntoTermHPHierarchyから親クラスの情報取得
@@ -1778,9 +1815,10 @@ def popup_hierarchy_hpo():
                 onto_id         = value_informations_fmt[0]
                 onto_name       = value_informations_fmt[1]
                 onto_synonym    = value_informations_fmt[2]
-                onto_definition = value_informations_fmt[3]
-                onto_child_num  = value_informations_fmt[4]
-                onto_name_ja    = value_informations_fmt[5]
+                onto_comment    = value_informations_fmt[3]
+                onto_definition = value_informations_fmt[4]
+                onto_child_num  = value_informations_fmt[5]
+                onto_name_ja    = value_informations_fmt[6]
                 dict_all_class[onto_id] = {}
                 dict_all_class[onto_id]['id']      = onto_id
                 dict_all_class[onto_id]['name']    = onto_name

@@ -59,6 +59,7 @@
 		cssContentTrClass: CSS_PREFIX+'content-tr',
 		cssContentThClass: CSS_PREFIX+'content-th',
 		cssContentTdClass: CSS_PREFIX+'content-td',
+		cssContentTdColonClass: CSS_PREFIX+'content-td-colon',
 		cssContentCopyClass: CSS_PREFIX+'content-copy',
 
 		cssWebGLContentClass: CSS_PREFIX+'webgl-content',
@@ -75,6 +76,11 @@
 		cssWebGLSwitchContentClass: CSS_PREFIX+'webgl-switch-content',
 		cssLanguageChangeClass: CSS_PREFIX+'language-change',
 		cssWebGLHomeContentClass: CSS_PREFIX+'webgl-home-content',
+
+		cssResultsTooltipClass: CSS_PREFIX+'results-tooltip',
+		cssResultsTooltipTitleClass: CSS_PREFIX+'results-tooltip-title',
+
+		cssNumberOfHitsClass: CSS_PREFIX+'number-of-hits',
 
 		cssLoadingClass: CSS_PREFIX+'loading',
 		loadingText: 'Loading...',
@@ -108,7 +114,8 @@
 				name : '症状(日)',
 				english : '症状(英)',
 				definition : '症状定義',
-				synonym : 'Synonym',
+				comment : 'コメント',
+				synonym : '同義語',
 
 				phenotouch : 'PhenoTouch',
 				webgltitle : '身体各部位を選択',
@@ -133,7 +140,8 @@
 				hponame : 'Name',
 
 				tooltip_title : 'ここをクリック',
-				tooltip_copy : '<div style="white-space:nowrap;text-align:center;">クリップボードに<br>HPO Id、症状（日）、症状（英）<br>をコピーします</div>'
+				tooltip_copy : '<div style="white-space:nowrap;text-align:center;">クリップボードに<br>HPO Id、症状（日）、症状（英）<br>をコピーします</div>',
+				number_of_hits : 'ヒット件数 [__NUMBER__]'
 			},
 			'en' : {
 				superclass : 'Superclass',
@@ -155,6 +163,7 @@
 				name : 'Name',
 				english : 'English',
 				definition : 'Definition',
+				comment : 'Comment',
 				synonym : 'Synonym',
 
 				phenotouch : 'PhenoTouch',
@@ -180,7 +189,8 @@
 				hponame : 'Name',
 
 				tooltip_title : 'Click Here',
-				tooltip_copy : 'Copy HPO Id and Name to the clipboard'
+				tooltip_copy : 'Copy HPO Id and Name to the clipboard',
+				number_of_hits : 'Number of hits [__NUMBER__]'
 			}
 		},
 		okcancelButtonsAlign : 'right',
@@ -191,18 +201,21 @@
 
 //		,use_segments: ['bone','muscle','vessel','internal','other']
 //		,use_segments: ['internal','bone','muscle','vessel','other']
-		,use_segments: ['internal','bone','muscle']
+//		,use_segments: ['internal','bone','muscle']
+		,use_segments: ['bone','internal','muscle']
 		,id_regexp : new RegExp("^(HP:[0-9]+)(.*)")
 		,obj_ext : '.obj'
 //		,obj_ext : '.ogz'
 		,obj_url : '/phenotouch/objs/'
 		,use_webgl : false
 		,active_webgl : false
-		,use_tooltip : true
+		,use_tooltip : false
 		,tooltip_type : 'fixed'	//fixed or name
 		,fmatree_type : 'class'	//class or part
 		,copy_items: ['id','name','English']
 		,copy_delimiter: ','
+		,use_annotation_score : true
+		,annotation_score_url : 'https://api.monarchinitiative.org/api/sim/score'
 	};
 
 	var TOKENINPUT_SETTINGS_KEY = 'settings';
@@ -243,7 +256,7 @@
 		return typeof value !== 'undefined';
 	},
 	hasJA = function( str ) {
-		return ( str.match(/[\u30a0-\u30ff\u3040-\u309f\u3005-\u3006\u30e0-\u9fcf]+/) )? true : false
+		return ( str && str.match(/[\u30a0-\u30ff\u3040-\u309f\u3005-\u3006\u30e0-\u9fcf]+/) )? true : false
 	};
 
 	var methods = {
@@ -284,7 +297,7 @@
 		}
 
 		function getOriginalTokenInputItemNodes(){
-			return $('ul.'+tokeninput_classes['tokenList']).not('.'+current_settings.cssTokenListClass).children('li.'+tokeninput_classes['token']).not('.'+current_settings.cssTokenClass).toArray();
+			return $('ul.'+tokeninput_classes['tokenList'].split(/\s+/).join('.')).not('.'+current_settings.cssTokenListClass).children('li.'+tokeninput_classes['token']).not('.'+current_settings.cssTokenClass).toArray();
 		}
 
 		function getOriginalTokenInputItems(){
@@ -307,7 +320,7 @@
 					if(hasJA(temp.name)) temp.id += '_ja';
 					$(input).tokenInput('add',temp);
 				});
-				$.PopupRelationHPOtooltip();
+				$.PopupRelationHPOTokenTooltip();
 			}
 		}
 		function getOriginalTokenInputItemFromName(hpo_name){
@@ -320,7 +333,7 @@
 		}
 
 		function getTokenInputItemNodes(){
-			return $('ul.'+tokeninput_classes['tokenList']+'.'+current_settings.cssTokenListClass+'>li.'+tokeninput_classes['token']+'.'+current_settings.cssTokenClass).toArray();
+			return $('ul.'+tokeninput_classes['tokenList'].split(/\s+/).join('.')+'.'+current_settings.cssTokenListClass+'>li.'+tokeninput_classes['token']+'.'+current_settings.cssTokenClass).toArray();
 		}
 
 		function getTokenInputItems(){
@@ -333,7 +346,7 @@
 
 		function _addTokenInputItem(token,selectedToken){
 			if(!isBoolean(selectedToken)) selectedToken = false;
-			var $li = $(current_settings.nodeName+'.'+current_settings.cssSelectedPhenotypeClass+ ' ul.'+tokeninput_classes['tokenList']+'.'+current_settings.cssTokenListClass+'>li.'+tokeninput_classes['token']).not('.'+current_settings.cssTokenClass).addClass(current_settings.cssTokenClass);
+			var $li = $(current_settings.nodeName+'.'+current_settings.cssSelectedPhenotypeClass+ ' ul.'+tokeninput_classes['tokenList'].split(/\s+/).join('.')+'.'+current_settings.cssTokenListClass+'>li.'+tokeninput_classes['token']).not('.'+current_settings.cssTokenClass).addClass(current_settings.cssTokenClass);
 			if(isObject(selectedToken) && selectedToken.id && selectedToken.id===token.id){
 				$li.addClass(tokeninput_classes['selectedToken']);
 			}else if(isBoolean(selectedToken) && selectedToken){
@@ -512,6 +525,7 @@
 				$buttonReplace.each(function(){
 					var $button = $(this);
 					var data = $button.data(OBJECT_KEY);
+					if(isEmpty(data)) return;
 					var exists_data = $.grep(current_settings.disabledTokenIds, function(id){
 						return id===data.self.id;
 					}).length > 0 ? true : false;
@@ -533,10 +547,12 @@
 
 			var params = $button.data(OBJECT_KEY) || {};
 
-			var new_token = {id: params.self.id, name: params.self.id+' '+params.self.name};
+//			var new_token = {id: params.self.id, name: params.self.id+' '+params.self.name};
+			var new_token = {id: params.self.id, name: params.self.name};
 			if(runSearchOptions.hasJA && isString(params.self.name_ja)){
 				new_token['id'] =  new_token['id'].replace(/_[a-z]+/,'') +  '_ja';
-				new_token['name'] = params.self.id+' '+params.self.name_ja;
+//				new_token['name'] = params.self.id+' '+params.self.name_ja;
+				new_token['name'] = params.self.name_ja;
 			}
 
 			if(params.exec==='add'){
@@ -596,6 +612,7 @@
 				var $button = $('<button>').addClass('btn btn-primary').addClass(key=='add'?current_settings.cssButtonAddClass:current_settings.cssButtonReplaceClass).data(OBJECT_KEY,  $.extend(true, {},data,{'exec' : key.toLowerCase()})   ).text(current_settings.language[getCurrentLanguage()][key]).appendTo($button_base);
 				$button.on('click',executionAddOrReplace);
 			});
+
 			return $button_base;
 		}
 
@@ -747,6 +764,8 @@
 				return;
 			}
 
+			$('html').get(0).scrollTop=0;
+
 			var language = current_settings.language[getCurrentLanguage()];
 
 			if(!tokeninput_target){
@@ -848,7 +867,7 @@
 						changeStateAddOrReplace();
 						$li.trigger('click');
 					});
-					$.PopupRelationHPOtooltip();
+					$.PopupRelationHPOTokenTooltip();
 					return results;
 				};
 
@@ -860,7 +879,7 @@
 					onAdd: function(token){
 						getTokenInputElement().trigger('add.tokenInput',[token]);
 						getTokenInputElement().trigger('add.tokenInput2',[token]);
-						$.PopupRelationHPOtooltip();
+						$.PopupRelationHPOTokenTooltip();
 					},
 					onFreeTaggingAdd: function(token){
 					},
@@ -873,7 +892,7 @@
 						getTokenInputElement().trigger('delete.tokenInput2',[token]);
 
 						//tooltipのノードが残る為、強制的削除する
-//						$.PopupRelationHPOtooltip();
+//						$.PopupRelationHPOTokenTooltip();
 						if(current_settings.use_tooltip){
 							var title;
 							if(current_settings.tooltip_type === 'fixed'){
@@ -882,7 +901,7 @@
 							else{
 								title = token.name;
 							}
-							var tooltip_selector = 'ul.'+tokeninput_classes['tokenList']+'>div.tooltip';
+							var tooltip_selector = 'ul.'+tokeninput_classes['tokenList'].split(/\s+/).join('.')+'>div.tooltip';
 							$(tooltip_selector).each(function(){
 								if($(this).text()===title) $(this).remove();
 							});
@@ -890,7 +909,7 @@
 
 					},
 					onReady: function(){
-						var $ul = $(current_settings.nodeName+'.'+current_settings.cssSelectedPhenotypeClass+ ' ul.'+tokeninput_classes['tokenList']).addClass(current_settings.cssTokenListClass);
+						var $ul = $(current_settings.nodeName+'.'+current_settings.cssSelectedPhenotypeClass+ ' ul.'+tokeninput_classes['tokenList'].split(/\s+/).join('.')).addClass(current_settings.cssTokenListClass);
 						$ul.on('mousedown', function(e){
 							var $li_node;
 							if($(e.target).get(0).nodeName.toLowerCase()==='li'){
@@ -915,6 +934,24 @@
 						}).on('keydown', function(e){
 							e.stopPropagation();
 						});
+					},
+//					onSelectDropdownItem: function(token_data){
+//						$.PopupRelationHPOResultsTooltip(this,token_data);
+//					},
+					onShowDropdownItem: function(count){
+						var node = this;
+						var $count_node = $('<div>').addClass(current_settings.cssNumberOfHitsClass).text(current_settings.language[getCurrentLanguage()]['number_of_hits'].replace('__NUMBER__', count));
+						if(node.get(0).firstElementChild){
+							var $firstElementChild = $(node.get(0).firstElementChild);
+							$count_node.insertBefore($firstElementChild);
+							if(count==0) $firstElementChild.remove();
+						}
+						else{
+							$count_node.appendTo(node);
+						}
+					},
+					onHideDropdownItem: function(){
+						$.PopupRelationHPOResultsTooltip();
 					}
 				}));
 
@@ -1094,7 +1131,7 @@
 					}
 
 					var copy_values = [];
-					$.each(['id','name','English','definition','synonym'], function(){
+					$.each(['id','name','English','definition','comment','synonym'], function(){
 						var key = this.toString();
 						var value = result[key];
 						if(runSearchOptions.hasJA){
@@ -1106,7 +1143,7 @@
 						var label = language[key.toLowerCase()] ? language[key.toLowerCase()] : key;
 						var $contentTr = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssContentTrClass).appendTo($contentTable);
 						$('<'+current_settings.nodeName+'>').addClass(current_settings.cssContentThClass).text(label).appendTo($contentTr);
-						$('<'+current_settings.nodeName+'>').addClass(current_settings.cssContentTdClass).text(':').appendTo($contentTr);
+						$('<'+current_settings.nodeName+'>').addClass(current_settings.cssContentTdColonClass).text(':').appendTo($contentTr);
 						var $value_td = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssContentTdClass).appendTo($contentTr);
 						if(key=='name'){
 
@@ -1128,7 +1165,12 @@
 
 						}
 						else{
-							$value_td.text(value);
+							if(key=='comment' && isString(value)){
+								$value_td.html(value.replace(/\\n/g,'<br />'));
+							}
+							else{
+								$value_td.text(value);
+							}
 						}
 
 						if(current_settings.copy_items.indexOf(key)>=0){
@@ -2266,7 +2308,14 @@
 			}
 		}
 
-		var runSearchOptions = {hasJA:window.navigator.language.indexOf('ja')===0};
+		var windowNavigatorLanguage = (window.navigator.languages && window.navigator.languages[0]) ||
+				window.navigator.language ||
+				window.navigator.userLanguage ||
+				window.navigator.browserLanguage;
+		function isWindowNavigatorLanguageJa(){
+			return windowNavigatorLanguage === "ja" || windowNavigatorLanguage.toLowerCase() === "ja-jp";
+		}
+		var runSearchOptions = {hasJA:isWindowNavigatorLanguageJa()};
 		function runSearch(query,options) {
 
 			loadAllObj();
@@ -2399,7 +2448,7 @@
 
 		if(isObject(tokeninput_settings) && tokeninput_settings.classes) {
 			if(isObject(tokeninput_classes) && isString(tokeninput_classes['tokenList']) && isString(tokeninput_classes['token'])){
-				tokeninput_selector = 'ul.'+tokeninput_classes['tokenList']+'>li.'+tokeninput_classes['token'];//+'>p';
+				tokeninput_selector = 'ul.'+tokeninput_classes['tokenList'].split(/\s+/).join('.')+'>li.'+tokeninput_classes['token'];//+'>p';
 
 				$(document).on('click', tokeninput_selector, function(e){
 					var click_text = '';
@@ -2436,9 +2485,11 @@
 							tokenInputItemNodes = getOriginalTokenInputItemNodes();
 							tokenInputItem = getOriginalTokenInputItemFromName(click_text);
 						}
-						options.hasJA = hasJA(tokenInputItem.name);
-						$(tokenInputItemNodes).removeClass(tokeninput_classes['selectedToken']);
-						$li_node.addClass(tokeninput_classes['selectedToken']);
+						if(tokenInputItem){
+							options.hasJA = hasJA(tokenInputItem.name);
+							$(tokenInputItemNodes).removeClass(tokeninput_classes['selectedToken']);
+							$li_node.addClass(tokeninput_classes['selectedToken']);
+						}
 					}
 
 					if(tokenInputItem){
@@ -2525,7 +2576,7 @@
 			var tokenInputItemNodes = getOriginalTokenInputItemNodes();
 
 			options = options || {}
-			if(isEmpty(options['lang'])) options['lang'] = window.navigator.language.indexOf('ja')===0 ? 'ja' : 'en';
+			if(isEmpty(options['lang'])) options['lang'] = isWindowNavigatorLanguageJa() ? 'ja' : 'en';
 
 			var o = $.extend(true, {}, options || {});
 			if(tokenInputItems) o.tokenInputItems = tokenInputItems;
@@ -2541,7 +2592,7 @@
 		};
 
 
-		$.PopupRelationHPOtooltip = function(){
+		$.PopupRelationHPOTokenTooltip = function(){
 			if(!current_settings.use_tooltip) return;
 
 			if(isString(tokeninput_selector) && tokeninput_selector.length){
@@ -2571,15 +2622,16 @@
 			}
 		};
 
+/*
 		if(current_settings.use_tooltip && isObject(tokeninput_settings)) {
 			var orgOnAdd = tokeninput_settings.onAdd;
 			var orgOnDelete = tokeninput_settings.onDelete;
 			tokeninput_settings.onAdd = function(token){
-				$.PopupRelationHPOtooltip();
+				$.PopupRelationHPOTokenTooltip();
 				if($.isFunction(orgOnAdd)) orgOnAdd.call($(input),token);
 			};
 			tokeninput_settings.onDelete = function(token){
-//				$.PopupRelationHPOtooltip();
+//				$.PopupRelationHPOTokenTooltip();
 				//tooltipのノードが残る為、強制的削除する
 				var title;
 				if(current_settings.tooltip_type === 'fixed'){
@@ -2588,36 +2640,415 @@
 				else{
 					title = token.name;
 				}
-				var tooltip_selector = 'ul.'+tokeninput_classes['tokenList']+'>div.tooltip';
+				var tooltip_selector = 'ul.'+tokeninput_classes['tokenList'].split(/\s+/).join('.')+'>div.tooltip';
 				$(tooltip_selector).each(function(){
 					if($(this).text()===title) $(this).remove();
 				});
 				if($.isFunction(orgOnDelete)) orgOnDelete.call($(input),token);
 			};
 			$(input).data(TOKENINPUT_SETTINGS_KEY, tokeninput_settings);
+		}
+*/
+		if((current_settings.use_tooltip || current_settings.use_annotation_score) && isObject(tokeninput_settings)) {
+			var orgOnAdd = tokeninput_settings.onAdd;
+			var orgOnDelete = tokeninput_settings.onDelete;
+			var orgOnSelectDropdownItem = tokeninput_settings.onSelectDropdownItem;
+			var orgOnShowDropdownItem = tokeninput_settings.onShowDropdownItem;
+			var orgOnHideDropdownItem = tokeninput_settings.onHideDropdownItem;
 
+			var annotationScore_jqxhr;
+			var annotationScoreTimeoutID;
+			var annotationScoreCallback = function(){
+				if(annotationScoreTimeoutID) clearTimeout(annotationScoreTimeoutID);
 
+				var Rate = $('.rater').data('rate');
 
-/*
-			if(isObject(tokeninput_settings) && tokeninput_settings.classes) {
-				var tokeninput_input_selector = 'ul.'+tokeninput_classes['tokenList']+'>li.'+tokeninput_classes['inputToken']+'>input[type="text"]';
-				$(document).on('keydown', tokeninput_input_selector, function(e){
-					if(e.keyCode===13 && $(this).val() === ''){
+//		current_settings.annotation_score_url
+				var orgTokenInputItems = getOriginalTokenInputItems();
+				if(isArray(orgTokenInputItems) && orgTokenInputItems.length){
+//					console.log($.map(orgTokenInputItems, function(item){ return item.id; }));
+//					var items = $.map(orgTokenInputItems, function(item){ return item.id; });
+//					console.log(items);
+
+					if(annotationScore_jqxhr){
+						annotationScore_jqxhr.abort();
+						annotationScore_jqxhr = null;
 					}
 
+					$('#match_rate').text('Match rate calculating...');
+//					$('.starrr').data('starrr').setRating(0);
 
-//					e.stopPropagation();
-					console.log(e);
+					if(Rate) Rate.setValue(0);
 
-					e.stopPropagation();
-//					e.preventDefault();
-				});
-			}
-*/
 
+					annotationScore_jqxhr = $.ajax({
+						url: current_settings.annotation_score_url,
+						cache: true,
+						data: {id: $.map(orgTokenInputItems, function(item){ return item.id.replace(/_ja$/g,''); })},
+						traditional: true,
+						crossDomain: true,
+						dataType: 'json',
+					}).done(function(data, textStatus, jqXHR){
+//						console.log('done',data, textStatus, jqXHR);
+						if(isObject(data) && isNumeric(data.scaled_score)){
+//							console.log('done', Math.round(data.scaled_score*100)+'%');
+							$('#match_rate').text('Match rate '+Math.round(data.scaled_score*100)+'%');
+
+//							console.log('done', Math.round(data.scaled_score*5));
+//							$('.starrr').data('starrr').setRating(Math.round(data.scaled_score*5));
+							if(Rate) Rate.setValue(Math.round(data.scaled_score*5*10)/10);
+
+						}
+					}).fail(function(jqXHR, textStatus, errorThrown){
+//						console.log('fail',jqXHR, textStatus, errorThrown);
+							$('#match_rate').text('Match rate -%');
+					}).always(function(){
+//						console.log('always');
+						annotationScore_jqxhr = null;
+					});
+
+				}
+				else{
+					$('#match_rate').text('Match rate 0%');
+//					$('.starrr').data('starrr').setRating(0);
+					if(Rate) Rate.setValue(0);
+				}
+
+
+			};
+
+			tokeninput_settings.onAdd = function(token){
+				if(current_settings.use_annotation_score){
+					if(annotationScoreTimeoutID) clearTimeout(annotationScoreTimeoutID);
+					annotationScoreTimeoutID = setTimeout(annotationScoreCallback, 250);
+				}
+				if(current_settings.use_tooltip){
+					$.PopupRelationHPOTokenTooltip();
+				}
+				if($.isFunction(orgOnAdd)) orgOnAdd.call($(input),token);
+			};
+
+			tokeninput_settings.onDelete = function(token){
+				if(current_settings.use_annotation_score){
+					if(annotationScoreTimeoutID) clearTimeout(annotationScoreTimeoutID);
+					annotationScoreTimeoutID = setTimeout(annotationScoreCallback, 250);
+				}
+				if(current_settings.use_tooltip){
+					//tooltipのノードが残る為、強制的削除する
+					var title;
+					if(current_settings.tooltip_type === 'fixed'){
+						title = current_settings.language[getCurrentLanguage()]['tooltip_title'];
+					}
+					else{
+						title = token.name;
+					}
+					var tooltip_selector = 'ul.'+tokeninput_classes['tokenList'].split(/\s+/).join('.')+'>div.tooltip';
+					$(tooltip_selector).each(function(){
+						if($(this).text()===title) $(this).remove();
+					});
+				}
+				if($.isFunction(orgOnDelete)) orgOnDelete.call($(input),token);
+			};
+
+//			tokeninput_settings.onSelectDropdownItem = function(token_data){
+//				$.PopupRelationHPOResultsTooltip(this,token_data);
+//				if($.isFunction(orgOnSelectDropdownItem)) orgOnSelectDropdownItem.call($(input),token_data);
+//			};
+
+			tokeninput_settings.onShowDropdownItem = function(count){
+				var node = this;
+				var $count_node = $('<div>').addClass(current_settings.cssNumberOfHitsClass).text(current_settings.language[getCurrentLanguage()]['number_of_hits'].replace('__NUMBER__', count));
+				if(node.get(0).firstElementChild){
+					var $firstElementChild = $(node.get(0).firstElementChild);
+					$count_node.insertBefore($firstElementChild);
+					if(count==0) $firstElementChild.remove();
+				}
+				else{
+					$count_node.appendTo(node);
+				}
+				if($.isFunction(orgOnShowDropdownItem)) orgOnShowDropdownItem.call($(input),count);
+			};
+
+			tokeninput_settings.onHideDropdownItem = function(){
+				$.PopupRelationHPOResultsTooltip();
+				if($.isFunction(orgOnHideDropdownItem)) orgOnHideDropdownItem.call($(input));
+			};
+
+			$(input).data(TOKENINPUT_SETTINGS_KEY, tokeninput_settings);
 		}
 
+
+		var resultsTooltip_timeoutID;
+		var resultsTooltip_jqxhr;
+
+		var $resultsTooltip = $('<'+current_settings.nodeName+'>')
+			.addClass(current_settings.cssResultsTooltipClass)
+			.appendTo('body')
+			.hide();
+
+		var hideResultsTooltip = function(){
+//			console.log('hideResultsTooltip');
+			if(resultsTooltip_jqxhr){
+				resultsTooltip_jqxhr.abort();
+				resultsTooltip_jqxhr = null;
+			}
+			if(resultsTooltip_timeoutID){
+				clearTimeout(resultsTooltip_timeoutID);
+				resultsTooltip_timeoutID = null;
+			}
+			$resultsTooltip
+				.hide()
+				.empty();
+		};
+
+//		$(document).on('scroll', function(e){
+//			hideResultsTooltip();
+//		});
+
+		var showResultsTooltip = function(token_data,node,results){
+//			console.log('showResultsTooltip',node,results);
+//			console.log($(node).offset(),$(node).position());
+
+			if(isObject(results) && isArray(results.selfclass) && results.selfclass.length){
+				var selfclass = results.selfclass[0];
+
+				$resultsTooltip.empty();
+
+				var $resultsTooltipTitle = $('<'+current_settings.nodeName+'>')
+					.addClass(current_settings.cssResultsTooltipTitleClass)
+					.html(selfclass.id+'&nbsp;'+selfclass.name)
+					.appendTo($resultsTooltip);
+
+				var $resultsTooltipContent = $('<'+current_settings.nodeName+'>')
+					.addClass(current_settings.cssContentTableClass)
+					.appendTo($resultsTooltip);
+
+				var language = current_settings.language[getCurrentLanguage()];
+
+//				$.each(['id','name','English','definition','comment','synonym'], function(){
+				$.each(['name','English','definition','comment','synonym'], function(){
+					var key = this;
+					var value = selfclass[key];
+//					if(runSearchOptions.hasJA){
+//						if(isString(selfclass[key+'_ja'])) value = selfclass[key+'_ja'];
+//						if(key=='English') value = selfclass['name'];
+//					}else if(key=='English'){
+//						return;
+//					}
+					if(isWindowNavigatorLanguageJa()){	//ブラウザの言語設定が日本語の場合
+						//代表表現が日本語の場合
+						if(token_data['id'].lastIndexOf('_ja')>=0){
+							if(isString(selfclass[key+'_ja'])) return;
+							if(key=='English') value = selfclass['name'];
+						}
+						else{
+							if(key=='name'){
+								if(isString(selfclass[key+'_ja'])){
+									value = selfclass[key+'_ja'];
+								}
+								else{
+									return;
+								}
+							}
+							if(key=='English') return;
+						}
+					}
+					else if(token_data['id'].lastIndexOf('_ja')>=0){
+						if(key=='English') return;
+					}
+					else if(key=='name' || key=='English'){
+						return;
+					}
+					var label = language[key.toLowerCase()] ? language[key.toLowerCase()] : key;
+					var $contentTr = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssContentTrClass).addClass(current_settings.cssContentTrClass+'-'+key.toLowerCase()).appendTo($resultsTooltipContent);
+					$('<'+current_settings.nodeName+'>').addClass(current_settings.cssContentThClass).addClass(current_settings.cssContentThClass+'-'+key.toLowerCase()).text(label).appendTo($contentTr);
+					$('<'+current_settings.nodeName+'>').addClass(current_settings.cssContentTdColonClass).text(':').appendTo($contentTr);
+					var $value_td = $('<'+current_settings.nodeName+'>').addClass(current_settings.cssContentTdClass).addClass(current_settings.cssContentTdClass+'-'+key.toLowerCase()).appendTo($contentTr);
+					if(key=='comment' && isString(value)){
+						$value_td.html(value.replace(/\\n/g,'<br />'));
+					}
+					else{
+						$value_td.text(value);
+					}
+				});
+
+				$resultsTooltip
+					.css({'visibility':'hidden'})
+					.show();
+
+				var offset = $(node).offset();
+				var node_height = $(node).outerHeight(true);
+				var node_width = $(node).outerWidth(true);
+
+				var top = offset.top;
+//				console.log(top,$(document).children('html').get(0).scrollTop,$('nav.fh5co-nav').outerHeight(true));
+				if(top < $(document).children('html').get(0).scrollTop + $('nav.fh5co-nav').outerHeight(true)){
+					top = $(document).children('html').get(0).scrollTop + $('nav.fh5co-nav').outerHeight(true);
+				}
+				top += 10;
+
+				var left = offset.left + node_width/2;
+				var width = node_width/2 - 10;
+
+				$resultsTooltip
+					.css({
+						position: 'absolute',
+						visibility: 'visible',
+						top: top,
+						left: left,
+						width: width,
+						'z-index': (1043>tokeninput_settings.zindex?1043:tokeninput_settings.zindex)+1
+					})
+					.show();
+			}
+			else{
+				hideResultsTooltip();
+			}
+
+		};
+
+		$.PopupRelationHPOResultsTooltip = function(node,token_data,options){
+
+			hideResultsTooltip();
+
+			if(isEmpty(node) || isEmpty(token_data) || !isObject(token_data)) return;
+
+			options = options || {}
+			if(isEmpty(options['lang'])) options['lang'] = isWindowNavigatorLanguageJa() ? 'ja' : 'en';
+			if(isObject(options)){
+				if(isString(options['lang'])){
+					options['hasJA'] = (options['lang'].toLowerCase()==='ja' || options['lang'].toLowerCase()==='jpn') ? true : false;
+					delete options['lang'];
+				}
+			}
+			runSearchOptions = $.extend(true, {}, runSearchOptions, options || {});
+
+
+			var $node = $(node);
+			var data_key = 'popup-hierarchy-hpo-tooltip-data';
+
+//			if($.data(node,data_key)){
+//				console.log($.data(node,data_key));
+//				return;
+//			}
+
+			resultsTooltip_timeoutID = setTimeout(function(){
+				if(isEmpty(resultsTooltip_timeoutID)) return;
+				resultsTooltip_timeoutID = null;
+
+				var query = token_data.id;
+
+				var url = computeURL();
+
+				var cache_key = query + url;
+				var cached_results = cache.get(cache_key);
+//				cached_results = null;
+				if(cached_results){
+//					console.log('call showResultsTooltip()');
+					showResultsTooltip(token_data,node,cached_results);
+					if(isFunction(runSearchOptions.callback)){
+						runSearchOptions.callback.call(this, true);
+					}
+				}
+				else{
+
+
+					if(current_settings.url) {
+						var ajax_params = {};
+						ajax_params.data = {};
+						if(url.indexOf("?") > -1) {
+							var parts = url.split("?");
+							ajax_params.url = parts[0];
+
+							var param_array = parts[1].split("&");
+							$.each(param_array, function (index, value) {
+								var kv = value.split("=");
+								ajax_params.data[kv[0]] = kv[1];
+							});
+						} else {
+							ajax_params.url = url;
+						}
+
+						ajax_params.data[current_settings.queryParam] = query;
+						ajax_params.type = current_settings.method;
+						ajax_params.dataType = current_settings.contentType;
+						if (current_settings.crossDomain) {
+							ajax_params.dataType = "jsonp";
+						}
+
+						ajax_params.success = function(results) {
+
+							if(isEmpty(resultsTooltip_jqxhr)) return;
+
+							cache.add(cache_key, current_settings.jsonContainer ? results[current_settings.jsonContainer] : results);
+
+//							console.log('call showResultsTooltip()');
+							showResultsTooltip(token_data,node,current_settings.jsonContainer ? results[current_settings.jsonContainer] : results);
+							if(isFunction(runSearchOptions.callback)){
+								runSearchOptions.callback.call(this, true);
+							}
+
+							resultsTooltip_jqxhr = null;
+						};
+
+						ajax_params.error = function(XMLHttpRequest, textStatus, errorThrown) {
+
+							if(isEmpty(resultsTooltip_jqxhr)) return;
+
+							console.warn(textStatus, errorThrown);
+							if(isFunction(runSearchOptions.callback)){
+								runSearchOptions.callback.call(this, false);
+							}
+
+							resultsTooltip_jqxhr = null;
+						};
+
+						if(isFunction(settings.onSend)){
+							settings.onSend(ajax_params);
+						}
+
+						resultsTooltip_jqxhr = $.ajax(ajax_params);
+
+					} else if(current_settings.local_data) {
+						var results = $.grep(current_settings.local_data, function (row) {
+							return row[current_settings.propertyToSearch].toLowerCase().indexOf(query.toLowerCase()) > -1;
+						});
+
+						cache.add(cache_key, results);
+
+//						console.log('call showResultsTooltip()');
+						showResultsTooltip(token_data,node,results);
+						if(isFunction(runSearchOptions.callback)){
+							runSearchOptions.callback.call(this, true);
+						}
+					}
+				}
+
+
+			},0);
+		};
+
+
 		if(isObject(window.category2obj_subtypes) && isObject(window.category2obj_subtypes[current_settings.fmatree_type])) window.category2obj = window.category2obj_subtypes[current_settings.fmatree_type];
+
+		var tokeninput_theme = tokeninput_settings["theme"] ? '-'+tokeninput_settings["theme"] : '';
+		$(document).on('mouseover', 'span.token-input-token-information'+tokeninput_theme, function(e){
+			var $item = $(this).closest('li');
+//			console.log($item.closest('ul').html())
+			var token_data = $item.data('tokeninput');
+			var $dropdown = $(this).closest('div.'+tokeninput_classes['dropdown']);
+			if(isObject(token_data) && $dropdown.length){
+				$.PopupRelationHPOResultsTooltip($dropdown,token_data);
+			}
+			e.stopPropagation();
+			return false;
+		});
+		$(document).on('mouseout', 'span.token-input-token-information'+tokeninput_theme, function(e){
+			$.PopupRelationHPOResultsTooltip();
+			e.stopPropagation();
+			return false;
+		});
+
 
 	};
 

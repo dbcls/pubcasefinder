@@ -6,7 +6,7 @@
       <div class="container">
 	<form name="search" action="/search_disease" method="post" class="form-group">
 	  <div align="middle"><a href="/"><img src="/static/images/logo_PubCaseFinder.png" width="550"></a></div>
-	  <br>
+	  <div style="text-align:center;font-size:1px;"><div class="rater" id="rater"></div></div>
 	  <div align="middle">
 	    <table width="70%">
 	      <tr align="middle">
@@ -229,13 +229,12 @@
 	  <div class="left-wrapper">
 	    <div align="left" style="letter-spacing: 0.2em; line-height: 2em; "><font color="black" size="4">{{ _('index_photo_title_sub') }}</font></div>
 	    <div align="left" style="letter-spacing: 0.2em; "><h1><font color="#2A3356"><b>{{ _('index_photo_title') }}</b></font></h1></div>
-	    <!--button id="phenotouch" class="btn btn-default"><span class="icon-icon-movie"></span>&nbsp;{{ _('index_photo_how') }}</button-->
 
             <!-- 8.13:追加:モーダルを開くボタン・リンク -->
             <div class="container">
               <div class="row mb-5">
 		<div class="col-2">
-                  <button id="phenotouch" class="btn btn-default" data-toggle="modal" data-target="#modal_photo"><span class="icon-icon-movie"></span>&nbsp;{{ _('index_photo_how') }}</button>
+                  <button id="play_movie" class="btn btn-default" data-toggle="modal" data-target="#modal_photo"><span class="icon-icon-movie"></span>&nbsp;{{ _('index_photo_how') }}</button>
 		</div>
               </div>
 	    </div>
@@ -421,6 +420,8 @@
     <script src="/static/js/magnific-popup-options.js"></script>
     <!-- Stellar -->
     <script src="/static/js/jquery.stellar.min.js"></script>
+    <!-- rater -->
+    <script src="/static/js/rater.js"></script>
     <!-- Main -->
     <script src="/static/js/main.js"></script>
     <!-- END: Import JavaScript -->	
@@ -451,6 +452,11 @@
         e.preventDefault();
         e.stopPropagation();
         return false;
+      });
+      $('.rater').rate({
+        max_value: 5,
+        step_size: 0.1,
+        initial_value: 0
       });
     </script>
     <!-- END: jquery-tokeninput -->

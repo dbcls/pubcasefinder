@@ -46,31 +46,31 @@ msgid "index_Sample_1_id"
 msgstr "HP:0000347"
 
 msgid "index_Sample_1_name"
-msgstr "HP:0000347 Micrognathia"
+msgstr "Micrognathia"
 
 msgid "index_Sample_2_id"
 msgstr "HP:0003022"
 
 msgid "index_Sample_2_name"
-msgstr "HP:0003022 Hypoplasia of the ulna"
+msgstr "Hypoplasia of the ulna"
 
 msgid "index_Sample_3_id"
 msgstr "HP:0009381"
 
 msgid "index_Sample_3_name"
-msgstr "HP:0009381 Short finger"
+msgstr "Short finger"
 
 msgid "index_Sample_4_id"
 msgstr "HP:0000204"
 
 msgid "index_Sample_4_name"
-msgstr "HP:0000204 Cleft upper lip"
+msgstr "Cleft upper lip"
 
 msgid "index_Sample_5_id"
 msgstr "HP:0000625"
 
 msgid "index_Sample_5_name"
-msgstr "HP:0000625 Cleft eyelid"
+msgstr "Cleft eyelid"
 
 msgid "index_usage_title_sub"
 msgstr "PubCaseFinder is useful for differential diagnosis and genetic testing."

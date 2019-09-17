@@ -8,16 +8,17 @@
  *
  */
 ;(function ($) {
-  var language = (window.navigator.languages && window.navigator.languages[0]) ||
-        window.navigator.language ||
-        window.navigator.userLanguage ||
-        window.navigator.browserLanguage;
-  var hintText = "Type in patient's signs and symptoms"
-  if(language == "ja" || language == "ja-jp" || language == "ja-JP"){
+  var windowNavigatorLanguage = (window.navigator.languages && window.navigator.languages[0]) ||
+      window.navigator.language ||
+      window.navigator.userLanguage ||
+      window.navigator.browserLanguage;
+  function isWindowNavigatorLanguageJa(){
+    return windowNavigatorLanguage === "ja" || windowNavigatorLanguage.toLowerCase() === "ja-jp";
+  }
+  var hintText = "Type in patient's signs and symptoms";
+  if(isWindowNavigatorLanguageJa()){
       hintText = "患者の兆候または症状を入力"
   }
-  console.log(language);
-
   var DEFAULT_SETTINGS = {
     // Search settings
     method: "GET",
@@ -36,18 +37,19 @@
 
     // Display settings
     //hintText: "Type in a search term",
-    hintText: hintText,
+    hintText: null,
     noResultsText: "No results",
     searchingText: "Searching...",
     deleteText: "&#215;",
     animateDropdown: true,
-    placeholder: null,
+//    placeholder: null,
+    placeholder: hintText,
     theme: null,
     zindex: 999,
     resultsLimit: null,
 
     enableHTML: false,
-
+/*
     resultsFormatter: function(item) {
       var string = item[this.propertyToSearch];
       return "<li>" + (this.enableHTML ? string : _escapeHTML(string)) + "</li>";
@@ -56,6 +58,60 @@
     tokenFormatter: function(item) {
       var string = item[this.propertyToSearch];
       return "<li><p>" + (this.enableHTML ? string : _escapeHTML(string)) + "</p></li>";
+    },
+
+    highlightTerm: function(value, term) {
+      var regexp_special_chars = new RegExp('[.\\\\+*?\\[\\^\\]$(){}=!<>|:\\-]', 'g');
+      return value.replace(
+        new RegExp(
+          "(?![^&;]+;)(?!<[^<>]*)(" + term.replace(regexp_special_chars, '\\$&') + ")(?![^<>]*>)(?![^&;]+;)",
+          "gi"
+        ), function(match, p1) {
+          return "<b>" + (this.enableHTML ? string : _escapeHTML(p1)) + "</b>";
+        }
+      );
+    },
+*/
+    resultsFormatter: function(item) {
+      var id = item['id'].replace(/_ja$/g,'');
+      var name = item['name'];
+      var synonym = item['synonym'];
+      var theme = this.theme ? '-'+this.theme : '';
+      var value = '<li class="token-input-token-results'+theme+'"><span class="token-input-token-word'+theme+' token-input-token-information'+theme+' glyphicon glyphicon-info-sign"></span>&nbsp;<span class="token-input-token-word'+theme+' token-input-token-id'+theme+'">' + (this.enableHTML ? id : _escapeHTML(id)) + '</span>&nbsp;<span class="token-input-token-word'+theme+' token-input-token-name'+theme+'">' + (this.enableHTML ? name : _escapeHTML(name)) + '</span>';
+      if(synonym instanceof Array){
+        var str = this.zenhan(synonym.join(' | '));
+        value += '&nbsp;<b>|</b>&nbsp;<span class="token-input-token-word'+theme+' token-input-token-synonym'+theme+'">' + (this.enableHTML ? str : _escapeHTML(str)) + '</span>';
+      }
+      value += '</li>';
+      return value;
+    },
+
+    tokenFormatter: function(item) {
+      var id = item['id'].replace(/_ja$/g,'');
+      var name = item['name'];
+      var theme = this.theme ? '-'+this.theme : '';
+      return '<li class="token-input-token-term'+theme+'"><p><span class="token-input-token-word'+theme+' token-input-token-id'+theme+'">' + (this.enableHTML ? id : _escapeHTML(id)) + '</span><span class="token-input-token-word'+theme+' token-input-token-name'+theme+'">' + (this.enableHTML ? name : _escapeHTML(name)) + '</span></p><div class="token-input-token-word'+theme+' token-input-token-icon'+theme+'"><div class="arrow"></div></div></li>';
+    },
+
+    highlightTerm: function(value, term) {
+      var enableHTML = this.enableHTML;
+      var regexp_special_chars = new RegExp('[.\\\\+*?\\[\\^\\]$(){}=!<>|:\\-]', 'g');
+      var zenhan = this.zenhan;
+      zenhan(term.trim()).split(/[ 　]+/).forEach(function(term){
+        value = zenhan(value).replace(
+          new RegExp(
+            "(?![^&;]+;)(?!<[^<>]*)(" + term.replace(regexp_special_chars, '\\$&') + ")(?![^<>]*>)(?![^&;]+;)",
+            "gi"
+          ), function(match, p1) {
+            return "<b>" + (enableHTML ? p1 : _escapeHTML(p1)) + "</b>";
+          }
+        );
+      });
+      return value;
+    },
+
+    zenhan: function(str){
+      return str.replace(/[Ａ-Ｚａ-ｚ０-９]/g, function(s){ return String.fromCharCode(s.charCodeAt(0) - 65248); });
     },
 
     // Tokenization settings
@@ -77,6 +133,10 @@
     onDelete: null,
     onReady: null,
 
+    onSelectDropdownItem: null,
+    onShowDropdownItem: null,
+    onHideDropdownItem: null,
+
     // Other settings
     idPrefix: "token-input-",
 
@@ -86,7 +146,7 @@
 
   // Default classes to use when theming
   var DEFAULT_CLASSES = {
-    tokenList            : "token-input-list",
+    tokenList            : "hpo-token-input-list token-input-list",
     token                : "token-input-token",
     tokenReadOnly        : "token-input-token-readonly",
     tokenDelete          : "token-input-delete-token",
@@ -209,6 +269,7 @@
       //
       // Initialization
       //
+      var jqxhr;
 
       // Configure the data source
       if (typeof(url_or_data) === "string" || typeof(url_or_data) === "function") {
@@ -284,6 +345,14 @@
               token_list.removeClass($(input).data("settings").classes.focused);
           })
           .bind("keyup keydown blur update", resize_input)
+
+          .bind("input", function (event) {
+//              console.log('input', event);
+              if (String.fromCharCode(event.which)) {
+                setTimeout(function(){ do_search(); }, 50);
+              }
+          })
+
           .keydown(function (event) {
               var previous_token;
               var next_token;
@@ -363,6 +432,15 @@
                       add_token($(selected_dropdown_item).data("tokeninput"));
                       hiddenInput.change();
                     } else {
+                      if(event.keyCode===KEY.ENTER && $(this).val() === "") {
+                        //return true;
+//                        $(input).closest('form').submit();
+                        if(saved_tokens.length) $(input).closest('form').submit();
+                        event.stopPropagation();
+                        event.preventDefault();
+                        return false;
+                      }
+
                       if ($(input).data("settings").allowFreeTagging) {
                         if($(input).data("settings").allowTabOut && $(this).val() === "") {
                           return true;
@@ -370,7 +448,7 @@
                           add_freetagging_tokens();
                         }
                       } else {
-                        $(this).val("");
+//                        $(this).val("");
                         if($(input).data("settings").allowTabOut) {
                           return true;
                         }
@@ -582,15 +660,32 @@
       }
 
       function resize_input() {
-          if(input_val === (input_val = input_box.val())) {return;}
+//          if(input_val === (input_val = input_box.val())) {return;}
+//          if(input_val === (input_val = input_box.val()) && input_val.length) {return;}
 
           // Get width left on the current line
-          var width_left = token_list.width() - input_box.offset().left - token_list.offset().left;
+//          var width_left = token_list.width() - input_box.offset().left - token_list.offset().left;
+//          var width_left;
+//          if(saved_tokens.length){
+//              width_left = token_list.width() - input_box.offset().left - token_list.offset().left;
+//          }else{
+//              width_left = token_list.width() - (input_box.offset().left - token_list.offset().left);
+//          }
+////          console.log(token_list.width(),input_box.offset().left,token_list.offset().left,width_left);
+
           // Enter new content into resizer and resize input accordingly
           input_resizer.html(_escapeHTML(input_val) || _escapeHTML(settings.placeholder));
           // Get maximum width, minimum the size of input and maximum the widget's width
-          input_box.width(Math.min(token_list.width(),
-                                   Math.max(width_left, input_resizer.width() + 30)));
+          var token_list_width;
+          input_box.width(input_resizer.width());
+          if(saved_tokens.length){
+            token_list_width = (token_list.width() - (input_box.offset().left - token_list.offset().left)) - ($(input_box).outerWidth()-$(input_box).width());
+          }else{
+            token_list_width = token_list.width() - ($(input_box).outerWidth()-$(input_box).width());
+          }
+//          input_box.width(Math.min(token_list.width(),
+//                                   Math.max(width_left, input_resizer.width() + 30)));
+          input_box.width(token_list_width);
       }
 
       function add_freetagging_tokens() {
@@ -623,7 +718,8 @@
           if(!readonly) {
             $("<span>" + $(input).data("settings").deleteText + "</span>")
                 .addClass($(input).data("settings").classes.tokenDelete)
-                .appendTo($this_token)
+//                .appendTo($this_token)
+                .prependTo($this_token)
                 .click(function () {
                     if (!$(input).data("settings").disabled) {
                         delete_token($(this).parent());
@@ -700,6 +796,7 @@
           if($.isFunction(callback)) {
               callback.call(hiddenInput,item);
           }
+          resize_input();
       }
 
       // Select a token in the token list
@@ -790,6 +887,7 @@
           if($.isFunction(callback)) {
               callback.call(hiddenInput,token_data);
           }
+          resize_input();
       }
 
       // Update the hidden input box value
@@ -807,19 +905,47 @@
       // Hide and clear the results dropdown
       function hide_dropdown () {
           dropdown.hide().empty();
+
+          var callback = $(input).data("settings").onHideDropdownItem;
+          if($.isFunction(callback)) {
+              callback.call(selected_dropdown_item);
+          }
+
           selected_dropdown_item = null;
+//          $('html').off('scroll resize', resize_dropdown);
+          $(window).off('scroll resize', resize_dropdown);
       }
 
       function show_dropdown() {
+//          var window_height = $(window).height() - (token_list.offset().top + token_list.outerHeight(true)) - 16;
           dropdown
               .css({
                   position: "absolute",
                   top: token_list.offset().top + token_list.outerHeight(true),
                   left: token_list.offset().left,
                   width: token_list.width(),
-                  'z-index': $(input).data("settings").zindex
+                  'z-index': $(input).data("settings").zindex,
+//                  'max-height': window_height,
+                  'overflow': 'auto',
               })
               .show();
+//          $('html').on('scroll resize', resize_dropdown);
+          $(window).off('scroll resize', resize_dropdown);
+          $(window).on('scroll resize', resize_dropdown);
+          resize_dropdown();
+      }
+
+      function resize_dropdown() {
+          var window_height = $(window).height() - (token_list.offset().top + token_list.outerHeight(true)) - 16 + $('html').get(0).scrollTop;
+          if(window_height<0) window_height = 'auto';
+//          console.log('resize_dropdown()',window_height);
+          dropdown
+              .css({
+                  top: token_list.offset().top + token_list.outerHeight(true),
+                  left: token_list.offset().left,
+                  width: token_list.width(),
+                  'max-height': window_height
+              });
       }
 
       function show_dropdown_searching () {
@@ -854,7 +980,10 @@
       }
 
       function find_value_and_highlight_term(template, value, term) {
-          return template.replace(new RegExp("(?![^&;]+;)(?!<[^<>]*)(" + regexp_escape(value) + ")(?![^<>]*>)(?![^&;]+;)", "g"), highlight_term(value, term));
+//          return template.replace(new RegExp("(?![^&;]+;)(?!<[^<>]*)(" + regexp_escape(value) + ")(?![^<>]*>)(?![^&;]+;)", "g"), highlight_term(value, term));
+//          return template.replace(new RegExp("(?![^&;]+;)(?!<[^<>]*)(" + regexp_escape(value) + ")(?![^<>]*>)(?![^&;]+;)", "g"), $(input).data("settings").highlightTerm(value, term));
+          var zenhan = $(input).data("settings").zenhan;
+          return zenhan(template).replace(new RegExp("(?![^&;]+;)(?!<[^<>]*)(" + regexp_escape( escapeHTML(zenhan(value)) ) + ")(?![^<>]*>)(?![^&;]+;)", "gi"), $(input).data("settings").highlightTerm(value, term));
       }
 
       // exclude existing tokens from dropdown, so the list is clearer
@@ -888,6 +1017,16 @@
           // exclude current tokens if configured
           results = excludeCurrent(results);
 
+//          if(!isWindowNavigatorLanguageJa()){ //日本語以外の場合、日本語の代表表現を除外
+//              var JapaneseExclusionList = [];
+//              if ($.isArray(results) && results.length) {
+//                  $.each(results, function(index, value) {
+//                      if(value['id'].lastIndexOf('_ja')<0) JapaneseExclusionList.push(value);
+//                  });
+//              }
+//              results = JapaneseExclusionList;
+//          }
+
           if(results && results.length) {
               dropdown.empty();
               var dropdown_ul = $("<ul/>")
@@ -902,6 +1041,7 @@
                   })
                   .hide();
 
+              var results_length = results.length;
               if ($(input).data("settings").resultsLimit && results.length > $(input).data("settings").resultsLimit) {
                   results = results.slice(0, $(input).data("settings").resultsLimit);
               }
@@ -909,7 +1049,10 @@
               $.each(results, function(index, value) {
                   var this_li = $(input).data("settings").resultsFormatter(value);
 
-                  this_li = find_value_and_highlight_term(this_li ,value[$(input).data("settings").propertyToSearch], query);
+//                  this_li = find_value_and_highlight_term(this_li ,value[$(input).data("settings").propertyToSearch], query);
+                  this_li = find_value_and_highlight_term(this_li ,value['id'].replace(/_ja$/g,''), query);
+                  this_li = find_value_and_highlight_term(this_li ,value['name'], query);
+                  this_li = find_value_and_highlight_term(this_li ,value['synonym'] instanceof Array ? value['synonym'].join(' | ') : '', query);
                   this_li = $(this_li).appendTo(dropdown_ul);
 
                   if(index % 2) {
@@ -925,6 +1068,10 @@
                   $.data(this_li.get(0), "tokeninput", value);
               });
 
+              var callback = $(input).data("settings").onShowDropdownItem;
+              if($.isFunction(callback)) {
+                  callback.call(dropdown,results_length);
+              }
               show_dropdown();
 
               if($(input).data("settings").animateDropdown) {
@@ -935,6 +1082,10 @@
           } else {
               if($(input).data("settings").noResultsText) {
                   dropdown.html("<p>" + escapeHTML($(input).data("settings").noResultsText) + "</p>");
+                  var callback = $(input).data("settings").onShowDropdownItem;
+                  if($.isFunction(callback)) {
+                      callback.call(dropdown,0);
+                  }
                   show_dropdown();
               }
           }
@@ -949,6 +1100,11 @@
 
               item.addClass($(input).data("settings").classes.selectedDropdownItem);
               selected_dropdown_item = item.get(0);
+
+              var callback = $(input).data("settings").onSelectDropdownItem;
+              if($.isFunction(callback)) {
+                  callback.call(selected_dropdown_item, item.data("tokeninput"));
+              }
           }
       }
 
@@ -1045,13 +1201,23 @@
                     }
                   };
 
+                  // Attach the error callback
+                  ajax_params.error = function(XMLHttpRequest, textStatus, errorThrown) {
+										console.warn(textStatus, errorThrown);
+									};
+
                   // Provide a beforeSend callback
                   if (settings.onSend) {
                     settings.onSend(ajax_params);
                   }
 
+
+                  if (jqxhr) {
+                    jqxhr.abort();
+                  }
                   // Make the request
-                  $.ajax(ajax_params);
+//                  $.ajax(ajax_params);
+                  jqxhr = $.ajax(ajax_params);
               } else if($(input).data("settings").local_data) {
                   // Do the search through local data
                   var results = $.grep($(input).data("settings").local_data, function (row) {

@@ -41,7 +41,8 @@ def process_input_phenotype(str_phenotypes):
     if str_phenotypes != "":
         for phenotype in str_phenotypes.split(","):
             OBJ_MYSQL = MySQLdb.connect(unix_socket=db_sock, host="localhost", db=db_name, user=db_user, passwd=db_pw, charset="utf8")
-            sql_OntoTerm = u"select uid_value from IndexFormHP where uid=%s"
+            #sql_OntoTerm = u"select uid_value from IndexFormHP where uid=%s"
+            sql_OntoTerm = u"select value from IndexFormHP where uid=%s"
             cursor_OntoTerm = OBJ_MYSQL.cursor()
             cursor_OntoTerm.execute(sql_OntoTerm, (phenotype,))
             values = cursor_OntoTerm.fetchall()
