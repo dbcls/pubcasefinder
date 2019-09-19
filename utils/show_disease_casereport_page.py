@@ -55,7 +55,8 @@ def show_disease_casereport_page(disease, phenotypes, genes, page, size):
     if phenotypes != "":
         for phenotype in phenotypes.split(","):
             #sql_OntoTerm = u"select OntoIDTerm from OntoTermHP where OntoType='label' and OntoID=%s"
-            sql_OntoTerm = u"select uid_value from IndexFormHP where uid=%s"
+            #sql_OntoTerm = u"select uid_value from IndexFormHP where uid=%s"
+            sql_OntoTerm = u"select value from IndexFormHP where uid=%s"
             cursor_OntoTerm = OBJ_MYSQL.cursor()
             cursor_OntoTerm.execute(sql_OntoTerm, (phenotype,))
             values = cursor_OntoTerm.fetchall()
