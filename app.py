@@ -26,6 +26,7 @@ from utils.check_input import process_input_phenotype, process_input_gene
 
 # API for MME
 from utils.api_mme import make_JSON_MME, make_JSON_IRUD
+from utils.api_mme_omim import make_JSON_MME_omim, make_JSON_IRUD_omim
 
 # API for Orphanet
 from utils.api_orphanet import make_JSON_annotate
@@ -1906,6 +1907,67 @@ def REST_API_JSON_search_genes(genes, size_disease, size_casereport):
 def REST_API_JSON_search(size_disease, size_casereport):
     if request.method == 'GET':
         dict_results = make_JSON_IRUD(size_disease, size_casereport)
+
+        return jsonify(dict_results)
+    else:
+        return render_template('index.html')
+
+
+
+#####
+# GET: API for IRUD Exchange (OMIM)
+#      show search page with phenotype and gene
+#      /search_omim/phenotype:HPO:Id,HPO:id/gene:gene1,gene2/size_disease:N/size_casereport:N
+#####
+@app.route('/search_omim/phenotype:<string:phenotypes>/gene:<string:genes>/size_disease:<string:size_disease>/size_casereport:<string:size_casereport>', methods=['GET'])
+def REST_API_JSON_search_omim_phenotypes_genes(phenotypes, genes, size_disease, size_casereport):
+    if request.method == 'GET':
+        dict_results = make_JSON_IRUD_omim(phenotypes, genes, size_disease, size_casereport)
+
+        return jsonify(dict_results)
+    else:
+        return render_template('index.html')
+
+
+#####
+# GET: API for IRUD Exchange (OMIM)
+#      show search page with phenotype
+#      /search_omim/phenotype:HPO:Id,HPO:id/gene:/size_disease:N/size_casereport:N
+#####
+@app.route('/search_omim/phenotype:<string:phenotypes>/gene:/size_disease:<string:size_disease>/size_casereport:<string:size_casereport>', methods=['GET'])
+def REST_API_JSON_search_omim_phenotypes(phenotypes, size_disease, size_casereport):
+    if request.method == 'GET':
+        dict_results = make_JSON_IRUD_omim(phenotypes, '', size_disease, size_casereport)
+
+        return jsonify(dict_results)
+    else:
+        return render_template('index.html')
+
+
+#####
+# GET: API for IRUD Exchange (OMIM)
+#      show search page with gene
+#      /search_omim/phenotype:/gene:gene1,gene2/size_disease:N/size_casereport:N
+#####
+@app.route('/search_omim/phenotype:/gene:<string:genes>/size_disease:<string:size_disease>/size_casereport:<string:size_casereport>', methods=['GET'])
+def REST_API_JSON_search_omim_genes(genes, size_disease, size_casereport):
+    if request.method == 'GET':
+        dict_results = make_JSON_IRUD_omim(genes, size_disease, size_casereport)
+
+        return jsonify(dict_results)
+    else:
+        return render_template('index.html')
+
+
+#####
+# GET: API for IRUD Exchange (OMIM)
+#      show search page without phenotype and gene
+#      /search_omim/phenotype:/gene:/size_disease:N/size_casereport:N
+#####
+@app.route('/search_omim/phenotype:/gene:/size_disease:<string:size_disease>/size_casereport:<string:size_casereport>', methods=['GET'])
+def REST_API_JSON_search_omim(size_disease, size_casereport):
+    if request.method == 'GET':
+        dict_results = make_JSON_IRUD_omim(size_disease, size_casereport)
 
         return jsonify(dict_results)
     else:
