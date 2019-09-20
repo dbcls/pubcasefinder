@@ -151,7 +151,7 @@ def make_search_results_MME_omim(phenotypes, genes, size_disease, size_caserepor
         disease_id             = dict_similar_disease_pagination['onto_id_ordo']
         disease_label          = dict_similar_disease_pagination['onto_term_ordo']
         list_matchedPhenotypes = dict_similar_disease_pagination['onto_id_term_hp_disease']
-        list_causativeGenes    = dict_similar_disease_pagination['orpha_number_symbol_synonym']
+        list_causativeGenes    = dict_similar_disease_pagination['omim_symbol_synonym']
 
         dict_result = {}
 
@@ -229,7 +229,7 @@ def make_JSON_IRUD_omim(phenotypes, genes, size_disease, size_casereport):
         disease_id             = dict_similar_disease_pagination['onto_id_omim']
         disease_label          = dict_similar_disease_pagination['onto_term_omim']
         list_matchedPhenotypes = dict_similar_disease_pagination['onto_id_term_hp_disease']
-        list_causativeGenes    = dict_similar_disease_pagination['orpha_number_symbol_synonym']
+        list_causativeGenes    = dict_similar_disease_pagination['omim_symbol_synonym']
 
         dict_result = {}
         dict_result['rank'] = rank
