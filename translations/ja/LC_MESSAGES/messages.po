@@ -15,8 +15,11 @@ msgstr "最終更新日：2018年9月25日"
 msgid "About"
 msgstr "ヘルプ"
 
-msgid "TermsOfService_URL"
-msgstr "/termsofservice_ja"
+msgid "Datasets"
+msgstr "データセット"
+
+msgid "History"
+msgstr "更新履歴"
 
 msgid "TermsOfService"
 msgstr "利用規約"

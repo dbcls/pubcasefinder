@@ -15,8 +15,11 @@ msgstr "Update: Sep. 25. 2018"
 msgid "About"
 msgstr "About"
 
-msgid "TermsOfService_URL"
-msgstr "/termsofservice_en"
+msgid "Datasets"
+msgstr "Datasets"
+
+msgid "History"
+msgstr "History"
 
 msgid "TermsOfService"
 msgstr "Terms"

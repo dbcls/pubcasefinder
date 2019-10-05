@@ -8,6 +8,7 @@ import MySQLdb
 
 # Search core
 from utils.show_search_omim_page import show_search_omim_page
+from utils.show_search_omim_all_page import show_search_omim_all_page
 from utils.show_disease_casereport_page import show_disease_casereport_page
 
 
@@ -269,5 +270,63 @@ def make_JSON_IRUD_omim(phenotypes, genes, size_disease, size_casereport):
 
     return dict_results
 
+
+
+#####
+# make list of search results of rare disease for IRUD API
+#####
+def make_JSON_IRUD_omim_all(phenotypes, genes, size_disease, size_casereport):
+    dict_results = {}
+    flg_casereport = 0
+
+    # caluculate phenotypic similarity between a patient and rare diseases.
+    list_dict_similar_disease_pagination, pagination, total_hit = show_search_omim_all_page(phenotypes, genes, '1', size_disease)
+
+    list_results = []
+    for dict_similar_disease_pagination in list_dict_similar_disease_pagination:
+        rank                   = dict_similar_disease_pagination['rank']
+        score                  = dict_similar_disease_pagination['match_score']
+        disease_id             = dict_similar_disease_pagination['onto_id_omim']
+        disease_label          = dict_similar_disease_pagination['onto_term_omim']
+        list_matchedPhenotypes = dict_similar_disease_pagination['onto_id_term_hp_disease']
+        list_causativeGenes    = dict_similar_disease_pagination['omim_symbol_synonym']
+
+        dict_result = {}
+        dict_result['rank'] = rank
+        dict_result['score'] = score
+
+        dict_disease = {}
+        dict_disease['id'] = disease_id
+        dict_disease['label'] = disease_label
+
+        list_casereports = []
+
+        # setting Case Reports
+        dict_disease['caseReports'] = list_casereports
+
+        dict_disease['matchedPhenotypes'] = []
+        dict_exist_hp_id = {}
+        for matchedPhenotypes in list_matchedPhenotypes:
+            if 'onto_id_hp_disease' in matchedPhenotypes and not matchedPhenotypes['onto_id_hp_disease'] in dict_exist_hp_id:
+                dict_matchedPhenotypes = {}
+                dict_matchedPhenotypes['id'] = matchedPhenotypes['onto_id_hp_disease']
+                dict_matchedPhenotypes['label'] = matchedPhenotypes['onto_term_hp_disease']
+                dict_disease['matchedPhenotypes'].append(dict_matchedPhenotypes)
+                dict_exist_hp_id[matchedPhenotypes['onto_id_hp_disease']] = 1
+
+        dict_disease['causativeGenes'] = []
+        for causativeGenes in list_causativeGenes:
+            dict_causativeGenes = {}
+            dict_causativeGenes['id'] = causativeGenes['entrez_id'] if 'entrez_id' in causativeGenes else ''
+            dict_causativeGenes['label'] = causativeGenes['symbol'] if 'symbol' in causativeGenes else ''
+            dict_disease['causativeGenes'].append(dict_causativeGenes)
+
+        dict_result['disease'] = dict_disease
+
+        list_results.append(dict_result)
+
+    dict_results['results'] = list_results 
+
+    return dict_results
 
 

@@ -52,6 +52,12 @@
     <!-- popup-tokeninput -->
     <link rel="stylesheet" href="/static/css/popup-hierarchy-hpo.css">
 
+    <!-- favicon -->
+    <link rel="icon" href="/static/images/favicon.ico">
+
+    <!-- favicon for mobile -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/images/apple-touch-icon.png">
+
     <!--schema.rog-->
     <script type="application/ld+json">
       {
@@ -227,15 +233,21 @@
 	  </div>
 	  <div class="col-xs-10 text-right menu-1">
 	    <ul>
-	      <li><font color="white" size="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;( {{ _('Update') }} )&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><li>
+	      <!--li><font color="white" size="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;( {{ _('Update') }} )&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><li-->
 	      {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
-	      <li><a href="/static/pdf/PubCaseFinder_manual_ja.pdf" target="_blank"><span class="icon-question-circle-o"></span>{{ _('About') }}</a></li>
+	      <li><a href="/static/pdf/PubCaseFinder_manual_ja.pdf"><span class="icon-question-circle-o"></span>About</a></li>
+	      <li><a href="/datasets_ja"><span class="icon-database"></span>Datasets</a></li>
+	      <li><a href="/history_ja"><span class="icon-history"></span>History</a></li>
+	      <li><a href="/termsofservice_ja"><span class="icon-doc-text-inv"></span>Terms</a></li>
+	      <li><a href="/portal"><span class="icon-database"></span>RDF</a></li>
 	      {% else %}
-	      <li><a href="/static/pdf/Summary_PubCaseFinder.pdf" target="_blank"><span class="icon-question-circle-o"></span>{{ _('About') }}</a></li>
+	      <li><a href="/static/pdf/Summary_PubCaseFinder.pdf"><span class="icon-question-circle-o"></span>About</a></li>
+	      <!--li><a href="/datasets_en"><span class="icon-database"></span>Datasets</a></li-->
+	      <!--li><a href="/history_en"><span class="icon-history"></span>History</a></li-->
+	      <li><a href="termsofservice_en"><span class="icon-doc-text-inv"></span>Terms</a></li>
 	      {% endif %}
-	      <li><a href="{{ _('TermsOfService_URL') }}"><span class="icon-doc-text-inv"></span>{{ _('TermsOfService') }}</a></li>
 	      <li><a href="/mme"><span class="icon-wrench"></span>API</a></li>
-	      <li><a title="Comments & suggestions are welcome!" href="mailto:pubcasefinder@dbcls.rois.ac.jp" href="#"><span class="icon-mail-alt"></span>{{ _('Contact') }}</a></li>
+	      <li><a title="Comments & suggestions are welcome!" href="mailto:pubcasefinder@dbcls.rois.ac.jp" href="#"><span class="icon-mail-alt"></span>Contact</a></li>
 	    </ul>
 	  </div>
 	</div>

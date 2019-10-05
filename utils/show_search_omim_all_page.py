@@ -29,7 +29,7 @@ db_pw   = app.config['DBPW']
 
 ####
 # 類似疾患検索画面を表示
-def show_search_omim_page(phenotypes_remove_error_ja, genes_remove_error, page, size):
+def show_search_omim_all_page(phenotypes_remove_error_ja, genes_remove_error, page, size):
 
     limit = int(size)
 
@@ -59,7 +59,6 @@ def show_search_omim_page(phenotypes_remove_error_ja, genes_remove_error, page, 
         dict_similar_disease['total_num_case_reports'] = total_num_case_reports
     OBJ_MYSQL.close()
 
-    #return list_dict_phenotype, list_dict_gene, list_dict_similar_disease_pagination, pagination, total_hit
     return list_dict_similar_disease_pagination, pagination, total_hit
 
 
@@ -193,7 +192,7 @@ def search_similar_disease(str_phenotypes, str_genes):
     ## 各疾患とのスコアを算出し、データを収納
     ### インデックステーブルを利用して、各疾患でのICの合計を取得
     ### http://stackoverflow.com/questions/4574609/executing-select-where-in-using-mysqldb
-    sql = u"select OntoIDOMIM, IndexOntoIDHP, DiseaseOntoIDHP, DiseaseOntoIDHPSource, CommonRootHP, CommonRootHPIC from IndexDiseaseHPOMIM where IndexOntoIDHP in (%s) order by OntoIDOMIM, DiseaseOntoIDHP"
+    sql = u"select OntoIDOMIM, IndexOntoIDHP, DiseaseOntoIDHP, DiseaseOntoIDHPSource, CommonRootHP, CommonRootHPIC from IndexDiseaseHPOMIMAll where IndexOntoIDHP in (%s) order by OntoIDOMIM, DiseaseOntoIDHP"
     in_p=', '.join(map(lambda x: '%s', list_phenotypes))
     sql = sql % in_p
     cursor = OBJ_MYSQL.cursor()

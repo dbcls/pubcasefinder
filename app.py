@@ -20,13 +20,14 @@ from flask_cors import CORS
 from utils.pagination import Pagination
 from utils.show_search_page import show_search_page
 from utils.show_search_omim_page import show_search_omim_page
+from utils.show_search_omim_all_page import show_search_omim_all_page
 from utils.show_disease_casereport_page import show_disease_casereport_page
 from utils.show_phenotype_context_page import show_phenotype_context_page
 from utils.check_input import process_input_phenotype, process_input_gene
 
 # API for MME
 from utils.api_mme import make_JSON_MME, make_JSON_IRUD
-from utils.api_mme_omim import make_JSON_MME_omim, make_JSON_IRUD_omim
+from utils.api_mme_omim import make_JSON_MME_omim, make_JSON_IRUD_omim, make_JSON_IRUD_omim_all
 
 # API for Orphanet
 from utils.api_orphanet import make_JSON_annotate
@@ -186,6 +187,46 @@ def termsofservice_en():
 @app.route('/termsofservice_ja')
 def termsofservice_ja():
     return render_template('termsofservice_ja.html')
+
+
+#####
+# datasets in English
+## GET: 
+@app.route('/datasets_en')
+def datasets_en():
+    return render_template('datasets_en.html')
+
+
+#####
+# datasets in Japanese
+## GET:
+@app.route('/datasets_ja')
+def datasets_ja():
+    return render_template('datasets_ja.html')
+
+
+#####
+# history in English
+## GET: 
+@app.route('/history_en')
+def history_en():
+    return render_template('history_en.html')
+
+
+#####
+# history in Japanese
+## GET:
+@app.route('/history_ja')
+def history_ja():
+    return render_template('history_ja.html')
+
+
+#####
+# portal in Japanese
+## GET:
+@app.route('/portal')
+def portal_ja():
+    return render_template('portal_ja.html')
 
 
 #####
@@ -1601,7 +1642,7 @@ def tokeninput_hpo():
         OBJ_MYSQL = MySQLdb.connect(unix_socket=db_sock, host="localhost", db=db_name, user=db_user, passwd=db_pw, charset="utf8")
         # ICテーブルに存在する各termの頻度で、表示するtermをソート
         #sql_OntoTerm = u"select distinct a.uid, a.uid_value, b.FreqSelf from IndexFormHP as a left join IC as b on replace(a.uid, '_ja', '')=b.OntoID where a.uid_value like %s order by b.FreqSelf desc, value"
-        sql_OntoTerm = u"select distinct a.uid, a.value, c.OntoSynonym, b.FreqSelf from IndexFormHP as a left join IC as b on replace(a.uid, '_ja', '')=b.OntoID LEFT JOIN OntoTermHPInformation AS c ON a.uid=c.OntoID where {0} OR (LENGTH(a.value)=CHARACTER_LENGTH(a.value) AND a.uid IN (SELECT OntoID FROM OntoTermHPSynonym WHERE OntoVersion='20170630' AND {1})) order by b.FreqSelf desc, value".format(' AND '.join(map(lambda x: "a.uid_value collate utf8_unicode_ci like %s", tokeninputs)),' AND '.join(map(lambda x: "OntoSynonym collate utf8_unicode_ci like %s", tokeninputs)))
+        sql_OntoTerm = u"select distinct a.uid, a.value, c.OntoSynonym, b.FreqSelf from IndexFormHP as a left join IC as b on replace(a.uid, '_ja', '')=b.OntoID LEFT JOIN OntoTermHPInformation AS c ON a.uid=c.OntoID where {0} OR (LENGTH(a.value)=CHARACTER_LENGTH(a.value) AND a.uid IN (SELECT OntoID FROM OntoTermHPSynonym WHERE OntoVersion='20190603' AND {1})) order by b.FreqSelf desc, value".format(' AND '.join(map(lambda x: "a.uid_value collate utf8_unicode_ci like %s", tokeninputs)),' AND '.join(map(lambda x: "OntoSynonym collate utf8_unicode_ci like %s", tokeninputs)))
         cursor_OntoTerm = OBJ_MYSQL.cursor()
         cursor_OntoTerm.execute(sql_OntoTerm, tuple(sql_params))
         values = cursor_OntoTerm.fetchall()
@@ -1748,11 +1789,11 @@ def popup_hierarchy_hpo():
         dict_json = {}
 
         # OntoTermHPInformationテーブルから情報取得
-        sql_information = u"select OntoName, OntoSynonym, OntoDefinition, OntoComment, OntoParentNum, OntoChildNum, OntoNameJa from OntoTermHPInformation where OntoVersion='20170630' and OntoID=%s"
-        sql_informations_fmt = u"select OntoID, OntoName, OntoSynonym, OntoDefinition, OntoComment, OntoChildNum, OntoNameJa from OntoTermHPInformation where OntoVersion='20170630' and OntoID in (%s)"
+        sql_information = u"select OntoName, OntoSynonym, OntoDefinition, OntoComment, OntoParentNum, OntoChildNum, OntoNameJa from OntoTermHPInformation where OntoVersion='20190603' and OntoID=%s"
+        sql_informations_fmt = u"select OntoID, OntoName, OntoSynonym, OntoDefinition, OntoComment, OntoChildNum, OntoNameJa from OntoTermHPInformation where OntoVersion='20190603' and OntoID in (%s)"
 
-        sql_hierarchy_parent = u"select OntoParentID from OntoTermHPHierarchy where OntoVersion='20170630' and OntoID=%s"
-        sql_hierarchy_child  = u"select OntoID from OntoTermHPHierarchy where OntoVersion='20170630' and OntoParentID=%s"
+        sql_hierarchy_parent = u"select OntoParentID from OntoTermHPHierarchy where OntoVersion='20190603' and OntoID=%s"
+        sql_hierarchy_child  = u"select OntoID from OntoTermHPHierarchy where OntoVersion='20190603' and OntoParentID=%s"
 
         # OntoTermHPInformationテーブルからクエリにマッチするレコードを取得
         cursor_information = OBJ_MYSQL.cursor()
@@ -1968,6 +2009,66 @@ def REST_API_JSON_search_omim_genes(genes, size_disease, size_casereport):
 def REST_API_JSON_search_omim(size_disease, size_casereport):
     if request.method == 'GET':
         dict_results = make_JSON_IRUD_omim(size_disease, size_casereport)
+
+        return jsonify(dict_results)
+    else:
+        return render_template('index.html')
+
+
+#####
+# GET: API for IRUD Exchange (OMIM_all)
+#      show search page with phenotype and gene
+#      /search_omim_all/phenotype:HPO:Id,HPO:id/gene:gene1,gene2/size_disease:N/size_casereport:N
+#####
+@app.route('/search_omim_all/phenotype:<string:phenotypes>/gene:<string:genes>/size_disease:<string:size_disease>/size_casereport:<string:size_casereport>', methods=['GET'])
+def REST_API_JSON_search_omim_all_phenotypes_genes(phenotypes, genes, size_disease, size_casereport):
+    if request.method == 'GET':
+        dict_results = make_JSON_IRUD_omim_all(phenotypes, genes, size_disease, size_casereport)
+
+        return jsonify(dict_results)
+    else:
+        return render_template('index.html')
+
+
+#####
+# GET: API for IRUD Exchange (OMIM_all)
+#      show search page with phenotype
+#      /search_omim_all/phenotype:HPO:Id,HPO:id/gene:/size_disease:N/size_casereport:N
+#####
+@app.route('/search_omim_all/phenotype:<string:phenotypes>/gene:/size_disease:<string:size_disease>/size_casereport:<string:size_casereport>', methods=['GET'])
+def REST_API_JSON_search_omim_all_phenotypes(phenotypes, size_disease, size_casereport):
+    if request.method == 'GET':
+        dict_results = make_JSON_IRUD_omim_all(phenotypes, '', size_disease, size_casereport)
+
+        return jsonify(dict_results)
+    else:
+        return render_template('index.html')
+
+
+#####
+# GET: API for IRUD Exchange (OMIM_all)
+#      show search page with gene
+#      /search_omim_all/phenotype:/gene:gene1,gene2/size_disease:N/size_casereport:N
+#####
+@app.route('/search_omim_all/phenotype:/gene:<string:genes>/size_disease:<string:size_disease>/size_casereport:<string:size_casereport>', methods=['GET'])
+def REST_API_JSON_search_omim_all_genes(genes, size_disease, size_casereport):
+    if request.method == 'GET':
+        dict_results = make_JSON_IRUD_omim_all(genes, size_disease, size_casereport)
+
+        return jsonify(dict_results)
+    else:
+        return render_template('index.html')
+
+
+#####
+# GET: API for IRUD Exchange (OMIM_all)
+#      show search page without phenotype and gene
+#      /search_omim_all/phenotype:/gene:/size_disease:N/size_casereport:N
+#####
+@app.route('/search_omim_all/phenotype:/gene:/size_disease:<string:size_disease>/size_casereport:<string:size_casereport>', methods=['GET'])
+def REST_API_JSON_search_omim_all(size_disease, size_casereport):
+    if request.method == 'GET':
+        dict_results = make_JSON_IRUD_omim_all(size_disease, size_casereport)
 
         return jsonify(dict_results)
     else:
