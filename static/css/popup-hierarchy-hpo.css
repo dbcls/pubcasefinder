@@ -361,11 +361,11 @@ ul.hpo-token-input-list.token-input-list-facebook li.token-input-token-facebook 
 /*	font-size: inherit !important;*/
 	font-size: 14px !important;
 	cursor: pointer;
-
 	font-family:"游ゴシック Medium",YuGothic,YuGothicM,"Hiragino Kaku Gothic ProN","Hiragino Kaku Gothic Pro",メイリオ,Meiryo,sans-serif;
 	padding: 0.5em;
 	text-decoration: none;
-	border: solid 1px #337AB7;
+/*	border: solid 1px #337AB7;*/
+	border: 1px solid #3b5998;
 	background-color:#F4FAFF;
 	color:#000;
 	border-radius: 3px;
@@ -374,7 +374,8 @@ ul.hpo-token-input-list.token-input-list-facebook li.token-input-token-facebook 
 	display:flex;
 }
 ul.hpo-token-input-list.token-input-list-facebook li.token-input-token-facebook:hover {
-	background-color: #337AB7;
+/*	background-color: #337AB7;*/
+	background-color: #5670a6;
 	color: white;
 }
 ul.hpo-token-input-list.token-input-list-facebook li.token-input-token-facebook.token-input-selected-token-facebook {
@@ -404,7 +405,8 @@ ul.hpo-token-input-list.token-input-list-facebook li.token-input-token-facebook 
 	width: 8px;
 	height: 8px;
 	border: 2px solid;
-	border-color: #337AB7 #337AB7 transparent transparent;
+/*	border-color: #337AB7 #337AB7 transparent transparent;*/
+	border-color: #5670a6 #5670a6 transparent transparent;
 	transform: rotate(45deg);
 	margin-top: 6px;
 	margin-left: 4px;
