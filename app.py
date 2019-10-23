@@ -194,7 +194,7 @@ def termsofservice_ja():
 ## GET: 
 @app.route('/datasets_en')
 def datasets_en():
-    return render_template('datasets_en.html')
+    return render_template('/datasets/datasets_en_v1.1.html')
 
 
 #####
@@ -202,7 +202,7 @@ def datasets_en():
 ## GET:
 @app.route('/datasets_ja')
 def datasets_ja():
-    return render_template('datasets_ja.html')
+    return render_template('/datasets/datasets_ja_v1.1.html')
 
 
 #####
