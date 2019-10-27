@@ -4,7 +4,7 @@ import os
 import re
 import MySQLdb
 
-from flask import Flask, render_template, request, redirect, url_for, jsonify
+from flask import Flask, session, render_template, request, redirect, url_for, jsonify
 from utils.pagination import Pagination
 from flask_babel import gettext,Babel
 
@@ -12,10 +12,22 @@ from flask_babel import gettext,Babel
 app = Flask(__name__)
 
 # https://github.com/shibacow/flask_babel_sample/blob/master/srv.py
+#babel = Babel(app)
+#@babel.localeselector
+#def get_locale():
+#    return request.accept_languages.best_match(['ja', 'ja_JP', 'en'])
+
+app.secret_key = 'hogehoge'
+
+# https://github.com/shibacow/flask_babel_sample/blob/master/srv.py
 babel = Babel(app)
 @babel.localeselector
 def get_locale():
-    return request.accept_languages.best_match(['ja', 'ja_JP', 'en'])
+    if 'lang' not in session:
+        session['lang'] = request.accept_languages.best_match(['ja', 'ja_JP', 'en'])
+    if request.args.get('lang'):
+        session['lang'] = request.args.get('lang')
+    return session.get('lang', 'en')
 
 
 #####

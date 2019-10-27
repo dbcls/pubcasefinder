@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from flask import Flask, render_template, request, redirect, url_for, jsonify, make_response
+from flask import Flask, session, render_template, request, redirect, url_for, jsonify, make_response
 import os
 import re
 import MySQLdb
@@ -36,12 +36,17 @@ from utils.api_orphanet import make_JSON_annotate
 app = Flask(__name__)
 CORS(app)
 
+app.secret_key = 'hogehoge'
 
 # https://github.com/shibacow/flask_babel_sample/blob/master/srv.py
 babel = Babel(app)
 @babel.localeselector
 def get_locale():
-    return request.accept_languages.best_match(['ja', 'ja_JP', 'en'])
+    if 'lang' not in session:
+        session['lang'] = request.accept_languages.best_match(['ja', 'ja_JP', 'en'])
+    if request.args.get('lang'):
+        session['lang'] = request.args.get('lang')
+    return session.get('lang', 'en')
 app.jinja_env.globals.update(get_locale=get_locale)
 
 # debug
