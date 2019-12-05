@@ -10,6 +10,7 @@ import MySQLdb
 from utils.show_search_omim_page import show_search_omim_page
 from utils.show_search_omim_all_page import show_search_omim_all_page
 from utils.show_disease_casereport_page import show_disease_casereport_page
+from utils.check_input import process_input_phenotype, process_input_gene
 
 
 app = Flask(__name__)
@@ -142,8 +143,11 @@ def make_search_results_MME_omim(phenotypes, genes, size_disease, size_caserepor
     dict_results = {}
     flg_casereport = 0
 
+    # process query : genes
+    list_dict_gene, genes_remove_error, list_query_gene_error = process_input_gene(genes)
+
     # caluculate phenotypic similarity between a patient and rare diseases.
-    list_dict_similar_disease_pagination, pagination, total_hit = show_search_omim_page(phenotypes, genes, '1', size_disease)
+    list_dict_similar_disease_pagination, pagination, total_hit = show_search_omim_page(phenotypes, genes_remove_error, '1', size_disease)
 
     list_results = []
     for dict_similar_disease_pagination in list_dict_similar_disease_pagination:
@@ -220,8 +224,11 @@ def make_JSON_IRUD_omim(phenotypes, genes, size_disease, size_casereport):
     dict_results = {}
     flg_casereport = 0
 
+    # process query : genes
+    list_dict_gene, genes_remove_error, list_query_gene_error = process_input_gene(genes)
+
     # caluculate phenotypic similarity between a patient and rare diseases.
-    list_dict_similar_disease_pagination, pagination, total_hit = show_search_omim_page(phenotypes, genes, '1', size_disease)
+    list_dict_similar_disease_pagination, pagination, total_hit = show_search_omim_page(phenotypes, genes_remove_error, '1', size_disease)
 
     list_results = []
     for dict_similar_disease_pagination in list_dict_similar_disease_pagination:
@@ -279,8 +286,11 @@ def make_JSON_IRUD_omim_all(phenotypes, genes, size_disease, size_casereport):
     dict_results = {}
     flg_casereport = 0
 
+    # process query : genes
+    list_dict_gene, genes_remove_error, list_query_gene_error = process_input_gene(genes)
+
     # caluculate phenotypic similarity between a patient and rare diseases.
-    list_dict_similar_disease_pagination, pagination, total_hit = show_search_omim_all_page(phenotypes, genes, '1', size_disease)
+    list_dict_similar_disease_pagination, pagination, total_hit = show_search_omim_all_page(phenotypes, genes_remove_error, '1', size_disease)
 
     list_results = []
     for dict_similar_disease_pagination in list_dict_similar_disease_pagination:
