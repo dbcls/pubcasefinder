@@ -314,6 +314,11 @@ if(!window.Ext){
 					fn();
 					return 0;
 				},
+				alias: function(object, methodName) {
+					return function() {
+						return object[methodName].apply(object, arguments);
+					};
+				}
 			},
 			Object: {
 				getValues: function(object) {
@@ -337,6 +342,7 @@ if(!window.Ext){
 				}
 			}
 		};
+		Ext.bind = Ext.Function.alias(Ext.Function, 'bind');
 	}());
 }
 
