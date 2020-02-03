@@ -21,6 +21,7 @@ from utils.pagination import Pagination
 from utils.show_search_page import show_search_page
 from utils.show_search_omim_page import show_search_omim_page
 from utils.show_search_omim_all_page import show_search_omim_all_page
+from utils.show_search_case_page import show_search_case_page
 from utils.show_disease_casereport_page import show_disease_casereport_page
 from utils.show_phenotype_context_page import show_phenotype_context_page
 from utils.check_input import process_input_phenotype, process_input_gene
@@ -36,7 +37,7 @@ from utils.api_orphanet import make_JSON_annotate
 app = Flask(__name__)
 CORS(app)
 
-app.secret_key = 'hogehoge'
+app.secret_key = 'pubcasefinder1210'
 
 # https://github.com/shibacow/flask_babel_sample/blob/master/srv.py
 babel = Babel(app)
@@ -247,6 +248,7 @@ def REST_API_search_phenotypes_genes(phenotypes, genes, page, size):
         active_tab    = "orphanet"
         #active_tab    = "omim"
         
+        # process query : page
         list_pages = page.split(",")
         if len(list_pages) == 2:
             page_orphanet = list_pages[0]
@@ -254,6 +256,7 @@ def REST_API_search_phenotypes_genes(phenotypes, genes, page, size):
         elif len(list_pages) == 1:
             page_orphanet = list_pages[0]
 
+        # process query : size
         list_sizes = size.split(",")
         if len(list_sizes) == 3:
             size_orphanet = list_sizes[0]
@@ -273,8 +276,6 @@ def REST_API_search_phenotypes_genes(phenotypes, genes, page, size):
         num_list_query_gene_error = len(list_query_gene_error)
 
         # search
-        #list_dict_phenotype,list_dict_gene,list_dict_similar_disease_pagination, pagination, total_hit = show_search_page(phenotypes, genes, int(page_orphanet), size_orphanet)
-        #list_dict_phenotype_omim,list_dict_gene_omim,list_dict_similar_disease_pagination_omim, pagination_omim, total_hit_omim = show_search_omim_page(phenotypes, genes, int(page_omim), size_omim)
         list_dict_similar_disease_pagination, pagination, total_hit = show_search_page(phenotypes_remove_error_ja, genes_remove_error, int(page_orphanet), size_orphanet)
         list_dict_similar_disease_pagination_omim, pagination_omim, total_hit_omim = show_search_omim_page(phenotypes_remove_error_ja, genes_remove_error, int(page_omim), size_omim)
         
@@ -290,9 +291,7 @@ def REST_API_search_phenotypes_genes(phenotypes, genes, page, size):
                                str_list_query_gene_error = ', '.join(list_query_gene_error),
                                num_list_query_gene_error = num_list_query_gene_error,
                                json_phenotypes=json.dumps(list_dict_phenotype),
-                               #json_phenotypes_omim=json.dumps(list_dict_phenotype_omim),
                                json_genes=json.dumps(list_dict_gene),
-                               #json_genes_omim=json.dumps(list_dict_gene_omim),
                                list_dict_similar_disease=list_dict_similar_disease_pagination,
                                list_dict_similar_disease_omim=list_dict_similar_disease_pagination_omim,
                                pagination=pagination,
@@ -532,10 +531,6 @@ def search_POST():
 
     if request.method == 'POST':
         # changesize_selector
-        #size_orphanet = request.form['changesize_selector_orphanet']
-        #size_omim = request.form['changesize_selector_omim']
-        #size = size_orphanet + ',' + size_omim
-        #size = '10,10'
         size = '10,10,omim'
 
         # requestオブジェクトからクエリのphenotypesを取得
@@ -633,8 +628,7 @@ def search_POST():
                         for value in values:
                             EntrezGeneID = value[0]
                             list_genes_file_removed.append("ENT:" + str(EntrezGeneID))
-                        #app.logger.debug(gene)
-
+        
                     ## ENT:\d+ に沿わないエントリーは削除
                     #pattern = r"^ENT\:\d+$"
                     #match = re.search(pattern, gene)
@@ -658,9 +652,6 @@ def search_POST():
 
 
         # ページ初期値
-        #page_orphanet = request.form['page_orphanet']
-        #page_omim = request.form['page_omim']
-        #page=page_orphanet + ',' + page_omim
         page='1,1'
 
         # POSTメソッドをRESTのURLにredirect

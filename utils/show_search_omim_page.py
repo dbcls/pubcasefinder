@@ -10,14 +10,7 @@ from flask_babel import gettext,Babel
 
 
 app = Flask(__name__)
-
-# https://github.com/shibacow/flask_babel_sample/blob/master/srv.py
-#babel = Babel(app)
-#@babel.localeselector
-#def get_locale():
-#    return request.accept_languages.best_match(['ja', 'ja_JP', 'en'])
-
-app.secret_key = 'hogehoge'
+app.secret_key = 'pubcasefinder1210'
 
 # https://github.com/shibacow/flask_babel_sample/blob/master/srv.py
 babel = Babel(app)
