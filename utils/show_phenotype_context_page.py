@@ -11,7 +11,7 @@ from flask_babel import gettext,Babel
 
 app = Flask(__name__)
 
-app.secret_key = 'hogehoge'
+app.secret_key = 'pubcasefinder1210'
 
 # https://github.com/shibacow/flask_babel_sample/blob/master/srv.py
 babel = Babel(app)
