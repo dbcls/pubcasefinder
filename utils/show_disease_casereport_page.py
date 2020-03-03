@@ -353,7 +353,7 @@ def search_similar_casereport(str_disease, str_phenotypes, str_genes):
                     max_ic_casereport_onto_id_hp = casereport_onto_id_hp
 
             # ICが0のエントリーが指定されると、分母の方が小さくなるため、分母のICが0の場合は分子のICも0にする
-            if dict_IC[patient_onto_id_hp] != 0:
+            if patient_onto_id_hp in dict_IC and  dict_IC[patient_onto_id_hp] != 0:
                 # 分母
                 sum_ic_denominator += dict_IC[patient_onto_id_hp]
                 # 最も高いICを足し合わせ、そのIDおよびTermを収納
