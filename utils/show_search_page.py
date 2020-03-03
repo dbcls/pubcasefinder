@@ -38,79 +38,6 @@ def show_search_page(phenotypes_remove_error_ja, genes_remove_error, page, size)
 
     limit = int(size)
 
-    # 正しくないHPO IDやGene IDをクエリからのぞいたクエリを収納
-    #list_query_phenotype_remove_error = []
-    #list_query_gene_remove_error = []
-        
-    # クエリ表示用に取得したphenotypesをJSON形式に変換
-    #list_dict_phenotype = []
-    #list_dict_gene = []
-
-    # クエリの全てのHPO IDがデータベースに含まれるか確認し、データを収納
-    #if phenotypes != "":
-    #    for phenotype in phenotypes.split(","):
-    #        OBJ_MYSQL = MySQLdb.connect(unix_socket=db_sock, host="localhost", db=db_name, user=db_user, passwd=db_pw, charset="utf8")
-    #        #sql_OntoTerm = u"select OntoIDTerm from OntoTermHP where OntoType='label' and OntoID=%s"
-    #        sql_OntoTerm = u"select uid_value from IndexFormHP where uid=%s"
-    #        cursor_OntoTerm = OBJ_MYSQL.cursor()
-    #        cursor_OntoTerm.execute(sql_OntoTerm, (phenotype,))
-    #        values = cursor_OntoTerm.fetchall()
-    #        cursor_OntoTerm.close()
-    #        onto_id_term = values[0][0] if values else ''
-    #        OBJ_MYSQL.close()
-
-    #        if onto_id_term != "":
-    #            dict_phenotype = {}
-    #            dict_phenotype['id'] = phenotype
-    #            dict_phenotype['name'] = onto_id_term
-    #            list_dict_phenotype.append(dict_phenotype)
-    #            list_query_phenotype_remove_error.append(phenotype)
-
-    # クエリの全てのGene IDがデータベースに含まれるか確認し、データを収納
-    #if genes != "":
-    #    for gene in genes.split(","):
-
-            # Gene Symbolの場合はEntrez Gene IDを抽出
-    #        entrez_id = ""
-    #        pattern_entrez_id = 'HGNC'
-    #        pattern_entrez_id_compiled = re.compile(pattern_entrez_id)
-    #        if pattern_entrez_id_compiled.match(gene):
-    #            OBJ_MYSQL = MySQLdb.connect(unix_socket=db_sock, host="localhost", db=db_name, user=db_user, passwd=db_pw, charset="utf8")
-    #            sql_GeneName2ID = u"select EntrezID from GeneName2ID where GeneName=%s"
-    #            cursor_GeneName2ID = OBJ_MYSQL.cursor()
-    #            gene_remove_prefix_HGNC = gene.replace('HGNC:', '')
-    #            cursor_GeneName2ID.execute(sql_GeneName2ID, (gene_remove_prefix_HGNC,))
-    #            values = cursor_GeneName2ID.fetchall()
-    #            cursor_GeneName2ID.close()
-    #            entrez_id = values[0][0] if values else ''
-    #            OBJ_MYSQL.close()
-    #            if entrez_id != "":
-    #                gene = unicode("ENT:" + str(entrez_id))
-
-    #        if gene != "":
-    #            OBJ_MYSQL = MySQLdb.connect(unix_socket=db_sock, host="localhost", db=db_name, user=db_user, passwd=db_pw, charset="utf8")
-    #            sql_IndexFormSearch = u"select uid_value from IndexFormSearchOrphanetOMIM where uid=%s"
-    #            cursor_IndexFormSearch = OBJ_MYSQL.cursor()
-    #            cursor_IndexFormSearch.execute(sql_IndexFormSearch, (gene,))
-    #            values = cursor_IndexFormSearch.fetchall()
-    #            cursor_IndexFormSearch.close()
-    #            uid_value = values[0][0] if values else ''
-    #            OBJ_MYSQL.close()
-    #            if uid_value != "":
-    #                dict_gene = {}
-    #                dict_gene['id'] = gene
-    #                dict_gene['name'] = uid_value
-    #                list_dict_gene.append(dict_gene)
-    #                list_query_gene_remove_error.append(gene)
-
-    ## 日本語HP IDに対応（HP:xxxxx_ja）
-    #phenotypes_remove_error = ','.join(list_query_phenotype_remove_error)
-    #genes_remove_error = ','.join(list_query_gene_remove_error)
-    #list_phenotypes_remove_ja = []
-    #for phenotype in phenotypes_remove_error.split(","):
-    #    list_phenotypes_remove_ja.append(phenotype.replace('_ja', ''))
-    #phenotypes_remove_ja = ','.join(list_phenotypes_remove_ja)
-    
     #####
     # 類似疾患検索
     list_dict_similar_disease = search_similar_disease(phenotypes_remove_error_ja, genes_remove_error)
@@ -238,9 +165,6 @@ def search_similar_disease(str_phenotypes, str_genes):
         link         = value[2]
         source       = value[3]
 
-        #if source != "OMIM" and source != "ICD-10":
-        #    continue
-
         if onto_id_ordo in dict_DiseaseLink:
             dict_reference_source = {}
             dict_reference_source['reference'] = reference
@@ -272,7 +196,8 @@ def search_similar_disease(str_phenotypes, str_genes):
     ## 各疾患とのスコアを算出
     ### インデックステーブルを利用して、各疾患でのICの合計を取得
     ### http://stackoverflow.com/questions/4574609/executing-select-where-in-using-mysqldb
-    #sql = u"select a.OntoIDORDO, a.IndexOntoIDHP, a.DiseaseOntoIDHP, a.DiseaseOntoIDHPSource, a.CommonRootHP, b.IC from IndexDiseaseHP as a left join IC as b on a.CommonRootHP=b.OntoID where b.OntoName='HP' and a.OntoIDORDO in (select distinct OntoID from Orphanet where RareDiseaseFlg=1) and a.IndexOntoIDHP in (%s) order by a.OntoIDORDO, a.DiseaseOntoIDHP"
+    #values = []
+    #if len(list_phenotypes) > 1:
     sql = u"select OntoIDORDO, IndexOntoIDHP, DiseaseOntoIDHP, DiseaseOntoIDHPSource, CommonRootHP, CommonRootHPIC from IndexDiseaseHP where OntoIDORDO in (select distinct OntoID from Orphanet where RareDiseaseFlg=1) and IndexOntoIDHP in (%s) order by OntoIDORDO, DiseaseOntoIDHP"
     in_p=', '.join(map(lambda x: '%s', list_phenotypes))
     sql = sql % in_p
@@ -280,6 +205,13 @@ def search_similar_disease(str_phenotypes, str_genes):
     cursor.execute(sql, list_phenotypes)
     values = cursor.fetchall()
     cursor.close()
+    #else:
+    #    sql = u"select distinct OntoID, '', '', '', '', '' from Orphanet where RareDiseaseFlg=1 order by OntoID"
+    #    cursor = OBJ_MYSQL.cursor()
+    #    cursor.execute(sql)
+    #    values = cursor.fetchall()
+    #    cursor.close()
+    #    list_phenotypes = []
 
 
     ####
@@ -292,8 +224,8 @@ def search_similar_disease(str_phenotypes, str_genes):
         onto_id_hp_disease        = value[2]
         onto_id_hp_disease_source = value[3]
         onto_id_hp_common_root    = value[4]
-        ic                        = float(value[5])
-        #orpha_number = onto_id_ordo.replace('ORDO:', '')
+        #ic                        = float(value[5])
+        ic                        = 0 if value[5] == "" else float(value[5])
 
         if onto_id_ordo in dict_similar_diseases:
             onto_term_hp_disease = dict_OntoTerm_hp[onto_id_hp_disease] if onto_id_hp_disease in dict_OntoTerm_hp else ""
@@ -307,7 +239,8 @@ def search_similar_disease(str_phenotypes, str_genes):
             (dict_similar_diseases[onto_id_ordo]['onto_id_hp_common_root']).append(onto_id_hp_common_root)
             (dict_similar_diseases[onto_id_ordo]['onto_term_hp_disease']).append(onto_term_hp_disease)
             # ICが0のエントリーが指定されると、分母の方が小さくなるため、分母のICが0の場合は分子のICも0にする                                                                                                              
-            if dict_IC[onto_id_hp_index] != 0:
+            #if dict_IC[onto_id_hp_index] != 0:
+            if onto_id_hp_index in dict_IC and dict_IC[onto_id_hp_index] != 0:
                 # GeneYenta: 分子
                 dict_similar_diseases[onto_id_ordo]['sum_ic'] += ic
                 # GeneYenta: 分母
@@ -339,7 +272,8 @@ def search_similar_disease(str_phenotypes, str_genes):
             (dict_similar_diseases[onto_id_ordo]['onto_id_hp_common_root']).append(onto_id_hp_common_root)
             (dict_similar_diseases[onto_id_ordo]['onto_term_hp_disease']).append(onto_term_hp_disease)
             # ICが0のエントリーが指定されると、分母の方が小さくなるため、分母のICが0の場合は分子のICも0にする                                                                                                              
-            if dict_IC[onto_id_hp_index] != 0:
+            #if dict_IC[onto_id_hp_index] != 0:
+            if onto_id_hp_index in dict_IC and dict_IC[onto_id_hp_index] != 0:
                 # GeneYenta: 分子
                 dict_similar_diseases[onto_id_ordo]['sum_ic']         += ic
                 # GeneYenta: 分母
