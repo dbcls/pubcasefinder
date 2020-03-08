@@ -1,0 +1,197 @@
+@import url("https://fonts.googleapis.com/css?family=Muli:300,400,600,700,800");
+#dbcls-common-header, #dbcls-common-footer {
+  /*! minireset.css v0.0.5 | MIT License | github.com/jgthms/minireset.css */
+  font-family: "Muli", sans-serif !important; }
+  #dbcls-common-header html, #dbcls-common-header body, #dbcls-common-header p, #dbcls-common-header ol, #dbcls-common-header ul, #dbcls-common-header li, #dbcls-common-header dl, #dbcls-common-header dt, #dbcls-common-header dd, #dbcls-common-header blockquote, #dbcls-common-header figure, #dbcls-common-header fieldset, #dbcls-common-header legend, #dbcls-common-header textarea, #dbcls-common-header pre, #dbcls-common-header iframe, #dbcls-common-header hr, #dbcls-common-header h1, #dbcls-common-header h2, #dbcls-common-header h3, #dbcls-common-header h4, #dbcls-common-header h5, #dbcls-common-header h6, #dbcls-common-footer html, #dbcls-common-footer body, #dbcls-common-footer p, #dbcls-common-footer ol, #dbcls-common-footer ul, #dbcls-common-footer li, #dbcls-common-footer dl, #dbcls-common-footer dt, #dbcls-common-footer dd, #dbcls-common-footer blockquote, #dbcls-common-footer figure, #dbcls-common-footer fieldset, #dbcls-common-footer legend, #dbcls-common-footer textarea, #dbcls-common-footer pre, #dbcls-common-footer iframe, #dbcls-common-footer hr, #dbcls-common-footer h1, #dbcls-common-footer h2, #dbcls-common-footer h3, #dbcls-common-footer h4, #dbcls-common-footer h5, #dbcls-common-footer h6 {
+    margin: 0;
+    padding: 0; }
+  #dbcls-common-header h1, #dbcls-common-header h2, #dbcls-common-header h3, #dbcls-common-header h4, #dbcls-common-header h5, #dbcls-common-header h6, #dbcls-common-footer h1, #dbcls-common-footer h2, #dbcls-common-footer h3, #dbcls-common-footer h4, #dbcls-common-footer h5, #dbcls-common-footer h6 {
+    font-size: 100%;
+    font-weight: normal; }
+  #dbcls-common-header ul, #dbcls-common-footer ul {
+    list-style: none; }
+  #dbcls-common-header button, #dbcls-common-header input, #dbcls-common-header select, #dbcls-common-header textarea, #dbcls-common-footer button, #dbcls-common-footer input, #dbcls-common-footer select, #dbcls-common-footer textarea {
+    margin: 0; }
+  #dbcls-common-header html, #dbcls-common-footer html {
+    box-sizing: border-box; }
+  #dbcls-common-header *, #dbcls-common-header *:before, #dbcls-common-header *:after, #dbcls-common-footer *, #dbcls-common-footer *:before, #dbcls-common-footer *:after {
+    box-sizing: inherit; }
+  #dbcls-common-header img, #dbcls-common-header video, #dbcls-common-footer img, #dbcls-common-footer video {
+    height: auto;
+    max-width: 100%; }
+  #dbcls-common-header iframe, #dbcls-common-footer iframe {
+    border: 0; }
+  #dbcls-common-header table, #dbcls-common-footer table {
+    border-collapse: collapse;
+    border-spacing: 0; }
+  #dbcls-common-header td, #dbcls-common-header th, #dbcls-common-footer td, #dbcls-common-footer th {
+    padding: 0;
+    text-align: left; }
+
+#dbcls-common-header nav.gnav {
+  width: 1024px;
+  margin: 0 auto; }
+  #dbcls-common-header nav.gnav .pc_nav {
+    height: 24px;
+    position: relative; }
+    #dbcls-common-header nav.gnav .pc_nav li {
+      display: inline-block;
+      list-style: none;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 500;
+      vertical-align: top;
+      line-height: 24px; }
+      #dbcls-common-header nav.gnav .pc_nav li + li {
+        margin-left: 1em; }
+      #dbcls-common-header nav.gnav .pc_nav li a.dbcls-logo {
+        display: block;
+        width: 62px;
+        height: 24px;
+        background: url(../img/logo-short-2.svg) no-repeat 7px 1px;
+        background-size: 55px 20px; }
+#dbcls-common-header .sp_nav {
+  background-color: #07397d;
+  display: none; }
+  #dbcls-common-header .sp_nav li {
+    list-style: none;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 2.6em;
+    text-align: center;
+    border-bottom: 0.5px solid rgba(254, 254, 254, 0.5); }
+#dbcls-common-header nav.gnav .pc_nav li a, #dbcls-common-header .sp_nav li a {
+  text-decoration: none;
+  color: white;
+  font-weight: 500;
+  font-size: 12px; }
+#dbcls-common-header .hamburger {
+  width: 13px;
+  margin-right: 10px;
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 5px; }
+
+#dbcls-common-header.monochrome .sp_nav {
+  background-color: #3a3a3a; }
+
+@media screen and (max-width: 480px) {
+  #dbcls-common-header nav.gnav {
+    width: 100vw !important; }
+    #dbcls-common-header nav.gnav .pc_nav .pc_menu {
+      display: none; }
+  #dbcls-common-header .hamburger {
+    display: block; } }
+#dbcls-common-footer {
+  padding: 0; }
+  #dbcls-common-footer .footer__common {
+    padding-bottom: 20px;
+    background-color: #f9f8f5;
+    width: 100%;
+    color: #444; }
+    #dbcls-common-footer .footer__common .footer__wrapper {
+      padding-top: 30px;
+      padding-bottom: 18px;
+      width: 800px;
+      margin: 0 auto; }
+      #dbcls-common-footer .footer__common .footer__wrapper .footer__wrapper__contents .footer__info-ja {
+        padding-right: 65px; }
+      #dbcls-common-footer .footer__common .footer__wrapper .footer__wrapper__contents .footer__info {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between; }
+        #dbcls-common-footer .footer__common .footer__wrapper .footer__wrapper__contents .footer__info .footer__organism {
+          padding-top: 9px; }
+          #dbcls-common-footer .footer__common .footer__wrapper .footer__wrapper__contents .footer__info .footer__organism .footer__logo {
+            width: 150px;
+            height: auto;
+            display: block;
+            margin: 0 auto; }
+          #dbcls-common-footer .footer__common .footer__wrapper .footer__wrapper__contents .footer__info .footer__organism .footer__organism-text {
+            text-align: center;
+            margin-top: 11px;
+            margin-bottom: 20px; }
+            #dbcls-common-footer .footer__common .footer__wrapper .footer__wrapper__contents .footer__info .footer__organism .footer__organism-text .footer__organism-sub {
+              font-size: 12px;
+              line-height: 1.5em;
+              text-align: center; }
+            #dbcls-common-footer .footer__common .footer__wrapper .footer__wrapper__contents .footer__info .footer__organism .footer__organism-text .footer__organism-main {
+              font-size: 15px;
+              font-weight: 700;
+              letter-spacing: -0.5px; }
+        #dbcls-common-footer .footer__common .footer__wrapper .footer__wrapper__contents .footer__info .footer__address {
+          margin-top: 15px; }
+      #dbcls-common-footer .footer__common .footer__wrapper .footer__wrapper__contents .footer__info-ja .footer__address {
+        width: 357px; }
+      #dbcls-common-footer .footer__common .footer__wrapper .footer__wrapper__contents .footer__info-en .footer__address {
+        width: 430px; }
+      #dbcls-common-footer .footer__common .footer__wrapper .footer__wrapper__contents .footer__info .footer__address div.footer-title {
+        font-weight: 800;
+        font-size: 14px;
+        margin-bottom: 10px; }
+      #dbcls-common-footer .footer__common .footer__wrapper .footer__wrapper__contents .footer__info .footer__address ul.address__list {
+        list-style: none;
+        display: flex;
+        justify-content: space-between; }
+        #dbcls-common-footer .footer__common .footer__wrapper .footer__wrapper__contents .footer__info .footer__address ul.address__list li {
+          font-size: 12px;
+          line-height: 1.5em;
+          width: 210px; }
+          #dbcls-common-footer .footer__common .footer__wrapper .footer__wrapper__contents .footer__info .footer__address ul.address__list li p {
+            line-height: 1.5em; }
+  #dbcls-common-footer a {
+    text-decoration: none;
+    color: #444; }
+    #dbcls-common-footer a:hover {
+      color: #004098;
+      border-bottom: solid 1px #004098; }
+  #dbcls-common-footer .footer__lisence {
+    text-align: center; }
+    #dbcls-common-footer .footer__lisence > * {
+      display: inline-block; }
+    #dbcls-common-footer .footer__lisence svg {
+      vertical-align: middle;
+      margin-right: 0.5em; }
+    #dbcls-common-footer .footer__lisence p {
+      font-size: 10px; }
+  #dbcls-common-footer.--simple a {
+    text-decoration: underline; }
+  #dbcls-common-footer.--simple .footer__common {
+    padding-bottom: 0;
+    background-color: white;
+    text-align: center; }
+    #dbcls-common-footer.--simple .footer__common .footer__wrapper {
+      font-size: 12px;
+      line-height: 18px;
+      width: auto;
+      padding: 2px 0; }
+      #dbcls-common-footer.--simple .footer__common .footer__wrapper > * {
+        display: inline-block;
+        margin: 0 0.75em; }
+      #dbcls-common-footer.--simple .footer__common .footer__wrapper > .footer__logo {
+        font-weight: bold; }
+        #dbcls-common-footer.--simple .footer__common .footer__wrapper > .footer__logo:before {
+          content: "";
+          display: inline-block;
+          width: 12px;
+          height: 24px;
+          background: url(data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22utf-8%22%3F%3E%3Csvg%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20x%3D%220px%22%20y%3D%220px%22%20viewBox%3D%220%200%2012%2024%22%20style%3D%22enable-background%3Anew%200%200%2012%2024%3B%22%20xml%3Aspace%3D%22preserve%22%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E.st0%7Bopacity%3A0.5%3B%7D.st1%7Bfill%3A%23004098%3B%7D.st2%7Bopacity%3A0.5%3Bfill%3A%23004098%3B%7D%3C%2Fstyle%3E%3Cg%3E%3Cg%3E%3Cg%20class%3D%22st0%22%3E%3Crect%20x%3D%227.3%22%20y%3D%224.7%22%20class%3D%22st1%22%20width%3D%220.9%22%20height%3D%223.4%22%2F%3E%3Crect%20x%3D%229.4%22%20y%3D%225.5%22%20class%3D%22st1%22%20width%3D%220.7%22%20height%3D%223.4%22%2F%3E%3Crect%20x%3D%228.4%22%20y%3D%225.1%22%20class%3D%22st1%22%20width%3D%220.8%22%20height%3D%223.4%22%2F%3E%3Crect%20x%3D%226.1%22%20y%3D%224.3%22%20class%3D%22st1%22%20width%3D%220.9%22%20height%3D%223.4%22%2F%3E%3Crect%20x%3D%221.9%22%20y%3D%222.5%22%20class%3D%22st1%22%20width%3D%220.4%22%20height%3D%223.4%22%2F%3E%3Crect%20x%3D%2210.3%22%20y%3D%225.9%22%20class%3D%22st1%22%20width%3D%220.6%22%20height%3D%223.4%22%2F%3E%3Crect%20x%3D%221%22%20y%3D%221.8%22%20class%3D%22st1%22%20width%3D%220.2%22%20height%3D%223.4%22%2F%3E%3Crect%20x%3D%22-0.1%22%20y%3D%220.5%22%20class%3D%22st1%22%20width%3D%220.1%22%20height%3D%223.4%22%2F%3E%3Crect%20x%3D%224.9%22%20y%3D%223.9%22%20class%3D%22st1%22%20width%3D%220.9%22%20height%3D%223.4%22%2F%3E%3Crect%20x%3D%222.8%22%20y%3D%223%22%20class%3D%22st1%22%20width%3D%220.6%22%20height%3D%223.4%22%2F%3E%3Crect%20x%3D%223.8%22%20y%3D%223.5%22%20class%3D%22st1%22%20width%3D%220.7%22%20height%3D%223.4%22%2F%3E%3Crect%20x%3D%2211.5%22%20y%3D%226.7%22%20class%3D%22st1%22%20width%3D%220.3%22%20height%3D%223.4%22%2F%3E%3Cpath%20class%3D%22st1%22%20d%3D%22M11.8%2C7.2c0%2C0%2C0%2C3.5%2C0%2C3.4c0-0.1%2C0.1%2C0%2C0.1%2C0V7.2H11.8z%22%2F%3E%3Crect%20x%3D%2211%22%20y%3D%226.3%22%20class%3D%22st1%22%20width%3D%220.5%22%20height%3D%223.4%22%2F%3E%3C%2Fg%3E%3Cg%3E%3Cg%3E%3Cg%3E%3Cpath%20class%3D%22st2%22%20d%3D%22M-0.1%2C10.6c0%2C0.1%2C0%2C0.3%2C0.1%2C0.4c0.1%2C0.1%2C0.2%2C0.3%2C0.4%2C0.4c0.2%2C0.1%2C0.3%2C0.3%2C0.5%2C0.4c0.2%2C0.1%2C0.5%2C0.3%2C0.7%2C0.4c0.3%2C0.1%2C0.6%2C0.3%2C0.9%2C0.4c0.3%2C0.1%2C0.7%2C0.3%2C1%2C0.4c0.4%2C0.1%2C0.8%2C0.3%2C1.1%2C0.4c0.4%2C0.2%2C0.9%2C0.3%2C1.2%2C0.4c0.4%2C0.1%2C0.8%2C0.3%2C1.2%2C0.4c0.4%2C0.1%2C0.7%2C0.3%2C1.1%2C0.4c0.3%2C0.1%2C0.7%2C0.3%2C1%2C0.4c0.3%2C0.1%2C0.6%2C0.3%2C0.9%2C0.4c0.3%2C0.1%2C0.5%2C0.3%2C0.7%2C0.4c0.2%2C0.1%2C0.4%2C0.3%2C0.6%2C0.4c0.2%2C0.1%2C0.3%2C0.3%2C0.4%2C0.4c0.1%2C0.1%2C0.1%2C0.3%2C0.1%2C0.4v-3.4c0-0.1%2C0-0.3-0.1-0.4c-0.1-0.1-0.2-0.3-0.4-0.4c-0.2-0.1-0.3-0.3-0.6-0.4c-0.2-0.1-0.5-0.3-0.7-0.4c-0.3-0.1-0.6-0.3-0.9-0.4c-0.3-0.1-0.7-0.3-1-0.4c-0.4-0.1-0.8-0.3-1.1-0.4c-0.4-0.2-0.9-0.3-1.2-0.4c-0.4-0.1-0.8-0.3-1.2-0.4C4.4%2C9.9%2C4%2C9.7%2C3.6%2C9.6c-0.3-0.1-0.7-0.3-1-0.4C2.3%2C9.1%2C2%2C8.9%2C1.7%2C8.8C1.4%2C8.6%2C1.2%2C8.5%2C1%2C8.4C0.8%2C8.2%2C0.6%2C8.1%2C0.4%2C8C0.3%2C7.8%2C0.2%2C7.7%2C0.1%2C7.6C0%2C7.4-0.1%2C7.3-0.1%2C7.2V10.6z%22%2F%3E%3Cpath%20class%3D%22st1%22%20d%3D%22M11.9%2C17.1c0%2C0.1%2C0%2C0.3-0.1%2C0.4c-0.1%2C0.1-0.2%2C0.3-0.4%2C0.4c-0.2%2C0.1-0.3%2C0.3-0.5%2C0.4c-0.2%2C0.1-0.5%2C0.3-0.7%2C0.4c-0.3%2C0.1-0.6%2C0.3-0.9%2C0.4c-0.3%2C0.1-0.7%2C0.3-1%2C0.4c-0.4%2C0.1-0.8%2C0.3-1.1%2C0.4c-0.4%2C0.2-0.9%2C0.3-1.2%2C0.4c-0.4%2C0.1-0.8%2C0.3-1.2%2C0.4C4.4%2C20.8%2C4%2C21%2C3.6%2C21.1c-0.3%2C0.1-0.7%2C0.3-1%2C0.4c-0.3%2C0.1-0.6%2C0.3-0.9%2C0.4C1.4%2C22%2C1.2%2C22.2%2C1%2C22.3c-0.2%2C0.1-0.4%2C0.3-0.6%2C0.4c-0.2%2C0.1-0.3%2C0.3-0.4%2C0.4c-0.1%2C0.1-0.1%2C0.3-0.1%2C0.4v-3.4c0-0.1%2C0-0.3%2C0.1-0.4c0.1-0.1%2C0.2-0.3%2C0.4-0.4C0.6%2C19.2%2C0.8%2C19%2C1%2C18.9c0.2-0.1%2C0.5-0.3%2C0.7-0.4c0.3-0.1%2C0.6-0.3%2C0.9-0.4c0.3-0.1%2C0.7-0.3%2C1-0.4c0.4-0.1%2C0.8-0.3%2C1.1-0.4c0.4-0.2%2C0.9-0.3%2C1.2-0.4c0.4-0.1%2C0.8-0.3%2C1.2-0.4c0.4-0.1%2C0.7-0.3%2C1.1-0.4c0.3-0.1%2C0.7-0.3%2C1-0.4c0.3-0.1%2C0.6-0.3%2C0.9-0.4c0.3-0.1%2C0.5-0.3%2C0.7-0.4c0.2-0.1%2C0.4-0.3%2C0.5-0.4c0.2-0.1%2C0.3-0.3%2C0.4-0.4c0.1-0.1%2C0.1-0.3%2C0.1-0.4V17.1z%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3Cg%3E%3Cg%3E%3Cg%3E%3Cpath%20class%3D%22st1%22%20d%3D%22M11.9%2C10.6c0%2C0.1%2C0%2C0.3-0.1%2C0.4c-0.1%2C0.1-0.2%2C0.3-0.4%2C0.4c-0.2%2C0.1-0.3%2C0.3-0.5%2C0.4c-0.2%2C0.1-0.5%2C0.3-0.7%2C0.4c-0.3%2C0.1-0.6%2C0.3-0.9%2C0.4c-0.3%2C0.1-0.7%2C0.3-1%2C0.4c-0.4%2C0.1-0.8%2C0.3-1.1%2C0.4c-0.4%2C0.2-0.9%2C0.3-1.2%2C0.4c-0.4%2C0.1-0.8%2C0.3-1.2%2C0.4c-0.4%2C0.1-0.7%2C0.3-1.1%2C0.4c-0.3%2C0.1-0.7%2C0.3-1%2C0.4c-0.3%2C0.1-0.6%2C0.3-0.9%2C0.4c-0.3%2C0.1-0.5%2C0.3-0.7%2C0.4c-0.2%2C0.1-0.4%2C0.3-0.6%2C0.4c-0.2%2C0.1-0.3%2C0.3-0.4%2C0.4c-0.1%2C0.1-0.1%2C0.3-0.1%2C0.4v-3.4c0-0.1%2C0-0.3%2C0.1-0.4c0.1-0.1%2C0.2-0.3%2C0.4-0.4c0.2-0.1%2C0.3-0.3%2C0.6-0.4c0.2-0.1%2C0.5-0.3%2C0.7-0.4c0.3-0.1%2C0.6-0.3%2C0.9-0.4c0.3-0.1%2C0.7-0.3%2C1-0.4c0.4-0.1%2C0.8-0.3%2C1.1-0.4c0.4-0.2%2C0.9-0.3%2C1.2-0.4c0.4-0.1%2C0.8-0.3%2C1.2-0.4c0.4-0.1%2C0.7-0.3%2C1.1-0.4c0.3-0.1%2C0.7-0.3%2C1-0.4c0.3-0.1%2C0.6-0.3%2C0.9-0.4c0.3-0.1%2C0.5-0.3%2C0.7-0.4c0.2-0.1%2C0.4-0.3%2C0.5-0.4c0.2-0.1%2C0.3-0.3%2C0.4-0.4c0.1-0.1%2C0.1-0.3%2C0.1-0.4V10.6z%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fg%3E%3Cg%3E%3Crect%20x%3D%223.7%22%20y%3D%224.7%22%20class%3D%22st1%22%20width%3D%220.9%22%20height%3D%223.4%22%2F%3E%3Crect%20x%3D%221.8%22%20y%3D%225.5%22%20class%3D%22st1%22%20width%3D%220.7%22%20height%3D%223.4%22%2F%3E%3Crect%20x%3D%222.7%22%20y%3D%225.1%22%20class%3D%22st1%22%20width%3D%220.8%22%20height%3D%223.4%22%2F%3E%3Crect%20x%3D%224.9%22%20y%3D%224.3%22%20class%3D%22st1%22%20width%3D%220.9%22%20height%3D%223.4%22%2F%3E%3Crect%20x%3D%229.6%22%20y%3D%222.5%22%20class%3D%22st1%22%20width%3D%220.4%22%20height%3D%223.4%22%2F%3E%3Crect%20x%3D%221%22%20y%3D%225.9%22%20class%3D%22st1%22%20width%3D%220.6%22%20height%3D%223.4%22%2F%3E%3Crect%20x%3D%2210.7%22%20y%3D%221.8%22%20class%3D%22st1%22%20width%3D%220.2%22%20height%3D%223.4%22%2F%3E%3Crect%20x%3D%2211.8%22%20y%3D%220.5%22%20class%3D%22st1%22%20width%3D%220.1%22%20height%3D%223.4%22%2F%3E%3Crect%20x%3D%226.1%22%20y%3D%223.9%22%20class%3D%22st1%22%20width%3D%220.9%22%20height%3D%223.4%22%2F%3E%3Crect%20x%3D%228.5%22%20y%3D%223%22%20class%3D%22st1%22%20width%3D%220.6%22%20height%3D%223.4%22%2F%3E%3Crect%20x%3D%227.4%22%20y%3D%223.5%22%20class%3D%22st1%22%20width%3D%220.7%22%20height%3D%223.4%22%2F%3E%3Crect%20x%3D%220.1%22%20y%3D%226.7%22%20class%3D%22st1%22%20width%3D%220.3%22%20height%3D%223.4%22%2F%3E%3Cpath%20class%3D%22st1%22%20d%3D%22M0.1%2C7.2c0%2C0%2C0%2C3.5%2C0%2C3.4c0-0.1-0.1%2C0-0.1%2C0V7.2H0.1z%22%2F%3E%3Crect%20x%3D%220.5%22%20y%3D%226.3%22%20class%3D%22st1%22%20width%3D%220.5%22%20height%3D%223.4%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E) no-repeat 0 0;
+          position: relative;
+          top: -2px;
+          margin-right: 4px;
+          vertical-align: middle; }
+      #dbcls-common-footer.--simple .footer__common .footer__wrapper > ul > li {
+        display: inline-block; }
+        #dbcls-common-footer.--simple .footer__common .footer__wrapper > ul > li + li {
+          padding-left: 0.5em; }
+
+@media screen and (max-width: 480px) {
+  #dbcls-common-footer .footer__common {
+    margin: 0px -250%;
+    padding: 0 250% 20px; }
+    #dbcls-common-footer .footer__common .footer__wrapper {
+      width: 100vw; } }
+
+/*# sourceMappingURL=common-header-and-footer.css.map */
