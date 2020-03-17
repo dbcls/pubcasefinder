@@ -16,6 +16,19 @@
 		    <tr>
 		      <td width="100%">
 			<textarea class="form-control" rows="2" id="tokeninput_hpo" name="str_phenotypes"></textarea>
+
+
+			<tr align="right">
+			  <td valign="top">
+
+			    {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+			    {% else %}
+			      <a href="https://impact2.dbmi.columbia.edu/doc2hpo/" target="_blank"><font color="#0431B4">Input Free-Text</font></a>
+			    {% endif %}
+
+			  </td>
+			</tr>
+
 		      </td>
 		    </tr>
 		  </table>
