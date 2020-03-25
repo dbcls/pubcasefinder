@@ -4,7 +4,7 @@ import os
 import re
 import MySQLdb
 import math
-import numpy as np
+#import numpy as np
 
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 from utils.pagination import Pagination
@@ -195,9 +195,6 @@ def search_similar_disease(str_phenotypes, str_genes):
     ### インデックステーブルを利用して、各疾患でのICの合計を取得
     ### http://stackoverflow.com/questions/4574609/executing-select-where-in-using-mysqldb
     sql = u"select a.OntoIDOMIM, a.IndexOntoIDHP, a.DiseaseOntoIDHP, a.DiseaseOntoIDHPSource, a.CommonRootHP, a.CommonRootHPIC, (b.IC - a.CommonRootHPIC) from IndexDiseaseHPOMIM as a left join IC as b on a.IndexOntoIDHP=b.OntoID where a.IndexOntoIDHP in (%s) and b.OntoName='HP' order by a.OntoIDOMIM, (b.IC - a.CommonRootHPIC)"
-    #sql = u"select a.OntoIDOMIM, a.IndexOntoIDHP, a.DiseaseOntoIDHP, a.DiseaseOntoIDHPSource, a.CommonRootHP, a.CommonRootHPIC, (a.CommonRootHPIC / b.IC) from IndexDiseaseHPOMIM as a left join IC as b on a.IndexOntoIDHP=b.OntoID where a.IndexOntoIDHP in (%s) and b.OntoName='HP' order by a.OntoIDOMIM, (a.CommonRootHPIC / b.IC) DESC"
-    #sql = u"select OntoIDOMIM, IndexOntoIDHP, DiseaseOntoIDHP, DiseaseOntoIDHPSource, CommonRootHP, CommonRootHPIC from IndexDiseaseHPOMIMAll where IndexOntoIDHP in (%s) order by OntoIDOMIM, DiseaseOntoIDHP"
-    #sql = u"select OntoIDOMIM, IndexOntoIDHP, DiseaseOntoIDHP, DiseaseOntoIDHPSource, CommonRootHP, CommonRootHPIC from IndexDiseaseHPOMIM where IndexOntoIDHP in (%s) order by OntoIDOMIM, DiseaseOntoIDHP"
     in_p=', '.join(map(lambda x: '%s', list_phenotypes))
     sql = sql % in_p
     cursor = OBJ_MYSQL.cursor()
@@ -211,8 +208,29 @@ def search_similar_disease(str_phenotypes, str_genes):
     list_dict_similar_disease = []
     dict_similar_diseases = {}
     dict_over_thres_count = {}
-    thres_ratio_ic = 0.4
-    thres_delta_ic = 5
+    # default
+    #thres_delta_ic, thres_count, thres_weight = 0, 0, 1
+    # t1
+    #thres_delta_ic, thres_count, thres_weight = 5, 3, 0
+    # t2
+    #thres_delta_ic, thres_count, thres_weight = 5, 3, 0.25
+    # t3
+    #thres_delta_ic, thres_count, thres_weight = 5, 3, 0.5
+    # t4
+    #thres_delta_ic, thres_count, thres_weight = 5, 3, 0.75
+    # t5
+    #thres_delta_ic, thres_count, thres_weight = 2.5, 3, 0.5
+    # t6
+    #thres_delta_ic, thres_count, thres_weight = 7.5, 3, 0.5
+    # t7
+    #thres_delta_ic, thres_count, thres_weight = 10, 3, 0.5
+    # t8
+    #thres_delta_ic, thres_count, thres_weight = 5, 5, 0.5
+    # t9
+    #thres_delta_ic, thres_count, thres_weight = 5, 7, 0.5
+    # t10
+    thres_delta_ic, thres_count, thres_weight = 7.5, 3, 0.25
+
     len_list_phenotypes = len(list_phenotypes)
     for value in values:
         onto_id_omim              = value[0]
@@ -222,23 +240,15 @@ def search_similar_disease(str_phenotypes, str_genes):
         onto_id_hp_common_root    = value[4]
         ic                        = float(value[5])
         delta_ic                  = float(value[6])
-        #ratio_ic                  = float(value[6])
         weight = 1
 
-        #
+        # 入力HPOとCommonHPOの差分カウントおよびカウント回数の条件を満たした場合のweight設定
         if onto_id_omim not in dict_over_thres_count:
             dict_over_thres_count[onto_id_omim] = 0
         if delta_ic < thres_delta_ic:
-        #if ratio_ic >= thres_ratio_ic:
             dict_over_thres_count[onto_id_omim] += 1
-        if delta_ic >= thres_delta_ic and dict_over_thres_count[onto_id_omim] >= 3:
-        #if delta_ic >= thres_delta_ic and dict_over_thres_count[onto_id_omim] >= 4 and dict_over_thres_count[onto_id_omim] >= (len_list_phenotypes - 2):
-        #if delta_ic >= thres_delta_ic and dict_over_thres_count[onto_id_omim] >= 4 and dict_over_thres_count[onto_id_omim] >= (len_list_phenotypes - 2) and (dict_IC[onto_id_hp_index] >= 10 or ic < 1):
-        #if delta_ic >= thres_delta_ic and dict_over_thres_count[onto_id_omim] >= 4 and dict_over_thres_count[onto_id_omim] >= (len_list_phenotypes - 3) and ic < 5 and dict_IC[onto_id_hp_index] >= 10:
-        #if delta_ic >= thres_delta_ic and dict_over_thres_count[onto_id_omim] >= 4:
-        #if ratio_ic < thres_ratio_ic and dict_over_thres_count[onto_id_omim] >= 4:
-            weight = 0.5
-            #continue
+        if delta_ic >= thres_delta_ic and dict_over_thres_count[onto_id_omim] >= thres_count:
+            weight = thres_weight
 
         if onto_id_omim in dict_similar_diseases:
             onto_term_hp_disease = dict_OntoTerm_hp[onto_id_hp_disease] if onto_id_hp_disease in dict_OntoTerm_hp else ""
@@ -253,17 +263,6 @@ def search_similar_disease(str_phenotypes, str_genes):
             (dict_similar_diseases[onto_id_omim]['onto_term_hp_disease']).append(onto_term_hp_disease)
             # ICが0のエントリーが指定されると、分母の方が小さくなるため、分母のICが0の場合は分子のICも0にする                                                                                                              
             if dict_IC[onto_id_hp_index] != 0:
-            #if dict_IC[onto_id_hp_index] != 0 and ic >= 3: # w4 閾値以下のペアは削除
-                # 重み
-                # default
-                #weight = 1
-                # w1
-                # weight = ic / dict_IC[onto_id_hp_index]
-                # w2
-                # weight = math.sqrt(ic / dict_IC[onto_id_hp_index])
-                # w3
-                #x = ((ic / dict_IC[onto_id_hp_index]) -0.2) * 10
-                #weight = 1 / (1 + np.exp(-x))
                 # GeneYenta: 分子
                 dict_similar_diseases[onto_id_omim]['sum_ic'] += ic * weight
                 # GeneYenta: 分母
@@ -294,26 +293,16 @@ def search_similar_disease(str_phenotypes, str_genes):
             (dict_similar_diseases[onto_id_omim]['onto_id_hp_disease_source']).append(onto_id_hp_disease_source)
             (dict_similar_diseases[onto_id_omim]['onto_id_hp_common_root']).append(onto_id_hp_common_root)
             (dict_similar_diseases[onto_id_omim]['onto_term_hp_disease']).append(onto_term_hp_disease)
-            # ICが0のエントリーが指定されると、分母の方が小さくなるため、分母のICが0の場合は分子のICも0にする                                                                                                              
+
+            # ICが0のエントリーが指定されると、分母の方が小さくなるため、分母のICが0の場合は分子のICも0にする
             if dict_IC[onto_id_hp_index] != 0:
-            #if dict_IC[onto_id_hp_index] != 0 and ic >= 3: # w4 閾値以下のペアは削除
-                # 重み
-                # default
-                weight = 1
-                # w1
-                # weight = ic / dict_IC[onto_id_hp_index]
-                # w2
-                # weight = math.sqrt(ic / dict_IC[onto_id_hp_index])
-                # w3
-                #x = ((ic / dict_IC[onto_id_hp_index]) -0.2) * 10
-                #weight = 1 / (1 + np.exp(-x))
                 # GeneYenta: 分子
                 dict_similar_diseases[onto_id_omim]['sum_ic'] += ic * weight
                 # GeneYenta: 分母
                 dict_similar_diseases[onto_id_omim]['sum_ic_denominator'] += dict_IC[onto_id_hp_index] * weight
             else:
                 # GeneYenta: 分子
-                dict_similar_diseases[onto_id_omim]['sum_ic']         += 0
+                dict_similar_diseases[onto_id_omim]['sum_ic'] += 0
                 # GeneYenta: 分母
                 dict_similar_diseases[onto_id_omim]['sum_ic_denominator'] += 0
 
@@ -403,8 +392,12 @@ def search_similar_disease(str_phenotypes, str_genes):
         ## 関連Phenotypes
         dict_similar_disease['sum_ic']                    = dict_similar_diseases[onto_id_omim]['sum_ic']
         dict_similar_disease['sum_ic_denominator']        = dict_similar_diseases[onto_id_omim]['sum_ic_denominator']
+        ### 疾患ごとにアノテーション数で重みを算出
+        #weight_num_annot = (14259 - dict_AnnotationHPONum[onto_id_omim] + 1) / 14259
+        ### マッチングスコア
         if dict_similar_diseases[onto_id_omim]['sum_ic_denominator'] != 0:
             dict_similar_disease['match_score']           = float(dict_similar_diseases[onto_id_omim]['sum_ic'] / dict_similar_diseases[onto_id_omim]['sum_ic_denominator'])
+            #dict_similar_disease['match_score'] = float((dict_similar_diseases[onto_id_omim]['sum_ic'] / dict_similar_diseases[onto_id_omim]['sum_ic_denominator']) * weight_num_annot)
         else:
             dict_similar_disease['match_score'] = 0
         dict_similar_disease['onto_term_omim']                    = dict_similar_diseases[onto_id_omim]['onto_term_omim']
