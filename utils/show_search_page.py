@@ -196,36 +196,43 @@ def search_similar_disease(str_phenotypes, str_genes):
     ## 各疾患とのスコアを算出
     ### インデックステーブルを利用して、各疾患でのICの合計を取得
     ### http://stackoverflow.com/questions/4574609/executing-select-where-in-using-mysqldb
-    #values = []
-    #if len(list_phenotypes) > 1:
-    sql = u"select OntoIDORDO, IndexOntoIDHP, DiseaseOntoIDHP, DiseaseOntoIDHPSource, CommonRootHP, CommonRootHPIC from IndexDiseaseHP where OntoIDORDO in (select distinct OntoID from Orphanet where RareDiseaseFlg=1) and IndexOntoIDHP in (%s) order by OntoIDORDO, DiseaseOntoIDHP"
+    #sql = u"select OntoIDORDO, IndexOntoIDHP, DiseaseOntoIDHP, DiseaseOntoIDHPSource, CommonRootHP, CommonRootHPIC from IndexDiseaseHP where OntoIDORDO in (select distinct OntoID from Orphanet where RareDiseaseFlg=1) and IndexOntoIDHP in (%s) order by OntoIDORDO, DiseaseOntoIDHP"
+    sql = u"select a.OntoIDORDO, a.IndexOntoIDHP, a.DiseaseOntoIDHP, a.DiseaseOntoIDHPSource, a.CommonRootHP, a.CommonRootHPIC, (b.IC - a.CommonRootHPIC) from IndexDiseaseHP as a left join IC as b on a.IndexOntoIDHP=b.OntoID where a.OntoIDORDO in (select distinct OntoID from Orphanet where RareDiseaseFlg=1) and a.IndexOntoIDHP in (%s) and b.OntoName='HP' order by a.OntoIDORDO, (b.IC - a.CommonRootHPIC)"
     in_p=', '.join(map(lambda x: '%s', list_phenotypes))
     sql = sql % in_p
     cursor = OBJ_MYSQL.cursor()
     cursor.execute(sql, list_phenotypes)
     values = cursor.fetchall()
     cursor.close()
-    #else:
-    #    sql = u"select distinct OntoID, '', '', '', '', '' from Orphanet where RareDiseaseFlg=1 order by OntoID"
-    #    cursor = OBJ_MYSQL.cursor()
-    #    cursor.execute(sql)
-    #    values = cursor.fetchall()
-    #    cursor.close()
-    #    list_phenotypes = []
-
 
     ####
     ## データを収納
     list_dict_similar_disease = []
     dict_similar_diseases = {}
+    dict_over_thres_count = {}
+    # default
+    #thres_delta_ic, thres_count, thres_weight = 0, 0, 1
+    # t10
+    thres_delta_ic, thres_count, thres_weight = 7.5, 3, 0.25
+
+    len_list_phenotypes = len(list_phenotypes)
     for value in values:
         onto_id_ordo              = value[0]
         onto_id_hp_index          = value[1]
         onto_id_hp_disease        = value[2]
         onto_id_hp_disease_source = value[3]
         onto_id_hp_common_root    = value[4]
-        #ic                        = float(value[5])
         ic                        = 0 if value[5] == "" else float(value[5])
+        delta_ic                  = float(value[6])
+        weight = 1
+
+        # 入力HPOとCommonHPOの差分カウントおよびカウント回数の条件を満たした場合のweight設定
+        if onto_id_ordo not in dict_over_thres_count:
+            dict_over_thres_count[onto_id_ordo] = 0
+        if delta_ic < thres_delta_ic:
+            dict_over_thres_count[onto_id_ordo] += 1
+        if delta_ic >= thres_delta_ic and dict_over_thres_count[onto_id_ordo] >= thres_count:
+            weight = thres_weight
 
         if onto_id_ordo in dict_similar_diseases:
             onto_term_hp_disease = dict_OntoTerm_hp[onto_id_hp_disease] if onto_id_hp_disease in dict_OntoTerm_hp else ""
@@ -242,9 +249,9 @@ def search_similar_disease(str_phenotypes, str_genes):
             #if dict_IC[onto_id_hp_index] != 0:
             if onto_id_hp_index in dict_IC and dict_IC[onto_id_hp_index] != 0:
                 # GeneYenta: 分子
-                dict_similar_diseases[onto_id_ordo]['sum_ic'] += ic
+                dict_similar_diseases[onto_id_ordo]['sum_ic'] += ic * weight
                 # GeneYenta: 分母
-                dict_similar_diseases[onto_id_ordo]['sum_ic_denominator'] += dict_IC[onto_id_hp_index]
+                dict_similar_diseases[onto_id_ordo]['sum_ic_denominator'] += dict_IC[onto_id_hp_index] * weight
             else:
                 # GeneYenta: 分子
                 dict_similar_diseases[onto_id_ordo]['sum_ic'] += 0
@@ -271,16 +278,17 @@ def search_similar_disease(str_phenotypes, str_genes):
             (dict_similar_diseases[onto_id_ordo]['onto_id_hp_disease_source']).append(onto_id_hp_disease_source)
             (dict_similar_diseases[onto_id_ordo]['onto_id_hp_common_root']).append(onto_id_hp_common_root)
             (dict_similar_diseases[onto_id_ordo]['onto_term_hp_disease']).append(onto_term_hp_disease)
-            # ICが0のエントリーが指定されると、分母の方が小さくなるため、分母のICが0の場合は分子のICも0にする                                                                                                              
+
+            # ICが0のエントリーが指定されると、分母の方が小さくなるため、分母のICが0の場合は分子のICも0にする
             #if dict_IC[onto_id_hp_index] != 0:
             if onto_id_hp_index in dict_IC and dict_IC[onto_id_hp_index] != 0:
                 # GeneYenta: 分子
-                dict_similar_diseases[onto_id_ordo]['sum_ic']         += ic
+                dict_similar_diseases[onto_id_ordo]['sum_ic'] += ic * weight
                 # GeneYenta: 分母
-                dict_similar_diseases[onto_id_ordo]['sum_ic_denominator'] += dict_IC[onto_id_hp_index]
+                dict_similar_diseases[onto_id_ordo]['sum_ic_denominator'] += dict_IC[onto_id_hp_index] * weight
             else:
                 # GeneYenta: 分子
-                dict_similar_diseases[onto_id_ordo]['sum_ic']         += 0
+                dict_similar_diseases[onto_id_ordo]['sum_ic'] += 0
                 # GeneYenta: 分母
                 dict_similar_diseases[onto_id_ordo]['sum_ic_denominator'] += 0
 

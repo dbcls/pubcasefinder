@@ -225,7 +225,8 @@ def search_similar_disease(str_phenotypes, str_genes):
         onto_id_hp_disease        = value[2]
         onto_id_hp_disease_source = value[3]
         onto_id_hp_common_root    = value[4]
-        ic                        = float(value[5])
+        #ic                        = float(value[5])
+        ic                        = 0 if value[5] == "" else float(value[5])
         delta_ic                  = float(value[6])
         weight = 1
 
@@ -248,8 +249,10 @@ def search_similar_disease(str_phenotypes, str_genes):
             (dict_similar_diseases[onto_id_omim]['onto_id_hp_disease_source']).append(onto_id_hp_disease_source)
             (dict_similar_diseases[onto_id_omim]['onto_id_hp_common_root']).append(onto_id_hp_common_root)
             (dict_similar_diseases[onto_id_omim]['onto_term_hp_disease']).append(onto_term_hp_disease)
-            # ICが0のエントリーが指定されると、分母の方が小さくなるため、分母のICが0の場合は分子のICも0にする                                                                                                              
-            if dict_IC[onto_id_hp_index] != 0:
+
+            # ICが0のエントリーが指定されると、分母の方が小さくなるため、分母のICが0の場合は分子のICも0にする
+            #if dict_IC[onto_id_hp_index] != 0:
+            if onto_id_hp_index in dict_IC and dict_IC[onto_id_hp_index] != 0:
                 # GeneYenta: 分子
                 dict_similar_diseases[onto_id_omim]['sum_ic'] += ic * weight
                 # GeneYenta: 分母
@@ -282,7 +285,8 @@ def search_similar_disease(str_phenotypes, str_genes):
             (dict_similar_diseases[onto_id_omim]['onto_term_hp_disease']).append(onto_term_hp_disease)
 
             # ICが0のエントリーが指定されると、分母の方が小さくなるため、分母のICが0の場合は分子のICも0にする
-            if dict_IC[onto_id_hp_index] != 0:
+            #if dict_IC[onto_id_hp_index] != 0:
+            if onto_id_hp_index in dict_IC and dict_IC[onto_id_hp_index] != 0:
                 # GeneYenta: 分子
                 dict_similar_diseases[onto_id_omim]['sum_ic'] += ic * weight
                 # GeneYenta: 分母
