@@ -464,6 +464,12 @@
 		      <a href="http://www.google.com/search?q={{ dict_similar_disease['onto_term_ordo'] }}&tbm=isch" target="_blank"><u><font color="#0431B4">{{ _('search_label_search_image_google') }}</font></u></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		      <!-- link of Case Reports -->
 		      <a href="{{ url_for_disease_casereport_page(dict_similar_disease['onto_id_ordo'], str_phenotypes, '', '1', '10') }}" target="_blank"><u><font color="#0431B4">{{ _('search_label_related_casereport') }}</font></u></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		      <!-- link of Monarch -->
+		      {% for dict_reference_source in dict_similar_disease['reference_source'] %}
+		        {% if dict_reference_source['source'] == "MONDO" %}
+		          <a href="{{ dict_reference_source['link'] }}" target="_blank"><u><font color="#0431B4">Monarch</font></u></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			{% endif %}
+	              {% endfor %}
 		      <!-- link of UR-DBMS -->
 		      {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
 		        {% for dict_reference_source in dict_similar_disease['reference_source'] %}
@@ -828,6 +834,12 @@
 		      <!-- links of OMIM and Googles -->
 		      <a href="https://www.omim.org/entry/{{ dict_similar_disease_omim['onto_id_omim'] | replace('OMIM:', '') }}" target="_blank"><u><font color="#0431B4">{{dict_similar_disease_omim['onto_id_omim']}}</font></u></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		      <a href="http://www.google.com/search?q={{ dict_similar_disease_omim['onto_term_omim'] }}&tbm=isch" target="_blank"><u><font color="#0431B4">{{ _('search_label_search_image_google') }}</font></u></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		      <!-- link of Monarch -->
+		      {% for dict_reference_source in dict_similar_disease_omim['reference_source'] %}
+		        {% if dict_reference_source['source'] == "MONDO" %}
+		          <a href="{{ dict_reference_source['link'] }}" target="_blank"><u><font color="#0431B4">Monarch</font></u></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			{% endif %}
+	              {% endfor %}
 		      <!-- link of UR-DBMS -->
 		      {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
 		        {% for dict_reference_source in dict_similar_disease_omim['reference_source'] %}
