@@ -2587,7 +2587,36 @@
 			runSearch(query,o);
 		};
 
+		var category2obj_jqxhr;
+
 		$.PopupRelationHPOWithWebGL = function(query, options, settings){
+
+			showLoading();
+
+			if(!isObject(window.category2obj)){
+
+				if(category2obj_jqxhr){
+					category2obj_jqxhr.abort();
+					category2obj_jqxhr = null;
+				}
+
+				category2obj_jqxhr = $.ajax({
+					url: '/static/js/three-bits/category2obj.json',
+					cache: true,
+					crossDomain: false,
+					dataType: 'json',
+				}).done(function(data, textStatus, jqXHR){
+					window.category2obj = data;
+					setTimeout(function(){ $.PopupRelationHPOWithWebGL(query, options, settings); }, 0);
+				}).fail(function(jqXHR, textStatus, errorThrown){
+					console.error(jqXHR, textStatus, errorThrown);
+				}).always(function(){
+					category2obj_jqxhr = null;
+				});
+				return;
+			}
+
+
 			$.PopupRelationHPO(query, options, $.extend(true,{}, settings || {},{use_webgl:true,active_webgl:true}));
 		};
 
