@@ -459,7 +459,8 @@ li.token-input-token-results-facebook.token-input-selected-dropdown-item-faceboo
 /*	color: inherit !important;	/* マウスオーバー時の色をとりあえず、デフォルトにしておく */
 /*	color: #D0E8FF !important;*/
 /*	color: #f5c6ce !important;*/
-	color: #f5d7dc !important;
+/*	color: #f5d7dc !important;*/
+	color: #ff8095 !important;
 }
 
 li.token-input-token-results-facebook span.token-input-token-word-facebook.token-input-token-information-facebook {
