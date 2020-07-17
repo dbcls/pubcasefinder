@@ -1112,56 +1112,16 @@ def REST_API_JSON_search_omim(size_disease, size_casereport):
 # GET: API for IRUD Exchange (OMIM_all)
 #      show search page with phenotype and gene
 #      /search_omim_all/phenotype:HPO:Id,HPO:id/gene:gene1,gene2/size_disease:N/size_casereport:N
+#      parameters: thres_delta_ic, thres_count, thres_weight
 #####
 @app.route('/search_omim_all/phenotype:<string:phenotypes>/gene:<string:genes>/size_disease:<string:size_disease>/size_casereport:<string:size_casereport>', methods=['GET'])
-def REST_API_JSON_search_omim_all_phenotypes_genes(phenotypes, genes, size_disease, size_casereport):
-    if request.method == 'GET':
-        dict_results = make_JSON_IRUD_omim_all(phenotypes, genes, size_disease, size_casereport)
-
-        return jsonify(dict_results)
-    else:
-        return render_template('index.html')
-
-
-#####
-# GET: API for IRUD Exchange (OMIM_all)
-#      show search page with phenotype
-#      /search_omim_all/phenotype:HPO:Id,HPO:id/gene:/size_disease:N/size_casereport:N
-#####
 @app.route('/search_omim_all/phenotype:<string:phenotypes>/gene:/size_disease:<string:size_disease>/size_casereport:<string:size_casereport>', methods=['GET'])
-def REST_API_JSON_search_omim_all_phenotypes(phenotypes, size_disease, size_casereport):
-    if request.method == 'GET':
-        dict_results = make_JSON_IRUD_omim_all(phenotypes, '', size_disease, size_casereport)
-
-        return jsonify(dict_results)
-    else:
-        return render_template('index.html')
-
-
-#####
-# GET: API for IRUD Exchange (OMIM_all)
-#      show search page with gene
-#      /search_omim_all/phenotype:/gene:gene1,gene2/size_disease:N/size_casereport:N
-#####
 @app.route('/search_omim_all/phenotype:/gene:<string:genes>/size_disease:<string:size_disease>/size_casereport:<string:size_casereport>', methods=['GET'])
-def REST_API_JSON_search_omim_all_genes(genes, size_disease, size_casereport):
-    if request.method == 'GET':
-        dict_results = make_JSON_IRUD_omim_all(genes, size_disease, size_casereport)
-
-        return jsonify(dict_results)
-    else:
-        return render_template('index.html')
-
-
-#####
-# GET: API for IRUD Exchange (OMIM_all)
-#      show search page without phenotype and gene
-#      /search_omim_all/phenotype:/gene:/size_disease:N/size_casereport:N
-#####
 @app.route('/search_omim_all/phenotype:/gene:/size_disease:<string:size_disease>/size_casereport:<string:size_casereport>', methods=['GET'])
-def REST_API_JSON_search_omim_all(size_disease, size_casereport):
+@app.route('/search_omim_all/phenotype:<string:phenotypes>/gene:/size_disease:<string:size_disease>/size_casereport:<string:size_casereport>/thres:<string:delta_ic>,<string:count>,<string:weight>', methods=['GET'])
+def REST_API_JSON_search_omim_all_phenotypes_genes(phenotypes="", genes="", size_disease="", size_casereport="", delta_ic="", count="", weight=""):
     if request.method == 'GET':
-        dict_results = make_JSON_IRUD_omim_all(size_disease, size_casereport)
+        dict_results = make_JSON_IRUD_omim_all(phenotypes, genes, size_disease, size_casereport, delta_ic, count, weight)
 
         return jsonify(dict_results)
     else:

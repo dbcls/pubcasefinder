@@ -282,7 +282,7 @@ def make_JSON_IRUD_omim(phenotypes, genes, size_disease, size_casereport):
 #####
 # make list of search results of rare disease for IRUD API
 #####
-def make_JSON_IRUD_omim_all(phenotypes, genes, size_disease, size_casereport):
+def make_JSON_IRUD_omim_all(phenotypes, genes, size_disease, size_casereport, thres_delta_ic, thres_count, thres_weight):
     dict_results = {}
     flg_casereport = 0
 
@@ -290,7 +290,7 @@ def make_JSON_IRUD_omim_all(phenotypes, genes, size_disease, size_casereport):
     list_dict_gene, genes_remove_error, list_query_gene_error = process_input_gene(genes)
 
     # caluculate phenotypic similarity between a patient and rare diseases.
-    list_dict_similar_disease_pagination, pagination, total_hit = show_search_omim_all_page(phenotypes, genes_remove_error, '1', size_disease)
+    list_dict_similar_disease_pagination, pagination, total_hit = show_search_omim_all_page(phenotypes, genes_remove_error, '1', size_disease, thres_delta_ic, thres_count, thres_weight)
 
     list_results = []
     for dict_similar_disease_pagination in list_dict_similar_disease_pagination:

@@ -31,13 +31,13 @@ db_pw   = app.config['DBPW']
 
 ####
 # 類似疾患検索画面を表示
-def show_search_omim_all_page(phenotypes_remove_error_ja, genes_remove_error, page, size):
+def show_search_omim_all_page(phenotypes_remove_error_ja, genes_remove_error, page, size, thres_delta_ic, thres_count, thres_weight):
 
     limit = int(size)
 
     #####
     # 類似疾患検索
-    list_dict_similar_disease = search_similar_disease(phenotypes_remove_error_ja, genes_remove_error)
+    list_dict_similar_disease = search_similar_disease(phenotypes_remove_error_ja, genes_remove_error, thres_delta_ic, thres_count, thres_weight)
 
     # total件数を取得
     total_hit = len(list_dict_similar_disease)
@@ -66,7 +66,7 @@ def show_search_omim_all_page(phenotypes_remove_error_ja, genes_remove_error, pa
 
 #####
 # search similar diseases
-def search_similar_disease(str_phenotypes, str_genes):
+def search_similar_disease(str_phenotypes, str_genes, thres_delta_ic, thres_count, thres_weight):
     list_phenotypes = str_phenotypes.split(",")
     list_genes      = str_genes.split(",")
     dict_genes = {}
@@ -208,6 +208,7 @@ def search_similar_disease(str_phenotypes, str_genes):
     list_dict_similar_disease = []
     dict_similar_diseases = {}
     dict_over_thres_count = {}
+    thres_delta_ic, thres_count, thres_weight = float(thres_delta_ic), float(thres_count), float(thres_weight)
     # default
     #thres_delta_ic, thres_count, thres_weight = 0, 0, 1
     # t1
@@ -229,7 +230,7 @@ def search_similar_disease(str_phenotypes, str_genes):
     # t9
     #thres_delta_ic, thres_count, thres_weight = 5, 7, 0.5
     # t10
-    thres_delta_ic, thres_count, thres_weight = 7.5, 3, 0.25
+    #thres_delta_ic, thres_count, thres_weight = 7.5, 3, 0.25
 
     len_list_phenotypes = len(list_phenotypes)
     for value in values:
