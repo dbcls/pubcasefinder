@@ -236,15 +236,18 @@
 	      <!--li><font color="white" size="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;( {{ _('Update') }} )&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><li-->
 	      {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
 	      <li><a href="/static/pdf/PubCaseFinder_manual_ja.pdf"><span class="icon-question-circle-o"></span>About</a></li>
-	      <li><a href="/datasets_ja"><span class="icon-database"></span>Datasets</a></li>
+	      <!--li><a href="/datasets_ja"><span class="icon-database"></span>Datasets</a></li>
 	      <li><a href="/history_ja"><span class="icon-history"></span>History</a></li>
-	      <li><a href="/termsofservice_ja"><span class="icon-doc-text-inv"></span>Terms</a></li>
+	      <li><a href="/termsofservice_ja"><span class="icon-doc-text-inv"></span>Terms</a></li-->
 	      {% else %}
 	      <li><a href="/static/pdf/Summary_PubCaseFinder.pdf"><span class="icon-question-circle-o"></span>About</a></li>
-	      <li><a href="/datasets_en"><span class="icon-database"></span>Datasets</a></li>
+	      <!--li><a href="/datasets_en"><span class="icon-database"></span>Datasets</a></li>
 	      <li><a href="/history_en"><span class="icon-history"></span>History</a></li>
-	      <li><a href="termsofservice_en"><span class="icon-doc-text-inv"></span>Terms</a></li>
+	      <li><a href="termsofservice_en"><span class="icon-doc-text-inv"></span>Terms</a></li-->
 	      {% endif %}
+	      <li><a href="/datasets"><span class="icon-database"></span>Datasets</a></li>
+	      <li><a href="/history"><span class="icon-history"></span>History</a></li>
+	      <li><a href="termsofservice"><span class="icon-doc-text-inv"></span>Terms</a></li>
 	      <li><a target="_blank" href="https://integbio.jp/rdf/dataset/pubcasefinder"><span class="icon-database"></span>RDF</a></li>
 	      <li><a href="/mme"><span class="icon-wrench"></span>API</a></li>
 	      <li><a title="Comments & suggestions are welcome!" href="mailto:support@dbcls.rois.ac.jp,pubcasefinder@dbcls.rois.ac.jp" href="#"><span class="icon-mail-alt"></span>Contact</a></li>
