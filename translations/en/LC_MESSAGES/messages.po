@@ -151,10 +151,13 @@ msgid "search_label_upload_gene"
 msgstr "+ Upload File (Gene Symbol or Entrez Gene ID or Ensembl Gene ID)"
 
 msgid "search_tab_Orphanet"
-msgstr "<b>Rare Diseases ( Orphanet )</b>"
+msgstr "<b>Rare Diseases (Orphanet)</b>"
 
 msgid "search_tab_OMIM"
-msgstr "<b>Genetic Diseases ( OMIM )</b>"
+msgstr "<b>Genetic Diseases (OMIM)</b>"
+
+msgid "search_tab_gene"
+msgstr "<b>Causative Genes</b>"
 
 msgid "search_button_download_summary"
 msgstr "Download summary of results"
@@ -164,6 +167,9 @@ msgstr "Download results of rare diseases ( Orphanet )"
 
 msgid "search_button_download_OMIM"
 msgstr "Download results of genetic diseases ( OMIM )"
+
+msgid "search_button_download_gene"
+msgstr "Download results of genes"
 
 msgid "search_button_download"
 msgstr "Download Results"
@@ -194,6 +200,9 @@ msgstr "(Similarity)"
 
 msgid "search_label_DiseaseName"
 msgstr "Disease Name"
+
+msgid "search_label_Gene"
+msgstr "Gene"
 
 msgid "search_label_DiseaseID"
 msgstr "(Disease ID)"

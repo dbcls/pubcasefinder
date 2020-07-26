@@ -151,10 +151,13 @@ msgid "search_label_upload_gene"
 msgstr "+ Upload File (Gene Symbol or Entrez Gene ID or Ensembl Gene ID)"
 
 msgid "search_tab_Orphanet"
-msgstr "<b>希少疾患 ( Orphanet )</b>"
+msgstr "<b>希少疾患 (Orphanet)</b>"
 
 msgid "search_tab_OMIM"
-msgstr "<b>遺伝性疾患 ( OMIM )</b>"
+msgstr "<b>遺伝性疾患 (OMIM)</b>"
+
+msgid "search_tab_gene"
+msgstr "<b>疾患原因遺伝子</b>"
 
 msgid "search_label_total"
 msgstr "合計"
@@ -167,6 +170,9 @@ msgstr "希少疾患 ( Orphanet ) の結果をダウンロード"
 
 msgid "search_button_download_OMIM"
 msgstr "遺伝性疾患 ( OMIM ) の結果をダウンロード"
+
+msgid "search_button_download_gene"
+msgstr "疾患原因遺伝子の結果をダウンロード"
 
 msgid "search_button_download"
 msgstr "結果をダウンロード"
@@ -194,6 +200,9 @@ msgstr "（類似度）"
 
 msgid "search_label_DiseaseName"
 msgstr "疾患名"
+
+msgid "search_label_Gene"
+msgstr "遺伝子"
 
 msgid "search_label_DiseaseID"
 msgstr "（疾患ID）"
