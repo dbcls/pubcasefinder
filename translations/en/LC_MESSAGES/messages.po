@@ -97,7 +97,7 @@ msgid "index_usage_3_title"
 msgstr "N of 1 Problem"
 
 msgid "index_usage_3_desc"
-msgstr "25,000 cases suspected rare or hereditary diseases published on the Internet are searchable."
+msgstr "19,000 cases suspected rare or hereditary diseases published on the Internet are searchable."
 
 msgid "index_usage_4_title"
 msgstr "Easy Phenotyping"
@@ -126,11 +126,14 @@ msgstr "Genetic Diseases"
 msgid "index_stat_rare"
 msgstr "Rare Diseases"
 
+msgid "index_stat_gene"
+msgstr "Genes"
+
 msgid "index_stat_cs"
 msgstr "Case Reports"
 
 msgid "index_stat_udp"
-msgstr "Undiagnosed Cases"
+msgstr "Cases"
 
 msgid "index_stat_list"
 msgstr "List"
@@ -159,6 +162,9 @@ msgstr "<b>Genetic Diseases (OMIM)</b>"
 msgid "search_tab_gene"
 msgstr "<b>Causative Genes</b>"
 
+msgid "search_tab_case"
+msgstr "<b>Cases (WWW)</b>"
+
 msgid "search_button_download_summary"
 msgstr "Download summary of results"
 
@@ -180,11 +186,17 @@ msgstr "Total"
 msgid "search_label_disease"
 msgstr "results"
 
+msgid "search_label_case"
+msgstr "cases"
+
 msgid "search_label_perpage"
 msgstr "(per page)"
 
 msgid "search_label_MatchedPhenotype"
 msgstr "<b>Matched Phenotype</b>"
+
+msgid "search_label_MatchedGene"
+msgstr "<b>Matched Gene</b>"
 
 msgid "search_label_CausativeGene"
 msgstr "<b>Causative Gene</b>"

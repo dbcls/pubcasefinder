@@ -97,7 +97,7 @@ msgid "index_usage_3_title"
 msgstr "N of 1 Problem"
 
 msgid "index_usage_3_desc"
-msgstr "インターネット上で公開されている25,000件の未診断症例を検索でき，未知バリアントの評価に有効です．"
+msgstr "インターネット上で公開されている19,000件の症例を検索でき，未知バリアントの評価に有効です．"
 
 msgid "index_usage_4_title"
 msgstr "簡単な症状入力"
@@ -126,11 +126,14 @@ msgstr "遺伝性疾患"
 msgid "index_stat_rare"
 msgstr "稀少疾患"
 
+msgid "index_stat_gene"
+msgstr "遺伝子"
+
 msgid "index_stat_cs"
 msgstr "症例報告"
 
 msgid "index_stat_udp"
-msgstr "未診断症例"
+msgstr "症例"
 
 msgid "index_stat_list"
 msgstr "一覧"
@@ -159,6 +162,9 @@ msgstr "<b>遺伝性疾患 (OMIM)</b>"
 msgid "search_tab_gene"
 msgstr "<b>疾患原因遺伝子</b>"
 
+msgid "search_tab_case"
+msgstr "<b>症例 (WWW)</b>"
+
 msgid "search_label_total"
 msgstr "合計"
 
@@ -180,11 +186,17 @@ msgstr "結果をダウンロード"
 msgid "search_label_disease"
 msgstr "件"
 
+msgid "search_label_case"
+msgstr "症例"
+
 msgid "search_label_perpage"
 msgstr "（表示件数）"
 
 msgid "search_label_MatchedPhenotype"
 msgstr "対応する徴候・症状"
+
+msgid "search_label_MatchedGene"
+msgstr "対応する遺伝子"
 
 msgid "search_label_CausativeGene"
 msgstr "疾患原因遺伝子"

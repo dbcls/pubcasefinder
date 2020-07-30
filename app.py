@@ -123,6 +123,16 @@ app.jinja_env.globals['url_for_download_results_search_gene_page'] = url_for_dow
 
 
 #####
+# url_for_download_results_search_case_page()
+# 類似遺伝子検索ページの結果をダウンロード
+#####
+def url_for_download_results_search_case_page(phenotypes, genes, page, cs):
+    return url_for('REST_API_download_results_search_case_phenotypes_genes', phenotypes=phenotypes, genes=genes, page=page, size=cs)
+app.jinja_env.globals['url_for_download_results_search_case_page'] = url_for_download_results_search_case_page
+
+
+
+#####
 # url_for_download_summary()
 # OrphanetおよびOMIMの検索結果のサマリーをダウンロード
 # 将来的には症例報告も付加する
@@ -248,14 +258,21 @@ def REST_API_search_phenotypes_genes(phenotypes="", genes="", page="", size=""):
         page_orphanet = "1"
         page_omim     = "1"
         page_gene     = "1"
+        page_case     = "1"
         size_orphanet = "10"
         size_omim     = "10"
         size_gene     = "10"
+        size_case     = "10"
         active_tab    = "orphanet"
         
         # process query : page
         list_pages = page.split(",")
-        if len(list_pages) == 3:
+        if len(list_pages) == 4:
+            page_orphanet = list_pages[0]
+            page_omim     = list_pages[1]
+            page_gene     = list_pages[2]
+            page_case     = list_pages[3]
+        elif len(list_pages) == 3:
             page_orphanet = list_pages[0]
             page_omim     = list_pages[1]
             page_gene     = list_pages[2]
@@ -267,7 +284,13 @@ def REST_API_search_phenotypes_genes(phenotypes="", genes="", page="", size=""):
 
         # process query : size
         list_sizes = size.split(",")
-        if len(list_sizes) == 4:
+        if len(list_sizes) == 5:
+            size_orphanet = list_sizes[0]
+            size_omim     = list_sizes[1]
+            size_gene     = list_sizes[2]
+            size_case     = list_sizes[3]
+            active_tab    = list_sizes[4]
+        elif len(list_sizes) == 4:
             size_orphanet = list_sizes[0]
             size_omim     = list_sizes[1]
             size_gene     = list_sizes[2]
@@ -294,14 +317,22 @@ def REST_API_search_phenotypes_genes(phenotypes="", genes="", page="", size=""):
             list_dict_similar_disease_pagination, pagination, total_hit = show_search_page(phenotypes_remove_error_ja, genes_remove_error, int(page_orphanet), size_orphanet)
             list_dict_similar_disease_pagination_omim, pagination_omim, total_hit_omim = "", "", ""
             list_dict_similar_gene_pagination, pagination_gene, total_hit_gene = "", "", ""
+            list_dict_similar_case_pagination, pagination_case, total_hit_case = "", "", ""
         elif active_tab == "omim":
             list_dict_similar_disease_pagination_omim, pagination_omim, total_hit_omim = show_search_omim_page(phenotypes_remove_error_ja, genes_remove_error, int(page_omim), size_omim)
             list_dict_similar_disease_pagination, pagination, total_hit = "", "", ""
             list_dict_similar_gene_pagination, pagination_gene, total_hit_gene = "", "", ""
+            list_dict_similar_case_pagination, pagination_case, total_hit_case = "", "", ""
         elif active_tab == "gene":
             list_dict_similar_gene_pagination, pagination_gene, total_hit_gene = show_search_gene_page(phenotypes_remove_error_ja, genes_remove_error, int(page_gene), size_gene)
             list_dict_similar_disease_pagination, pagination, total_hit = "", "", ""
             list_dict_similar_disease_pagination_omim, pagination_omim, total_hit_omim = "", "", ""
+            list_dict_similar_case_pagination, pagination_case, total_hit_case = "", "", ""
+        elif active_tab == "case":
+            list_dict_similar_case_pagination, pagination_case, total_hit_case = show_search_case_page(phenotypes_remove_error_ja, genes_remove_error, int(page_case), size_case)
+            list_dict_similar_disease_pagination, pagination, total_hit = "", "", ""
+            list_dict_similar_disease_pagination_omim, pagination_omim, total_hit_omim = "", "", ""
+            list_dict_similar_gene_pagination, pagination_gene, total_hit_gene = "", "", ""
 
         # PhenoTips登録用のデータを作成
         #phenotypes_phenotips = phenotypes.replace('_ja', '')
@@ -319,18 +350,23 @@ def REST_API_search_phenotypes_genes(phenotypes="", genes="", page="", size=""):
                                list_dict_similar_disease=list_dict_similar_disease_pagination,
                                list_dict_similar_disease_omim=list_dict_similar_disease_pagination_omim,
                                list_dict_similar_gene=list_dict_similar_gene_pagination,
+                               list_dict_similar_case=list_dict_similar_case_pagination,
                                pagination=pagination,
                                pagination_omim=pagination_omim,
                                pagination_gene=pagination_gene,
+                               pagination_case=pagination_case,
                                page_orphanet=page_orphanet,
                                page_omim=page_omim,
                                page_gene=page_gene,
+                               page_case=page_case,
                                total_hit=total_hit,
                                total_hit_omim=total_hit_omim,
                                total_hit_gene=total_hit_gene,
+                               total_hit_case=total_hit_case,
                                cs=str(size_orphanet),
                                cs_omim=str(size_omim),
                                cs_gene=str(size_gene),
+                               cs_case=str(size_case),
                                active_tab=active_tab)
     else:
         return render_template('index.html')
@@ -704,15 +740,51 @@ def REST_API_download_results_search_gene_phenotypes_genes(phenotypes="", genes=
                     list_matched_phenotype.append(dict_onto_id_term_hp_gene['onto_id_hp_gene'])
                     prev_id_hp = dict_onto_id_term_hp_gene['onto_id_hp_gene']
 
-            #prev_id_entrez = ""
-            #list_causative_gene = []
-            #for dict_omim_symbol_synonym in dict_similar_disease['omim_symbol_synonym']:
-            #    if prev_id_entrez != dict_omim_symbol_synonym['entrez_id']:
-            #        list_causative_gene.append(dict_omim_symbol_synonym['symbol'])
-            #        prev_id_entrez = dict_omim_symbol_synonym['entrez_id']
-
-            #writer.writerow([rank, round(dict_similar_disease['match_score'],4), dict_similar_disease['onto_id_omim'], dict_similar_disease['onto_term_omim'], u','.join(list_matched_phenotype), u','.join(list_causative_gene)])
             writer.writerow([rank, round(dict_similar_gene['match_score'],4), (dict_similar_gene['gene_id']).replace('ENT:', ''), dict_similar_gene['symbol'], u','.join(list_matched_phenotype)])
+            rank += 1
+
+        res = make_response()
+        res.data = f.getvalue()
+        res.headers['Content-Type'] = 'text/tsv'
+        res.headers['Content-Disposition'] = 'attachment; filename=results_gene.tsv'
+        return res
+    else:
+        return render_template('index.html')
+
+    return
+
+
+
+#####
+# download results search case page
+## GET: dwonload results search case page with phenotype and gene
+@app.route('/download_results_search_case_disease/phenotype:<string:phenotypes>/gene:<string:genes>/page:<int:page>/size:<string:size>', methods=['GET'])
+@app.route('/download_results_search_case_disease/phenotype:<string:phenotypes>/gene:/page:<int:page>/size:<string:size>', methods=['GET'])
+@app.route('/download_results_search_case_disease/phenotype:/gene:<string:genes>/page:<int:page>/size:<string:size>', methods=['GET'])
+@app.route('/download_results_search_case_disease/phenotype:/gene:/page:<int:page>/size:<string:size>', methods=['GET'])
+def REST_API_download_results_search_case_phenotypes_genes(phenotypes="", genes="", page="", size=""):
+    if request.method == 'GET':
+        phenotypes_remove_ja = phenotypes.replace('_ja', '')
+        list_dict_similar_case_pagination, pagination, total_hit = show_search_case_page(phenotypes_remove_ja, genes, page, '1000000')
+
+        # Python 3系 https://stackoverflow.com/questions/13120127/how-can-i-use-io-stringio-with-the-csv-module/13120279
+        f = StringIO()
+        writer = csv.writer(f, delimiter="\t", quotechar='"', quoting=csv.QUOTE_MINIMAL, lineterminator="\n")
+        ## out header
+        writer.writerow(['# Query(Phenotypes): ' + phenotypes])
+        writer.writerow(['# Query(Genes): ' + genes])
+        writer.writerow(['Rank','Score','Case-Id','Source','Matched-Phenotype','Matched-Gene'])
+
+        rank = 1;
+        for dict_similar_case in list_dict_similar_case_pagination:
+            prev_id_hp = ""
+            list_matched_phenotype = []
+            for dict_onto_id_term_hp_case in dict_similar_case['onto_id_term_hp_case']:
+                if prev_id_hp != dict_onto_id_term_hp_case['onto_id_hp_case']:
+                    list_matched_phenotype.append(dict_onto_id_term_hp_case['onto_id_hp_case'])
+                    prev_id_hp = dict_onto_id_term_hp_case['onto_id_hp_case']
+
+            writer.writerow([rank, round(dict_similar_case['match_score'],4), dict_similar_case['case_id'], dict_similar_case['source'], u','.join(list_matched_phenotype)])
             rank += 1
 
         res = make_response()

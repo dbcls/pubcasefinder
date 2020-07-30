@@ -165,16 +165,24 @@
           <ul class="nav nav-tabs">
 	    {% if active_tab == "omim" %}
 	    <li class="active"><a href="#tab2default" data-toggle="tab"><div width="100" align="center"><div style="letter-spacing: 0.1em; line-height: 2em;">{{ _('search_tab_OMIM') }}</div></div></a></li>
-	    <li><a href="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',' ~ page_gene, cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ 'orphanet') }}"><div width="100" align="center"><div style="letter-spacing: 0.1em; line-height: 2em;">{{ _('search_tab_Orphanet') }}</div></div></a></li>
-	    <li><a href="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',' ~ page_gene, cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ 'gene') }}"><div width="100" align="center"><div style="letter-spacing: 0.1em; line-height: 2em;">{{ _('search_tab_gene') }}</div></div></a></li>
+	    <li><a href="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',' ~ page_gene ~ ',' ~ page_case, cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ cs_case ~ ',' ~ 'orphanet') }}"><div width="100" align="center"><div style="letter-spacing: 0.1em; line-height: 2em;">{{ _('search_tab_Orphanet') }}</div></div></a></li>
+	    <li><a href="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',' ~ page_gene ~ ',' ~ page_case, cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ cs_case ~ ',' ~ 'gene') }}"><div width="100" align="center"><div style="letter-spacing: 0.1em; line-height: 2em;">{{ _('search_tab_gene') }}</div></div></a></li>
+	    <li><a href="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',' ~ page_gene ~ ',' ~ page_case, cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ cs_case ~ ',' ~ 'case') }}"><div width="100" align="center"><div style="letter-spacing: 0.1em; line-height: 2em;">{{ _('search_tab_case') }}</div></div></a></li>
 	    {% elif active_tab == "orphanet" %}
-	    <li><a href="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',' ~ page_gene, cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ 'omim') }}"><div width="100" align="center"><div style="letter-spacing: 0.1em; line-height: 2em;">{{ _('search_tab_OMIM') }}</div></div></a></li>
+	    <li><a href="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',' ~ page_gene ~ ',' ~ page_case, cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ cs_case ~ ',' ~ 'omim') }}"><div width="100" align="center"><div style="letter-spacing: 0.1em; line-height: 2em;">{{ _('search_tab_OMIM') }}</div></div></a></li>
 	    <li class="active"><a href="#tab1default" data-toggle="tab"><div width="100" align="center"><div style="letter-spacing: 0.1em; line-height: 2em;">{{ _('search_tab_Orphanet') }}</div></div></a></li>
-	    <li><a href="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',' ~ page_gene, cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ 'gene') }}"><div width="100" align="center"><div style="letter-spacing: 0.1em; line-height: 2em;">{{ _('search_tab_gene') }}</div></div></a></li>
+	    <li><a href="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',' ~ page_gene ~ ',' ~ page_case, cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ cs_case ~ ',' ~ 'gene') }}"><div width="100" align="center"><div style="letter-spacing: 0.1em; line-height: 2em;">{{ _('search_tab_gene') }}</div></div></a></li>
+	    <li><a href="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',' ~ page_gene ~ ',' ~ page_case, cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ cs_case ~ ',' ~ 'case') }}"><div width="100" align="center"><div style="letter-spacing: 0.1em; line-height: 2em;">{{ _('search_tab_case') }}</div></div></a></li>
 	    {% elif active_tab == "gene" %}
-	    <li><a href="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',' ~ page_gene, cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ 'omim') }}"><div width="100" align="center"><div style="letter-spacing: 0.1em; line-height: 2em;">{{ _('search_tab_OMIM') }}</div></div></a></li>
-	    <li><a href="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',' ~ page_gene, cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ 'orphanet') }}"><div width="100" align="center"><div style="letter-spacing: 0.1em; line-height: 2em;">{{ _('search_tab_Orphanet') }}</div></div></a></li>
+	    <li><a href="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',' ~ page_gene ~ ',' ~ page_case, cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ cs_case ~ ',' ~ 'omim') }}"><div width="100" align="center"><div style="letter-spacing: 0.1em; line-height: 2em;">{{ _('search_tab_OMIM') }}</div></div></a></li>
+	    <li><a href="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',' ~ page_gene ~ ',' ~ page_case, cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ cs_case ~ ',' ~ 'orphanet') }}"><div width="100" align="center"><div style="letter-spacing: 0.1em; line-height: 2em;">{{ _('search_tab_Orphanet') }}</div></div></a></li>
 	    <li class="active"><a href="#tab3default" data-toggle="tab"><div width="100" align="center"><div style="letter-spacing: 0.1em; line-height: 2em;">{{ _('search_tab_gene') }}</div></div></a></li>
+	    <li><a href="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',' ~ page_gene ~ ',' ~ page_case, cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ cs_case ~ ',' ~ 'case') }}"><div width="100" align="center"><div style="letter-spacing: 0.1em; line-height: 2em;">{{ _('search_tab_case') }}</div></div></a></li>
+	    {% elif active_tab == "case" %}
+	    <li><a href="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',' ~ page_gene ~ ',' ~ page_case, cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ cs_case ~ ',' ~ 'omim') }}"><div width="100" align="center"><div style="letter-spacing: 0.1em; line-height: 2em;">{{ _('search_tab_OMIM') }}</div></div></a></li>
+	    <li><a href="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',' ~ page_gene ~ ',' ~ page_case, cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ cs_case ~ ',' ~ 'orphanet') }}"><div width="100" align="center"><div style="letter-spacing: 0.1em; line-height: 2em;">{{ _('search_tab_Orphanet') }}</div></div></a></li>
+	    <li><a href="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',' ~ page_gene ~ ',' ~ page_case, cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ cs_case ~ ',' ~ 'gene') }}"><div width="100" align="center"><div style="letter-spacing: 0.1em; line-height: 2em;">{{ _('search_tab_gene') }}</div></div></a></li>
+	    <li class="active"><a href="#tab4default" data-toggle="tab"><div width="100" align="center"><div style="letter-spacing: 0.1em; line-height: 2em;">{{ _('search_tab_case') }}</div></div></a></li>
 	    {% endif %}
           </ul>
         </div>
@@ -182,7 +190,6 @@
 	<!-- START: Nav-tabs body -->
         <div class="panel-body">
           <div class="tab-content">
-
 
 	    <!-- START: select the tab status of OMIM -->
 	    {% if active_tab == "omim" %}
@@ -208,12 +215,12 @@
 		      <td align="middle" valign="middle">
 			<ul class="pagination">
 			  {% if pagination_omim.has_prev %}
-			  <li align="center"><a href="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ (page_omim|int - 1) ~ ',' ~ page_gene, cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ 'omim') }}">&laquo;</a></li>
+			  <li align="center"><a href="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ (page_omim|int - 1) ~ ',' ~ page_gene ~ ',' ~ page_case, cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ cs_case ~ ',' ~ 'omim') }}">&laquo;</a></li>
 			  {% endif %}
 			  {%- for page in pagination_omim.iter_pages() %}
 			  {% if page %}
 			  {% if page != pagination_omim.page %}
-		          <li align="center"><a href="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page ~ ',' ~ page_gene, cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ 'omim') }}">{{ page }}</a></li>
+		          <li align="center"><a href="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page ~ ',' ~ page_gene ~ ',' ~ page_case, cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ cs_case ~ ',' ~ 'omim') }}">{{ page }}</a></li>
 			  {% else %}
 		          <li align="center" class="active"><a href="#">{{ page }}</a></li>
 			  {% endif %}
@@ -222,10 +229,10 @@
                           {% endif %}
                           {%- endfor %}
                           {% if pagination_omim.has_next %}
-                          <li align="center"><a href="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ (page_omim|int + 1) ~ ',' ~ page_gene, cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ 'omim') }}">&raquo;</a></li>
+                          <li align="center"><a href="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ (page_omim|int + 1) ~ ',' ~ page_gene ~ ',' ~ page_case, cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ cs_case ~ ',' ~ 'omim') }}">&raquo;</a></li>
 			  {% endif %}
-			</ul>
-		      </td>
+                        </ul>
+                      </td>
 		      <!-- END: Pagination upper_part -->
 
 		      <!-- START: Show selector for "per page" -->
@@ -236,39 +243,39 @@
 			<!-- http://qiita.com/act823/items/3a203f1f96e7fe52f69d -->
 			<select id="changesize_selector_omim_link" name="changesize_selector_omim_link" onchange="changesize_omim()">
 			  {% if cs_omim == "10" %}
-			  <option id="selector_10" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',1,' ~ page_gene, cs ~ ',10,' ~ cs_gene ~ ',omim') }}" selected>10</option>
-			  <option id="selector_20" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',1,' ~ page_gene, cs ~ ',20,' ~ cs_gene ~ ',omim') }}">20</option>
-			  <option id="selector_40" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',1,' ~ page_gene, cs ~ ',40,' ~ cs_gene ~ ',omim') }}">40</option>
-			  <option id="selector_60" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',1,' ~ page_gene, cs ~ ',60,' ~ cs_gene ~ ',omim') }}">60</option>
-			  <option id="selector_100" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',1,' ~ page_gene, cs ~ ',100,' ~ cs_gene ~ ',omim') }}">100</option>
+			  <option id="selector_10" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',1,' ~ page_gene ~ ',' ~ page_case, cs ~ ',10,' ~ cs_gene ~ ',' ~ cs_case ~ ',omim') }}" selected>10</option>
+			  <option id="selector_20" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',1,' ~ page_gene ~ ',' ~ page_case, cs ~ ',20,' ~ cs_gene ~ ',' ~ cs_case ~ ',omim') }}">20</option>
+			  <option id="selector_40" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',1,' ~ page_gene ~ ',' ~ page_case, cs ~ ',40,' ~ cs_gene ~ ',' ~ cs_case ~ ',omim') }}">40</option>
+			  <option id="selector_60" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',1,' ~ page_gene ~ ',' ~ page_case, cs ~ ',60,' ~ cs_gene ~ ',' ~ cs_case ~ ',omim') }}">60</option>
+			  <option id="selector_100" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',1,' ~ page_gene ~ ',' ~ page_case, cs ~ ',100,' ~ cs_gene ~ ',' ~ cs_case ~ ',omim') }}">100</option>
 			  {% endif %}
 			  {% if cs_omim == "20" %}
-			  <option id="selector_10" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',1,' ~ page_gene, cs ~ ',10,' ~ cs_gene ~ ',omim') }}">10</option>
-			  <option id="selector_20" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',1,' ~ page_gene, cs ~ ',20,' ~ cs_gene ~ ',omim') }}" selected>20</option>
-			  <option id="selector_40" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',1,' ~ page_gene, cs ~ ',40,' ~ cs_gene ~ ',omim') }}">40</option>
-			  <option id="selector_60" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',1,' ~ page_gene, cs ~ ',60,' ~ cs_gene ~ ',omim') }}">60</option>
-			  <option id="selector_100" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',1,' ~ page_gene, cs ~ ',100,' ~ cs_gene ~ ',omim') }}">100</option>
+			  <option id="selector_10" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',1,' ~ page_gene ~ ',' ~ page_case, cs ~ ',10,' ~ cs_gene ~ ',' ~ cs_case ~ ',omim') }}">10</option>
+			  <option id="selector_20" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',1,' ~ page_gene ~ ',' ~ page_case, cs ~ ',20,' ~ cs_gene ~ ',' ~ cs_case ~ ',omim') }}" selected>20</option>
+			  <option id="selector_40" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',1,' ~ page_gene ~ ',' ~ page_case, cs ~ ',40,' ~ cs_gene ~ ',' ~ cs_case ~ ',omim') }}">40</option>
+			  <option id="selector_60" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',1,' ~ page_gene ~ ',' ~ page_case, cs ~ ',60,' ~ cs_gene ~ ',' ~ cs_case ~ ',omim') }}">60</option>
+			  <option id="selector_100" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',1,' ~ page_gene ~ ',' ~ page_case, cs ~ ',100,' ~ cs_gene ~ ',' ~ cs_case ~ ',omim') }}">100</option>
 			  {% endif %}
 			  {% if cs_omim == "40" %}
-			  <option id="selector_10" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',1,' ~ page_gene, cs ~ ',10,' ~ cs_gene ~ ',omim') }}">10</option>
-			  <option id="selector_20" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',1,' ~ page_gene, cs ~ ',20,' ~ cs_gene ~ ',omim') }}">20</option>
-			  <option id="selector_40" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',1,' ~ page_gene, cs ~ ',40,' ~ cs_gene ~ ',omim') }}" selected>40</option>
-			  <option id="selector_60" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',1,' ~ page_gene, cs ~ ',60,' ~ cs_gene ~ ',omim') }}">60</option>
-			  <option id="selector_100" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',1,' ~ page_gene, cs ~ ',100,' ~ cs_gene ~ ',omim') }}">100</option>
+			  <option id="selector_10" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',1,' ~ page_gene ~ ',' ~ page_case, cs ~ ',10,' ~ cs_gene ~ ',' ~ cs_case ~ ',omim') }}">10</option>
+			  <option id="selector_20" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',1,' ~ page_gene ~ ',' ~ page_case, cs ~ ',20,' ~ cs_gene ~ ',' ~ cs_case ~ ',omim') }}">20</option>
+			  <option id="selector_40" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',1,' ~ page_gene ~ ',' ~ page_case, cs ~ ',40,' ~ cs_gene ~ ',' ~ cs_case ~ ',omim') }}" selected>40</option>
+			  <option id="selector_60" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',1,' ~ page_gene ~ ',' ~ page_case, cs ~ ',60,' ~ cs_gene ~ ',' ~ cs_case ~ ',omim') }}">60</option>
+			  <option id="selector_100" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',1,' ~ page_gene ~ ',' ~ page_case, cs ~ ',100,' ~ cs_gene ~ ',' ~ cs_case ~ ',omim') }}">100</option>
 			  {% endif %}
 			  {% if cs_omim == "60" %}
-			  <option id="selector_10" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',1,' ~ page_gene, cs ~ ',10,' ~ cs_gene ~ ',omim') }}">10</option>
-			  <option id="selector_20" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',1,' ~ page_gene, cs ~ ',20,' ~ cs_gene ~ ',omim') }}">20</option>
-			  <option id="selector_40" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',1,' ~ page_gene, cs ~ ',40,' ~ cs_gene ~ ',omim') }}">40</option>
-			  <option id="selector_60" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',1,' ~ page_gene, cs ~ ',60,' ~ cs_gene ~ ',omim') }}" selected>60</option>
-			  <option id="selector_100" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',1,' ~ page_gene, cs ~ ',100,' ~ cs_gene ~ ',omim') }}">100</option>
+			  <option id="selector_10" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',1,' ~ page_gene ~ ',' ~ page_case, cs ~ ',10,' ~ cs_gene ~ ',' ~ cs_case ~ ',omim') }}">10</option>
+			  <option id="selector_20" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',1,' ~ page_gene ~ ',' ~ page_case, cs ~ ',20,' ~ cs_gene ~ ',' ~ cs_case ~ ',omim') }}">20</option>
+			  <option id="selector_40" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',1,' ~ page_gene ~ ',' ~ page_case, cs ~ ',40,' ~ cs_gene ~ ',' ~ cs_case ~ ',omim') }}">40</option>
+			  <option id="selector_60" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',1,' ~ page_gene ~ ',' ~ page_case, cs ~ ',60,' ~ cs_gene ~ ',' ~ cs_case ~ ',omim') }}" selected>60</option>
+			  <option id="selector_100" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',1,' ~ page_gene ~ ',' ~ page_case, cs ~ ',100,' ~ cs_gene ~ ',' ~ cs_case ~ ',omim') }}">100</option>
 			  {% endif %}
 			  {% if cs_omim == "100" %}
-			  <option id="selector_10" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',1,' ~ page_gene, cs ~ ',10,' ~ cs_gene ~ ',omim') }}">10</option>
-			  <option id="selector_20" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',1,' ~ page_gene, cs ~ ',20,' ~ cs_gene ~ ',omim') }}">20</option>
-			  <option id="selector_40" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',1,' ~ page_gene, cs ~ ',40,' ~ cs_gene ~ ',omim') }}">40</option>
-			  <option id="selector_60" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',1,' ~ page_gene, cs ~ ',60,' ~ cs_gene ~ ',omim') }}">60</option>
-			  <option id="selector_100" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',1,' ~ page_gene, cs ~ ',100,' ~ cs_gene ~ ',omim') }}" selected>100</option>
+			  <option id="selector_10" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',1,' ~ page_gene ~ ',' ~ page_case, cs ~ ',10,' ~ cs_gene ~ ',' ~ cs_case ~ ',omim') }}">10</option>
+			  <option id="selector_20" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',1,' ~ page_gene ~ ',' ~ page_case, cs ~ ',20,' ~ cs_gene ~ ',' ~ cs_case ~ ',omim') }}">20</option>
+			  <option id="selector_40" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',1,' ~ page_gene ~ ',' ~ page_case, cs ~ ',40,' ~ cs_gene ~ ',' ~ cs_case ~ ',omim') }}">40</option>
+			  <option id="selector_60" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',1,' ~ page_gene ~ ',' ~ page_case, cs ~ ',60,' ~ cs_gene ~ ',' ~ cs_case ~ ',omim') }}">60</option>
+			  <option id="selector_100" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',1,' ~ page_gene ~ ',' ~ page_case, cs ~ ',100,' ~ cs_gene ~ ',' ~ cs_case ~ ',omim') }}" selected>100</option>
 			  {% endif %}
 			</select>
 			{{ _('search_label_perpage') }}
@@ -516,12 +523,12 @@
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<ul class="pagination">
 			  {% if pagination_omim.has_prev %}
-			  <li align="center"><a href="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ (page_omim|int - 1) ~ ',' ~ page_gene, cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ 'omim') }}">&laquo;</a></li>
+			  <li align="center"><a href="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ (page_omim|int - 1) ~ ',' ~ page_gene ~ ',' ~ page_case, cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ cs_case ~ ',' ~ 'omim') }}">&laquo;</a></li>
 			  {% endif %}
 			  {%- for page in pagination_omim.iter_pages() %}
 			  {% if page %}
 			  {% if page != pagination_omim.page %}
-		          <li align="center"><a href="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page ~ ',' ~ page_gene, cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ 'omim') }}">{{ page }}</a></li>
+		          <li align="center"><a href="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page ~ ',' ~ page_gene ~ ',' ~ page_case, cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ cs_case ~ ',' ~ 'omim') }}">{{ page }}</a></li>
 			  {% else %}
 		          <li align="center" class="active"><a href="#">{{ page }}</a></li>
 			  {% endif %}
@@ -530,7 +537,7 @@
                           {% endif %}
                           {%- endfor %}
                           {% if pagination_omim.has_next %}
-                          <li align="center"><a href="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ (page_omim|int + 1) ~ ',' ~ page_gene, cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ 'omim') }}">&raquo;</a></li>
+                          <li align="center"><a href="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ (page_omim|int + 1) ~ ',' ~ page_gene ~ ',' ~ page_case, cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ cs_case ~ ',' ~ 'omim') }}">&raquo;</a></li>
 			  {% endif %}
                         </ul>
                       </td>
@@ -597,39 +604,39 @@
 			<!-- http://qiita.com/act823/items/3a203f1f96e7fe52f69d -->
 			<select id="changesize_selector_orphanet_link" name="changesize_selector_orphanet_link" onchange="changesize_orphanet()">
 			  {% if cs == "10" %}
-			  <option id="selector_10" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ page_omim ~ ',' ~ page_gene, '10,' ~ cs_omim ~ ',' ~ cs_gene ~ ',orphanet') }}" selected>10</option>
-			  <option id="selector_20" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ page_omim ~ ',' ~ page_gene, '20,' ~ cs_omim ~ ',orphanet') }}">20</option>
-			  <option id="selector_40" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ page_omim ~ ',' ~ page_gene, '40,' ~ cs_omim ~ ',orphanet') }}">40</option>
-			  <option id="selector_60" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ page_omim ~ ',' ~ page_gene, '60,' ~ cs_omim ~ ',orphanet') }}">60</option>
-			  <option id="selector_100" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ page_omim ~ ',' ~ page_gene, '100,' ~ cs_omim ~ ',orphanet') }}">100</option>
+			  <option id="selector_10" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ page_omim ~ ',' ~ page_gene ~ ',' ~ page_case, '10,' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ cs_case ~ ',orphanet') }}" selected>10</option>
+			  <option id="selector_20" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ page_omim ~ ',' ~ page_gene ~ ',' ~ page_case, '20,' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ cs_case ~ ',orphanet') }}">20</option>
+			  <option id="selector_40" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ page_omim ~ ',' ~ page_gene ~ ',' ~ page_case, '40,' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ cs_case ~ ',orphanet') }}">40</option>
+			  <option id="selector_60" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ page_omim ~ ',' ~ page_gene ~ ',' ~ page_case, '60,' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ cs_case ~ ',orphanet') }}">60</option>
+			  <option id="selector_100" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ page_omim ~ ',' ~ page_gene ~ ',' ~ page_case, '100,' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ cs_case ~ ',orphanet') }}">100</option>
 			  {% endif %}
 			  {% if cs == "20" %}
-			  <option id="selector_10" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ page_omim ~ ',' ~ page_gene, '10,' ~ cs_omim ~ ',' ~ cs_gene ~ ',orphanet') }}">10</option>
-			  <option id="selector_20" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ page_omim ~ ',' ~ page_gene, '20,' ~ cs_omim ~ ',orphanet') }}" selected>20</option>
-			  <option id="selector_40" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ page_omim ~ ',' ~ page_gene, '40,' ~ cs_omim ~ ',orphanet') }}">40</option>
-			  <option id="selector_60" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ page_omim ~ ',' ~ page_gene, '60,' ~ cs_omim ~ ',orphanet') }}">60</option>
-			  <option id="selector_100" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ page_omim ~ ',' ~ page_gene, '100,' ~ cs_omim ~ ',orphanet') }}">100</option>
+			  <option id="selector_10" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ page_omim ~ ',' ~ page_gene ~ ',' ~ page_case, '10,' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ cs_case ~ ',orphanet') }}">10</option>
+			  <option id="selector_20" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ page_omim ~ ',' ~ page_gene ~ ',' ~ page_case, '20,' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ cs_case ~ ',orphanet') }}" selected>20</option>
+			  <option id="selector_40" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ page_omim ~ ',' ~ page_gene ~ ',' ~ page_case, '40,' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ cs_case ~ ',orphanet') }}">40</option>
+			  <option id="selector_60" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ page_omim ~ ',' ~ page_gene ~ ',' ~ page_case, '60,' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ cs_case ~ ',orphanet') }}">60</option>
+			  <option id="selector_100" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ page_omim ~ ',' ~ page_gene ~ ',' ~ page_case, '100,' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ cs_case ~ ',orphanet') }}">100</option>
 			  {% endif %}
 			  {% if cs == "40" %}
-			  <option id="selector_10" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ page_omim ~ ',' ~ page_gene, '10,' ~ cs_omim ~ ',' ~ cs_gene ~ ',orphanet') }}">10</option>
-			  <option id="selector_20" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ page_omim ~ ',' ~ page_gene, '20,' ~ cs_omim ~ ',orphanet') }}">20</option>
-			  <option id="selector_40" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ page_omim ~ ',' ~ page_gene, '40,' ~ cs_omim ~ ',orphanet') }}" selected>40</option>
-			  <option id="selector_60" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ page_omim ~ ',' ~ page_gene, '60,' ~ cs_omim ~ ',orphanet') }}">60</option>
-			  <option id="selector_100" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ page_omim ~ ',' ~ page_gene, '100,' ~ cs_omim ~ ',orphanet') }}">100</option>
+			  <option id="selector_10" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ page_omim ~ ',' ~ page_gene ~ ',' ~ page_case, '10,' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ cs_case ~ ',orphanet') }}">10</option>
+			  <option id="selector_20" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ page_omim ~ ',' ~ page_gene ~ ',' ~ page_case, '20,' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ cs_case ~ ',orphanet') }}">20</option>
+			  <option id="selector_40" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ page_omim ~ ',' ~ page_gene ~ ',' ~ page_case, '40,' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ cs_case ~ ',orphanet') }}" selected>40</option>
+			  <option id="selector_60" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ page_omim ~ ',' ~ page_gene ~ ',' ~ page_case, '60,' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ cs_case ~ ',orphanet') }}">60</option>
+			  <option id="selector_100" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ page_omim ~ ',' ~ page_gene ~ ',' ~ page_case, '100,' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ cs_case ~ ',orphanet') }}">100</option>
 			  {% endif %}
 			  {% if cs == "60" %}
-			  <option id="selector_10" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ page_omim ~ ',' ~ page_gene, '10,' ~ cs_omim ~ ',' ~ cs_gene ~ ',orphanet') }}">10</option>
-			  <option id="selector_20" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ page_omim ~ ',' ~ page_gene, '20,' ~ cs_omim ~ ',orphanet') }}">20</option>
-			  <option id="selector_40" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ page_omim ~ ',' ~ page_gene, '40,' ~ cs_omim ~ ',orphanet') }}">40</option>
-			  <option id="selector_60" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ page_omim ~ ',' ~ page_gene, '60,' ~ cs_omim ~ ',orphanet') }}" selected>60</option>
-			  <option id="selector_100" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ page_omim ~ ',' ~ page_gene, '100,' ~ cs_omim ~ ',orphanet') }}">100</option>
+			  <option id="selector_10" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ page_omim ~ ',' ~ page_gene ~ ',' ~ page_case, '10,' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ cs_case ~ ',orphanet') }}">10</option>
+			  <option id="selector_20" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ page_omim ~ ',' ~ page_gene ~ ',' ~ page_case, '20,' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ cs_case ~ ',orphanet') }}">20</option>
+			  <option id="selector_40" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ page_omim ~ ',' ~ page_gene ~ ',' ~ page_case, '40,' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ cs_case ~ ',orphanet') }}">40</option>
+			  <option id="selector_60" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ page_omim ~ ',' ~ page_gene ~ ',' ~ page_case, '60,' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ cs_case ~ ',orphanet') }}" selected>60</option>
+			  <option id="selector_100" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ page_omim ~ ',' ~ page_gene ~ ',' ~ page_case, '100,' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ cs_case ~ ',orphanet') }}">100</option>
 			  {% endif %}
 			  {% if cs == "100" %}
-			  <option id="selector_10" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ page_omim ~ ',' ~ page_gene, '10,' ~ cs_omim ~ ',' ~ cs_gene ~ ',orphanet') }}">10</option>
-			  <option id="selector_20" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ page_omim ~ ',' ~ page_gene, '20,' ~ cs_omim ~ ',orphanet') }}">20</option>
-			  <option id="selector_40" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ page_omim ~ ',' ~ page_gene, '40,' ~ cs_omim ~ ',orphanet') }}">40</option>
-			  <option id="selector_60" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ page_omim ~ ',' ~ page_gene, '60,' ~ cs_omim ~ ',orphanet') }}">60</option>
-			  <option id="selector_100" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ page_omim ~ ',' ~ page_gene, '100,' ~ cs_omim ~ ',orphanet') }}" selected>100</option>
+			  <option id="selector_10" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ page_omim ~ ',' ~ page_gene ~ ',' ~ page_case, '10,' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ cs_case ~ ',orphanet') }}">10</option>
+			  <option id="selector_20" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ page_omim ~ ',' ~ page_gene ~ ',' ~ page_case, '20,' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ cs_case ~ ',orphanet') }}">20</option>
+			  <option id="selector_40" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ page_omim ~ ',' ~ page_gene ~ ',' ~ page_case, '40,' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ cs_case ~ ',orphanet') }}">40</option>
+			  <option id="selector_60" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ page_omim ~ ',' ~ page_gene ~ ',' ~ page_case, '60,' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ cs_case ~ ',orphanet') }}">60</option>
+			  <option id="selector_100" value="{{ url_for_search_page(str_phenotypes, str_genes, '1,' ~ page_omim ~ ',' ~ page_gene ~ ',' ~ page_case, '100,' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ cs_case ~ ',orphanet') }}" selected>100</option>
 			  {% endif %}
 			</select>
 			{{ _('search_label_perpage') }}
@@ -874,9 +881,6 @@
 		  </table>
                   <!-- END: Show result table -->
 
-                  <!--/div-->
-                  <!--/div-->
-
 		  <!-- START: Pagination lower_part -->
 		  <table width="100%" height="120">
 		    <tr>
@@ -884,21 +888,21 @@
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<ul class="pagination">
 			  {% if pagination.has_prev %}
-			  <li align="center"><a href="{{ url_for_search_page(str_phenotypes, str_genes, (page_orphanet|int - 1) ~ ',' ~ page_omim ~ ',' ~ page_gene, cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ 'orphanet') }}">&laquo;</a></li>
+			  <li align="center"><a href="{{ url_for_search_page(str_phenotypes, str_genes, (page_orphanet|int - 1) ~ ',' ~ page_omim ~ ',' ~ page_gene ~ ',' ~ page_case, cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ cs_case ~ ',' ~ 'orphanet') }}">&laquo;</a></li>
 			  {% endif %}
 			  {%- for page in pagination.iter_pages() %}
 			  {% if page %}
 			  {% if page != pagination.page %}
-			  <li align="center"><a href="{{ url_for_search_page(str_phenotypes, str_genes, page ~ ',' ~ page_omim ~ ',' ~ page_gene, cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ 'orphanet') }}">{{ page }}</a></li>
+			  <li align="center"><a href="{{ url_for_search_page(str_phenotypes, str_genes, page ~ ',' ~ page_omim ~ ',' ~ page_gene ~ ',' ~ page_case, cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ cs_case ~ ',' ~ 'orphanet') }}">{{ page }}</a></li>
 			  {% else %}
 			  <li align="center" class="active"><a href="#">{{ page }}</a></li>
 			  {% endif %}
 			  {% else %}
-			  <li align="center"><span style="border : 0px">…</span></l
+			  <li align="center"><span style="border : 0px">…</span></i>
                           {% endif %}
                           {%- endfor %}
                           {% if pagination.has_next %}
-                          <li align="center"><a href="{{ url_for_search_page(str_phenotypes, str_genes, (page_orphanet|int + 1) ~ ',' ~ page_omim ~ ',' ~ page_gene, cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ 'orphanet') }}">&raquo;</a></li>
+                          <li align="center"><a href="{{ url_for_search_page(str_phenotypes, str_genes, (page_orphanet|int + 1) ~ ',' ~ page_omim ~ ',' ~ page_gene ~ ',' ~ page_case, cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ cs_case ~ ',' ~ 'orphanet') }}">&raquo;</a></li>
 			  {% endif %}
 			</ul>
 		      </td>
@@ -937,12 +941,12 @@
 		      <td align="middle" valign="middle">
 			<ul class="pagination">
 			  {% if pagination_gene.has_prev %}
-			  <li align="center"><a href="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',' ~ (page_gene|int - 1), cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ 'gene') }}">&laquo;</a></li>
+			  <li align="center"><a href="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',' ~ (page_gene|int - 1) ~ ',' ~ page_case, cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ cs_case ~ ',' ~ 'gene') }}">&laquo;</a></li>
 			  {% endif %}
 			  {%- for page in pagination_gene.iter_pages() %}
 			  {% if page %}
 			  {% if page != pagination_gene.page %}
-		          <li align="center"><a href="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',' ~ page, cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ 'gene') }}">{{ page }}</a></li>
+		          <li align="center"><a href="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',' ~ page ~ ',' ~ page_case, cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ cs_case ~ ',' ~ 'gene') }}">{{ page }}</a></li>
 			  {% else %}
 		          <li align="center" class="active"><a href="#">{{ page }}</a></li>
 			  {% endif %}
@@ -951,10 +955,10 @@
                           {% endif %}
                           {%- endfor %}
                           {% if pagination_gene.has_next %}
-                          <li align="center"><a href="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',' ~ (page_gene|int + 1), cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ 'gene') }}">&raquo;</a></li>
+                          <li align="center"><a href="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',' ~ (page_gene|int + 1) ~ ',' ~ page_case, cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ cs_case ~ ',' ~ 'gene') }}">&raquo;</a></li>
 			  {% endif %}
-			</ul>
-		      </td>
+                        </ul>
+                      </td>
 		      <!-- END: Pagination upper_part -->
 
 		      <!-- START: Show selector for "per page" -->
@@ -965,39 +969,39 @@
 			<!-- http://qiita.com/act823/items/3a203f1f96e7fe52f69d -->
 			<select id="changesize_selector_gene_link" name="changesize_selector_gene_link" onchange="changesize_gene()">
 			  {% if cs_gene == "10" %}
-			  <option id="selector_10" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',1', cs ~ ',' ~ cs_omim ~ ',10,gene') }}" selected>10</option>
-			  <option id="selector_20" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',1', cs ~ ',' ~ cs_omim ~ ',20,gene') }}">20</option>
-			  <option id="selector_40" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',1', cs ~ ',' ~ cs_omim ~ ',40,gene') }}">40</option>
-			  <option id="selector_60" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',1', cs ~ ',' ~ cs_omim ~ ',60,gene') }}">60</option>
-			  <option id="selector_100" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',1', cs ~ ',' ~ cs_omim ~ ',100,gene') }}">100</option>
+			  <option id="selector_10" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',1,' ~ page_case, cs ~ ',' ~ cs_omim ~ ',10,' ~ cs_case ~ ',gene') }}" selected>10</option>
+			  <option id="selector_20" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',1,' ~ page_case, cs ~ ',' ~ cs_omim ~ ',20,' ~ cs_case ~ ',gene') }}">20</option>
+			  <option id="selector_40" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',1,' ~ page_case, cs ~ ',' ~ cs_omim ~ ',40,' ~ cs_case ~ ',gene') }}">40</option>
+			  <option id="selector_60" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',1,' ~ page_case, cs ~ ',' ~ cs_omim ~ ',60,' ~ cs_case ~ ',gene') }}">60</option>
+			  <option id="selector_100" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',1,' ~ page_case, cs ~ ',' ~ cs_omim ~ ',100,' ~ cs_case ~ ',gene') }}">100</option>
 			  {% endif %}
 			  {% if cs_gene == "20" %}
-			  <option id="selector_10" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',1', cs ~ ',' ~ cs_omim ~ ',10,gene') }}">10</option>
-			  <option id="selector_20" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',1', cs ~ ',' ~ cs_omim ~ ',20,gene') }}" selected>20</option>
-			  <option id="selector_40" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',1', cs ~ ',' ~ cs_omim ~ ',40,gene') }}">40</option>
-			  <option id="selector_60" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',1', cs ~ ',' ~ cs_omim ~ ',60,gene') }}">60</option>
-			  <option id="selector_100" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',1', cs ~ ',' ~ cs_omim ~ ',100,gene') }}">100</option>
+			  <option id="selector_10" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',1,' ~ page_case, cs ~ ',' ~ cs_omim ~ ',10,' ~ cs_case ~ ',gene') }}">10</option>
+			  <option id="selector_20" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',1,' ~ page_case, cs ~ ',' ~ cs_omim ~ ',20,' ~ cs_case ~ ',gene') }}" selected>20</option>
+			  <option id="selector_40" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',1,' ~ page_case, cs ~ ',' ~ cs_omim ~ ',40,' ~ cs_case ~ ',gene') }}">40</option>
+			  <option id="selector_60" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',1,' ~ page_case, cs ~ ',' ~ cs_omim ~ ',60,' ~ cs_case ~ ',gene') }}">60</option>
+			  <option id="selector_100" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',1,' ~ page_case, cs ~ ',' ~ cs_omim ~ ',100,' ~ cs_case ~ ',gene') }}">100</option>
 			  {% endif %}
 			  {% if cs_gene == "40" %}
-			  <option id="selector_10" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',1', cs ~ ',' ~ cs_omim ~ ',10,gene') }}">10</option>
-			  <option id="selector_20" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',1', cs ~ ',' ~ cs_omim ~ ',20,gene') }}">20</option>
-			  <option id="selector_40" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',1', cs ~ ',' ~ cs_omim ~ ',40,gene') }}" selected>40</option>
-			  <option id="selector_60" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',1', cs ~ ',' ~ cs_omim ~ ',60,gene') }}">60</option>
-			  <option id="selector_100" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',1', cs ~ ',' ~ cs_omim ~ ',100,gene') }}">100</option>
+			  <option id="selector_10" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',1,' ~ page_case, cs ~ ',' ~ cs_omim ~ ',10,' ~ cs_case ~ ',gene') }}">10</option>
+			  <option id="selector_20" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',1,' ~ page_case, cs ~ ',' ~ cs_omim ~ ',20,' ~ cs_case ~ ',gene') }}">20</option>
+			  <option id="selector_40" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',1,' ~ page_case, cs ~ ',' ~ cs_omim ~ ',40,' ~ cs_case ~ ',gene') }}" selected>40</option>
+			  <option id="selector_60" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',1,' ~ page_case, cs ~ ',' ~ cs_omim ~ ',60,' ~ cs_case ~ ',gene') }}">60</option>
+			  <option id="selector_100" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',1,' ~ page_case, cs ~ ',' ~ cs_omim ~ ',100,' ~ cs_case ~ ',gene') }}">100</option>
 			  {% endif %}
 			  {% if cs_gene == "60" %}
-			  <option id="selector_10" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',1', cs ~ ',' ~ cs_omim ~ ',10,gene') }}">10</option>
-			  <option id="selector_20" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',1', cs ~ ',' ~ cs_omim ~ ',20,gene') }}">20</option>
-			  <option id="selector_40" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',1', cs ~ ',' ~ cs_omim ~ ',40,gene') }}">40</option>
-			  <option id="selector_60" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',1', cs ~ ',' ~ cs_omim ~ ',60,gene') }}" selected>60</option>
-			  <option id="selector_100" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',1', cs ~ ',' ~ cs_omim ~ ',100,gene') }}">100</option>
+			  <option id="selector_10" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',1,' ~ page_case, cs ~ ',' ~ cs_omim ~ ',10,' ~ cs_case ~ ',gene') }}">10</option>
+			  <option id="selector_20" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',1,' ~ page_case, cs ~ ',' ~ cs_omim ~ ',20,' ~ cs_case ~ ',gene') }}">20</option>
+			  <option id="selector_40" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',1,' ~ page_case, cs ~ ',' ~ cs_omim ~ ',40,' ~ cs_case ~ ',gene') }}">40</option>
+			  <option id="selector_60" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',1,' ~ page_case, cs ~ ',' ~ cs_omim ~ ',60,' ~ cs_case ~ ',gene') }}" selected>60</option>
+			  <option id="selector_100" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',1,' ~ page_case, cs ~ ',' ~ cs_omim ~ ',100,' ~ cs_case ~ ',gene') }}">100</option>
 			  {% endif %}
 			  {% if cs_gene == "100" %}
-			  <option id="selector_10" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',1', cs ~ ',' ~ cs_omim ~ ',10,gene') }}">10</option>
-			  <option id="selector_20" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',1', cs ~ ',' ~ cs_omim ~ ',20,gene') }}">20</option>
-			  <option id="selector_40" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',1', cs ~ ',' ~ cs_omim ~ ',40,gene') }}">40</option>
-			  <option id="selector_60" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',1', cs ~ ',' ~ cs_omim ~ ',60,gene') }}">60</option>
-			  <option id="selector_100" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',1', cs ~ ',' ~ cs_omim ~ ',100,gene') }}" selected>100</option>
+			  <option id="selector_10" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',1,' ~ page_case, cs ~ ',' ~ cs_omim ~ ',10,' ~ cs_case ~ ',gene') }}">10</option>
+			  <option id="selector_20" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',1,' ~ page_case, cs ~ ',' ~ cs_omim ~ ',20,' ~ cs_case ~ ',gene') }}">20</option>
+			  <option id="selector_40" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',1,' ~ page_case, cs ~ ',' ~ cs_omim ~ ',40,' ~ cs_case ~ ',gene') }}">40</option>
+			  <option id="selector_60" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',1,' ~ page_case, cs ~ ',' ~ cs_omim ~ ',60,' ~ cs_case ~ ',gene') }}">60</option>
+			  <option id="selector_100" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',1,' ~ page_case, cs ~ ',' ~ cs_omim ~ ',100,' ~ cs_case ~ ',gene') }}" selected>100</option>
 			  {% endif %}
 			</select>
 			{{ _('search_label_perpage') }}
@@ -1209,12 +1213,12 @@
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<ul class="pagination">
 			  {% if pagination_gene.has_prev %}
-			  <li align="center"><a href="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',' ~ (page_gene|int - 1), cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ 'gene') }}">&laquo;</a></li>
+			  <li align="center"><a href="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',' ~ (page_gene|int - 1) ~ ',' ~ page_case, cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ cs_case ~ ',' ~ 'gene') }}">&laquo;</a></li>
 			  {% endif %}
 			  {%- for page in pagination_gene.iter_pages() %}
 			  {% if page %}
 			  {% if page != pagination_gene.page %}
-		          <li align="center"><a href="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',' ~ page, cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ 'gene') }}">{{ page }}</a></li>
+		          <li align="center"><a href="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',' ~ page ~ ',' ~ page_case, cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ cs_case ~ ',' ~ 'gene') }}">{{ page }}</a></li>
 			  {% else %}
 		          <li align="center" class="active"><a href="#">{{ page }}</a></li>
 			  {% endif %}
@@ -1223,7 +1227,7 @@
                           {% endif %}
                           {%- endfor %}
                           {% if pagination_gene.has_next %}
-                          <li align="center"><a href="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',' ~ (page_gene|int + 1), cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ 'gene') }}">&raquo;</a></li>
+                          <li align="center"><a href="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',' ~ (page_gene|int + 1) ~ ',' ~ page_case, cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ cs_case ~ ',' ~ 'gene') }}">&raquo;</a></li>
 			  {% endif %}
                         </ul>
                       </td>
@@ -1235,9 +1239,208 @@
               {% endif %}
               <!-- END: gene tab -->
             </div>
-            <!-- END: select the tab status of gene -->
+            <!-- END: select the tab status of Gene -->
 
 
+	    <!-- START: select the tab status of Case -->
+	    {% if active_tab == "case" %}
+            <div class="tab-pane fade in active" id="tab4default">
+            {% else %}
+	    <div class="tab-pane fade" id="tab4default">
+            {% endif %}
+
+	      {% if active_tab == "case" %}
+              <!-- START: Case tab -->
+	      <div clas="row">
+		<div class="col-sm-12">
+		  <table width="100%" height="60">
+		    <tr>
+		      <!-- START: Show total number -->
+		      <td align="left" valign="top" width="230">
+			<p><br></p>
+			<p>{{ _('search_label_total') }}: <font size="4" color="black"><b>{{ total_hit_case }}</b></font> {{ _('search_label_case') }}</p>
+		      </td>
+		      <!-- END: Show total number -->
+
+		      <!-- START: Pagination upper_part -->
+		      <td align="middle" valign="middle">
+			<ul class="pagination">
+			  {% if pagination_case.has_prev %}
+			  <li align="center"><a href="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',' ~ page_gene ~ ',' ~ (page_case|int - 1), cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ cs_case ~ ',' ~ 'case') }}">&laquo;</a></li>
+			  {% endif %}
+			  {%- for page in pagination_case.iter_pages() %}
+			  {% if page %}
+			  {% if page != pagination_case.page %}
+		          <li align="center"><a href="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_case ~ ',' ~ page_gene ~ ',' ~ page, cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ cs_case ~ ',' ~ 'case') }}">{{ page }}</a></li>
+			  {% else %}
+		          <li align="center" class="active"><a href="#">{{ page }}</a></li>
+			  {% endif %}
+			  {% else %}
+			  <li align="center"><span style="border : 0px">…</span></l
+                          {% endif %}
+                          {%- endfor %}
+                          {% if pagination_case.has_next %}
+                          <li align="center"><a href="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',' ~ page_gene ~ ',' ~ (page_case|int + 1), cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ cs_case ~ ',' ~ 'case') }}">&raquo;</a></li>
+			  {% endif %}
+			</ul>
+		      </td>
+		      <!-- END: Pagination upper_part -->
+
+		      <!-- START: Show selector for "per page" -->
+		      <input type="hidden" name="page_case" value="{{ page_case }}">
+		      <input type="hidden" name="changesize_selector_case" value="{{ cs_case }}">
+		      <td align="right" valign="top" width="200">
+			<p><br></p>
+			<!-- http://qiita.com/act823/items/3a203f1f96e7fe52f69d -->
+			<select id="changesize_selector_case_link" name="changesize_selector_case_link" onchange="changesize_case()">
+			  {% if cs_case == "10" %}
+			  <option id="selector_10" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',' ~ page_gene ~ ',1', cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',10,case') }}" selected>10</option>
+			  <option id="selector_20" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',' ~ page_gene ~ ',1', cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',20,case') }}">20</option>
+			  <option id="selector_40" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',' ~ page_gene ~ ',1', cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',40,case') }}">40</option>
+			  <option id="selector_60" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',' ~ page_gene ~ ',1', cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',60,case') }}">60</option>
+			  <option id="selector_100" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',' ~ page_gene ~ ',1', cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',100,case') }}">100</option>
+			  {% endif %}
+			  {% if cs_case == "20" %}
+			  <option id="selector_10" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',' ~ page_gene ~ ',1', cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',10,case') }}">10</option>
+			  <option id="selector_20" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',' ~ page_gene ~ ',1', cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',20,case') }}" selected>20</option>
+			  <option id="selector_40" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',' ~ page_gene ~ ',1', cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',40,case') }}">40</option>
+			  <option id="selector_60" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',' ~ page_gene ~ ',1', cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',60,case') }}">60</option>
+			  <option id="selector_100" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',' ~ page_gene ~ ',1', cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',100,case') }}">100</option>
+			  {% endif %}
+			  {% if cs_case == "40" %}
+			  <option id="selector_10" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',' ~ page_gene ~ ',1', cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',10,case') }}">10</option>
+			  <option id="selector_20" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',' ~ page_gene ~ ',1', cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',20,case') }}">20</option>
+			  <option id="selector_40" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',' ~ page_gene ~ ',1', cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',40,case') }}" selected>40</option>
+			  <option id="selector_60" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',' ~ page_gene ~ ',1', cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',60,case') }}">60</option>
+			  <option id="selector_100" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',' ~ page_gene ~ ',1', cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',100,case') }}">100</option>
+			  {% endif %}
+			  {% if cs_case == "60" %}
+			  <option id="selector_10" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',' ~ page_gene ~ ',1', cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',10,case') }}">10</option>
+			  <option id="selector_20" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',' ~ page_gene ~ ',1', cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',20,case') }}">20</option>
+			  <option id="selector_40" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',' ~ page_gene ~ ',1', cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',40,case') }}">40</option>
+			  <option id="selector_60" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',' ~ page_gene ~ ',1', cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',60,case') }}" selected>60</option>
+			  <option id="selector_100" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',' ~ page_gene ~ ',1', cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',100,case') }}">100</option>
+			  {% endif %}
+			  {% if cs_case == "100" %}
+			  <option id="selector_10" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',' ~ page_gene ~ ',1', cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',10,case') }}">10</option>
+			  <option id="selector_20" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',' ~ page_gene ~ ',1', cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',20,case') }}">20</option>
+			  <option id="selector_40" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',' ~ page_gene ~ ',1', cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',40,case') }}">40</option>
+			  <option id="selector_60" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',' ~ page_gene ~ ',1', cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',60,case') }}">60</option>
+			  <option id="selector_100" value="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',' ~ page_gene ~ ',1', cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',100,case') }}" selected>100</option>
+			  {% endif %}
+			</select>
+			{{ _('search_label_perpage') }}
+		      </td>
+		      <!-- END: Show selector for "per page" -->
+		    </tr>
+		  </table>
+
+		  <!-- START: Show result table -->
+		  <br>
+		  <table class="table table-striped">
+		    <thead>
+		      <tr>
+			<th style="width:100px;" class="text-left">{{ _('search_label_rank') }}<br>{{ _('search_label_similarity') }}</th>
+			<th style="width:200px;" class="text-left">{{ _('search_label_DiseaseName') }}</th>
+			<th>
+			  <div align="right">
+			    <span class="label label-primary"><font size="3"><b>{{ _('search_label_MatchedPhenotype') }}</b></font></span>&nbsp;
+			    <span class="label label-default"><font size="3"><b>{{ _('search_label_MatchedGene') }}</b></font></span>&nbsp;
+			    <span class="label label-success"><font size="3"><b>{{ _('search_label_Inheritance') }}</b></font></span><br>
+			  </div>
+			</th>
+		      </tr>
+		    </thead>
+		    <tbody>
+		      <!-- http://tnakamura.hatenablog.com/entry/20110608/jinja2_for_loop_index -->
+                      {% for dict_similar_case in list_dict_similar_case %}
+		      <tr>
+			<!-- Rank -->
+			<!-- Similarity -->
+			<td width="10">
+			  <p style="margin-top:0.6em;margin-bottom:0.6em;">
+			    {{ dict_similar_case['rank'] }}<br>({{ (dict_similar_case['match_score']*100)|round(1) }}%)
+			  </p>
+			</td>
+			<!-- Case Id -->
+			<td>
+			  <p style="margin-top:0.6em;margin-bottom:0.6em;">
+			    <a href="{{ dict_similar_case['source'] }}" target="_blank">
+			      {{ dict_similar_case['case_id'] }}
+			    </a>
+			  </p>
+			</td>
+			<td>
+			  <!-- Matched Phenotypes -->
+			  <p style="margin-top:0.6em;margin-bottom:0.6em;">
+			  <p style="margin-bottom:0.6em;">
+			    {% set dict_prev_id = {} %}
+			    {% for dict_onto_id_term_hp_case in dict_similar_case['onto_id_term_hp_case'] %}
+		            {% if not dict_onto_id_term_hp_case['onto_id_hp_case'] in dict_prev_id %}
+		            <span class="label label-primary"><font size="3"><a target="_blank" style="color:white;" href="https://hpo.jax.org/app/browse/term/{{ dict_onto_id_term_hp_case['onto_id_hp_case'] }}">{{ dict_onto_id_term_hp_case['onto_term_hp_case'] }}</a></font></span>
+			    {%- if dict_prev_id.update({dict_onto_id_term_hp_case['onto_id_hp_case']:True}) %}{%- endif %}
+		            {% endif %}
+			    {% endfor %}
+			  </p>
+			  <!-- Causative Genes -->
+			  {% set prev_id = "" %}
+			  {% for dict_case_symbol_synonym in dict_similar_case['case_symbol_synonym'] %}
+		          {% if prev_id != dict_case_symbol_synonym['entrez_id'] %}
+		          <span class="btn-group">
+			    <button class="label label-default" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			      <font size="3" color="white">{{ dict_case_symbol_synonym['symbol'] }}</font>
+			    </button>
+			    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+			      <a class="dropdown-item" href="https://www.ncbi.nlm.nih.gov/research/pubtator/?view=docsum&query={{ dict_case_symbol_synonym['symbol'] }}" target="_blank"><font size="3" color="#0431B4"><u>PubTator</u></font></a><br>
+			      <a class="dropdown-item" href="https://www.ncbi.nlm.nih.gov/clinvar/?term={{ dict_case_symbol_synonym['symbol'] }}%5Bgene%5D" target="_blank"><font size="3" color="#0431B4"><u>ClinVar</u></font></a><br>
+			      <a class="dropdown-item" href="http://www.hgmd.cf.ac.uk/ac/gene.php?gene={{ dict_case_symbol_synonym['symbol'] }}" target="_blank"><font size="3" color="#0431B4"><u>HGMD</u></font></a>
+			    </div>
+		          </span>
+		          {% set prev_id = dict_case_symbol_synonym['entrez_id'] %}
+			  {% endif %}
+			  {% endfor %}
+			  </p>
+			</td>
+		      </tr>
+		      {% endfor %}
+		    </tbody>
+		  </table>
+		  <!-- END: Show result table -->
+	      
+		  <!-- START: Pagination lower_part -->
+		  <table width="100%" height="120">
+		    <tr>
+		      <td align="middle" valign="middle">
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<ul class="pagination">
+			  {% if pagination_case.has_prev %}
+			  <li align="center"><a href="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',' ~ page_gene ~ ',' ~ (page_case|int - 1), cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ cs_case ~ ',' ~ 'case') }}">&laquo;</a></li>
+			  {% endif %}
+			  {%- for page in pagination_case.iter_pages() %}
+			  {% if page %}
+			  {% if page != pagination_case.page %}
+		          <li align="center"><a href="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_case ~ ',' ~ page_gene ~ ',' ~ page, cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ cs_case ~ ',' ~ 'case') }}">{{ page }}</a></li>
+			  {% else %}
+		          <li align="center" class="active"><a href="#">{{ page }}</a></li>
+			  {% endif %}
+			  {% else %}
+			  <li align="center"><span style="border : 0px">…</span></l
+                          {% endif %}
+                          {%- endfor %}
+                          {% if pagination_case.has_next %}
+                          <li align="center"><a href="{{ url_for_search_page(str_phenotypes, str_genes, page_orphanet ~ ',' ~ page_omim ~ ',' ~ page_gene ~ ',' ~ (page_case|int + 1), cs ~ ',' ~ cs_omim ~ ',' ~ cs_gene ~ ',' ~ cs_case ~ ',' ~ 'case') }}">&raquo;</a></li>
+			  {% endif %}
+			</ul>
+		      </td>
+                    </tr>
+                  </table>
+                  <!-- END: Pagination lower_part -->
+		</div>
+              </div>
+              {% endif %}
+              <!-- END: OMIM tab -->
+            </div>
+            <!-- END: select the tab status of Case -->
 
           </div>
         </div>
@@ -1335,6 +1538,10 @@
       }
       function changesize_gene() {
       var browser = document.search.changesize_selector_gene_link.value;
+        location.href = browser
+      }
+      function changesize_case() {
+      var browser = document.search.changesize_selector_case_link.value;
         location.href = browser
       }
 </script>
