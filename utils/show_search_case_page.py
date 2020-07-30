@@ -85,7 +85,11 @@ def search_similar_case(str_phenotypes, str_genes):
         source             = value[1]
         AnnotationHPONum   = value[2]
         AnnotationHPOSumIC = value[3]
-        dict_source[case_id]             = source
+
+        if "MyGene2" in source:
+            dict_source[case_id] = source.replace('api/public/family/fullprofile', 'familyprofile') + "/profile"
+        else:
+            dict_source[case_id] = source
         dict_AnnotationHPONum[case_id]   = AnnotationHPONum
         dict_AnnotationHPOSumIC[case_id] = AnnotationHPOSumIC
 
