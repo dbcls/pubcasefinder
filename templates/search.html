@@ -1365,7 +1365,7 @@
 			<!-- Case Id -->
 			<td>
 			  <p style="margin-top:0.6em;margin-bottom:0.6em;">
-			    <a href="{{ dict_similar_case['source'] }}" target="_blank">
+			    <a href="{{ dict_similar_case['source'] | replace('api/public/family/fullprofile', 'familyprofile') ~ '/profile' }}" target="_blank">
 			      {{ dict_similar_case['case_id'] }}
 			    </a>
 			  </p>
