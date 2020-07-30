@@ -380,7 +380,7 @@ def search_POST():
 
     if request.method == 'POST':
         # changesize_selector
-        size = '10,10,10,omim'
+        size = '10,10,10,10,omim'
 
         # requestオブジェクトからクエリのphenotypesを取得
         phenotypes = request.form['str_phenotypes']
@@ -492,7 +492,7 @@ def search_POST():
         genes = re.sub(r',+$', '', genes)
 
         # ページ初期値
-        page='1,1,1'
+        page='1,1,1,1'
 
         # POSTメソッドをRESTのURLにredirect
         # httpsに対応するためにurl_forのオプション（_external, _scheme）を設定
