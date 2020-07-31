@@ -216,6 +216,9 @@ msgstr "疾患名"
 msgid "search_label_Gene"
 msgstr "遺伝子"
 
+msgid "search_label_Case"
+msgstr "症例"
+
 msgid "search_label_DiseaseID"
 msgstr "（疾患ID）"
 

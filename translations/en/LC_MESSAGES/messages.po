@@ -216,6 +216,9 @@ msgstr "Disease Name"
 msgid "search_label_Gene"
 msgstr "Gene"
 
+msgid "search_label_Case"
+msgstr "Case"
+
 msgid "search_label_DiseaseID"
 msgstr "(Disease ID)"
 
