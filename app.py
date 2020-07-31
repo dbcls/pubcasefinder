@@ -171,25 +171,9 @@ def pubcasefinder_api_en():
 @app.route('/datasets')
 def datasets():
     if get_locale() == "ja" or get_locale() == "ja_JP":
-        return render_template('/datasets/datasets_ja_v1.1.html')
+        return render_template('/datasets/v1.3.0/datasets_ja.html')
     else:
-        return render_template('/datasets/datasets_en_v1.1.html')
-
-
-#####
-# datasets in English
-## GET: 
-@app.route('/datasets_en')
-def datasets_en():
-    return render_template('/datasets/datasets_en_v1.1.html')
-
-
-#####
-# datasets in Japanese
-## GET:
-@app.route('/datasets_ja')
-def datasets_ja():
-    return render_template('/datasets/datasets_ja_v1.1.html')
+        return render_template('/datasets/v1.3.0/datasets_en.html')
 
 
 #####
@@ -201,22 +185,6 @@ def history():
         return render_template('history_ja.html')
     else:
         return render_template('history_en.html')
-
-
-#####
-# history in English
-## GET: 
-@app.route('/history_en')
-def history_en():
-    return render_template('history_en.html')
-
-
-#####
-# history in Japanese
-## GET:
-@app.route('/history_ja')
-def history_ja():
-    return render_template('history_ja.html')
 
 
 #####
