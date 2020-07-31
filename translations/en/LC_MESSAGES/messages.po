@@ -163,7 +163,7 @@ msgid "search_tab_gene"
 msgstr "<b>Causative Genes</b>"
 
 msgid "search_tab_case"
-msgstr "<b>Cases (WWW)</b>"
+msgstr "<b>Public Cases</b>"
 
 msgid "search_button_download_summary"
 msgstr "Download summary of results"

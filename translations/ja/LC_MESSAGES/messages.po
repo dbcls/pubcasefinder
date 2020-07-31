@@ -163,7 +163,7 @@ msgid "search_tab_gene"
 msgstr "<b>疾患原因遺伝子</b>"
 
 msgid "search_tab_case"
-msgstr "<b>症例 (WWW)</b>"
+msgstr "<b>公開症例</b>"
 
 msgid "search_label_total"
 msgstr "合計"
