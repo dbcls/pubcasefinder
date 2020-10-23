@@ -4,10 +4,10 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2018.
 #
 msgid "base_title"
-msgstr "希少疾患診断支援システム : PubCaseFinder"
+msgstr "希少・遺伝性疾患検索システム : PubCaseFinder"
 
 msgid "base_description"
-msgstr "患者の症状を入力するだけで、約4000の希少疾患を関連性の高い順にランキングする希少疾患診断支援システム。疾患毎に過去の症例も合わせて検索できます。"
+msgstr "患者の症状を入力すると、約7000件の遺伝性疾患と約4000の希少疾患を関連性の高い順にランキングする希少・遺伝性疾患検索システム。疾患毎に過去の症例も合わせて検索できます。"
 
 msgid "Update"
 msgstr "最終更新日：2018年9月25日"
@@ -139,7 +139,7 @@ msgid "index_stat_list"
 msgstr "一覧"
 
 msgid "index_label_intro_title"
-msgstr "<b>希少疾患・症例を効率良く検索できる希少疾患診断支援システム</b>"
+msgstr "<b>希少疾患・症例を効率良く検索できる希少・遺伝性疾患検索システム</b>"
 
 msgid "index_label_citation"
 msgstr "When you use PubCaseFinder in your publications, please cite:"
