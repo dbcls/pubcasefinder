@@ -236,42 +236,42 @@ def REST_API_search_phenotypes_genes(phenotypes="", genes="", page="", size=""):
         # process query : page
         list_pages = page.split(",")
         if len(list_pages) == 4:
-            page_orphanet = list_pages[0]
-            page_omim     = list_pages[1]
-            page_gene     = list_pages[2]
-            page_case     = list_pages[3]
+            page_orphanet = list_pages[0] if list_pages[0].isdecimal() else page_orphanet
+            page_omim     = list_pages[1] if list_pages[1].isdecimal() else page_omim
+            page_gene     = list_pages[2] if list_pages[2].isdecimal() else page_gene
+            page_case     = list_pages[3] if list_pages[3].isdecimal() else page_case
         elif len(list_pages) == 3:
-            page_orphanet = list_pages[0]
-            page_omim     = list_pages[1]
-            page_gene     = list_pages[2]
+            page_orphanet = list_pages[0] if list_pages[0].isdecimal() else page_orphanet
+            page_omim     = list_pages[1] if list_pages[1].isdecimal() else page_omim
+            page_gene     = list_pages[2] if list_pages[2].isdecimal() else page_gene
         elif len(list_pages) == 2:
-            page_orphanet = list_pages[0]
-            page_omim     = list_pages[1]
+            page_orphanet = list_pages[0] if list_pages[0].isdecimal() else page_orphanet
+            page_omim     = list_pages[1] if list_pages[1].isdecimal() else page_omim
         elif len(list_pages) == 1:
-            page_orphanet = list_pages[0]
+            page_orphanet = list_pages[0] if list_pages[0].isdecimal() else page_orphanet
 
         # process query : size
         list_sizes = size.split(",")
         if len(list_sizes) == 5:
-            size_orphanet = list_sizes[0]
-            size_omim     = list_sizes[1]
-            size_gene     = list_sizes[2]
-            size_case     = list_sizes[3]
+            size_orphanet = list_sizes[0] if list_sizes[0].isdecimal() else size_orphanet
+            size_omim     = list_sizes[1] if list_sizes[1].isdecimal() else size_omim
+            size_gene     = list_sizes[2] if list_sizes[2].isdecimal() else size_gene
+            size_case     = list_sizes[3] if list_sizes[3].isdecimal() else size_case
             active_tab    = list_sizes[4]
         elif len(list_sizes) == 4:
-            size_orphanet = list_sizes[0]
-            size_omim     = list_sizes[1]
-            size_gene     = list_sizes[2]
+            size_orphanet = list_sizes[0] if list_sizes[0].isdecimal() else size_orphanet
+            size_omim     = list_sizes[1] if list_sizes[1].isdecimal() else size_omim
+            size_gene     = list_sizes[2] if list_sizes[2].isdecimal() else size_gene
             active_tab    = list_sizes[3]
         elif len(list_sizes) == 3:
-            size_orphanet = list_sizes[0]
-            size_omim     = list_sizes[1]
+            size_orphanet = list_sizes[0] if list_sizes[0].isdecimal() else size_orphanet
+            size_omim     = list_sizes[1] if list_sizes[1].isdecimal() else size_omim
             active_tab    = list_sizes[2]
         elif len(list_sizes) == 2:
-            size_orphanet = list_sizes[0]
-            size_omim     = list_sizes[1]
+            size_orphanet = list_sizes[0] if list_sizes[0].isdecimal() else size_orphanet
+            size_omim     = list_sizes[1] if list_sizes[1].isdecimal() else size_omim
         elif len(list_sizes) == 1:
-            size_orphanet = list_sizes[0]
+            size_orphanet = list_sizes[0] if list_sizes[0].isdecimal() else size_orphanet
 
         # process query : phenotypes
         list_dict_phenotype, phenotypes_remove_error, phenotypes_remove_error_ja = process_input_phenotype(phenotypes)
