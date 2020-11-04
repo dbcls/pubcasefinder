@@ -154,16 +154,16 @@ msgid "search_label_upload_gene"
 msgstr "+ Upload File (Gene Symbol or Entrez Gene ID or Ensembl Gene ID)"
 
 msgid "search_tab_Orphanet"
-msgstr "<b>Rare Diseases (Orphanet)</b>"
+msgstr "<div style="letter-spacing: 0.1em; line-height: 2em;"><span class="icon-orphanet"></span><b>Rare Diseases</b></div>"
 
 msgid "search_tab_OMIM"
-msgstr "<b>Genetic Diseases (OMIM)</b>"
+msgstr "<div style="letter-spacing: 0.1em; line-height: 2em;"><span class="icon-omim"></span><b>Genetic Diseases</b></div>"
 
 msgid "search_tab_gene"
-msgstr "<b>Causative Genes</b>"
+msgstr "<div style="letter-spacing: 0.1em; line-height: 2em;"><span class="icon-cause"></span><b>Causative Genes</b></div>"
 
 msgid "search_tab_case"
-msgstr "<b>Public Cases</b>"
+msgstr "<div style="letter-spacing: 0.1em; line-height: 2em;"><span class="icon-users"></span><b>Public Cases</b></div>"
 
 msgid "search_button_download_summary"
 msgstr "Download summary of results"

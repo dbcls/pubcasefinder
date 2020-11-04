@@ -154,16 +154,16 @@ msgid "search_label_upload_gene"
 msgstr "+ Upload File (Gene Symbol or Entrez Gene ID or Ensembl Gene ID)"
 
 msgid "search_tab_Orphanet"
-msgstr "<b>希少疾患 (Orphanet)</b>"
+msgstr "<div style="letter-spacing: 0.2em; line-height: 2em;"><span class="icon-orphanet"></span><b>希少疾患</b></div>"
 
 msgid "search_tab_OMIM"
-msgstr "<b>遺伝性疾患 (OMIM)</b>"
+msgstr "<div style="letter-spacing: 0.2em; line-height: 2em;"><span class="icon-omim"></span><b>遺伝性疾患</b></div>"
 
 msgid "search_tab_gene"
-msgstr "<b>疾患原因遺伝子</b>"
+msgstr "<div style="letter-spacing: 0.2em; line-height: 2em;"><span class="icon-cause"></span><b>疾患原因遺伝子</b></div>"
 
 msgid "search_tab_case"
-msgstr "<b>公開症例</b>"
+msgstr "<div style="letter-spacing: 0.2em; line-height: 2em;"><span class="icon-users"></span><b>公開症例</b></div>"
 
 msgid "search_label_total"
 msgstr "合計"
