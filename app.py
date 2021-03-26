@@ -25,6 +25,7 @@ from utils.show_search_gene_page import show_search_gene_page
 from utils.show_search_case_page import show_search_case_page
 from utils.show_disease_casereport_page import show_disease_casereport_page
 from utils.show_phenotype_context_page import show_phenotype_context_page
+from utils.show_jstage_page import show_jstage_page
 from utils.check_input import process_input_phenotype, process_input_gene
 
 # API for MME
@@ -34,9 +35,20 @@ from utils.api_mme_omim import make_JSON_MME_omim, make_JSON_IRUD_omim, make_JSO
 # API for Orphanet
 from utils.api_orphanet import make_JSON_annotate
 
+# API for PhenoTouch
+from utils.api_get_hpo_by_text import search_hpo_by_text
+
 
 app = Flask(__name__)
 CORS(app)
+
+@app.after_request
+def after_request(response):
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization,session_id')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS,HEAD')
+    # The add method cannot be used here, otherwise the problem of The 'Access-Control-Allow-Origin' header contains multiple values ​​will appear.
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    return response
 
 app.secret_key = 'pubcasefinder1210'
 
@@ -89,6 +101,16 @@ app.jinja_env.globals['url_for_disease_casereport_page'] = url_for_disease_caser
 def url_for_show_phenotype_context_page(disease, phenotype, page, size):
     return url_for('REST_API_show_phenotype_context', disease=disease, phenotype=phenotype, page=page, size=size)
 app.jinja_env.globals['url_for_show_phenotype_context_page'] = url_for_show_phenotype_context_page
+
+
+
+#####
+# url_for_show_jstage_page()
+# Jinja2からこのメソッドを経由して、フェノタイプコンテキスト表示ページの各APIへアクセス
+#####
+def url_for_show_jstage_page(disease, page, size):
+    return url_for('REST_API_show_jstage', disease=disease, page=page, size=size)
+app.jinja_env.globals['url_for_show_jstage_page'] = url_for_show_jstage_page
 
 
 
@@ -571,6 +593,22 @@ def REST_API_show_phenotype_context(disease, phenotype, page, size):
                            size=size,
                            disease_definition=disease_definition,
                            phenotype_definition=phenotype_definition)
+
+
+
+#####
+# jstage page
+## GET: display jstage page
+@app.route('/jstage/disease:<string:disease>/page:<int:page>/size:<string:size>', methods=['GET'])
+def REST_API_show_jstage(disease, page, size):
+    term_disease, list_dict_jstage, pagination, total_hit = show_jstage_page(disease, page, size)
+    return render_template('jstage.html',
+                           id_disease=disease,
+                           term_disease=term_disease,
+                           list_dict_jstage=list_dict_jstage,
+                           pagination=pagination,
+                           total_hit=total_hit,
+                           size=size)
 
 
 
@@ -1279,5 +1317,24 @@ def validateFileSize(file):
 
 
 
+#####
+# text2hpo
+@app.route('/text2hpo')
+def text2hpo():
+   return render_template('text2hpo.html')
 
+
+
+#####
+# get_hpo_by_text
+@app.route('/get_hpo_by_text', methods=['POST'])
+def POST_API_GET_HPO_BY_TEXT():
+    if request.method == 'POST':
+        text = request.form['text']
+        if text == "":
+            return "none"
+    else:
+        return "none"
+    str_list_hpo = search_hpo_by_text(text)
+    return str_list_hpo
 

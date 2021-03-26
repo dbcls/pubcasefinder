@@ -302,7 +302,7 @@ def search_similar_disease(str_phenotypes, str_genes):
 
     # DiseaseGeneOMIMテーブルから各疾患に関連するGenes/Variantsを取得
     dict_disease_gene = {}
-    sql_DiseaseGeneOMIM = u"select OntoIDOMIM, EntrezID, Symbol, SymbolSynonym from DiseaseGeneOMIM"
+    sql_DiseaseGeneOMIM = u"select distinct OntoIDOMIM, EntrezID, Symbol, SymbolSynonym from DiseaseGeneOMIM"
     cursor_DiseaseGeneOMIM = OBJ_MYSQL.cursor()
     cursor_DiseaseGeneOMIM.execute(sql_DiseaseGeneOMIM)
     values = cursor_DiseaseGeneOMIM.fetchall()
@@ -331,7 +331,7 @@ def search_similar_disease(str_phenotypes, str_genes):
     # ユーザが指定した遺伝子を疾患原因遺伝子に持つ疾患をDiseaseGeneOMIMテーブルから取得
     dict_filter_disease_gene = {}
     if str_genes != "":
-        sql_DiseaseGeneOMIM = u"select OntoIDOMIM, EntrezID, Symbol, SymbolSynonym from DiseaseGeneOMIM where EntrezID in (%s)"
+        sql_DiseaseGeneOMIM = u"select distinct OntoIDOMIM, EntrezID, Symbol, SymbolSynonym from DiseaseGeneOMIM where EntrezID in (%s)"
         in_p=', '.join(map(lambda x: '%s', list_genes))
         sql_DiseaseGeneOMIM = sql_DiseaseGeneOMIM % in_p
         cursor_DiseaseGeneOMIM = OBJ_MYSQL.cursor()

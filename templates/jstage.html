@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+    <!-- START: main contents -->
+    <div id="fh5co-project">
+      <div class="container">
+
+        <h2>Case Reports in J-STAGE : <b><a target="_blank" href="https://monarchinitiative.org/disease/{{ id_disease }}">{{ term_disease }}</a></b></h2>
+	<br>
+
+	  <table width="100%" height="120">
+	    <tr>
+	      <!-- START: Show total number -->
+	      <td align="center" valign="top">
+		<p><br></p>
+		<p><font size="4" color="black">{{ _('search_label_total') }}: <b>{{ total_hit }}</b></font></p>
+	      </td>
+	      <!-- END: Show total number -->
+
+	      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+
+	      <!-- START: Pagination upper_part -->
+	      <td align="middle" valign="middle">
+		<ul class="pagination">
+		  {% if pagination.has_prev %}
+		    <li align="center"><a href="{{ url_for_show_jstage_page(id_disease, pagination.page - 1, size) }}">&laquo;</a></li>
+		  {% endif %}
+		  {%- for page in pagination.iter_pages() %}
+		    {% if page %}
+		      {% if page != pagination.page %}
+		        <li align="center"><a href="{{ url_for_show_jstage_page(id_disease, page, size) }}">{{ page }}</a></li>
+		      {% else %}
+		        <li align="center" class="active"><a href="#">{{ page }}</a></li>
+		      {% endif %}
+		    {% else %}
+		      <li align="center"><span style="border : 0px">…</span></l>
+                    {% endif %}
+		  {%- endfor %}
+                  {% if pagination.has_next %}
+                    <li align="center"><a href="{{ url_for_show_jstage_page(id_disease, pagination.page + 1, size) }}">&raquo;</a></li>
+		  {% endif %}
+                </ul>
+	      </td>
+              <!-- END: Pagination upper_part -->
+
+	      <!-- START: Show selector for "per page" -->
+              <td align="right" valign="top">
+		<p><br></p>
+		<!-- http://qiita.com/act823/items/3a203f1f96e7fe52f69d -->
+		<select id="changesize_selector" name="changesize_selector" onchange="window.document.location.href=this.options[this.selectedIndex].value;">
+		  {% if size == "20" %}
+		    <!--<option id="selector_20" value="20" selected>20</option>-->
+		    <option id="selector_20" selected="selected">20</option>
+		    <option id="selector_40" value="{{ url_for_show_jstage_page(id_disease, '1', '40') }}">40</option>
+		    <option id="selector_60" value="{{ url_for_show_jstage_page(id_disease, '1', '60') }}">60</option>
+		    <option id="selector_100" value="{{ url_for_show_jstage_page(id_disease, '1', '100') }}">100</option>
+		  {% endif %}
+		  {% if size == "40" %}
+		    <option id="selector_20" value="{{ url_for_show_jstage_page(id_disease, '1', '20') }}">20</option>
+		    <option id="selector_40" selected="selected">40</option>
+		    <option id="selector_60" value="{{ url_for_show_jstage_page(id_disease, '1', '60') }}">60</option>
+		    <option id="selector_100" value="{{ url_for_show_jstage_page(id_disease, '1', '100') }}">100</option>
+		  {% endif %}
+		  {% if size == "60" %}
+		    <option id="selector_20" value="{{ url_for_show_jstage_page(id_disease, '1', '20') }}">20</option>
+		    <option id="selector_40" value="{{ url_for_show_jstage_page(id_disease, '1', '40') }}">40</option>
+		    <option id="selector_60" selected="selected">60</option>
+		    <option id="selector_100" value="{{ url_for_show_jstage_page(id_disease, '1', '100') }}">100</option>
+		  {% endif %}
+		  {% if size == "100" %}
+		    <option id="selector_20" value="{{ url_for_show_jstage_page(id_disease, '1', '20') }}">20</option>
+		    <option id="selector_40" value="{{ url_for_show_jstage_page(id_disease, '1', '40') }}">40</option>
+		    <option id="selector_60" value="{{ url_for_show_jstage_page(id_disease, '1', '60') }}">60</option>
+		    <option id="selector_100" selected="selected">100</option>
+		  {% endif %}
+		</select>
+		{{ _('search_label_perpage') }}
+	      </td>
+	      <!-- END: Show selector for "per page" -->
+            </tr>
+          </table>
+	<!-- </form> -->
+        <!-- END: FORM -->
+
+        <!-- START: Show result table -->
+	<div clas="row">
+	  <div class="col-sm-12">
+	    <table class="table table-striped">
+	      <thead>
+		<tr>
+		  <th class="text-left">Date</th>
+		  <th class="text-left">Title</th>
+		</tr>
+	      </thead>
+	      <tbody>
+		<!-- http://tnakamura.hatenablog.com/entry/20110608/jinja2_for_loop_index -->
+                {% for dict_jstage in list_dict_jstage %}
+		  <tr>
+		    <!-- pdate -->
+		    <td>
+		      <font color="black">{{ dict_jstage['pdate'] }}</font>
+		    </td>
+		    <!-- title_ja -->
+		    <td>
+		      <a href="{{ dict_jstage['url_ja'] }}"><font color="#0431B4">{{ dict_jstage['title_ja'] }}</font></a><br>
+		    </td>
+		  </tr>
+		{% endfor %}
+	      </tbody>
+	    </table>
+	  </div><!--/.col-sm-12-->
+	</div><!--/row-->
+        <!-- END: Show result table -->
+
+      </div>
+    </div>
+    <!-- END: main contents -->
+
+
+    <!-- START: JavaScript -->
+    <!-- jQuery -->
+    <script src="/static/js/jquery.min.js"></script>
+    <!-- jQuery Easing -->
+    <script src="/static/js/jquery.easing.1.3.js"></script>
+    <!-- Bootstrap -->
+    <script src="/static/js/bootstrap.min.js"></script>
+    <!-- Waypoints -->
+    <script src="/static/js/jquery.waypoints.min.js"></script>
+    <!-- countTo -->
+    <script src="/static/js/jquery.countTo.js"></script>
+    <!-- Magnific Popup -->
+    <script src="/static/js/jquery.magnific-popup.min.js"></script>
+    <script src="/static/js/magnific-popup-options.js"></script>
+    <!-- Stellar -->
+    <script src="/static/js/jquery.stellar.min.js"></script>
+    <!-- Main -->
+    <script src="/static/js/main.js"></script>
+    <!-- END: JavaScript -->
+
+
+{% endblock %}

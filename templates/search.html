@@ -472,6 +472,12 @@
 			  {% endif %}
 	                  {% endfor %}
 			  {% endif %}
+			  <!-- link of JStage -->
+			  {% for dict_reference_source in dict_similar_disease_omim['reference_source'] %}
+		          {% if dict_reference_source['source'] == "MONDO" %}
+		          <a href="{{ url_for_show_jstage_page(dict_reference_source['reference'], 1, 20) }}" target="_blank"><u><font color="#0431B4">日本語症例報告（J-STAGE）</font></u></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			  {% endif %}
+			  {% endfor %}
 			  <!-- links of Googles -->
 			  <a href="http://www.google.com/search?q={{ dict_similar_disease_omim['onto_term_omim'] }}&tbm=isch" target="_blank"><u><font color="#0431B4">{{ _('search_label_search_image_google') }}</font></u></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			  <!-- link of Monarch -->
@@ -827,6 +833,12 @@
 			  <!-- External Resources -->
 			  <!-- link of Orphanet -->
 			  <a href="http://www.orpha.net/consor/cgi-bin/OC_Exp.php?Expert={{ dict_similar_disease['onto_id_ordo'] | replace('ORDO:', '') }}" target="_blank"><u><font color="#0431B4">{{ dict_similar_disease['onto_id_ordo'] | replace('ORDO:', 'Orphanet:') }}</font></u></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			  <!-- link of JStage -->
+			  {% for dict_reference_source in dict_similar_disease['reference_source'] %}
+		          {% if dict_reference_source['source'] == "MONDO" %}
+		          <a href="{{ url_for_show_jstage_page(dict_reference_source['reference'], 1, 20) }}" target="_blank"><u><font color="#0431B4">日本語症例報告（J-STAGE）</font></u></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			  {% endif %}
+			  {% endfor %}
 			  <!-- link of Google -->
 			  <a href="http://www.google.com/search?q={{ dict_similar_disease['onto_term_ordo'] }}&tbm=isch" target="_blank"><u><font color="#0431B4">{{ _('search_label_search_image_google') }}</font></u></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			  <!-- link of Case Reports -->
