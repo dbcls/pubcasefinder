@@ -37,7 +37,7 @@ msgid "index_button_search"
 msgstr "Find diseases"
 
 msgid "index_button_phenotouch"
-msgstr "Phenotype input assistant"
+msgstr "Human 3D Model"
 
 msgid "index_button_clear"
 msgstr "Clear"
