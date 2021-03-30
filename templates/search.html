@@ -29,15 +29,24 @@
 	  <td nowrap>
 	    <!-- 参考：http://proengineer.internous.co.jp/content/columnfeature/7605 -->
 	    <!-- 参考：https://www.marineroad.com/staff-blog/14026.html -->
+	    <!--
 	    <label for="file_hpo_list">
 	      <span style="cursor:pointer;"><font color="#0431B4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ _('search_label_upload_hpo')}} : </font></span>
 	      <input type="file" id="file_hpo_list" name="file_hpo_list" style="display:none;" onchange="$('#filename_hpo_list').val($(this).prop('files')[0].name)">
 	    </label>
+	    -->
 	    <input type="text" id="filename_hpo_list" name="filename_hpo_list" size="40" style=border:none; readonly onClick="$('#file').click();">
 	  </td>
 	</tr>
       </table>
       <textarea class="form-control" rows="1" id="tokeninput_hpo" name="str_phenotypes"></textarea>
+      <div align="right">
+        {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+        <a href="/text2hpo" target="_blank"><font color="#0431B4">文章から症状(HPO)を抽出したい場合はコチラ</font></a>
+        {% else %}
+        <a href="https://impact.dbmi.columbia.edu/doc2hpo/" target="_blank"><font color="#0431B4">Input Free-Text (doc2hpo)</font></a>
+        {% endif %}
+      </div>
       <!-- END: Query Phenotype(s) -->
       <br>
       <!-- START: Narrow down the diseases by Gene(s) -->
