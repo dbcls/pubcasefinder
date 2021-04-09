@@ -4,10 +4,10 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2018.
 #
 msgid "base_title"
-msgstr "A Phenotype-Driven Differential-Diagnosis System : PubCaseFinder"
+msgstr "A Rare and Genetic Disease Search System : PubCaseFinder"
 
 msgid "base_description"
-msgstr "PubCaseFinder is a phenotype-driven differential-diagnosis system that uses the disease-phenotype associations extracted from one million case reports."
+msgstr "PubCaseFinder is a rare and genetic disease search system that uses the disease-phenotype associations extracted from one million case reports."
 
 msgid "Update"
 msgstr "Update: Sep. 25. 2018"
@@ -76,16 +76,16 @@ msgid "index_Sample_5_name"
 msgstr "Cleft eyelid"
 
 msgid "index_usage_title_sub"
-msgstr "PubCaseFinder is useful for differential diagnosis and genetic testing."
+msgstr "PubCaseFinder is useful for finding diseases and cases."
 
 msgid "index_usage_title"
 msgstr "Rare and Genetic Disease Search System"
 
 msgid "index_usage_1_title"
-msgstr "Differential Diagnosis"
+msgstr "Finding Diseases"
 
 msgid "index_usage_1_desc"
-msgstr "A ranked list of diseases is produced to be used by physicians as a part of the diagnostic workup."
+msgstr "A ranked list of rare and genetic diseases is produced to be used by physicians."
 
 msgid "index_usage_2_title"
 msgstr "Finding Case Reports"
@@ -139,7 +139,7 @@ msgid "index_stat_list"
 msgstr "List"
 
 msgid "index_label_intro_title"
-msgstr "PubCaseFinder is a diagnosis support system for <b>rare diseases.</b>"
+msgstr "PubCaseFinder is a rare and genetic disease search system"
 
 msgid "index_label_citation"
 msgstr "When you use PubCaseFinder in your publications, please cite:"

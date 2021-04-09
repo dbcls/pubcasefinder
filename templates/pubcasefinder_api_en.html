@@ -18,7 +18,7 @@
 	  <!-- START: ACCEPTANCE OF TERMS OF SERVICE -->
           <div class="col-md-8 col-md-offset-2 text-left fh5co-heading">
             <h3>OVERVIEW</h3>
-            <p>PubCaseFinder is a diagnostic assistance system that enables clinicians to match structured phenotype profiles - and associated genes - against previously published case reports and receive a ranked list of possible disease diagnosis.</p>
+            <p>PubCaseFinder is a rare and genetic disease search system that enables clinicians to match structured phenotype profiles - and associated genes - against previously published case reports and receive a ranked list of rare and genetic diseases.</p>
 	    <div style="border-style: solid ; border-width: 1px;padding: 20px 20px 20px 20px;">
 	      HTTP POST to remote server: <br><mark>https://pubcasefinder.dbcls.jp/mme/match</mark>
 	    </div>
@@ -104,7 +104,7 @@
 	    <ul>
 	      <li><h4>Results:</h4></li>
 	      <ul>
-		<li>Is a list of matches, where each match has a <b>patient</b> object which means a candidate disease diagnosis, and a <b>score</b> object with information about how well the <b>candidate disease diagnosis</b> object matched.</li>
+		<li>Is a list of matches, where each match has a <b>patient</b> object</li>
 	      </ul>
 	    </ul>
 
@@ -112,7 +112,7 @@
 	    <ul>
 	      <li><h4>Patient:</h4></li>
 	      <ul>
-		<li>A <b>patient</b> object means a candidate disease diagnosis.</li>
+		<li>A <b>patient</b> object means a matched disease.</li>
 	      </ul>
 	    </ul>
 
@@ -163,7 +163,7 @@
 	    <ul>
 	      <li><h4>ID:</h4></li>
 	      <ul>
-		<li>An identifier for a candidate disease diagnosis in Orphanet.</li>
+		<li>An identifier for a matched disease in Orphanet.</li>
 	      </ul>
 	    </ul>
 
@@ -172,7 +172,7 @@
 	    <ul>
 	      <li><h4>Label:</h4></li>
 	      <ul>
-		<li>A name of a candidate disease diagnosis in Orphanet.</li>
+		<li>A name of a matched disease in Orphanet.</li>
 	      </ul>
 	    </ul>
 
@@ -180,7 +180,7 @@
 	    <ul>
 	      <li><h4>Score:</h4></li>
 	      <ul>
-		<li>Information about how well this result of a candidate disease diagnosis matched the query patient.</li>
+		<li>Information about how well this result of a candidate disease matched the query patient.</li>
 		<li>Currently, this has a single field, <b>patient</b>, with a numerical value corresponding to the overall score of the match. This score must be in the range [0, 1], where 0.0 is a poor match and 1.0 is a perfect match.</li>
 	      </ul>
 	    </ul>
