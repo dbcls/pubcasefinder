@@ -82,7 +82,7 @@ msgid "index_usage_title"
 msgstr "稀少・遺伝性疾患検索システム"
 
 msgid "index_usage_1_title"
-msgstr "疾患情報検索に活用"
+msgstr "疾患を探す"
 
 msgid "index_usage_1_desc"
 msgstr "入力した症状と関連性の高い順に，遺伝性疾患7,000件と稀少疾患4,000件をランキング形式で提示します．"
