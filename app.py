@@ -28,6 +28,7 @@ from utils.show_phenotype_context_page import show_phenotype_context_page
 from utils.show_jstage_page import show_jstage_page
 from utils.check_input import process_input_phenotype, process_input_gene
 
+
 # API for MME
 from utils.api_mme import make_JSON_MME, make_JSON_IRUD
 from utils.api_mme_omim import make_JSON_MME_omim, make_JSON_IRUD_omim, make_JSON_IRUD_omim_all
@@ -37,6 +38,9 @@ from utils.api_orphanet import make_JSON_annotate
 
 # API for PhenoTouch
 from utils.api_get_hpo_by_text import search_hpo_by_text
+
+# API: get rank OMIM
+from utils.get_rank_omim import get_rank_omim
 
 
 app = Flask(__name__)
@@ -73,6 +77,7 @@ db_sock = app.config['DBSOCK']
 db_name = app.config['DBNAME']
 db_user = app.config['DBUSER']
 db_pw   = app.config['DBPW']
+
 
 #####
 # url_for_search_page()
@@ -1272,6 +1277,23 @@ def REST_API_JSON_MME_POST():
 @app.route('/mme', methods=['GET'])
 def REST_API_JSON_MME_GET():
     return render_template('pubcasefinder_api_en.html')
+
+
+#####
+# GET: API: get rank OMIM 
+#      /get_rank_omim/phenotype:HPO:Id,HPO:id
+#####
+@app.route('/get_rank_omim/phenotype:<string:phenotypes>', methods=['GET'])
+@app.route('/get_rank_omim/phenotype:', methods=['GET'])
+def REST_API_JSON_get_rank_omim(phenotypes=""):
+    # process query : phenotypes
+    list_dict_phenotype, phenotypes_remove_error, phenotypes_remove_error_ja = process_input_phenotype(phenotypes)
+
+    if request.method == 'GET':
+        dict_result = get_rank_omim(phenotypes_remove_error_ja)
+        return jsonify(dict_result)
+    else:
+        return render_template('index.html')
 
 
 #####
