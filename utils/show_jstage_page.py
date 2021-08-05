@@ -4,6 +4,7 @@ import os
 import re
 import MySQLdb
 import json
+import regex
 
 from flask import Flask, session, render_template, request, redirect, url_for, jsonify
 from utils.pagination import Pagination
@@ -54,7 +55,7 @@ def show_jstage_page(id_disease, page, size):
         term_disease = values_OntoTerm[0][0]
 
         # JStage書誌情報を取得
-        sql_JStage = u"select a.id_jstage, a.title_ja, a.url_ja, a.pdate from JStage as a left join AnnotOntoMONDOJStage as b on a.id_jstage=b.id_jstage where b.id_mondo=%s order by a.pdate desc"
+        sql_JStage = u"select a.id_jstage, a.title_ja, a.url_ja, a.pdate, a.id_jglobal, a.journal_ja, a.journal_en from JStage as a left join AnnotOntoMONDOJStage as b on a.id_jstage=b.id_jstage where b.id_mondo=%s order by a.pdate desc"
 
         cursor_JStage = OBJ_MYSQL.cursor()
         cursor_JStage.execute(sql_JStage, (id_disease,))
@@ -65,6 +66,11 @@ def show_jstage_page(id_disease, page, size):
             title_ja  = value_JStage[1]
             url_ja    = value_JStage[2]
             pdate     = value_JStage[3]
+            id_jglobal = value_JStage[4]
+            journal_ja = value_JStage[5]
+            journal_en = value_JStage[6]
+            journal_ja = journal_ja.replace("　", " ")
+            journal = journal_ja.translate(str.maketrans({chr(0xFF01 + i): chr(0x21 + i) for i in range(94)})) if journal_ja != "" else journal_en
 
             # htmlに渡す情報を収納
             dict_jstage = {}
@@ -72,6 +78,8 @@ def show_jstage_page(id_disease, page, size):
             dict_jstage['title_ja'] = title_ja
             dict_jstage['url_ja'] = url_ja
             dict_jstage['pdate'] = pdate
+            dict_jstage['id_jglobal'] = id_jglobal
+            dict_jstage['journal'] = journal
             list_dict_jstage.append(dict_jstage)
 
     # total件数を取得

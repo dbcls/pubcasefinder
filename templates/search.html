@@ -44,7 +44,7 @@
         {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
         <a href="/text2hpo" target="_blank"><font color="#0431B4">文章から症状(HPO)を抽出したい場合はコチラ</font></a>
         {% else %}
-        <a href="https://impact.dbmi.columbia.edu/doc2hpo/" target="_blank"><font color="#0431B4">Input Free-Text (doc2hpo)</font></a>
+        <a href="https://doc2hpo.wglab.org/" target="_blank"><font color="#0431B4">Input Free-Text (doc2hpo)</font></a>
         {% endif %}
       </div>
       <!-- END: Query Phenotype(s) -->
@@ -485,7 +485,7 @@
 			  {% for dict_reference_source in dict_similar_disease_omim['reference_source'] %}
 			  {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
 		          {% if dict_reference_source['source'] == "MONDO" %}
-		          <a href="{{ url_for_show_jstage_page(dict_reference_source['reference'], 1, 20) }}" target="_blank"><u><font color="#0431B4">日本語症例報告（J-STAGE）</font></u></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		          <a href="{{ url_for_show_jstage_page(dict_reference_source['reference'], 1, 20) }}" target="_blank"><u><font color="#0431B4">日本語症例報告（J-STAGE & J-GLOBAL）</font></u></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			  {% endif %}
 			  {% endif %}
 			  {% endfor %}
@@ -848,7 +848,7 @@
 			  {% for dict_reference_source in dict_similar_disease['reference_source'] %}
 			  {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
 		          {% if dict_reference_source['source'] == "MONDO" %}
-		          <a href="{{ url_for_show_jstage_page(dict_reference_source['reference'], 1, 20) }}" target="_blank"><u><font color="#0431B4">日本語症例報告（J-STAGE）</font></u></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		          <a href="{{ url_for_show_jstage_page(dict_reference_source['reference'], 1, 20) }}" target="_blank"><u><font color="#0431B4">日本語症例報告（J-STAGE & J-GLOBAL）</font></u></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			  {% endif %}
 			  {% endif %}
 			  {% endfor %}

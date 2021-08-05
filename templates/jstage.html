@@ -6,7 +6,7 @@
     <div id="fh5co-project">
       <div class="container">
 
-        <h2>Case Reports in J-STAGE : <b><a target="_blank" href="https://monarchinitiative.org/disease/{{ id_disease }}">{{ term_disease }}</a></b></h2>
+        <h2><b><a target="_blank" href="https://monarchinitiative.org/disease/{{ id_disease }}">{{ term_disease }}</a></b> に関連する症例報告</h2>
 	<br>
 
 	  <table width="100%" height="120">
@@ -89,8 +89,11 @@
 	    <table class="table table-striped">
 	      <thead>
 		<tr>
-		  <th class="text-left">Year</th>
-		  <th class="text-left">Title</th>
+		  <th class="text-left" width="80">発行年</th>
+		  <th class="text-left">タイトル</th>
+		  <th class="text-left">雑誌名</th>
+		  <th class="text-left" width="100">J-STAGE<br>へのリンク</th>
+		  <th class="text-left" width="100">J-GLOBAL<br>へのリンク</th>
 		</tr>
 	      </thead>
 	      <tbody>
@@ -103,7 +106,19 @@
 		    </td>
 		    <!-- title_ja -->
 		    <td>
-		      <a href="{{ dict_jstage['url_ja'] }}"><font color="#0431B4">{{ dict_jstage['title_ja'] }}</font></a><br>
+		      <font color="black">{{ dict_jstage['title_ja'] }}</font>
+		    </td>
+		    <!-- journal -->
+		    <td>
+		      <font color="black">{{ dict_jstage['journal'] }}</font>
+		    </td>
+		    <!-- J-STAGE -->
+		    <td>
+		      <a href="{{ dict_jstage['url_ja'] }}" target="_blank"><img src="/static/images/logo_J-STAGE.png" width="60"></a>
+		    </td>
+		    <!-- J-GLOBAL -->
+		    <td>
+		      <a href="https://jglobal.jst.go.jp/detail?JGLOBAL_ID={{ dict_jstage['id_jglobal'] }}&rel=1" target="_blank"><img src="/static/images/logo_J-GLOBAL.png" width="100"></a><br>
 		    </td>
 		  </tr>
 		{% endfor %}
