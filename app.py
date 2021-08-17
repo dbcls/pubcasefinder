@@ -1340,9 +1340,9 @@ def validateFileSize(file):
 
 
 #####
-# text2hpo
-@app.route('/text2hpo')
-def text2hpo():
+# EHR
+@app.route('/ehr')
+def ehr():
    return render_template('text2hpo.html')
 
 
